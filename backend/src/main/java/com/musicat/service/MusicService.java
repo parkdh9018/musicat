@@ -1,8 +1,9 @@
 package com.musicat.service;
 
-import com.musicat.data.dto.MusicDto;
+import com.musicat.data.dto.MusicModifyDto;
 import com.musicat.data.dto.MusicInfoDto;
 import com.musicat.data.dto.MusicInsertResponseDto;
+import com.musicat.data.dto.MusicModifyResponseDto;
 import com.musicat.data.dto.MusicPlayDto;
 import com.musicat.data.dto.MusicRequestDto;
 import com.musicat.data.entity.Music;
@@ -95,6 +96,7 @@ public class MusicService {
    * @param memberSeq
    * @throws Exception
    */
+  @Transactional
   public void deleteMusic(long memberSeq) throws Exception {
     Optional<Music> existingMusicByMember = musicRepository.findByMemberSeqAndMusicIsPlayedFalse(
         memberSeq);
@@ -105,22 +107,52 @@ public class MusicService {
   }
 
   /**
+   * 등록된 노래를 수정합니다.
    *
-   *
-   * @param musicDto
+   * @param musicModifyDto
    * @return
    * @throws Exception
    */
-  public Music modifyMusic(MusicDto musicDto) throws Exception {
+  @Transactional
+  public MusicModifyResponseDto modifyMusic(MusicModifyDto musicModifyDto) throws Exception {
+
+    // 검증 로직에 사용할 변수 호출
+    String musicName = musicModifyDto.getMusicName();
+    String musicArtist = musicModifyDto.getMusicArtist();
+    long memberSeq = musicModifyDto.getMemberSeq();
+
+    // 중복 신청 여부 체크
+    Optional<Music> existingMusicByMember = musicRepository.findByMemberSeqAndMusicIsPlayedFalse(
+        memberSeq);
+    if (existingMusicByMember.isPresent()) {
+      // 중복 곡 여부 체크
+      Optional<Music> existingMusicByNameAndArtist = musicRepository.findByMusicNameAndMusicArtistAndMusicIsPlayedFalse(
+          musicName,
+          musicArtist);
+      if (existingMusicByNameAndArtist.isPresent()) {
+        Music music = existingMusicByNameAndArtist.get();
+        int playOrder =
+            musicRepository.countByMusicSeqLessThanAndMusicIsPlayedFalse(music.getMusicSeq()) + 1;
+        return musicBuilderUtil.buildMusicInsertResponseDto(music, 2, playOrder);
+      }
+
+    }
+
+
+    // 곡 저장
+    Music music = musicRepository.save(musicBuilderUtil.buildMusicEntity(musicRequestDto));
+    int playOrder =
+        musicRepository.countByMusicSeqLessThanAndMusicIsPlayedFalse(music.getMusicSeq()) + 1;
+    return musicBuilderUtil.buildMusicInsertResponseDto(music, 0, playOrder);
     Music music = musicRepository
-        .findById(musicDto.getMusicSeq())
+        .findById(musicModifyDto.getMusicSeq())
         .orElseThrow(IllegalArgumentException::new);
 
-    music.setMusicArtist(musicDto.getMusicArtist());
-    music.setMusicCover(musicDto.getMusicCover());
-    music.setMusicLength(musicDto.getMusicLength());
-    music.setMusicGenre(musicDto.getMusicGenre());
-    music.setMusicName(musicDto.getMusicName());
+    music.setMusicArtist(musicModifyDto.getMusicArtist());
+    music.setMusicCover(musicModifyDto.getMusicCover());
+    music.setMusicLength(musicModifyDto.getMusicLength());
+    music.setMusicGenre(musicModifyDto.getMusicGenre());
+    music.setMusicName(musicModifyDto.getMusicName());
 
     return music;
   }

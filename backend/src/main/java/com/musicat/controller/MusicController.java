@@ -1,6 +1,5 @@
 package com.musicat.controller;
 
-import com.musicat.data.dto.MusicDto;
 import com.musicat.data.dto.MusicInsertResponseDto;
 import com.musicat.data.dto.MusicPlayDto;
 import com.musicat.data.dto.MusicRequestDto;
