@@ -20,7 +20,8 @@ public interface MusicRepository extends JpaRepository<Music, Long> {
 //  public int countUnplayedMusicBefore(@Param("musicSeq") Long musicSeq);
   public int countByMusicSeqLessThanAndMusicIsPlayedFalse(Long musicSeq);
 
-  public Optional<List<Music>> findTop10ByMusicIsPlayedOrderByMusicSeqAsc(boolean musicIsPlayed);
+  public Optional<List<Music>> findTop10ByMusicIsPlayedFalseOrderByMusicSeqAsc();
 
   public Optional<Music> findTop1ByMusicIsPlayedOrderByMusicSeqAsc(boolean musicIsPlayed);
+
 }
