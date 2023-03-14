@@ -1,5 +1,6 @@
 package com.musicat.data.dto;
 
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,11 +10,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MusicDto {
-
-  private long musicSeq;
+public class MusicInfoDto {
 
   private long memberSeq;
+
+  private LocalDateTime musicPlayedAt;
+
+  private LocalDateTime musicCreatedAt;
 
   private String musicName;
 
@@ -24,4 +27,5 @@ public class MusicDto {
   private long musicLength;
 
   private String musicCover;
+
 }

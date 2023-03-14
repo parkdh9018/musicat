@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://musicat.kr:3306/musicat?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
+    username: root
+    password: ssafya702!
+    driverClassName: org.mariadb.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        # show_sql: true
+        format_sql: true
+server:
+  port: 9999

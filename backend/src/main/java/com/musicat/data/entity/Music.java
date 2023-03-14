@@ -8,15 +8,23 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
+import javax.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-@Getter @Setter @AllArgsConstructor @NoArgsConstructor
+@Table(name = "Music")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Music {
 
   @Id
@@ -45,8 +53,12 @@ public class Music {
   @Column(name = "music_played_at")
   private LocalDateTime musicPlayedAt;
 
+  @Column(name = "music_played_ms")
+  private long musicPlayedMs;
+
   @CreatedDate
-  @Column(name = "music_created_at", nullable = false, updatable = false)
+  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  @Column(name = "music_created_at")
   private LocalDateTime musicCreatedAt;
 
   @Column(name = "music_is_played", columnDefinition = "TINYINT(1)")
@@ -58,17 +70,8 @@ public class Music {
     LocalDateTime now = LocalDateTime.now();
     this.musicCreatedAt = now;
     this.musicPlayedAt = null;
+    this.musicPlayedMs = 0L;
     this.musicIsPlayed = false;
-  }
-
-  public Music(MusicDto musicDto) {
-    this.musicName = musicDto.getMusicName();
-    this.musicArtist = musicDto.getMusicArtist();
-    this.memberSeq = musicDto.getMemberSeq();
-    this.musicGenre = musicDto.getMusicGenre();
-    this.musicCover = musicDto.getMusicCover();
-    this.musicLength = musicDto.getMusicLength();
-
   }
 
 }

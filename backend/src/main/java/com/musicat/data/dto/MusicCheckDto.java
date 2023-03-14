@@ -9,19 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MusicDto {
-
-  private long musicSeq;
+public class MusicCheckDto {
 
   private long memberSeq;
 
-  private String musicName;
+  private long musicSeq;
 
-  private String musicArtist;
+  private int musicOrder;
 
-  private String musicGenre;
-
-  private long musicLength;
-
-  private String musicCover;
 }
