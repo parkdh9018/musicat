@@ -1,8 +1,17 @@
-import React from "react";
+import { useRoutes } from "react-router-dom";
 import "./App.css";
+import router from "./pages/router";
 
 function App() {
-  return <div className="App"></div>;
+  const element = useRoutes(router);
+  return (
+    <div className="App">
+      {/* <Routes>
+        <Route path="/" element={<Broadcast />} />
+      </Routes> */}
+      {element}
+    </div>
+  );
 }
 
 export default App;
