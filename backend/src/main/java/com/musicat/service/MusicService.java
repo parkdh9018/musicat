@@ -107,10 +107,13 @@ public class MusicService {
   }
 
   /**
-   * 등록된 노래를 수정합니다.
+   * 등록된 노래를 수정합니다. 만약 사용자가 대기열에 노래를 등록하지 않았거나, 바꾸려는 노래가 이미 대기열에 있다면 바꾸지 않습니다.
    *
    * @param musicModifyDto
-   * @return
+   * @return musicModifyResponseDto
+   * MusicModifyResponseDto.status : 해당 요청의 성공 여부 (0 : 성공, 1 : 신청하지 않음, 2 : 중복 곡)
+   * MusicModifyResponseDto.musicInfoDto : status에 맞는 곡 정보
+   * MusicModifyResponseDto.playOrder : status에 맞는 곡의 순서
    * @throws Exception
    */
   @Transactional
@@ -133,33 +136,31 @@ public class MusicService {
         Music music = existingMusicByNameAndArtist.get();
         int playOrder =
             musicRepository.countByMusicSeqLessThanAndMusicIsPlayedFalse(music.getMusicSeq()) + 1;
-        return musicBuilderUtil.buildMusicInsertResponseDto(music, 2, playOrder);
+        return musicBuilderUtil.buildMusicModifyResponseDto(music, 2, playOrder);
       }
-
+      Music music = musicRepository.findById(musicModifyDto.getMusicSeq())
+          .orElseThrow(IllegalArgumentException::new);
+      int playOrder =
+            musicRepository.countByMusicSeqLessThanAndMusicIsPlayedFalse(music.getMusicSeq()) + 1;
+      music.setMusicArtist(musicModifyDto.getMusicArtist());
+      music.setMusicCover(musicModifyDto.getMusicCover());
+      music.setMusicLength(musicModifyDto.getMusicLength());
+      music.setMusicGenre(musicModifyDto.getMusicGenre());
+      music.setMusicName(musicModifyDto.getMusicName());
+      musicRepository.save(music);
+      return musicBuilderUtil.buildMusicModifyResponseDto(music, 0, playOrder);
     }
-
-
-    // 곡 저장
-    Music music = musicRepository.save(musicBuilderUtil.buildMusicEntity(musicRequestDto));
-    int playOrder =
-        musicRepository.countByMusicSeqLessThanAndMusicIsPlayedFalse(music.getMusicSeq()) + 1;
-    return musicBuilderUtil.buildMusicInsertResponseDto(music, 0, playOrder);
-    Music music = musicRepository
-        .findById(musicModifyDto.getMusicSeq())
-        .orElseThrow(IllegalArgumentException::new);
-
-    music.setMusicArtist(musicModifyDto.getMusicArtist());
-    music.setMusicCover(musicModifyDto.getMusicCover());
-    music.setMusicLength(musicModifyDto.getMusicLength());
-    music.setMusicGenre(musicModifyDto.getMusicGenre());
-    music.setMusicName(musicModifyDto.getMusicName());
-
-    return music;
+    return musicBuilderUtil.buildMusicModifyResponseDto(null, 1, 0);
   }
 
-  public List<Music> getRequestMusic() throws Exception {
+  /**
+   * 대기열 상위 10개의 노래를 반환합니다.
+   * @return musicInfoList
+   * @throws Exception
+   */
+  public List<Music> getMusicInfoList() throws Exception {
     return musicRepository
-        .findTop10ByMusicIsPlayedOrderByMusicSeqAsc(false)
+        .findTop10ByMusicIsPlayedFalseOrderByMusicSeqAsc()
         .orElseThrow(IllegalArgumentException::new);
   }
 

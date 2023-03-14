@@ -2,6 +2,7 @@ package com.musicat.util;
 
 import com.musicat.data.dto.MusicInfoDto;
 import com.musicat.data.dto.MusicInsertResponseDto;
+import com.musicat.data.dto.MusicModifyResponseDto;
 import com.musicat.data.dto.MusicRequestDto;
 import com.musicat.data.entity.Music;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,25 @@ public class MusicBuilderUtil {
         .musicLength(music.getMusicLength())
         .build();
     return MusicInsertResponseDto.builder()
+        .status(status)
+        .musicInfoDto(musicInfo)
+        .playOrder(playOrder)
+        .build();
+  }
+
+  public MusicModifyResponseDto buildMusicModifyResponseDto(Music music, int status,
+      int playOrder) {
+    MusicInfoDto musicInfo = MusicInfoDto.builder()
+        .memberSeq(music.getMemberSeq())
+        .musicPlayedAt(music.getMusicPlayedAt())
+        .musicCreatedAt(music.getMusicCreatedAt())
+        .musicName(music.getMusicName())
+        .musicArtist(music.getMusicArtist())
+        .musicGenre(music.getMusicGenre())
+        .musicCover(music.getMusicCover())
+        .musicLength(music.getMusicLength())
+        .build();
+    return MusicModifyResponseDto.builder()
         .status(status)
         .musicInfoDto(musicInfo)
         .playOrder(playOrder)
