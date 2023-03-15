@@ -1,0 +1,11 @@
+@use "../../_var.scss";
+
+.broadcast {
+  max-width: var.$최대넓이;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  height: 40vh;
+  min-height: 250px;
+  background-color: blue;
+}

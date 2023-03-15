@@ -1,0 +1,18 @@
+@use "../../../_var.scss";
+
+.button {
+  border: 1.5px solid var.$글씨;
+  display: inline-block;
+  padding: 9px 20px 8px;
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0);
+  color: var.$글씨;
+  transition: 0.25s;
+  font-size: 16px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var.$흐린글씨;
+    color: var.$배경;
+  }
+}

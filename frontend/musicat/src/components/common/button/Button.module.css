@@ -1,1 +1,15 @@
-/*# sourceMappingURL=Button.module.css.map */
+.button {
+  border: 1.5px solid #ececec;
+  display: inline-block;
+  padding: 9px 20px 8px;
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0);
+  color: #ececec;
+  transition: 0.25s;
+  font-size: 16px;
+  cursor: pointer;
+}
+.button:hover {
+  background-color: #8d8d8d;
+  color: #313131;
+}/*# sourceMappingURL=Button.module.css.map */
