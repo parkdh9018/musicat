@@ -1,5 +1,5 @@
-import React from "react";
+import style from "./Broadcast.module.css";
 
 export const Broadcast = () => {
-  return <div>너는 왜 나를 못찾니? dfdfddfd</div>;
+  return <div className={style.broadcast}>너는 왜 나를 못찾니? dfdfddfd</div>;
 };
