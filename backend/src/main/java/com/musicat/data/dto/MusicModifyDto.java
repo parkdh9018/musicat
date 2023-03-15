@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MusicModifyDto {
 
-  private long musicSeq;
-
   private long memberSeq;
 
   private String musicName;
