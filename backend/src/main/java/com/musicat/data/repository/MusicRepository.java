@@ -22,6 +22,8 @@ public interface MusicRepository extends JpaRepository<Music, Long> {
 
   public Optional<List<Music>> findTop10ByMusicIsPlayedFalseOrderByMusicSeqAsc();
 
-  public Optional<Music> findTop1ByMusicIsPlayedOrderByMusicSeqAsc(boolean musicIsPlayed);
+  public Optional<Music> findTop1ByMusicIsPlayedTrueOrderByMusicSeqDesc();
+
+  public Optional<Music> findTop1ByMusicIsPlayedFalseOrderByMusicSeqAsc();
 
 }
