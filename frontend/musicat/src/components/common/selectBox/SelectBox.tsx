@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import style from "@/components/common/selectBox/SelectBox.module.css";
+import style from "./SelectBox.module.css";
 import { HTMLAttributes, useState } from "react";
 
 interface SelectBoxProps extends HTMLAttributes<HTMLSelectElement> {
