@@ -1,9 +1,15 @@
 package com.musicat.data.dto;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Data
-public class MusicDto {
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class MusicModifyDto {
 
   private long musicSeq;
 

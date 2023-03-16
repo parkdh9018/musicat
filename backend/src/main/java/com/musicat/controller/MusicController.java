@@ -1,14 +1,21 @@
 package com.musicat.controller;
 
-import com.musicat.data.dto.MusicDto;
+import com.musicat.data.dto.MusicInfoDto;
+import com.musicat.data.dto.MusicInsertResponseDto;
+import com.musicat.data.dto.MusicPlayDto;
+import com.musicat.data.dto.MusicRequestDto;
 import com.musicat.data.dto.MusicResponseDto;
 import com.musicat.data.entity.Music;
 import com.musicat.service.MusicService;
+import com.sun.jdi.request.DuplicateRequestException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,56 +29,63 @@ public class MusicController {
   private final MusicService musicService;
 
   @PostMapping("/request")
-  public ResponseEntity<?> insertMusic(@RequestBody MusicDto musicDto) throws Exception {
-
-    Music music = musicService.insertMusic(musicDto);
-    MusicResponseDto result = new MusicResponseDto();
-
+  public ResponseEntity<MusicInsertResponseDto> insertMusic(
+      @RequestBody MusicRequestDto musicRequestDto)
+      throws Exception {
     try {
-
-      result.setMusicSeq(music.getMusicSeq());
-      result.setSuccess(true);
-
-      return new ResponseEntity<MusicResponseDto>(result, HttpStatus.OK);
+      MusicInsertResponseDto musicInsertResponseDto = musicService.insertMusic(musicRequestDto);
+      return ResponseEntity.ok(musicInsertResponseDto);
+    } catch (DuplicateRequestException e) {
+      return ResponseEntity.status(HttpStatus.CONFLICT).build();
     } catch (Exception e) {
-      result.setSuccess(false);
-      return new ResponseEntity<MusicResponseDto>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
   }
 
   @GetMapping("/")
-  public ResponseEntity<?> getRequestMusic() throws Exception {
+  public ResponseEntity<List<Music>> getRequestMusic() throws Exception {
 
-    List<Music> requestMusic = musicService.getRequestMusic();
-
-    MusicResponseDto result = new MusicResponseDto();
+    List<Music> requestMusic = musicService.getMusicInfoList();
 
     try {
-      result.setSuccess(true);
-      return new ResponseEntity<List<Music>>(requestMusic, HttpStatus.OK);
+      return ResponseEntity.ok(requestMusic);
     } catch (Exception e) {
-      result.setSuccess(false);
-      return new ResponseEntity<MusicResponseDto>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
   }
 
   @GetMapping("/play")
-  public ResponseEntity<?> playMusic() throws Exception {
+  public ResponseEntity<MusicPlayDto> playMusic() throws Exception {
 
-    Music music = musicService.playMusic();
-
-    MusicResponseDto result = new MusicResponseDto();
-
+    MusicPlayDto musicPlayDto = musicService.playMusic();
     try {
-      result.setMusicSeq(music.getMusicSeq());
-      result.setSuccess(true);
-      return new ResponseEntity<MusicResponseDto>(result, HttpStatus.OK);
+      return ResponseEntity.ok(musicPlayDto);
     } catch (Exception e) {
-      result.setSuccess(false);
-      return new ResponseEntity<MusicResponseDto>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
+  }
+
+  @DeleteMapping("/{memberSeq}")
+  public ResponseEntity deleteMusic(@PathVariable long memberSeq) throws Exception {
+    try {
+      musicService.deleteMusic(memberSeq);
+      return ResponseEntity.status(HttpStatus.OK).build();
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+  }
+
+  @GetMapping("/{musicSeq}")
+  public ResponseEntity<MusicInfoDto> getMusic(@PathVariable long musicSeq) throws Exception {
+
+    try {
+      MusicInfoDto musicInfoDto = musicService.getMusic(musicSeq);
+      return ResponseEntity.ok(musicInfoDto);
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
   }
 
 }
