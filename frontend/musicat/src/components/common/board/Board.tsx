@@ -1,4 +1,4 @@
-import style from "@/components/common/board/Board.module.css";
+import style from "./Board.module.css";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 

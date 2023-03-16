@@ -5,7 +5,7 @@ import {
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { v4 as uuidv4 } from "uuid";
-import style from "@/components/common/pagenation/Pagenation.module.css";
+import style from "./Pagenation.module.css";
 
 /** JPA Pagenation에서 넘겨주는 데이터를 그대로 주입해준다
  *  url부분은 구조를 바꿔야 한다. 나중에 수정하자

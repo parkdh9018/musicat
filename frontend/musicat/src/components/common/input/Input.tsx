@@ -1,5 +1,5 @@
 import { HTMLAttributes, useState } from "react";
-import style from "@/components/common/input/Input.module.css";
+import style from "./Input.module.css";
 
 interface InputProps extends HTMLAttributes<HTMLInputElement> {
   type?: string;

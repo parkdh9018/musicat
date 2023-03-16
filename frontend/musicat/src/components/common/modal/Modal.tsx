@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import style from "@/components/common/modal/Modal.module.css";
+import style from "./Modal.module.css";
 
 interface ModalProps {
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
