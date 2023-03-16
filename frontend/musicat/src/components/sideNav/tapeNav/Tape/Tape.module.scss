@@ -4,9 +4,11 @@
 
 .songName {
     position: absolute;
+    overflow: hidden;
     top: 71px;
     left: 100px;
     z-index: 1;
+    width: 200px;
 }
 
 .gearImg {
@@ -42,5 +44,4 @@
 .text {
   white-space: nowrap;
   font-size: 24px;
-  font-family: monospace;
 }
