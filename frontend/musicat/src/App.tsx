@@ -1,6 +1,6 @@
-import { useRoutes } from "react-router-dom";
 import "./App.css";
 import router from "@/pages/router";
+import { useRoutes } from "react-router-dom";
 import { Header } from "./components/header/Header";
 import { Broadcast } from "./components/broadcast/Broadcast";
 

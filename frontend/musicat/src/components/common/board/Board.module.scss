@@ -1,0 +1,38 @@
+@use "../../../_var.scss";
+
+.header_container {
+  height: 50px;
+  display: grid;
+  text-align: center;
+  align-items: center;
+  font-style: bold;
+  font-size: 1.2rem;
+  border-top: 0.5px solid gray;
+  border-bottom: 2px solid gray;
+  color: var.$글씨;
+}
+
+.content_container {
+  height: 50px;
+  display: grid;
+  text-align: center;
+  align-items: center;
+  font-size: 1rem;
+  border-bottom: 1px solid gray;
+  cursor: pointer;
+  color: var.$글씨;
+
+  &:hover {
+    background-color: rgb(39, 39, 39);
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .header_container {
+    font-size: 1rem;
+  }
+
+  .content_container {
+    font-size: 0.8rem;
+  }
+}
