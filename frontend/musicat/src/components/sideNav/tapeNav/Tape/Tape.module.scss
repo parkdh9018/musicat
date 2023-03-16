@@ -1,0 +1,46 @@
+.tapeImg {
+  position: absolute;
+}
+
+.songName {
+    position: absolute;
+    top: 71px;
+    left: 100px;
+    z-index: 1;
+}
+
+.gearImg {
+  position: absolute;
+
+  .left {
+    top: 10px;
+  }
+
+  .right {
+    left: 20px;
+  }
+}
+
+.tape {
+  position: relative;
+  width: 376px;
+  height: 239px;
+  display: inline-block;
+}
+
+.tapeBackImg {
+    width: 337px;
+    height: 204px;
+}
+
+.container {
+  width: 200px;
+  height: 50px;
+  overflow: hidden;
+}
+
+.text {
+  white-space: nowrap;
+  font-size: 24px;
+  font-family: monospace;
+}

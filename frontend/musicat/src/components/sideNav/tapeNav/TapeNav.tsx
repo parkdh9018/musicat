@@ -1,5 +1,9 @@
-import React from "react";
+import {Tape} from "@/components/sideNav/tapeNav/Tape/Tape"
 
 export const TapeNav = () => {
-  return <div>TapeNav</div>;
+  return (
+    <>
+      <Tape/>
+    </>
+  );
 };
