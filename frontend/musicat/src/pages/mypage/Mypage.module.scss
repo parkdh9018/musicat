@@ -10,12 +10,12 @@
   background-color: greenyellow;
 
   .leftTab {
-    flex-grow: 1;
+    width: 22%;
     padding: 1%;
   }
 
   .rightTab {
-    flex-grow: 3.5;
+    width: 78%;
     background-color: skyblue;
     min-height: calc(100vh - 60px);
     padding: 1% 1% 1% 0%;

@@ -8,11 +8,11 @@
   background-color: green;
 }
 .home .leftTab {
-  flex-grow: 1;
+  width: 33%;
   padding: 1%;
 }
 .home .rightTab {
-  flex-grow: 2;
+  width: 67%;
   background-color: skyblue;
   min-height: calc(60vh - 60px);
   padding: 1% 1% 1% 0%;
