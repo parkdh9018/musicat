@@ -1,5 +1,6 @@
 .header_container {
   height: 50px;
+  width: 100%;
   display: grid;
   text-align: center;
   align-items: center;
@@ -12,6 +13,7 @@
 
 .content_container {
   height: 50px;
+  width: 100%;
   display: grid;
   text-align: center;
   align-items: center;
