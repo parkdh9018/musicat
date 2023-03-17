@@ -7,7 +7,7 @@ export const Tape = () => {
 
   const textWidth = 200;
   const textContent = "뉴진스 - ditto"
-  const BackGroundImage_src = "/public/img/tape/background_img_test.png"
+  const BackGroundImage_src = "/img/tape/background_img_test.png"
 
   useEffect(() => {
     an = anime({
@@ -39,13 +39,13 @@ export const Tape = () => {
   return (
     <>
       <div className={style.tape}>
-        <div className={style.songName} style={{width: `${textWidth}px`}}>
+        <div className={style.songName}>
           <div className={style.text}>{textContent}</div>
         </div>
-        <img className={style.tapeImg} src="/public/img/tape/tape.png" />
-        <img className={style.gearImg + " " + style.left} src="/public/img/tape/gear.png"/>
-        <img className={style.gearImg + " " + style.right} src="/public/img/tape/gear.png"/>
-        <img className={style.tapeBackImg} src={BackGroundImage_src}/>
+        <img className={style.tapeImg + " " + style.fixedRatio} src="/img/tape/tape.png" />
+        <img className={style.gearImg + " " + style.left} src="/img/tape/gear.png"/>
+        <img className={style.gearImg + " " + style.right} src="/img/tape/gear.png"/>
+        <img className={style.fixedRatio} src={BackGroundImage_src}/>
       </div>     
       {/* <button onClick={pauseEvent}>pause</button>
       <button onClick={playEvent}>play</button> */}
