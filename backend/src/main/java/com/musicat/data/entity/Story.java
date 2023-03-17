@@ -60,4 +60,14 @@ public class Story {
   @Column(name = "story_content")
   private String storyContent; // 사연 내용
 
+  @Column(name = "story_wav_file_directory_root")
+  private String storyWavFileDirectoryRoot;
+
+
+
+  @PrePersist
+  public void prePersist() {
+    this.storyWavFileDirectoryRoot = this.storyWavFileDirectoryRoot == null ? "파일 경로" : this.storyWavFileDirectoryRoot;
+    this.storyCreatedAt = LocalDateTime.now();
+  }
 }

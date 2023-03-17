@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
-@NoArgsConstructor// 기본 생성자로는 생성 금지 (빌더 패턴을 통해 값을 무조건 포함하기 위해서)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 public class StoryRequestDto {

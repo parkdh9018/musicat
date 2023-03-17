@@ -18,14 +18,16 @@ public class StoryController {
 
     private final StoryService storyService;
 
+    /**
+     * 사연 신청
+     */
     @PostMapping("/story")
-    public ResponseEntity<StoryInsertResponseDto> insertStory(@RequestBody StoryRequestDto storyRequestDto) {
+    public ResponseEntity<?> insertStory(@RequestBody StoryRequestDto storyRequestDto) {
         try {
-            System.out.println("사연 등록하러 가자 !!");
-            StoryInsertResponseDto storyInsertResponseDto = storyService.insertStory(storyRequestDto);
-            return ResponseEntity.ok(storyInsertResponseDto);
+            if (storyService.isUniqueStory(storyRequestDto.getMemberSeq())) return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 신청한 사연이 있습니다.");
+
+            return ResponseEntity.ok(storyService.insertStory(storyRequestDto));
         } catch (Exception e) {
-            System.err.print("예외 발생");
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
