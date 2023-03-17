@@ -26,6 +26,4 @@ public class StoryInfoDto {
     private boolean storyIsRead;
 
     private boolean storyIsValid;
-
-    private long playOrder;
 }

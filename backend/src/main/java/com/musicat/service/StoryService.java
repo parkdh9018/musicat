@@ -1,7 +1,6 @@
 package com.musicat.service;
 
 import com.musicat.data.dto.story.StoryInfoDto;
-import com.musicat.data.dto.story.StoryInsertInfoDto;
 import com.musicat.data.dto.story.StoryInsertResponseDto;
 import com.musicat.data.dto.story.StoryRequestDto;
 import com.musicat.data.entity.Story;
@@ -104,6 +103,27 @@ public class StoryService {
         Optional<Story> optionalStory = storyRepository.findByMemberSeqAndStoryIsReadFalse(memberSeq);
 
         return optionalStory.isPresent();
+    }
+
+    /**
+     * 사연 상세 조회
+     */
+    public Object getStory(long storySeq) throws Exception {
+        Optional<Story> optionalStory = storyRepository.findById(storySeq);
+
+        if (optionalStory.isEmpty()) return "사연이 존재하지 않습니다.";
+
+        Story story = optionalStory.get();
+
+        return StoryInfoDto.builder()
+                .storySeq(story.getStorySeq())
+                .storyTitle(story.getStoryTitle())
+                .memberSeq(story.getMemberSeq())
+                .storyWavFileDirectoryRoot(story.getStoryWavFileDirectoryRoot())
+                .storyCreatedAt(story.getStoryCreatedAt())
+                .storyIsValid(story.isStoryIsValid())
+                .storyIsRead(story.isStoryIsRead())
+                .build();
     }
 
 

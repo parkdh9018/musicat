@@ -61,4 +61,17 @@ public class StoryController {
         }
     }
 
+    /**
+     * 사연 상세 조회
+     */
+    @GetMapping("/story/{storySeq}")
+    public ResponseEntity<?> getStory(@PathVariable long storySeq) {
+        try {
+            return ResponseEntity.ok(storyService.getStory(storySeq));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }
