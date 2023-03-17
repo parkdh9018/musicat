@@ -1,0 +1,42 @@
+.tapeImg {
+  position: absolute;
+}
+
+.songName {
+  position: absolute;
+  overflow: hidden;
+  top: 71px;
+  left: 91px;
+  z-index: 1;
+}
+
+.gearImg {
+  position: absolute;
+}
+
+.left {
+  top: 110px;
+  left: 103px;
+}
+
+.right {
+  top: 110px;
+  left: 230px;
+}
+
+.tape {
+  position: relative;
+  width: 376px;
+  height: 239px;
+  display: inline-block;
+}
+
+.tapeBackImg {
+  width: 337px;
+  height: 204px;
+}
+
+.text {
+  white-space: nowrap;
+  font-size: 24px;
+}/*# sourceMappingURL=Tape.module.css.map */
