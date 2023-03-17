@@ -17,6 +17,15 @@ export const Chat = () => {
     { a: 213, b: 1234, c: 12345 },
     { a: 213, b: 1234, c: 12345 },
     { a: 213, b: 1234, c: 12345 },
+    { a: 213, b: 1234, c: 12345 },
+    { a: 213, b: 1234, c: 12345 },
+    { a: 213, b: 1234, c: 12345 },
+    { a: 213, b: 1234, c: 12345 },
+    { a: 213, b: 1234, c: 12345 },
+    { a: 213, b: 1234, c: 12345 },
+    { a: 213, b: 1234, c: 12345 },
+    { a: 213, b: 1234, c: 12345 },
+    { a: 213, b: 1234, c: 12345 },
   ];
 
   const [selectdumy, setSelectdumy] = useState("none");
@@ -35,13 +44,14 @@ export const Chat = () => {
           paddingLeft: "20px",
         }}
       />
+      <button onClick={() => setModal(true)}>모달열기</button>
       <Input placeholder={"이거 placeholder 들어감"} type={"text"} />
       <SelectBox options={dumyOption} setValue={setSelectdumy} />
       <Pagenation
-        number={10}
+        number={5}
         first={false}
-        last={true}
-        totalPages={16}
+        last={false}
+        totalPages={14}
         url={""}
       />
       <Board
@@ -51,7 +61,23 @@ export const Chat = () => {
       />
       <button onClick={() => setModal(true)}>모달열기</button>
       {isModalOpen && (
-        <Modal setModalOpen={setModal} children={<div>나왔다!!</div>} />
+        <Modal
+          setModalOpen={setModal}
+          children={
+            <div>
+              모달이 등장!!! 등장!!! 등장 !!!
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+            </div>
+          }
+        />
       )}
     </div>
   );
