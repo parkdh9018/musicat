@@ -1,0 +1,23 @@
+.plusButton {
+  position: relative;
+  width: 100%;
+}
+
+.popover {
+  position: absolute;
+  border-radius: 10px;
+  background-color: #ececec;
+  top: 1rem;
+  margin-top: 3px;
+  left: 0px;
+  color: #313131;
+}
+
+.popoverButton {
+  border: 1.5px solid #313131;
+  color: #313131;
+}
+.popoverButton:hover {
+  background-color: #8d8d8d;
+  color: #ececec;
+}/*# sourceMappingURL=ContentPlus.module.css.map */
