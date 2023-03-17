@@ -126,6 +126,19 @@ public class StoryService {
                 .build();
     }
 
+    /**
+     * 사연 삭제
+     */
+    @Transactional
+    public int deleteStory(long storySeq) throws Exception {
+
+        Optional<Story> optionalStory = storyRepository.findById(storySeq); // 사연 조회
+
+        if (optionalStory.isEmpty()) return 0; // 사연이 존재하지 않음
+
+        storyRepository.deleteById(storySeq); // 사연 삭제
+        return 1;
+    }
 
 
 }

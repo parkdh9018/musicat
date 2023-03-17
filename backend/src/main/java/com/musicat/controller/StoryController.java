@@ -6,6 +6,7 @@ import com.musicat.service.StoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -73,5 +74,23 @@ public class StoryController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    /**
+     * 사연 삭제
+     * 0 : (204) 사연이 존재하지 않음
+     * 1 : (200) 사연 삭제 성공
+     */
+    @DeleteMapping("/story/{storySeq}")
+    public ResponseEntity<Void> deleteStory(@PathVariable long storySeq) {
+        try {
+            if (storyService.deleteStory(storySeq) == 0) return ResponseEntity.noContent().build();
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 
 }
