@@ -9,7 +9,7 @@
 }
 .home .leftTab {
   flex-grow: 1;
-  padding: 1%;
+  padding: 0% 1% 1% 1%;
 }
 .home .rightTab {
   flex-grow: 2;
