@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class StoryInsertResponseDto {
 
-    private int status;
 
     private StoryInfoDto storyInfoDto;
 

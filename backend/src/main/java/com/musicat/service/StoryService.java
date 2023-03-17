@@ -40,35 +40,18 @@ public class StoryService {
     @Transactional
     public StoryInsertResponseDto insertStory(StoryRequestDto storyRequestDto) throws Exception {
 
-        // 임의의 값 : ToDo 나중에 큐에서 검사하는 로직에 따라 값 세팅 예정
-        int status = 0; // 신청 가능
-        int playOrder = 0; // 재생 목록에 없는 상태
-
         Story story = storyRepository.save(
                 storyBuilderUtil.buildStoryEntity(storyRequestDto)); // 영속화
         long storySeq = story.getStorySeq();
 
-        int t = storyRepository.countByStorySeqLessThanAndStoryIsReadFalseAndStoryIsValidTrue(storySeq);
-        System.out.println("t : " + t);
-        playOrder = t+1;
+        int playOrder =
+                storyRepository.countByStorySeqLessThanAndStoryIsReadFalseAndStoryIsValidTrue(
+                        storySeq) + 1;
 
-        // 사연 정보 ToDo (API 명세가 완전히 안정화 되면 BuilderUtil로 클래스를 만들어 관리 예정)
-        StoryInfoDto storyInfoDto = StoryInfoDto.builder()
-                .storyTitle(storyRequestDto.getStoryTitle())
-                .storySeq(storySeq)
-                .memberSeq(storyRequestDto.getMemberSeq())
-                .storyCreatedAt(story.getStoryCreatedAt())
-                .storyIsRead(story.isStoryIsRead())
-                .storyIsValid(story.isStoryIsValid())
-                .storyWavFileDirectoryRoot(story.getStoryWavFileDirectoryRoot())
-                .build();
+        StoryInfoDto storyInfoDto = storyBuilderUtil.buildStoryInfoDto(story);
 
         // 사연 등록 응답 DTO에 값을 담아서 리턴
-        return StoryInsertResponseDto.builder()
-                .status(status)
-                .playOrder(playOrder)
-                .storyInfoDto(storyInfoDto) // 사연 정보
-                .build();
+        return storyBuilderUtil.buildStoryInsertResponseDto(storyInfoDto, playOrder);
     }
 
     /**
@@ -78,29 +61,21 @@ public class StoryService {
 
         Optional<Story> optionalStory = storyRepository.findTop1ByStoryIsReadFalseAndStoryIsValidTrueOrderByStoryCreatedAt();
 
-        if (optionalStory.isPresent()) {
-
+        if (optionalStory.isPresent()) { // 사연이 존재함
             Story story = optionalStory.get();
 
-            return StoryInfoDto.builder()
-                    .storySeq(story.getStorySeq())
-                    .storyTitle(story.getStoryTitle())
-                    .memberSeq(story.getMemberSeq())
-                    .storyWavFileDirectoryRoot(story.getStoryWavFileDirectoryRoot())
-                    .storyCreatedAt(story.getStoryCreatedAt())
-                    .storyIsValid(story.isStoryIsValid())
-                    .storyIsRead(story.isStoryIsRead())
-                    .build();
-        } else {
-            return "사연 리스트에 사연이 존재하지 않습니다.";
+            return storyBuilderUtil.buildStoryInfoDto(story);
+        } else { // 사연이 존재하지 않음
+            return null;
         }
     }
 
     /**
      * 사연 중복 검사
      */
-    public Boolean isUniqueStory(long memberSeq) throws Exception {
-        Optional<Story> optionalStory = storyRepository.findByMemberSeqAndStoryIsReadFalse(memberSeq);
+    public boolean isUniqueStory(long memberSeq) throws Exception {
+        Optional<Story> optionalStory = storyRepository.findByMemberSeqAndStoryIsReadFalse(
+                memberSeq);
 
         return optionalStory.isPresent();
     }
@@ -111,19 +86,13 @@ public class StoryService {
     public Object getStory(long storySeq) throws Exception {
         Optional<Story> optionalStory = storyRepository.findById(storySeq);
 
-        if (optionalStory.isEmpty()) return "사연이 존재하지 않습니다.";
+        if (optionalStory.isEmpty()) {
+            return null; // 사연이 없음
+        }
 
-        Story story = optionalStory.get();
+        Story story = optionalStory.get(); // 사연이 있음
 
-        return StoryInfoDto.builder()
-                .storySeq(story.getStorySeq())
-                .storyTitle(story.getStoryTitle())
-                .memberSeq(story.getMemberSeq())
-                .storyWavFileDirectoryRoot(story.getStoryWavFileDirectoryRoot())
-                .storyCreatedAt(story.getStoryCreatedAt())
-                .storyIsValid(story.isStoryIsValid())
-                .storyIsRead(story.isStoryIsRead())
-                .build();
+        return storyBuilderUtil.buildStoryInfoDto(story);
     }
 
     /**
@@ -134,7 +103,9 @@ public class StoryService {
 
         Optional<Story> optionalStory = storyRepository.findById(storySeq); // 사연 조회
 
-        if (optionalStory.isEmpty()) return 0; // 사연이 존재하지 않음
+        if (optionalStory.isEmpty()) {
+            return 0; // 사연이 존재하지 않음
+        }
 
         storyRepository.deleteById(storySeq); // 사연 삭제
         return 1;

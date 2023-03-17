@@ -1,6 +1,5 @@
 package com.musicat.data.dto.story;
 
-import java.io.File;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
