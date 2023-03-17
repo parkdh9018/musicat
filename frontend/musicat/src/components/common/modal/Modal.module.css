@@ -5,14 +5,16 @@
   /* 중앙 배치 */
   /* top, bottom, left, right 는 브라우저 기준으로 작동한다. */
   /* translate는 본인의 크기 기준으로 작동한다. */
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   /* 모달창 디자인 */
-  background-color: rgb(255, 255, 255);
+  background-color: #8d8d8d;
+  color: #ececec;
   border-radius: 20px;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  padding: 15px 45px 15px 25px;
 }
 
 /* 검은 뒷 배경 */
@@ -21,7 +23,7 @@
   height: 100vh;
   position: fixed;
   z-index: 998;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.35);
   top: 0;
   left: 0;
 }
@@ -34,6 +36,7 @@
   width: 25px;
   height: 25px;
   z-index: 1000;
+  cursor: pointer;
 }
 
 .close:hover {
