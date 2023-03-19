@@ -5,8 +5,8 @@
   height: 40px;
   padding: 10px 10px;
   font-size: 1em;
-  border: 1.5px solid #ececec;
-  color: #ececec;
+  border: 1.5px solid var(--font-color);
+  color: var(--font-color);
   border-radius: 15px;
   background-color: transparent;
 }
@@ -15,7 +15,7 @@
 }
 
 .option {
-  color: #ececec;
-  background-color: #313131;
+  color: var(--font-color);
+  background-color: var(--background-color);
   border: none;
 }/*# sourceMappingURL=SelectBox.module.css.map */

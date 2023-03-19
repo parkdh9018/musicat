@@ -23,7 +23,7 @@
     .content {
       width: 100%;
       min-height: 100%;
-      background-color: var.$배경;
+      background-color: var(--background-color);
     }
   }
 }

@@ -16,7 +16,7 @@
   margin-right: 5px;
   padding: 3px;
   pointer-events: none;
-  color: #8d8d8d;
+  color: var(--fade-font-color);
 }
 .pagination .nowPage {
   cursor: pointer;

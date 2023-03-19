@@ -6,13 +6,13 @@
   font-size: 1rem;
   top: 10px;
   position: sticky;
-  background-color: var.$배경;
-  color: var.$글씨;
+  background-color: var(--background-color);
+  color: var(--font-color);
   padding: 5px 10% 25px;
 
   hr {
     margin: 0;
-    background: var.$글씨;
+    background: var(--font-color);
     height: 1.5px;
     border: 0;
   }

@@ -10,7 +10,7 @@
   font-size: 1.2rem;
   border-top: 0.5px solid gray;
   border-bottom: 2px solid gray;
-  color: var.$글씨;
+  color: var(--font-color);
 }
 
 .content_container {
@@ -22,7 +22,7 @@
   font-size: 1rem;
   border-bottom: 1px solid gray;
   cursor: pointer;
-  color: var.$글씨;
+  color: var(--font-color);
 
   &:hover {
     background-color: rgb(39, 39, 39);
