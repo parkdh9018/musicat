@@ -20,5 +20,5 @@
 .home .rightTab .content {
   width: 100%;
   min-height: 100%;
-  background-color: #313131;
+  background-color: var(--background-color);
 }/*# sourceMappingURL=Home.module.css.map */

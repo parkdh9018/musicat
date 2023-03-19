@@ -2,9 +2,9 @@
   width: 200px;
   height: 30px;
   padding: 5px 15px 3px;
-  border: 1.5px solid #ececec;
-  background-color: #313131;
-  color: #ececec;
+  border: 1.5px solid var(--font-color);
+  background-color: var(--background-color);
+  color: var(--font-color);
   border-radius: 20px;
   margin-bottom: 12px;
 }
@@ -15,10 +15,10 @@
 
 .input_text::-moz-placeholder {
   font-size: 1rem;
-  color: #8d8d8d;
+  color: var(--fade-font-color);
 }
 
 .input_text::placeholder {
   font-size: 1rem;
-  color: #8d8d8d;
+  color: var(--fade-font-color);
 }/*# sourceMappingURL=Input.module.css.map */

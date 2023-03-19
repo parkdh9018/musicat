@@ -1,3 +1,12 @@
+:root {
+  --background-color: #313131;
+  --font-color: #ececec;
+  --fade-font-color: #8d8d8d;
+  --green-color: #95f49e;
+  --red-color: #e89393;
+  --blue-color: #5b69ea;
+}
+
 .App {
   display: flex;
   flex-direction: column;

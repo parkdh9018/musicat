@@ -4,9 +4,9 @@
   width: 200px;
   height: 30px;
   padding: 5px 15px 3px;
-  border: 1.5px solid var.$글씨;
-  background-color: var.$배경;
-  color: var.$글씨;
+  border: 1.5px solid var(--font-color);
+  background-color: var(--background-color);
+  color: var(--font-color);
   border-radius: 20px;
   margin-bottom: 12px;
 }
@@ -17,5 +17,5 @@
 
 .input_text::placeholder {
   font-size: 1rem;
-  color: var.$흐린글씨;
+  color: var(--fade-font-color);
 }
