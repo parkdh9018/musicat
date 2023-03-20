@@ -5,29 +5,35 @@ import { ContentBox } from "./contentBox/ContentBox";
 import { ContentPlus } from "./contentPlus/ContentPlus";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { useClickOutside } from "@mantine/hooks";
+
+import { storyContentState, storyTitleState } from "@/atoms/story.atoms";
+import { useRecoilState } from "recoil";
+
 export const Story = () => {
 
   const myInputStyle = {width : '80%', marginLeft: '2%'}
-  const [contentBoxList, setContentBoxList] = useState([{index : 1}])
+
+  const [title, setTitle] = useRecoilState(storyTitleState);
+  const [content, setContent] = useRecoilState(storyContentState);
+  // const [title, setTitle] = useState("");
 
   return (
     <>
       <div className={style.story}>
         <div className={style.group}>
-          제목 <Input style={myInputStyle}/>
+          제목 <Input style={myInputStyle} input={title} setInput={setTitle}/>
         </div>
         <div className={style.group}>
           내용 
           <div className={style.content} style={{marginLeft: '2%'}}>
-            {contentBoxList.map((v,i) => 
-              <ContentBox key={uuidv4()} index={i+1}/>
+            {content.map((v,i) => 
+              <ContentBox key={uuidv4()} type={v.type} value={v.value} index={i+1}/>
             )}
             <ContentPlus/>
           </div>
         </div>
         <div>
-          신청곡 <Input style={myInputStyle}/>
+          {/* 신청곡 <Input style={myInputStyle}/> */}
         </div>
         <div>
           <Button content="등록하기" onClick={()=>{}}/>

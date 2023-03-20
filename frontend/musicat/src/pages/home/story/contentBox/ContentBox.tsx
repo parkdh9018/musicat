@@ -3,29 +3,39 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPencil } from "@fortawesome/free-solid-svg-icons";
 import style from "./ContentBox.module.css";
 import { useState } from "react";
+import { deleteStoryContent } from "@/atoms/story.atoms";
 
+// TODO : atoms에 있는 type과 하나로 통합 하면 좋을듯
 interface ContentBoxProps {
   index: number;
+  type: "normal" | "narr";
+  value: string;
 }
 
-export const ContentBox = ({ index }: ContentBoxProps) => {
+export const ContentBox = ({ index, type, value }: ContentBoxProps) => {
   const dumyOption = [
-    { value: "default", name: "나레이션" },
     { value: "male", name: "남성" },
     { value: "female", name: "여성" },
   ];
 
-  const [selectdumy, setSelectdumy] = useState("default");
+  const useDelete = deleteStoryContent();
+
+  const [selectdumy, setSelectdumy] = useState("male");
+
+  const deleteClick = () => {
+    useDelete(index)
+  }
 
   return (
     <>
       <div className={style.contentBox}>
         <div>
-          {index} <SelectBox options={dumyOption} setValue={setSelectdumy} />
-          <FontAwesomeIcon icon={faTrash} onClick={() => {}} />
+          {index} 
+          {type == "normal" ? <SelectBox options={dumyOption} setValue={setSelectdumy} /> : <>나레이션</>}
+          <FontAwesomeIcon icon={faTrash} onClick={deleteClick} />
         </div>
         <div>
-          아무튼 대사 입니다.
+          {value}
           <FontAwesomeIcon icon={faPencil} onClick={() => {}} />
         </div>
       </div>
