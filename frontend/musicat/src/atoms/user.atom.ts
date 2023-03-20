@@ -11,10 +11,11 @@ export const memberInfo = atom({
   },
 });
 
+// 너도 useQuery로 대채될듯
 export const memberThema = atom({
   key: "memberThema",
   default: {
-    darkMode: true,
+    darkMode: false,
     type1: 0,
     type2: 0,
     type3: 0,

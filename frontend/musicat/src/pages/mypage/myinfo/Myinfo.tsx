@@ -1,15 +1,32 @@
 import { nowSideNav } from "@/atoms/common.atom";
-import { memberInfo } from "@/atoms/user.atom";
+import { memberInfo, memberThema } from "@/atoms/user.atom";
+import { Board } from "@/components/common/board/Board";
 import { Button } from "@/components/common/button/Button";
 import { Input } from "@/components/common/input/Input";
+import { Modal } from "@/components/common/modal/Modal";
+import { Pagenation } from "@/components/common/pagenation/Pagenation";
 import { useEffect, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import style from "./Myinfo.module.css";
+import { MyinfoModal } from "./myinfoModal/MyinfoModal";
 
 export const Myinfo = () => {
+  const dumyData = [
+    { a: 213, b: 1234, c: 12345 },
+    { a: 213, b: 1234, c: 12345 },
+    { a: 213, b: 1234, c: 12345 },
+    { a: 213, b: 1234, c: 12345 },
+    { a: 213, b: 1234, c: 12345 },
+  ];
+  //
   const setNowSideNav = useSetRecoilState(nowSideNav);
+
+  // 이거 없어져야됨. useQuery로 대채해야 된다.
+  const userThema = useRecoilValue(memberThema);
+
   const [userInfo, setUserInfo] = useRecoilState(memberInfo);
   const [input, setInput] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   /** 사이드 Nav 초기화 */
   useEffect(() => {
@@ -26,7 +43,13 @@ export const Myinfo = () => {
         </p>
         <p className={style.ffc}>다크 모드</p>
         <div className={style.toolbar}>
-          <div className={style.circle}></div>
+          <div
+            className={
+              userThema.darkMode
+                ? style.circle
+                : style.circle + " " + style.circleLeft
+            }
+          ></div>
         </div>
         <p className={style.ffc}>가입 날짜</p>
         <p className={style.fc} style={{ marginBottom: "40px" }}>
@@ -43,10 +66,29 @@ export const Myinfo = () => {
           content="중복확인"
           onClick={() => {}}
           style={{ margin: "0 5px" }}
-        ></Button>
-        <Button content="변 경" onClick={() => {}}></Button>
-        <h3>나의 츄르 : 456p</h3>
+        />
+        <Button content="변 경" onClick={() => {}} />
+        <h3 style={{ margin: "40px 0" }}>나의 츄르 : 456p</h3>
+        <Board
+          data={dumyData}
+          grid={"40% 30% 30%"}
+          headRow={["날짜", "변동내역", "상새내역"]}
+          setIsModalOpen={setIsModalOpen}
+        />
+        <Pagenation
+          number={1}
+          first={false}
+          last={false}
+          totalPages={3}
+          url={""}
+        />
       </div>
+      {isModalOpen && (
+        <Modal
+          setModalOpen={setIsModalOpen}
+          children={<MyinfoModal dataSeq={1} />}
+        />
+      )}
     </div>
   );
 };

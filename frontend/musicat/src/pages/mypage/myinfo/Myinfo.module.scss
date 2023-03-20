@@ -27,7 +27,11 @@
         border-radius: 100%;
         top: -2px;
         right: -2px;
+        transition: 0.25s;
         cursor: pointer;
+      }
+      .circleLeft {
+        right: 26px;
       }
     }
     .fc {
