@@ -2,17 +2,15 @@ package com.musicat.controller;
 
 import com.musicat.data.dto.MusicInfoDto;
 import com.musicat.data.dto.MusicInsertResponseDto;
-import com.musicat.data.dto.MusicPlayDto;
 import com.musicat.data.dto.MusicRequestDto;
-import com.musicat.data.dto.MusicResponseDto;
 import com.musicat.data.entity.Music;
 import com.musicat.service.MusicService;
 import com.sun.jdi.request.DuplicateRequestException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/music")
 @RequiredArgsConstructor
+@CrossOrigin
 public class MusicController {
 
   private final MusicService musicService;
@@ -55,17 +54,17 @@ public class MusicController {
     }
   }
 
-  @GetMapping("/play")
-  public ResponseEntity<MusicPlayDto> playMusic() throws Exception {
-
-    MusicPlayDto musicPlayDto = musicService.playMusic();
-    try {
-      return ResponseEntity.ok(musicPlayDto);
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    }
-
-  }
+//  @GetMapping("/play")
+//  public ResponseEntity<MusicPlayDto> playMusic() throws Exception {
+//
+//    MusicPlayDto musicPlayDto = musicService.playMusic();
+//    try {
+//      return ResponseEntity.ok(musicPlayDto);
+//    } catch (Exception e) {
+//      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//    }
+//
+//  }
 
   @DeleteMapping("/{memberSeq}")
   public ResponseEntity deleteMusic(@PathVariable long memberSeq) throws Exception {

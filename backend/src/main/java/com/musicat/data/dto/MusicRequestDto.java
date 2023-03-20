@@ -17,7 +17,7 @@ public class MusicRequestDto {
 
   private String musicArtist;
 
-  private String musicGenre;
+  private String youtubeVideoId;
 
   private Long musicLength;
 

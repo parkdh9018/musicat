@@ -22,7 +22,7 @@ public class MusicInfoDto {
 
   private String musicArtist;
 
-  private String musicGenre;
+  private String youtubeVideoId;
 
   private long musicLength;
 

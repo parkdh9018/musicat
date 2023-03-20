@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mariadb://musicat.kr:3306/musicat?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
+    url: jdbc:mariadb://localhost:3306/musicat?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
     username: root
-    password: ssafya702!
+    password: a702!
     driverClassName: org.mariadb.jdbc.Driver
 
   jpa:

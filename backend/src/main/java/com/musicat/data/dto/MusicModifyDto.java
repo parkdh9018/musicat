@@ -11,15 +11,13 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MusicModifyDto {
 
-  private long musicSeq;
-
   private long memberSeq;
 
   private String musicName;
 
   private String musicArtist;
 
-  private String musicGenre;
+  private String youtubeVideoId;
 
   private long musicLength;
 

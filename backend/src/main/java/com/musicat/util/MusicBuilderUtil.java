@@ -18,7 +18,7 @@ public class MusicBuilderUtil {
         .musicCreatedAt(music.getMusicCreatedAt())
         .musicName(music.getMusicName())
         .musicArtist(music.getMusicArtist())
-        .musicGenre(music.getMusicGenre())
+        .youtubeVideoId(music.getYoutubeVideoId())
         .musicCover(music.getMusicCover())
         .musicLength(music.getMusicLength())
         .build();
@@ -37,7 +37,7 @@ public class MusicBuilderUtil {
         .musicCreatedAt(music.getMusicCreatedAt())
         .musicName(music.getMusicName())
         .musicArtist(music.getMusicArtist())
-        .musicGenre(music.getMusicGenre())
+        .youtubeVideoId(music.getYoutubeVideoId())
         .musicCover(music.getMusicCover())
         .musicLength(music.getMusicLength())
         .build();
@@ -53,7 +53,7 @@ public class MusicBuilderUtil {
         .memberSeq(musicRequestDto.getMemberSeq())
         .musicName(musicRequestDto.getMusicName())
         .musicArtist(musicRequestDto.getMusicArtist())
-        .musicGenre(musicRequestDto.getMusicGenre())
+        .youtubeVideoId(musicRequestDto.getYoutubeVideoId())
         .musicLength(musicRequestDto.getMusicLength())
         .musicCover(musicRequestDto.getMusicCover())
         .build();
@@ -66,7 +66,7 @@ public class MusicBuilderUtil {
         .musicCreatedAt(music.getMusicCreatedAt())
         .musicName(music.getMusicName())
         .musicArtist(music.getMusicArtist())
-        .musicGenre(music.getMusicGenre())
+        .youtubeVideoId(music.getYoutubeVideoId())
         .musicLength(music.getMusicLength())
         .musicCover(music.getMusicCover())
         .build();

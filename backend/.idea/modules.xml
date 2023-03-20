@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/backend.musicat.main.iml" filepath="$PROJECT_DIR$/.idea/modules/backend.musicat.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.musicat.musicat.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.musicat.musicat.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/musicat.main.iml" filepath="$PROJECT_DIR$/.idea/modules/musicat.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/testbranch.backend.musicat.main.iml" filepath="$PROJECT_DIR$/.idea/modules/testbranch.backend.musicat.main.iml" />
     </modules>
   </component>
 </project>

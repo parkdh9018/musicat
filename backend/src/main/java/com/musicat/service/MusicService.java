@@ -4,13 +4,11 @@ import com.musicat.data.dto.MusicModifyDto;
 import com.musicat.data.dto.MusicInfoDto;
 import com.musicat.data.dto.MusicInsertResponseDto;
 import com.musicat.data.dto.MusicModifyResponseDto;
-import com.musicat.data.dto.MusicPlayDto;
 import com.musicat.data.dto.MusicRequestDto;
 import com.musicat.data.entity.Music;
 import com.musicat.data.repository.MusicRepository;
 import com.musicat.util.MusicBuilderUtil;
 import com.musicat.util.ConvertTimeToMillisecond;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -138,14 +136,14 @@ public class MusicService {
             musicRepository.countByMusicSeqLessThanAndMusicIsPlayedFalse(music.getMusicSeq()) + 1;
         return musicBuilderUtil.buildMusicModifyResponseDto(music, 2, playOrder);
       }
-      Music music = musicRepository.findById(musicModifyDto.getMusicSeq())
+      Music music = musicRepository.findById(musicModifyDto.getMemberSeq())
           .orElseThrow(IllegalArgumentException::new);
       int playOrder =
             musicRepository.countByMusicSeqLessThanAndMusicIsPlayedFalse(music.getMusicSeq()) + 1;
       music.setMusicArtist(musicModifyDto.getMusicArtist());
       music.setMusicCover(musicModifyDto.getMusicCover());
       music.setMusicLength(musicModifyDto.getMusicLength());
-      music.setMusicGenre(musicModifyDto.getMusicGenre());
+      music.setYoutubeVideoId(musicModifyDto.getYoutubeVideoId());
       music.setMusicName(musicModifyDto.getMusicName());
       musicRepository.save(music);
       return musicBuilderUtil.buildMusicModifyResponseDto(music, 0, playOrder);
@@ -162,40 +160,6 @@ public class MusicService {
     return musicRepository
         .findTop10ByMusicIsPlayedFalseOrderByMusicSeqAsc()
         .orElseThrow(IllegalArgumentException::new);
-  }
-
-  /**
-   * 대기열 최상단의 노래를 재생 처리하고, 재생 시작 시간을 저장합니다.
-   *
-   * @return musicPlayDto
-   * @throws Exception
-   */
-  @Transactional
-  public MusicPlayDto playMusic() throws Exception {
-    int status = 1;
-    long musicSeq = 0;
-    String message = "신청곡 리스트가 비어 있습니다.";
-
-    Optional<Music> optionalMusic = musicRepository.findTop1ByMusicIsPlayedOrderByMusicSeqAsc(false);
-    if (optionalMusic.isPresent()) {
-      Music music = optionalMusic.get();
-      LocalDateTime time = LocalDateTime.now();
-
-      music.setMusicPlayedMs(timeConverter.convertTimeToMillisecond(time));
-      music.setMusicPlayedAt(time);
-      music.setMusicIsPlayed(true);
-      musicRepository.save(music);
-
-      status = 0;
-      musicSeq = music.getMusicSeq();
-      message = musicSeq + " 번째 신청곡을 재생합니다. | 재생 시작 시간 : " + time;
-    }
-
-    return MusicPlayDto.builder()
-        .status(status)
-        .musicSeq(musicSeq)
-        .message(message)
-        .build();
   }
 
 
