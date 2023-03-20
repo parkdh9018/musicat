@@ -29,18 +29,18 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         .withSockJS();
   }
 
-  @Bean
-  public CorsFilter corsFilter() {
-    CorsConfiguration corsConfiguration = new CorsConfiguration();
-    corsConfiguration.setAllowCredentials(true);
-    corsConfiguration.addAllowedOriginPattern("http://127.0.0.1:5500"); // 프론트엔드 주소
-    corsConfiguration.addAllowedHeader("*");
-    corsConfiguration.addAllowedMethod("*");
-
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/websocket/**",
-        corsConfiguration); // WebSocket 엔드포인트에 대한 CORS 설정
-
-    return new CorsFilter(source);
-  }
+//  @Bean
+//  public CorsFilter corsFilter() {
+//    CorsConfiguration corsConfiguration = new CorsConfiguration();
+//    corsConfiguration.setAllowCredentials(true);
+//    corsConfiguration.addAllowedOriginPattern("http://127.0.0.1:5500"); // 프론트엔드 주소
+//    corsConfiguration.addAllowedHeader("*");
+//    corsConfiguration.addAllowedMethod("*");
+//
+//    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//    source.registerCorsConfiguration("/websocket/**",
+//        corsConfiguration); // WebSocket 엔드포인트에 대한 CORS 설정
+//
+//    return new CorsFilter(source);
+//  }
 }

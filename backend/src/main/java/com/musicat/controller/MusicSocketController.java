@@ -10,8 +10,10 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Controller
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MusicSocketController {
 
   @Autowired
@@ -64,14 +66,17 @@ public class MusicSocketController {
   @MessageMapping("/music")
   public void handleMusicRequest() {
     Music currentPlayingMusic = musicSocketService.getCurrentPlayingMusic();
-    System.out.println(currentPlayingMusic.getMusicSeq());
 
     Map<String, Object> musicInfo = new HashMap<>();
     if (currentPlayingMusic != null) {
       long currentTimeMs = System.currentTimeMillis();
       long playedTimeMs = currentTimeMs - currentPlayingMusic.getMusicPlayedMs();
-      musicInfo.put("music", currentPlayingMusic);
-      musicInfo.put("playedTime", playedTimeMs);
+      if (playedTimeMs < currentPlayingMusic.getMusicLength()) {
+        musicInfo.put("music", currentPlayingMusic);
+        musicInfo.put("playedTime", playedTimeMs);
+      } else {
+        musicInfo.put("message", "There are no songs in the queue");
+      }
     } else {
       musicInfo.put("message", "There are no songs in the queue");
     }

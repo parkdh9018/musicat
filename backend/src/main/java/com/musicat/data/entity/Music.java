@@ -39,9 +39,6 @@ public class Music {
   @Column(name = "music_artist", nullable = false)
   private String musicArtist;
 
-  @Column(name = "music_genre", nullable = false)
-  private String musicGenre;
-
   @Column(name = "music_length", nullable = false)
   private long musicLength;
 
@@ -53,6 +50,9 @@ public class Music {
 
   @Column(name = "music_played_ms")
   private long musicPlayedMs;
+
+  @Column(name = "youtube_video_id")
+  private String youtubeVideoId;
 
   @CreatedDate
   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

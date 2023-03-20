@@ -9,7 +9,6 @@ import com.musicat.data.entity.Music;
 import com.musicat.data.repository.MusicRepository;
 import com.musicat.util.MusicBuilderUtil;
 import com.musicat.util.ConvertTimeToMillisecond;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -144,7 +143,7 @@ public class MusicService {
       music.setMusicArtist(musicModifyDto.getMusicArtist());
       music.setMusicCover(musicModifyDto.getMusicCover());
       music.setMusicLength(musicModifyDto.getMusicLength());
-      music.setMusicGenre(musicModifyDto.getMusicGenre());
+      music.setYoutubeVideoId(musicModifyDto.getYoutubeVideoId());
       music.setMusicName(musicModifyDto.getMusicName());
       musicRepository.save(music);
       return musicBuilderUtil.buildMusicModifyResponseDto(music, 0, playOrder);
