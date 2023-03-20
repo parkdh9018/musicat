@@ -1,8 +1,8 @@
 import { SelectBox } from "@/components/common/selectBox/SelectBox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPencil } from "@fortawesome/free-solid-svg-icons";
+import style from "./ContentBox.module.css";
 import { useState } from "react";
-import style from "@/pages/home/songRequest/contentBox/ContentBox.module.css";
 
 interface ContentBoxProps {
   index: number;
