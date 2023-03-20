@@ -5,13 +5,15 @@ import { ContentBox } from "./contentBox/ContentBox";
 import { ContentPlus } from "./contentPlus/ContentPlus";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { useClickOutside } from "@mantine/hooks";
 export const Story = () => {
+
   const myInputStyle = {width : '80%', marginLeft: '2%'}
-  
   const [contentBoxList, setContentBoxList] = useState([{index : 1}])
+
   return (
     <>
-      <div className={style.songRequest}>
+      <div className={style.story}>
         <div className={style.group}>
           제목 <Input style={myInputStyle}/>
         </div>

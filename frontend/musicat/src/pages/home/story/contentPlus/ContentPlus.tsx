@@ -1,16 +1,16 @@
+import style from "./ContentPlus.module.css";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@/components/common/button/Button";
-import { useRecoilState } from "recoil";
-import { popoverstate } from "@/atoms/songRequest.atom";
-import style from "./ContentPlus.module.css";
-interface ContentPlusProps {}
+import { useState } from "react";
+import { useClickOutside } from "@mantine/hooks";
 
 export const ContentPlus = () => {
 
 
-  // TODO : 이것도 리코일로 빼야할듯?
-  const [popover, setPopover] = useRecoilState(popoverstate);
+  const [popover, setPopover] = useState(false)
+  const ref = useClickOutside(() => setPopover(false));
 
   const clickEvent = () => {
     // console.log("EE");
@@ -24,7 +24,7 @@ export const ContentPlus = () => {
     <div onClick={clickEvent}>
       <span onClick={plusEvent} className={style.plusButton}>
         문단 추가하기 <FontAwesomeIcon icon={faCirclePlus} />
-        {popover && <div className={style.popover}>
+        {popover && <div ref={ref} className={style.popover}>
           <Button
             content="일반"
             onClick={() => {}}
