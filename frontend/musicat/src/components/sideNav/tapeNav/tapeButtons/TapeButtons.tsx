@@ -1,24 +1,44 @@
 import style from "./TapeButtons.module.css";
-import { useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Button } from "@/components/common/button/Button";
 
 export const TapeButtons = () => {
-  const navigate = useNavigate();
-
   return (
     <div className={style.bg}>
       <Button content="재생" onClick={() => {}} className={style.play} />
       <Button content="정지" onClick={() => {}} className={style.stop} />
-      <Button content="채팅" onClick={() => {}} className={style.unclicked} />
-      <Button
-        content="사연"
-        onClick={() => {
-          navigate("/story");
-        }}
-        className={style.clicked}
-      />
-      <Button content="노래" onClick={() => {}} className={style.unclicked} />
-      <Button content="설명" onClick={() => {}} className={style.unclicked} />
+      <NavLink
+        to="/"
+        className={({ isActive }) =>
+          isActive ? style.clicked : style.unclicked
+        }
+      >
+        채팅
+      </NavLink>
+      <NavLink
+        to="/story"
+        className={({ isActive }) =>
+          isActive ? style.clicked : style.unclicked
+        }
+      >
+        사연
+      </NavLink>
+      <NavLink
+        to="/songRequest"
+        className={({ isActive }) =>
+          isActive ? style.clicked : style.unclicked
+        }
+      >
+        노래
+      </NavLink>
+      <NavLink
+        to="/about"
+        className={({ isActive }) =>
+          isActive ? style.clicked : style.unclicked
+        }
+      >
+        소개
+      </NavLink>
     </div>
   );
 };
