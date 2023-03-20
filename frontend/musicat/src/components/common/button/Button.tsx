@@ -3,7 +3,7 @@ import style from "./Button.module.css";
 
 interface ButtonProps extends HTMLAttributes<HTMLDivElement> {
   content: string;
-  onClick: () => void;
+  onClick: React.MouseEventHandler<HTMLDivElement>;
 }
 
 export const Button = ({ content, onClick, ...props }: ButtonProps) => {
