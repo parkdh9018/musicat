@@ -1,0 +1,27 @@
+.notice_detail {
+  padding: 6%;
+  color: var(--font-color);
+}
+.notice_detail .bold_hr {
+  width: 100%;
+  border: 1.5px solid var(--font-color);
+}
+.notice_detail .thin_hr {
+  width: 100%;
+  border: 1px solid var(--font-color);
+}
+.notice_detail .title {
+  display: grid;
+  grid-template-columns: 15% 50% 35%;
+  height: 30px;
+}
+.notice_detail .title span {
+  display: inline-block;
+  padding-top: 8px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.notice_detail .content {
+  padding: 10px 5%;
+  min-height: 300px;
+}/*# sourceMappingURL=NoticeDetail.module.css.map */

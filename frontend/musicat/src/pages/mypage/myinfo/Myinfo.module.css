@@ -25,7 +25,11 @@
   border-radius: 100%;
   top: -2px;
   right: -2px;
+  transition: 0.25s;
   cursor: pointer;
+}
+.myinfo .leftbox .toolbar .circleLeft {
+  right: 26px;
 }
 .myinfo .leftbox .fc {
   color: var(--font-color);

@@ -14,7 +14,7 @@ interface BoardProps {
   grid: string;
   data: any[];
   url?: string;
-  setIsModalOpen?: boolean;
+  setIsModalOpen?: (d: boolean) => void;
 }
 
 export const Board = ({
@@ -28,14 +28,16 @@ export const Board = ({
 
   return (
     <>
-      <div
-        className={style.header_container}
-        style={{ gridTemplateColumns: grid }}
-      >
-        {headRow.map((content) => {
-          return <div key={uuidv4()}>{content}</div>;
-        })}
-      </div>
+      {headRow.length !== 0 && (
+        <div
+          className={style.header_container}
+          style={{ gridTemplateColumns: grid }}
+        >
+          {headRow.map((content) => {
+            return <div key={uuidv4()}>{content}</div>;
+          })}
+        </div>
+      )}
       {data?.map((content) => {
         return (
           <div
@@ -44,7 +46,16 @@ export const Board = ({
             style={{ gridTemplateColumns: grid }}
           >
             {Object.keys(content).map((contentRow: any) => {
-              return <div key={uuidv4()}>{contentRow}</div>;
+              return (
+                <div
+                  key={uuidv4()}
+                  onClick={() => {
+                    setIsModalOpen ? setIsModalOpen(true) : navigate("/");
+                  }}
+                >
+                  {contentRow}
+                </div>
+              );
             })}
           </div>
         );

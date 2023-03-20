@@ -10,8 +10,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   /* 모달창 디자인 */
-  background-color: var(--fade-font-color);
-  color: var(--font-color);
+  background-color: var(--modal-background);
   border-radius: 20px;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
   padding: 15px 45px 15px 25px;
@@ -36,6 +35,7 @@
   width: 25px;
   height: 25px;
   z-index: 1000;
+  color: var(--font-color);
   cursor: pointer;
 }
 
