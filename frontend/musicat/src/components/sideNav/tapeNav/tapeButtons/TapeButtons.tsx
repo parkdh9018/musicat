@@ -3,6 +3,9 @@ import { NavLink } from "react-router-dom";
 import { Button } from "@/components/common/button/Button";
 
 export const TapeButtons = () => {
+  // 재생, 정지 버튼에 소켓 연결, 해제 기능 연결 필요
+  // 정지 버튼은 clicked 스타일 적용 필요
+
   return (
     <div className={style.bg}>
       <Button content="재생" onClick={() => {}} className={style.play} />
@@ -42,6 +45,3 @@ export const TapeButtons = () => {
     </div>
   );
 };
-
-// 각 버튼의 상태: 클릭상태,  컨텐츠
-// 기능: onClick => navigate

@@ -1,5 +1,6 @@
 .tape {
   position: relative;
+  top: 40px;
   // aspect-ratio: 376 / 239;
   // width: 376px;
   // height: 239px;
@@ -20,14 +21,13 @@
 
 .left {
   top: 47.28%;
-  left: 26.90%;
+  left: 26.9%;
 }
 
 .right {
   top: 47.28%;
-  left: 61.20%;
+  left: 61.2%;
 }
-
 
 .tapeImg {
   position: absolute;
@@ -36,17 +36,13 @@
 }
 
 .songName {
-    position: absolute;
-    overflow: hidden;
-    width: 58.93%;
-    top: 27.40%;
-    left: 21.28%;
-    z-index: 1;
+  position: absolute;
+  overflow: hidden;
+  width: 58.93%;
+  top: 27.4%;
+  left: 21.28%;
+  z-index: 1;
 }
-
-
-
-
 
 .text {
   white-space: nowrap;
