@@ -1,0 +1,68 @@
+.myinfo {
+  display: flex;
+  height: 100%;
+  padding: 3%;
+
+  h3 {
+    color: var(--font-color);
+    font-weight: 300;
+    font-size: 1.4rem;
+    margin: 0 0 5px 0;
+  }
+
+  .leftbox {
+    .toolbar {
+      width: 25%;
+      height: 25px;
+      border: 2px solid var(--font-color);
+      margin: 0 auto 40px;
+      border-radius: 20px;
+      position: relative;
+
+      .circle {
+        height: 25px;
+        width: 25px;
+        background-color: var(--font-color);
+        position: absolute;
+        border-radius: 100%;
+        top: -2px;
+        right: -2px;
+        cursor: pointer;
+      }
+    }
+    .fc {
+      color: var(--font-color);
+    }
+    .ffc {
+      color: var(--fade-font-color);
+    }
+
+    img {
+      max-width: 210px;
+      max-height: 210px;
+      width: 25vw;
+      height: 25vw;
+      border-radius: 100%;
+      box-shadow: 0 4px 4px 0 rgb(0, 0, 0, 25%);
+      margin: 0 auto 22px;
+      display: block;
+      object-fit: cover;
+    }
+    p {
+      text-align: center;
+      margin: 0;
+      margin-bottom: 8px;
+    }
+  }
+  .middle_hr {
+    margin: 2% 3%;
+    border: 1px solid white;
+    writing-mode: vertical-rl;
+    height: 96%;
+  }
+  .rightbox {
+    h3 {
+      margin-left: 10px;
+    }
+  }
+}
