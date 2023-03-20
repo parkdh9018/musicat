@@ -1,6 +1,4 @@
-@use "../../../_var.scss";
-
-.songRequest {
+.story {
   color: var(--font-color);
   text-align: center;
   padding: 3%;
@@ -16,8 +14,4 @@
   border-radius: 20px;
   margin-bottom: 12px;
   display: inline-block;
-}
-
-.group {
-  // padding-left: 1%;
-}
+}/*# sourceMappingURL=Story.module.css.map */
