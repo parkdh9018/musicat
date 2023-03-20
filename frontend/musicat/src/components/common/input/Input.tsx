@@ -3,11 +3,17 @@ import style from "./Input.module.css";
 
 interface InputProps extends HTMLAttributes<HTMLInputElement> {
   type?: string;
+  input: string;
+  setInput: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export const Input = ({ type, placeholder, ...props }: InputProps) => {
-  const [input, setInput] = useState("");
-
+export const Input = ({
+  type,
+  placeholder,
+  input,
+  setInput,
+  ...props
+}: InputProps) => {
   return (
     <input
       className={style.input_text}
