@@ -1,5 +1,6 @@
 import { Home } from "@/pages/home/Home";
 import { RouteObject } from "react-router-dom";
+import { About } from "./home/about/About";
 import { Chat } from "./home/chat/Chat";
 import { Introduce } from "./home/introduce/Introduce";
 import { SongRequest } from "./home/songRequest/SongRequest";
@@ -22,6 +23,7 @@ const router: RouteObject[] = [
       { path: "introduce", element: <Introduce /> },
       { path: "songRequest", element: <SongRequest /> },
       { path: "story", element: <Story /> },
+      { path: "about", element: <About /> },
     ],
   },
   {
