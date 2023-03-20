@@ -10,7 +10,7 @@ import { BrowserRouter } from "react-router-dom";
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <RecoilRoot>
         <BrowserRouter>
@@ -19,5 +19,5 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       </RecoilRoot>
       <ReactQueryDevtools initialIsOpen={false} position="bottom-left" />
     </QueryClientProvider>
-  </React.StrictMode>
+  // </React.StrictMode>
 );

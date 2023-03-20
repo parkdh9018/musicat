@@ -1,0 +1,26 @@
+@use "../../../../_var.scss";
+
+.plusButton {
+  position: relative;
+  width: 100%;
+}
+
+.popover {
+  position: absolute;
+  border-radius: 10px;
+  background-color: var(--font-color);
+  top: 1rem;
+  margin-top: 3px;
+  left: 0px;
+  color: var(--background-color);
+}
+
+.popoverButton {
+  border: 1.5px solid var(--background-color);
+  color: var(--background-color);
+
+  &:hover {
+    background-color: var(--fade-font-color);
+    color: var(--font-color);
+  }
+}

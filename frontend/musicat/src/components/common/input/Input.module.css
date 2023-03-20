@@ -1,1 +1,24 @@
-/*# sourceMappingURL=Input.module.css.map */
+.input_text {
+  width: 200px;
+  height: 30px;
+  padding: 5px 15px 3px;
+  border: 1.5px solid var(--font-color);
+  background-color: var(--background-color);
+  color: var(--font-color);
+  border-radius: 20px;
+  margin-bottom: 12px;
+}
+
+.input_text:focus {
+  outline: none;
+}
+
+.input_text::-moz-placeholder {
+  font-size: 1rem;
+  color: var(--fade-font-color);
+}
+
+.input_text::placeholder {
+  font-size: 1rem;
+  color: var(--fade-font-color);
+}/*# sourceMappingURL=Input.module.css.map */

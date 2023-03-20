@@ -1,0 +1,61 @@
+@use "../../../_var.scss";
+
+.side_board {
+  width: 100%;
+  min-width: 188px;
+  font-size: 1rem;
+  top: 10px;
+  position: sticky;
+  background-color: var(--background-color);
+  color: var(--font-color);
+  padding: 5px 10% 25px;
+
+  hr {
+    margin: 0;
+    background: var(--font-color);
+    height: 1.5px;
+    border: 0;
+  }
+
+  p,
+  h4 {
+    margin: 20px 0px 15px 20px;
+  }
+
+  p {
+    cursor: pointer;
+    &:hover {
+      color: rgb(123, 123, 123);
+    }
+  }
+
+  h4 {
+    font-weight: bold;
+  }
+}
+
+.now {
+  font-weight: bold;
+  text-shadow: 1px 1px 1px gray;
+  position: relative;
+}
+
+@media screen and (max-width: 992px) {
+  .side_board {
+    min-width: 171px;
+
+    h4 {
+      font-size: 1.1rem;
+    }
+
+    p {
+      font-size: 0.9rem;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .side_board {
+    display: none;
+  }
+}

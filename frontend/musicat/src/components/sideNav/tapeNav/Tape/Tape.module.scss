@@ -1,0 +1,54 @@
+.tape {
+  position: relative;
+  // aspect-ratio: 376 / 239;
+  // width: 376px;
+  // height: 239px;
+  // display: inline-block;
+}
+
+.fixedRatio {
+  width: 100%; /* 원하는 너비 설정 */
+  height: auto; /* 높이는 자동으로 설정됨 */
+}
+
+// 톱니바퀴
+.gearImg {
+  position: absolute;
+  width: 10.64%;
+  height: auto;
+}
+
+.left {
+  top: 47.28%;
+  left: 26.90%;
+}
+
+.right {
+  top: 47.28%;
+  left: 61.20%;
+}
+
+
+.tapeImg {
+  position: absolute;
+  width: 100%;
+  height: auto;
+}
+
+.songName {
+    position: absolute;
+    overflow: hidden;
+    width: 58.93%;
+    top: 27.40%;
+    left: 21.28%;
+    z-index: 1;
+}
+
+
+
+
+
+.text {
+  white-space: nowrap;
+  font-size: 24px;
+}

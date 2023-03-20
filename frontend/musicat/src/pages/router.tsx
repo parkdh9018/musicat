@@ -11,7 +11,7 @@ import { Mypage } from "./mypage/Mypage";
 import { Notice } from "./mypage/notice/Notice";
 import { NoticeDetail } from "./mypage/noticeDetail/NoticeDetail";
 import { NoticeManage } from "./mypage/noticeManage/NoticeManage";
-import { NoticeManageModify } from "./mypage/noticeManageModify/noticeManageModify";
+import { NoticeManageModify } from "./mypage/noticeManageModify/NoticeManageModify";
 import { UserManage } from "./mypage/userManage/UserManage";
 
 const router: RouteObject[] = [

@@ -1,0 +1,52 @@
+.side_board {
+  width: 100%;
+  min-width: 188px;
+  font-size: 1rem;
+  top: 10px;
+  position: sticky;
+  background-color: var(--background-color);
+  color: var(--font-color);
+  padding: 5px 10% 25px;
+}
+.side_board hr {
+  margin: 0;
+  background: var(--font-color);
+  height: 1.5px;
+  border: 0;
+}
+.side_board p,
+.side_board h4 {
+  margin: 20px 0px 15px 20px;
+}
+.side_board p {
+  cursor: pointer;
+}
+.side_board p:hover {
+  color: rgb(123, 123, 123);
+}
+.side_board h4 {
+  font-weight: bold;
+}
+
+.now {
+  font-weight: bold;
+  text-shadow: 1px 1px 1px gray;
+  position: relative;
+}
+
+@media screen and (max-width: 992px) {
+  .side_board {
+    min-width: 171px;
+  }
+  .side_board h4 {
+    font-size: 1.1rem;
+  }
+  .side_board p {
+    font-size: 0.9rem;
+  }
+}
+@media screen and (max-width: 768px) {
+  .side_board {
+    display: none;
+  }
+}/*# sourceMappingURL=MypageNav.module.css.map */

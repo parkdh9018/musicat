@@ -1,0 +1,45 @@
+@charset "UTF-8";
+.tape {
+  position: relative;
+}
+
+.fixedRatio {
+  width: 100%; /* 원하는 너비 설정 */
+  height: auto; /* 높이는 자동으로 설정됨 */
+}
+
+.gearImg {
+  position: absolute;
+  width: 10.64%;
+  height: auto;
+}
+
+.left {
+  top: 47.28%;
+  left: 26.9%;
+}
+
+.right {
+  top: 47.28%;
+  left: 61.2%;
+}
+
+.tapeImg {
+  position: absolute;
+  width: 100%;
+  height: auto;
+}
+
+.songName {
+  position: absolute;
+  overflow: hidden;
+  width: 58.93%;
+  top: 27.4%;
+  left: 21.28%;
+  z-index: 1;
+}
+
+.text {
+  white-space: nowrap;
+  font-size: 24px;
+}/*# sourceMappingURL=Tape.module.css.map */
