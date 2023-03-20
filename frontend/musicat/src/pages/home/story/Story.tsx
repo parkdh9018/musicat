@@ -7,14 +7,14 @@ import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import { storyContentState, storyTitleState } from "@/atoms/story.atoms";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 export const Story = () => {
 
   const myInputStyle = {width : '80%', marginLeft: '2%'}
 
   const [title, setTitle] = useRecoilState(storyTitleState);
-  const [content, setContent] = useRecoilState(storyContentState);
+  const content = useRecoilValue(storyContentState);
   // const [title, setTitle] = useState("");
 
   return (
@@ -27,7 +27,7 @@ export const Story = () => {
           내용 
           <div className={style.content} style={{marginLeft: '2%'}}>
             {content.map((v,i) => 
-              <ContentBox key={uuidv4()} type={v.type} value={v.value} index={i+1}/>
+              <ContentBox key={uuidv4()} type={v.type} value={v.value} index={i}/>
             )}
             <ContentPlus/>
           </div>

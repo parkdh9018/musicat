@@ -19,13 +19,13 @@ export const ContentPlus = () => {
 
   const clickNormal:MouseEventHandler<HTMLDivElement> = (e) => {
     e.stopPropagation();
-    add({index : 2, type : "normal", value : ""})
+    add({type : "normal", value : ""})
     setPopover(false)
   };
 
   const clickNarration:MouseEventHandler<HTMLDivElement> = (e) => {    
     e.stopPropagation();
-    add({index : 2, type : "narr", value : ""})
+    add({type : "narr", value : ""})
     setPopover(false)
   };
 
