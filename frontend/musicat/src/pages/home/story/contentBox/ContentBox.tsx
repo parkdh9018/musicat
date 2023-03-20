@@ -2,43 +2,58 @@ import { SelectBox } from "@/components/common/selectBox/SelectBox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPencil } from "@fortawesome/free-solid-svg-icons";
 import style from "./ContentBox.module.css";
-import { useState } from "react";
-import { deleteStoryContent, editStoryConent } from "@/atoms/story.atoms";
+import { useEffect, useState } from "react";
+import { deleteStoryContent, storyContentState, editStoryConent, editStorySpeaker } from "@/atoms/story.atoms";
 import { useClickOutside } from "@mantine/hooks";
 import { Input } from "@/components/common/input/Input";
+import { useRecoilValue } from "recoil";
 
 // TODO : atoms에 있는 type과 하나로 통합 하면 좋을듯
 interface ContentBoxProps {
   index: number;
   type: "normal" | "narr";
   value: string;
+  speaker : string
 }
-export const ContentBox = ({ index, type, value }: ContentBoxProps) => {
+export const ContentBox = ({ index, type, value, speaker }: ContentBoxProps) => {
   const dumyOption = [
     { value: "male", name: "남성" },
     { value: "female", name: "여성" },
   ];
-  const [selectdumy, setSelectdumy] = useState("male");
+
+  const storycontent = useRecoilValue(storyContentState);
+
+  const [selectbox, setSelectbox] = useState<string>("");
   const [editstate, setEditState] = useState(false);
   const [editText, setEditText] = useState(value);
+  // const [defaultSpeaker, setDefaultSpeaker] = useState(speaker);
 
   const useDelete = deleteStoryContent();
+  const useEditSpeaker = editStorySpeaker();
   const useEdit = editStoryConent();
+
+  // useEffect(() => {
+  //   setDefaultSpeaker(speaker);
+  //   console.log("e")
+  // },[])
+
+  useEffect(() => {
+    // console.log(selectbox)
+    // if(defaultSpeaker == "")
+    // useEditSpeaker(index, "female");
+  },[selectbox]);
 
   const ref = useClickOutside(() => {
     useEdit(index, editText);
-    console.log("EE");
     setEditState(false);
   });
 
   const deleteClick = (e: any) => {
     e.stopPropagation();
-    console.log("delete");
     useDelete(index);
   };
 
   const editClick = (e: any) => {
-    console.log("edit");
     e.stopPropagation();
     setEditState(true);
   };
@@ -49,7 +64,7 @@ export const ContentBox = ({ index, type, value }: ContentBoxProps) => {
         <div>
           {index + 1}
           {type == "normal" ? (
-            <SelectBox options={dumyOption} setValue={setSelectdumy} />
+            <SelectBox defaultValue={speaker} options={dumyOption} setValue={setSelectbox} />
           ) : (
             <>나레이션</>
           )}

@@ -27,7 +27,7 @@ export const Story = () => {
           내용 
           <div className={style.content} style={{marginLeft: '2%'}}>
             {content.map((v,i) => 
-              <ContentBox key={uuidv4()} type={v.type} value={v.value} index={i}/>
+              <ContentBox key={uuidv4()} {...v} index={i}/>
             )}
             <ContentPlus/>
           </div>

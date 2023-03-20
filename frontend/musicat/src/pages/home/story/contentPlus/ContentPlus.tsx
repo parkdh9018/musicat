@@ -5,27 +5,25 @@ import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@/components/common/button/Button";
 import { MouseEventHandler, useState } from "react";
 import { useClickOutside } from "@mantine/hooks";
-import { useRecoilState } from "recoil";
-import { storyContentState, addStoryContent } from "@/atoms/story.atoms";
+import { addStoryContent, storyContentState } from "@/atoms/story.atoms";
 
 export const ContentPlus = () => {
 
 
   const [popover, setPopover] = useState(false)
   const ref = useClickOutside(() => setPopover(false));
-  const [content, setContent] = useRecoilState(storyContentState);
 
   const add = addStoryContent();
 
   const clickNormal:MouseEventHandler<HTMLDivElement> = (e) => {
     e.stopPropagation();
-    add({type : "normal", value : ""})
+    add({type : "normal", speaker: "narr", value : ""})
     setPopover(false)
   };
 
   const clickNarration:MouseEventHandler<HTMLDivElement> = (e) => {    
     e.stopPropagation();
-    add({type : "narr", value : ""})
+    add({type : "narr", speaker : "male", value : ""})
     setPopover(false)
   };
 
