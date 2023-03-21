@@ -36,7 +36,7 @@ export const Notice = () => {
       <Button
         content="모두읽음"
         onClick={() => {}}
-        style={{ margin: "10px 0 0 85%" }}
+        style={{ margin: "10px 0 0 88%" }}
       />
       <Pagenation
         number={1}

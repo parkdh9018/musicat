@@ -1,5 +1,5 @@
 import { nowSideNav } from "@/atoms/common.atom";
-import { memberInfo } from "@/atoms/user.atom";
+import { userInfoState } from "@/atoms/user.atom";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useResetRecoilState } from "recoil";
 import { v4 as uuidv4 } from "uuid";
@@ -17,7 +17,7 @@ export const MypageNav = ({
   urls,
 }: MypageNavProps) => {
   const nowNav = useRecoilValue(nowSideNav);
-  const logout = useResetRecoilState(memberInfo);
+  const logout = useResetRecoilState(userInfoState);
   const navigate = useNavigate();
 
   return (

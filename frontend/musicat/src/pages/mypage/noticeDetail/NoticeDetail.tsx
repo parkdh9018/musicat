@@ -1,16 +1,18 @@
 import { nowSideNav } from "@/atoms/common.atom";
-import { memberInfo } from "@/atoms/user.atom";
+import { userInfoState } from "@/atoms/user.atom";
 import { Button } from "@/components/common/button/Button";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import style from "./NoticeDetail.module.css";
 
 export const NoticeDetail = () => {
   const setNowSideNav = useSetRecoilState(nowSideNav);
-  const userInfo = useRecoilValue(memberInfo);
+  const navigate = useNavigate();
+  const userInfo = useRecoilValue(userInfoState);
 
   useEffect(() => {
-    if (userInfo.memberRole === "admin") setNowSideNav("공지사항");
+    if (userInfo.userRole === "admin") setNowSideNav("공지사항");
     else setNowSideNav("알림 / 공지사항");
   }, []);
   return (
@@ -24,7 +26,7 @@ export const NoticeDetail = () => {
       <hr className={style.thin_hr} style={{ marginTop: "14px" }} />
       <div className={style.content}>내용?</div>
       <hr className={style.thin_hr} />
-      {userInfo.memberRole === "admin" ? (
+      {userInfo.userRole === "admin" ? (
         <div
           style={{
             display: "flex",
@@ -32,11 +34,18 @@ export const NoticeDetail = () => {
             marginTop: "20px",
           }}
         >
-          <Button content="목록으로" onClick={() => {}} />
+          <Button
+            content="목록으로"
+            onClick={() => {
+              navigate("/mypage/notice");
+            }}
+          />
           <div style={{ display: "inline-block" }}>
             <Button
               content="수정"
-              onClick={() => {}}
+              onClick={() => {
+                navigate(`/mypage/notice-manage/쿼리에서-받아온정보`);
+              }}
               style={{ marginRight: "10px" }}
             />
             <Button content="삭제" onClick={() => {}} />
