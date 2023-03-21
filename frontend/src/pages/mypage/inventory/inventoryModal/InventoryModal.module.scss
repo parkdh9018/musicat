@@ -1,0 +1,43 @@
+.inventory_modal {
+  min-width: 60vw;
+  height: 60vh;
+  overflow: auto;
+  margin-bottom: 15px;
+
+  .item_flex {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    .img_box {
+      display: inline-block;
+      margin-left: 8px;
+      margin-right: 8px;
+
+      .img {
+        display: inline-block;
+        width: 100%;
+        margin: 10px 0;
+        border-radius: 20px;
+        border: 2px solid rgba(0, 0, 0, 0);
+        box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        &:hover {
+          border: 2px solid var(--blue-color);
+        }
+      }
+
+      .selected {
+        border: 2px solid var(--blue-color);
+      }
+    }
+  }
+
+  .cal_box {
+    margin-top: 30px;
+    text-align: center;
+    .red {
+      color: var(--red-color);
+    }
+  }
+}

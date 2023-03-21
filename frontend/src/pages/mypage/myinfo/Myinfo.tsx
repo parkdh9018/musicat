@@ -1,5 +1,5 @@
 import { nowSideNav } from "@/atoms/common.atom";
-import { memberThema, userInfoState } from "@/atoms/user.atom";
+import { userInfoState, userThemaState } from "@/atoms/user.atom";
 import { Board } from "@/components/common/board/Board";
 import { Button } from "@/components/common/button/Button";
 import { Input } from "@/components/common/input/Input";
@@ -22,7 +22,7 @@ export const Myinfo = () => {
   const setNowSideNav = useSetRecoilState(nowSideNav);
 
   // 이거 없어져야됨. useQuery로 대채해야 된다.
-  const userThema = useRecoilValue(memberThema);
+  const userThema = useRecoilValue(userThemaState);
 
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const [input, setInput] = useState("");
