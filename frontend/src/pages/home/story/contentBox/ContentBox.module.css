@@ -3,5 +3,35 @@
   padding: 4.5%;
   border: 1.5px solid var(--font-color);
   border-radius: 20px;
-  margin-bottom: 12px;
+  margin-top: 12px;
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-areas: "item_number speaker speaker  speaker . . . delete_icon" ". edit_text edit_text edit_text edit_text edit_text . edit_icon";
+  align-items: center;
+  row-gap: 5px;
+}
+
+.item {
+  padding: 1%;
+}
+
+.item_number {
+  grid-area: item_number;
+}
+
+.speaker {
+  grid-area: speaker;
+}
+
+.delete_icon {
+  grid-area: delete_icon;
+}
+
+.edit_icon {
+  grid-area: edit_icon;
+}
+
+.edit {
+  grid-area: edit_text;
 }/*# sourceMappingURL=ContentBox.module.css.map */

@@ -2,10 +2,11 @@
   color: var(--font-color);
   text-align: center;
   padding: 3%;
+  padding-top: 5%;
 }
 
 .content {
-  width: 80%;
+  width: 84%;
   height: 20%;
   padding: 5px 15px 3px;
   border: 1.5px solid var(--font-color);
@@ -14,4 +15,16 @@
   border-radius: 20px;
   margin-bottom: 12px;
   display: inline-block;
+}
+
+.group {
+  align-content: baseline;
+  margin-bottom: 2%;
+}
+
+.content_label {
+  float: left;
+  margin-top: 10px;
+  margin-left: 5px;
+  margin-right: -20px;
 }/*# sourceMappingURL=Story.module.css.map */

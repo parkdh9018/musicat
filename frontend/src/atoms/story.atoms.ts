@@ -1,4 +1,4 @@
-import { atom, useRecoilCallback } from "recoil";
+import { atom, selector, useRecoilCallback } from "recoil";
 
 interface content {
   type: "normal" | "narr";
@@ -11,10 +11,27 @@ export const storyTitleState = atom<string>({
   default: "",
 });
 
+export const songTitleState = atom<string>({
+  key: "songTitle",
+  default: "",
+})
+
 export const storyContentState = atom<content[]>({
   key: "content",
   default: [{ type: "normal", speaker: "male", value: "" }],
 });
+
+export const allStorySelector = selector({
+  key: "allStory",
+  get: ({get}) => {
+    const storyTitle = get(storyTitleState);
+    const storyContents = get(storyContentState);
+    const storyMusicName = get(songTitleState);
+
+    // TODO : api에 맞게 수정필요
+    return JSON.stringify({storyTitle, storyContents, storyMusicName})
+  },
+})
 
 export const addStoryContent = () => {
   const callback = useRecoilCallback(({ set }) => {
