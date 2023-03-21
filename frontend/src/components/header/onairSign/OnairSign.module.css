@@ -1,17 +1,25 @@
-@import url(//fonts.googleapis.com/css?family=Vibur);
 .onairSign {
-  position: relative;
+  height: 125px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  flex-direction: column;
 }
 
 .box {
+  width: 180px;
+  height: 55px;
+  border-radius: 3px;
+  border: 1.2mm ridge black;
+  background: linear-gradient(to top, red, rgb(228, 107, 107), red);
   display: flex;
-  width: 200px;
-  height: 300px;
   align-items: center;
   justify-content: center;
 }
 
 .logo {
+  text-align: center;
   height: auto;
   -webkit-user-select: none;
      -moz-user-select: none;

@@ -15,6 +15,12 @@
   align-items: center; 
   justify-content: space-between;
 
+  .innerContent {
+    width: 30%;
+    display: flex;
+    justify-content: center;
+  }
+
   .logo_img {
     margin-left: 20px;
   }
@@ -49,6 +55,12 @@
   }
  
 
+}
+
+.sign_content {
+  display: flex;
+  // align-items: center; 
+  justify-content: center;
 }
 
 .popover_state {

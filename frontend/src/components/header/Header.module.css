@@ -11,6 +11,11 @@
   align-items: center;
   justify-content: space-between;
 }
+.innerHeader .innerContent {
+  width: 30%;
+  display: flex;
+  justify-content: center;
+}
 .innerHeader .logo_img {
   margin-left: 20px;
 }
@@ -38,6 +43,11 @@
 .innerHeader .user_info:hover .popover_state {
   visibility: visible;
   opacity: 100;
+}
+
+.sign_content {
+  display: flex;
+  justify-content: center;
 }
 
 .popover_state {
