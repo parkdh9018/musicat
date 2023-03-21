@@ -32,7 +32,7 @@ export const ContentPlus = () => {
   }
 
   return (
-    <>
+    <div className={style.contentPlus}>
       <span onClick={plusEvent} className={style.plusButton}>
         문단 추가하기 <FontAwesomeIcon icon={faCirclePlus} />
         {popover && <div ref={ref} className={style.popover}>
@@ -48,6 +48,6 @@ export const ContentPlus = () => {
           />
         </div>}
       </span>
-    </>
+    </div>
   );
 };

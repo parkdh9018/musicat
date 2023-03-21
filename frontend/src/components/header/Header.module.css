@@ -1,10 +1,45 @@
 .header {
-  background-color: rgba(0, 0, 0, 0.65);
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
 .innerHeader {
-  height: 60px;
+  height: 72px;
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.innerHeader .logo_img {
+  margin-left: 20px;
+}
+.innerHeader .user_info {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+.innerHeader .user_info .nickname {
+  color: var(--fade-font-color);
+}
+.innerHeader .user_info .nickname_other {
+  color: var(--font-color);
+}
+.innerHeader .user_info img {
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  margin-left: 10px;
+  display: block;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.innerHeader .user_info:hover .popover_state {
+  display: block;
+}
+
+.popover_state {
+  display: none;
+  position: relative;
 }/*# sourceMappingURL=Header.module.css.map */

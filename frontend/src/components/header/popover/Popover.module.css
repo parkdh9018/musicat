@@ -1,0 +1,24 @@
+.popover {
+  position: absolute;
+  width: 180px;
+  top: 25px;
+  left: -120px;
+}
+.popover .content {
+  background-color: var(--font-color);
+  border-radius: 10px;
+  padding: 7%;
+}
+.popover .content .content_text {
+  margin-top: 8%;
+}
+.popover .triangle {
+  position: absolute;
+  width: 0;
+  height: 0;
+  top: -15px;
+  right: 18px;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 15px solid var(--font-color);
+}/*# sourceMappingURL=Popover.module.css.map */
