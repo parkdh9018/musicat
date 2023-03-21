@@ -11,6 +11,9 @@
   align-items: center;
   justify-content: space-around;
 }
+.innerHeader .logo_img {
+  margin-left: 20px;
+}
 .innerHeader .user_info {
   display: flex;
   align-items: center;
@@ -32,6 +35,11 @@
   -o-object-fit: cover;
      object-fit: cover;
 }
-.innerHeader .logo_img {
-  margin-left: 20px;
+.innerHeader .user_info:hover .popover_state {
+  display: block;
+}
+
+.popover_state {
+  display: none;
+  position: relative;
 }/*# sourceMappingURL=Header.module.css.map */
