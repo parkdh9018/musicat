@@ -2,7 +2,7 @@ import { atom, useRecoilCallback } from "recoil";
 
 interface content {
   type: "normal" | "narr";
-  speaker : "male" | "female" | "narr";
+  speaker : string;
   value: string;
 }
 
@@ -25,7 +25,6 @@ export const addStoryContent = () => {
 
   return callback;
 };
-
 
 export const deleteStoryContent = () => {
   const callback = useRecoilCallback(({ set }) => {
@@ -53,9 +52,9 @@ export const editStoryConent = () => {
 
 export const editStorySpeaker = () => {
   const callback = useRecoilCallback(({ set }) => {
-    return (index: number, speaker : "male" | "female" | "narr") => {
+    return (index: number, speaker : string) => {
       set(storyContentState, (prev) => {
-        const pr = [...prev];
+        let pr = [...prev];
         pr[index] = {...pr[index], speaker};
         return pr;
       });
