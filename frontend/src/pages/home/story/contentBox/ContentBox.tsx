@@ -2,11 +2,10 @@ import { SelectBox } from "@/components/common/selectBox/SelectBox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPencil } from "@fortawesome/free-solid-svg-icons";
 import style from "./ContentBox.module.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { deleteStoryContent, storyContentState, editStoryConent, editStorySpeaker } from "@/atoms/story.atoms";
 import { useClickOutside } from "@mantine/hooks";
 import { Input } from "@/components/common/input/Input";
-import { useRecoilValue } from "recoil";
 
 // TODO : atoms에 있는 type과 하나로 통합 하면 좋을듯
 interface ContentBoxProps {
@@ -21,27 +20,16 @@ export const ContentBox = ({ index, type, value, speaker }: ContentBoxProps) => 
     { value: "female", name: "여성" },
   ];
 
-  const storycontent = useRecoilValue(storyContentState);
-
-  const [selectbox, setSelectbox] = useState<string>("");
   const [editstate, setEditState] = useState(false);
   const [editText, setEditText] = useState(value);
-  // const [defaultSpeaker, setDefaultSpeaker] = useState(speaker);
 
-  const useDelete = deleteStoryContent();
   const useEditSpeaker = editStorySpeaker();
+  const useDelete = deleteStoryContent();
   const useEdit = editStoryConent();
 
-  // useEffect(() => {
-  //   setDefaultSpeaker(speaker);
-  //   console.log("e")
-  // },[])
-
-  useEffect(() => {
-    // console.log(selectbox)
-    // if(defaultSpeaker == "")
-    // useEditSpeaker(index, "female");
-  },[selectbox]);
+  const useEditSpeakerCallback = (value:string) => {
+    useEditSpeaker(index, value);
+  }
 
   const ref = useClickOutside(() => {
     useEdit(index, editText);
@@ -64,7 +52,7 @@ export const ContentBox = ({ index, type, value, speaker }: ContentBoxProps) => 
         <div>
           {index + 1}
           {type == "normal" ? (
-            <SelectBox defaultValue={speaker} options={dumyOption} setValue={setSelectbox} />
+            <SelectBox defaultValue={speaker} options={dumyOption} setValue={useEditSpeakerCallback} />
           ) : (
             <>나레이션</>
           )}
