@@ -35,11 +35,11 @@ public class Story {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "story_seq")
   @NotNull
-  private long storySeq;
+  private long storySeq; // 사연 일련 번호
 
-  @Column(name = "member_seq")
+  @Column(name = "user_seq")
   @NotNull
-  private long memberSeq;
+  private long userSeq; // 회원 일련 번호
 
   @CreatedDate
   @Column(name = "story_created_at")
@@ -54,6 +54,9 @@ public class Story {
   @Column(name = "story_is_valid", columnDefinition = "TINYINT(1)")
   private boolean storyIsValid; // 사연 유효성 검사 결과
 
+  @Column(name = "story_is_ready")
+  private boolean storyIsReady; // 사연 음성 파일 존재 여부
+
   @Column(name = "story_title")
   private String storyTitle; // 사연 제목
 
@@ -61,9 +64,30 @@ public class Story {
   private String storyContent; // 사연 내용
 
   @Column(name = "story_wav_file_directory_root")
-  private String storyWavFileDirectoryRoot;
+  private String storyWavFileDirectoryRoot; // 사연 음성 파일 경로
 
+  @Column(name = "story_music_name")
+  @NotNull
+  private String storyMusicName; // 사연 신청곡 제목
 
+  @Column(name = "story_music_artist")
+  @NotNull
+  private String storyMusicArtist; // 사연 신청곡 가수
+
+  @Column(name = "story_music_is_played")
+  private boolean storyMusicIsPlayed; // 사연 신청곡 재생 여부
+
+  @Column(name = "story_music_cover")
+  private String storyMusicCover; // 사연 신청곡 커버 이미지 url
+
+  @Column(name = "story_music_played_ms")
+  private long storyMusicPlayedMs; // 사연 신청곡 시작 시간
+
+  @Column(name = "story_music_length")
+  private long storyMusicLength; // 사연 신청곡 길이
+
+  @Column(name = "story_music_youtube_id")
+  private String storyMusicYoutubeId; // 사연 신청곡 유튜브 아이디
 
   @PrePersist
   public void prePersist() {
