@@ -9,7 +9,7 @@
   margin-right: auto;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 .innerHeader .logo_img {
   margin-left: 20px;

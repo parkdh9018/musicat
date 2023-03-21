@@ -5,17 +5,27 @@
   position: relative;
   // background-color: #000;
 }
+
+.box {
+  display: flex;
+  width: 200px;
+  height: 300px;
+  // background-color: #000;
+  align-items: center;
+  justify-content: center;
+}
+
 .logo {
-  text-align: center;
-  width: 65%;
-  // height: 250px;
-  margin: auto;
+  // text-align: center;
+  // width: 65%;
+  height: auto;
+  // margin: 0;
   user-select: none;
 }
 
 .logo b{
   // font: 400 19vh "Vibur";
-  font-size: 50px;
+  font-size: 30px;
   color: #fee;
   text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em #ff4444, 0 0 0.5em #ff4444, 0 0 0.1em #ff4444, 0 10px 3px #000;
 }

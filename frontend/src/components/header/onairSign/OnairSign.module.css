@@ -3,17 +3,23 @@
   position: relative;
 }
 
+.box {
+  display: flex;
+  width: 200px;
+  height: 300px;
+  align-items: center;
+  justify-content: center;
+}
+
 .logo {
-  text-align: center;
-  width: 65%;
-  margin: auto;
+  height: auto;
   -webkit-user-select: none;
      -moz-user-select: none;
           user-select: none;
 }
 
 .logo b {
-  font-size: 50px;
+  font-size: 30px;
   color: #fee;
   text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em #ff4444, 0 0 0.5em #ff4444, 0 0 0.1em #ff4444, 0 10px 3px #000;
 }

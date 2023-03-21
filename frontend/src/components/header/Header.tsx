@@ -11,9 +11,7 @@ export const Header = () => {
     <header className={style.header}>
       <div className={style.innerHeader}>
         <img className={style.logo_img} src="/img/logo.png" alt="로고"/>
-        <div style={{flexGrow:"1", textAlign:"center"}}>
-          <OnairSign/>
-        </div>
+        <OnairSign/>
         <div className={style.user_info}>
           <span className={style.nickname}>
             {userInfo.userNick}
