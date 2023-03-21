@@ -7,4 +7,5 @@
   top: 23%;
   left: 3%;
   color: var(--fade-font-color);
+  pointer-events: none;
 }/*# sourceMappingURL=Notice.module.css.map */

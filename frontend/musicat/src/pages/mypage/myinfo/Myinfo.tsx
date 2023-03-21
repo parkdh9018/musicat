@@ -1,5 +1,5 @@
 import { nowSideNav } from "@/atoms/common.atom";
-import { memberInfo, memberThema } from "@/atoms/user.atom";
+import { memberThema, userInfoState } from "@/atoms/user.atom";
 import { Board } from "@/components/common/board/Board";
 import { Button } from "@/components/common/button/Button";
 import { Input } from "@/components/common/input/Input";
@@ -24,7 +24,7 @@ export const Myinfo = () => {
   // 이거 없어져야됨. useQuery로 대채해야 된다.
   const userThema = useRecoilValue(memberThema);
 
-  const [userInfo, setUserInfo] = useRecoilState(memberInfo);
+  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const [input, setInput] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -36,8 +36,8 @@ export const Myinfo = () => {
   return (
     <div className={style.myinfo}>
       <div className={style.leftbox}>
-        <img src={userInfo.memberProfile} alt="프로필 이미지" />
-        <h3 style={{ textAlign: "center" }}>{userInfo.memberNick} 님</h3>
+        <img src={userInfo.userProfile} alt="프로필 이미지" />
+        <h3 style={{ textAlign: "center" }}>{userInfo.userNick} 님</h3>
         <p className={style.ffc} style={{ marginBottom: "40px" }}>
           환영합니다
         </p>

@@ -1,4 +1,4 @@
-import { memberInfo } from "@/atoms/user.atom";
+import { userInfoState } from "@/atoms/user.atom";
 import { MypageNav } from "@/components/sideNav/mypageNav/MypageNav";
 import { Outlet } from "react-router-dom";
 import { useRecoilValue } from "recoil";
@@ -6,7 +6,7 @@ import style from "./Mypage.module.css";
 
 export const Mypage = () => {
   // <SideNav sideNavTitle={sideNavTitle} sideNavContent={sideNavContent} urls={urls} />
-  const userInfo = useRecoilValue(memberInfo);
+  const userInfo = useRecoilValue(userInfoState);
   const memberTitle = "마이페이지";
   const adminTitle = "관리자페이지";
   const memberContent = [
@@ -24,12 +24,12 @@ export const Mypage = () => {
       <div className={style.leftTab}>
         <MypageNav
           sideNavContent={
-            userInfo.memberRole === "admin" ? adminContent : memberContent
+            userInfo.userRole === "admin" ? adminContent : memberContent
           }
           sideNavTitle={
-            userInfo.memberRole === "admin" ? adminTitle : memberTitle
+            userInfo.userRole === "admin" ? adminTitle : memberTitle
           }
-          urls={userInfo.memberRole === "admin" ? adminUrls : memberUrls}
+          urls={userInfo.userRole === "admin" ? adminUrls : memberUrls}
         />
       </div>
       <div className={style.rightTab}>

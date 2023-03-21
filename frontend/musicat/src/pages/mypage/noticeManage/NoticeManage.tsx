@@ -8,9 +8,11 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import style from "./NoticeManage.module.css";
 import { useSetRecoilState } from "recoil";
 import { nowSideNav } from "@/atoms/common.atom";
+import { useNavigate } from "react-router-dom";
 
 export const NoticeManage = () => {
   const [input, setInput] = useState("");
+  const navigate = useNavigate();
   const setNowSideNav = useSetRecoilState(nowSideNav);
   const dumyData = [
     { a: 213, b: 1234, c: 12345 },
@@ -33,8 +35,10 @@ export const NoticeManage = () => {
       />
       <Button
         content="공지작성"
-        onClick={() => {}}
-        style={{ margin: "10px 0 0 85%" }}
+        onClick={() => {
+          navigate("/mypage/notice-manage/new");
+        }}
+        style={{ margin: "10px 0 0 88%" }}
       />
       <Pagenation
         number={1}
