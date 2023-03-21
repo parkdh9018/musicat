@@ -2,7 +2,7 @@ import { SelectBox } from "@/components/common/selectBox/SelectBox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPencil } from "@fortawesome/free-solid-svg-icons";
 import style from "./ContentBox.module.css";
-import { useState } from "react";
+import { KeyboardEventHandler, MouseEventHandler, useState } from "react";
 import {
   deleteStoryContent,
   editStoryConent,
@@ -45,43 +45,59 @@ export const ContentBox = ({
     setEditState(false);
   });
 
-  const deleteClick = (e: any) => {
+  const deleteClick:MouseEventHandler = (e) => {
     e.stopPropagation();
     useDelete(index);
   };
 
-  const editClick = (e: any) => {
+  const editClick:MouseEventHandler = (e) => {
     e.stopPropagation();
     setEditState(true);
   };
 
+  const editEnter:KeyboardEventHandler = (e) => {
+    if(e.key === "Enter") {
+      setEditState(false);
+    }
+  }
+
   return (
     <>
       <div className={style.contentBox}>
-          <div className={style.item_number}>{index + 1}</div>
-          {type == "normal" ? (
-            <div className={style.speaker}>
-              <SelectBox
-                defaultValue={speaker}
-                options={dumyOption}
-                setValue={useEditSpeakerCallback}
-              />
-            </div>
-          ) : (
-            <div className={style.speaker}>나레이션</div>
-          )}
-          <div className={style.delete_icon}>
-            <FontAwesomeIcon icon={faTrash} onClick={deleteClick} />
+        <div className={style.item_number}>{index + 1}</div>
+        {type == "normal" ? (
+          <div className={style.speaker}>
+            <SelectBox
+              defaultValue={speaker}
+              options={dumyOption}
+              setValue={useEditSpeakerCallback}
+            />
           </div>
-          {editstate ? (
-            <div className={style.edit + " " +style.edit_input} ref={ref} >
-              <Input input={editText} style={{marginBottom : 0}} setInput={setEditText} />
-            </div>
-          ) : (
-            <div className={style.edit} onClick={editClick}>{editText}</div>
-          )}
-          <FontAwesomeIcon className={style.edit_icon} icon={faPencil} onClick={editClick} />
+        ) : (
+          <div className={style.speaker}>나레이션</div>
+        )}
+        <div className={style.delete_icon}>
+          <FontAwesomeIcon icon={faTrash} onClick={deleteClick} />
         </div>
+        {editstate ? (
+          <div className={style.edit + " " + style.edit_input} ref={ref} onKeyUp={editEnter}>
+            <Input
+              input={editText}
+              style={{ marginBottom: 0 }}
+              setInput={setEditText}
+            />
+          </div>
+        ) : (
+          <div className={style.edit} onClick={editClick}>
+            {editText}
+          </div>
+        )}
+        <FontAwesomeIcon
+          className={style.edit_icon}
+          icon={faPencil}
+          onClick={editClick}
+        />
+      </div>
     </>
   );
 };
