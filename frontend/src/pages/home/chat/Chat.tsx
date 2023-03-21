@@ -7,6 +7,8 @@ import { SelectBox } from "@/components/common/selectBox/SelectBox";
 import { useState } from "react";
 
 export const Chat = () => {
+  const [test, setTest] = useState("");
+
   const dumyOption = [
     { value: "none", name: "성별" },
     { value: "male", name: "남성as" },
@@ -45,7 +47,12 @@ export const Chat = () => {
         }}
       />
       <button onClick={() => setModal(true)}>모달열기</button>
-      <Input placeholder={"이거 placeholder 들어감"} type={"text"} />
+      <Input
+        input=""
+        placeholder={"이거 placeholder 들어감"}
+        type={test}
+        setInput={setTest}
+      />
       <SelectBox options={dumyOption} setValue={setSelectdumy} />
       <Pagenation
         number={5}
