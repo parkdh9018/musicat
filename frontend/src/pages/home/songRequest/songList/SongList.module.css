@@ -1,0 +1,19 @@
+.songList {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 2%;
+}
+
+.songSpan {
+  background: none;
+  border: none;
+  align-items: center;
+  color: white;
+}
+
+.songBtn {
+  background: none;
+  border: none;
+  align-items: center;
+  color: white;
+}/*# sourceMappingURL=SongList.module.css.map */

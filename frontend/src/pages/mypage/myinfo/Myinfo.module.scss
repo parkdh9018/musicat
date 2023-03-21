@@ -1,8 +1,8 @@
 .myinfo {
   display: flex;
+  justify-content: space-around;
   height: 100%;
-  padding: 3%;
-
+  padding: 5% 3%;
   h3 {
     color: var(--font-color);
     font-weight: 300;
@@ -25,13 +25,13 @@
         background-color: var(--font-color);
         position: absolute;
         border-radius: 100%;
-        top: -2px;
-        right: -2px;
+        top: -8%;
+        right: -1%;
         transition: 0.25s;
         cursor: pointer;
       }
       .circleLeft {
-        right: 26px;
+        right: 53%;
       }
     }
     .fc {
