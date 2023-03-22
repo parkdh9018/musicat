@@ -4,7 +4,7 @@ export const userInfoState = atom({
   key: "userInfo",
   default: {
     userSeq: 1,
-    userRole: "member",
+    userRole: "admin",
     userProfile:
       "https://dimg.donga.com/ugc/CDB/SHINDONGA/Article/5f/9a/4c/f6/5f9a4cf615cfd2738de6.jpg",
     userNick: "라이온",
