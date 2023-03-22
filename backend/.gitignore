@@ -330,3 +330,5 @@ gradle-app.setting
 # End of https://www.toptal.com/developers/gitignore/api/intellij,visualstudiocode,java,gradle,macos,eclipse,linux,windows
 
 src/main/resources/application.yml
+
+.idea
