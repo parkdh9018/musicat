@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
         // 적절한 HTTP 상태 코드와 함께 에러 메시지를 반환합니다.
         // 여기에서는 INTERNAL_SERVER_ERROR(500)를 사용하였지만, 상황에 따라 적절한 상태 코드를 선택하세요.
         // RunTimeException도 Exception 에 포함되므로 여기서 처리된다.
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred: " + exception.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Fail " + exception.getMessage());
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

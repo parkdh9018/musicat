@@ -7,6 +7,7 @@ import com.musicat.data.dto.user.UserMoneyLogDto;
 import com.musicat.data.entity.user.Authority;
 import com.musicat.data.entity.user.MoneyLog;
 import com.musicat.data.entity.user.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.format.DateTimeFormatter;
@@ -15,12 +16,10 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class UserBuilderUtil {
 
-    // 2022년 12월 10일 같은 형색
-    private DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
-    private DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 (E) HH:mm", Locale.KOREA);
-
+    private final ConstantUtil constantUtil;
 
     /*
     user -> userDetailDto
@@ -39,7 +38,7 @@ public class UserBuilderUtil {
                         moneyLog.getMoneyLogType(),
                         moneyLog.getMoneyLogDetail(),
                         moneyLog.getMoneyLogChange(),
-                        moneyLog.getMoneyLogCreatedAt().format(formatter1)
+                        moneyLog.getMoneyLogCreatedAt().format(constantUtil.simpleFormatter)
                 ))
                 .collect(Collectors.toList());
 
@@ -49,7 +48,7 @@ public class UserBuilderUtil {
                 .userProfileImage(user.getUserProfileImage())
                 .userThumbnailImage(user.getUserThumbnailImage())
                 .userEmail(user.getUserEmail())
-                .userCreatedAt(user.getUserCreatedAt().format(formatter1))
+                .userCreatedAt(user.getUserCreatedAt().format(constantUtil.simpleFormatter))
                 .userMoney(user.getUserMoney())
                 .userMoneyLogDtoList(userMoneyLogDtoList)
                 .userAuthority(authorities)
@@ -65,7 +64,7 @@ public class UserBuilderUtil {
                 .userSeq(user.getUserSeq())
                 .userNickname(user.getUserNickname())
                 .userEmail(user.getUserEmail())
-                .userCreatedAt(user.getUserCreatedAt().format(formatter1))
+                .userCreatedAt(user.getUserCreatedAt().format(constantUtil.simpleFormatter))
                 .userIsChattingBan(user.isUserIsChattingBan())
                 .userIsBan(user.isUserIsBan())
                 .userIsUser(user.isUserIsUser())
@@ -78,7 +77,7 @@ public class UserBuilderUtil {
                 .moneyLogType(moneyLog.getMoneyLogType())
                 .moneyLogDetail(moneyLog.getMoneyLogDetail())
                 .moneyLogChange(moneyLog.getMoneyLogChange())
-                .moneyLogCreatedAt(moneyLog.getMoneyLogCreatedAt().format(formatter2))
+                .moneyLogCreatedAt(moneyLog.getMoneyLogCreatedAt().format(constantUtil.detailFormatter))
                 .build();
     }
 
