@@ -1,10 +1,8 @@
 @use "../../_var.scss";
 
 .header {
-  background-color: rgb(0, 0, 0, 0.60);
+  background-color: rgb(0, 0, 0, 0.6);
 }
-
-
 
 .innerHeader {
   height: 72px;
@@ -12,7 +10,7 @@
   margin-left: auto;
   margin-right: auto;
   display: flex;
-  align-items: center; 
+  align-items: center;
   justify-content: space-between;
 
   .innerContent {
@@ -37,18 +35,12 @@
       color: var(--font-color);
     }
 
-    
-    &:hover .popover_state{
+    &:hover .popover_state {
       visibility: visible;
       opacity: 100;
     }
-
   }
-
- 
-
 }
-
 
 .profile_div {
   position: relative;
@@ -68,7 +60,7 @@
     border: 1px solid white;
     width: 21px;
     height: 21px;
-    background-color: #FF4E4E;
+    background-color: #ff4e4e;
     border-radius: 50%;
     padding: 12px;
     top: -8px;
@@ -83,7 +75,7 @@
 
 .sign_content {
   display: flex;
-  // align-items: center; 
+  // align-items: center;
   justify-content: center;
 }
 
