@@ -11,7 +11,7 @@ function App() {
       <Header />
       <div
         style={{
-          backgroundImage: "url(../../../public/img/pagebackground/theme1.png)",
+          backgroundImage: "url(/img/pagebackground/theme1.png)",
           width: "100vw",
         }}
       >

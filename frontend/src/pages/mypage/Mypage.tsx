@@ -7,7 +7,6 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import style from "./Mypage.module.css";
 
 export const Mypage = () => {
-  // <SideNav sideNavTitle={sideNavTitle} sideNavContent={sideNavContent} urls={urls} />
   const userInfo = useRecoilValue(userInfoState);
   const setNowMainPage = useSetRecoilState(nowMainPageState);
 
@@ -30,7 +29,7 @@ export const Mypage = () => {
   return (
     <div
       style={{
-        backgroundImage: "url(../../../public/img/pagebackground/theme1.png)",
+        backgroundImage: "url(/img/pagebackground/theme1.png)",
         width: "100vw",
       }}
     >
