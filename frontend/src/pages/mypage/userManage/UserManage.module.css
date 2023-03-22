@@ -1,0 +1,13 @@
+.userManage {
+  color: var(--font-color);
+  padding: 3%;
+}
+.userManage :nth-child(n) {
+  margin-bottom: 2%;
+}
+.userManage .searchBar :nth-child(n) {
+  margin-right: 2%;
+}
+.userManage .userStateChange :nth-child(n) {
+  margin-right: 2%;
+}/*# sourceMappingURL=UserManage.module.css.map */

@@ -1,0 +1,30 @@
+.songList {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-top: 2%;
+}
+
+.songSpan {
+  background: none;
+  border: none;
+  align-items: center;
+  color: white;
+}
+
+.songBtn {
+  background: none;
+  border: none;
+  align-items: center;
+  color: white;
+}
+
+.songModal {
+  display: flex;
+  flex-direction: row;
+  padding: 5%;
+}
+
+.songModalImg {
+  padding: 5%;
+}/*# sourceMappingURL=SongList.module.css.map */

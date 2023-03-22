@@ -1,0 +1,32 @@
+.NoticeManageModify {
+  padding: 4% 0 4% 3%;
+  color: var(--font-color);
+}
+.NoticeManageModify span {
+  margin-right: 20px;
+}
+.NoticeManageModify .content_div {
+  margin-top: 20px;
+}
+.NoticeManageModify .content_div span {
+  float: left;
+}
+.NoticeManageModify .content_div .content {
+  padding: 1% 2%;
+  border: solid 1px var(--font-color);
+  border-radius: 20px;
+  color: var(--font-color);
+  justify-content: center;
+  align-items: center;
+  display: inline-block;
+  width: 80%;
+  min-height: 500px;
+  display: inline-block;
+  background-color: var(--background-color);
+  resize: none;
+}
+.NoticeManageModify .button_box {
+  text-align: right;
+  margin-top: 10px;
+  margin-right: 10%;
+}/*# sourceMappingURL=NoticeManageModify.module.css.map */
