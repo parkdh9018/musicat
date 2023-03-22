@@ -10,6 +10,13 @@ export const Inventory = () => {
   const setNowSideNav = useSetRecoilState(nowSideNav);
   const thema = useRecoilValue(userThemaState);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalData, setModalData] = useState({
+    itemCount: 0,
+    source: "",
+    width: "",
+    type: 0,
+  });
+  const badge = ["none", "red", "skyblue", "green", "gray"];
 
   /** 사이드 Nav 초기화 */
   useEffect(() => {
@@ -23,10 +30,16 @@ export const Inventory = () => {
         style={{ marginTop: "0", minHeight: "40px" }}
       >
         <span>배지 장착 :</span>
-        {thema.type1 === "none" ? (
+        {thema.type1 === 0 ? (
           <span
             className={style.badge_span}
             onClick={() => {
+              setModalData({
+                itemCount: 5,
+                source: "",
+                width: "10%",
+                type: 1,
+              });
               setIsModalOpen(true);
             }}
           >
@@ -35,8 +48,14 @@ export const Inventory = () => {
         ) : (
           <div
             className={style.badge}
-            style={{ backgroundColor: `${thema.type1}` }}
+            style={{ backgroundColor: `${badge[thema.type1]}` }}
             onClick={() => {
+              setModalData({
+                itemCount: 5,
+                source: "",
+                width: "10%",
+                type: 1,
+              });
               setIsModalOpen(true);
             }}
           />
@@ -50,6 +69,12 @@ export const Inventory = () => {
           className={style.img1}
           src={`/img/background/background${thema.type2}.png`}
           onClick={() => {
+            setModalData({
+              itemCount: 6,
+              source: "/img/background/background",
+              width: "40%",
+              type: 2,
+            });
             setIsModalOpen(true);
           }}
         />
@@ -61,6 +86,12 @@ export const Inventory = () => {
           className={style.img2}
           src={`/img/thema/thema${thema.type3}.png`}
           onClick={() => {
+            setModalData({
+              itemCount: 6,
+              source: "/img/thema/thema",
+              width: "20%",
+              type: 3,
+            });
             setIsModalOpen(true);
           }}
         />
@@ -71,10 +102,10 @@ export const Inventory = () => {
           setModalOpen={setIsModalOpen}
           children={
             <InventoryModal
-              itemCount={6}
-              source={"/img/thema/thema"}
-              width={"20%"}
-              thema={2}
+              itemCount={modalData.itemCount}
+              source={modalData.source}
+              width={modalData.width}
+              type={modalData.type}
             />
           }
         />

@@ -39,6 +39,7 @@ export const MypageNav = ({
             }}
           >
             {data}
+            {nowNav === data ? <div></div> : null}
           </p>
         );
       })}

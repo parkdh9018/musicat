@@ -33,13 +33,15 @@ export const NoticeManage = () => {
         grid={"20% 50% 30%"}
         headRow={["번호", "제목", "날짜"]}
       />
-      <Button
-        content="공지작성"
-        onClick={() => {
-          navigate("/mypage/notice-manage/new");
-        }}
-        style={{ margin: "10px 0 0 88%" }}
-      />
+      <div style={{ textAlign: "right" }}>
+        <Button
+          content="공지작성"
+          onClick={() => {
+            navigate("/mypage/notice-manage/new");
+          }}
+          style={{ marginTop: "10px" }}
+        />
+      </div>
       <Pagenation
         number={1}
         first={false}
