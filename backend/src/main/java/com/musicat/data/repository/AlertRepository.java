@@ -19,4 +19,7 @@ public interface AlertRepository extends JpaRepository<Alert, Long> {
     // alertTitle + alertContetnt 기준으로 모든 알림 조회
     public Optional<List<Alert>> findAllByUserSeqAndAlertTitleContainingOrAlertContentContaining(long userSeq, String alertTitle, String alertContent);
 
+    // userSeq를 기준으로 안읽은 알림 개수 조회
+    public long countByUserSeqAndAlertIsReadFalse(long userSeq);
+
 }

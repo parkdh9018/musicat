@@ -1,5 +1,6 @@
 package com.musicat.service;
 
+import com.musicat.data.dto.alert.AlertAllModifyRequestDto;
 import com.musicat.data.dto.alert.AlertInsertRequestDto;
 import com.musicat.data.dto.alert.AlertModifyRequestDto;
 import com.musicat.data.entity.Alert;
@@ -130,6 +131,31 @@ public class AlertService {
         } else {
             throw new EntityNotFoundException("주어진 조건으로 검색한 결과가 없습니다.");
         }
+    }
+
+    /**
+     * 안읽은 알림 개수 조회
+     * @param userSeq
+     * @return
+     */
+    public long getAlertCountByAlertIsReadFalse(long userSeq) {
+        return alertRepository.countByUserSeqAndAlertIsReadFalse(userSeq);
+    }
+
+    /**
+     * 안읽은 알림 전체 읽음 처리
+     * @param userSeq
+     * @param alertAllModifyRequestDto
+     */
+    @Transactional
+    public void modifyAllAlert(long userSeq, AlertAllModifyRequestDto alertAllModifyRequestDto) {
+        List<Alert> alertList = alertRepository.findAllByUserSeq(userSeq)
+                .orElseThrow(() -> new EntityNotFoundException("조회 결과가 없습니다."));
+
+        for (Alert alert : alertList) {
+            alert.setAlertIsRead(true);
+        }
+
     }
 
 }
