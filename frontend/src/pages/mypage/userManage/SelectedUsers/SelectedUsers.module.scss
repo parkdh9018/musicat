@@ -1,0 +1,22 @@
+.selectedUsers {
+    .container {
+        padding: 4.5%;
+        border: 1.5px solid var(--font-color);
+        border-radius: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        :nth-child(n) {
+            margin-right: 8px;
+        }
+        .userComponent{
+            padding : 15px 15px 10px 15px;
+            width: fit-content;
+            border: 1.5px solid var(--font-color);
+            border-radius: 20px;
+            display: flex;
+            :nth-child(1) {
+                margin-right: 5px;
+            }
+        }
+    }
+}

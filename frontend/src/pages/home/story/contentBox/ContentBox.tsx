@@ -57,6 +57,7 @@ export const ContentBox = ({
 
   const editEnter:KeyboardEventHandler = (e) => {
     if(e.key === "Enter") {
+      useEdit(index, editText);
       setEditState(false);
     }
   }

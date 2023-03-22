@@ -1,0 +1,26 @@
+.userManage {
+    color: var(--font-color);
+    :nth-child(n) {
+        margin-bottom: 2%;
+    }
+    padding: 3%;
+    .searchBar {
+        :nth-child(n) {
+            margin-right: 2%;
+        }
+    }
+
+    .seleceted_userList {
+
+    }
+
+    .userStateChange {
+        :nth-child(n) {
+            margin-right: 2%;
+        }
+    }   
+
+    .userList {
+
+    }
+}
