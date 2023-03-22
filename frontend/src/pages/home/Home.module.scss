@@ -7,7 +7,6 @@
   margin-right: auto;
   display: flex;
   flex-grow: 1;
-  background-color: green;
 
   .leftTab {
     flex-grow: 1;
@@ -16,7 +15,6 @@
 
   .rightTab {
     width: 67%;
-    background-color: skyblue;
     min-height: calc(60vh - 60px);
     padding: 1% 1% 1% 0%;
 

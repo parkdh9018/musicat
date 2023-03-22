@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import style from "./VolumeBar.module.css";
-import sound from "../../../../../public/sound/music_sample_1.wav";
+import sound from "@/asset/sound/music_sample_1.wav";
 
 export const VolumeBar = () => {
   const [volume, setVolume] = useState(0.5);

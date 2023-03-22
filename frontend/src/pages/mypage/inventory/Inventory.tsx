@@ -1,5 +1,5 @@
-import { nowSideNav } from "@/atoms/common.atom";
-import { userThemaState } from "@/atoms/user.atom";
+import { nowSideNavState } from "@/atoms/common.atom";
+import { userthemeState } from "@/atoms/user.atom";
 import { Modal } from "@/components/common/modal/Modal";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
@@ -7,8 +7,8 @@ import style from "./Inventory.module.css";
 import { InventoryModal } from "./inventoryModal/InventoryModal";
 
 export const Inventory = () => {
-  const setNowSideNav = useSetRecoilState(nowSideNav);
-  const thema = useRecoilValue(userThemaState);
+  const setNowSideNav = useSetRecoilState(nowSideNavState);
+  const theme = useRecoilValue(userthemeState);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState({
     itemCount: 0,
@@ -30,7 +30,7 @@ export const Inventory = () => {
         style={{ marginTop: "0", minHeight: "40px" }}
       >
         <span>배지 장착 :</span>
-        {thema.type1 === 0 ? (
+        {theme.type1 === 0 ? (
           <span
             className={style.badge_span}
             onClick={() => {
@@ -48,7 +48,7 @@ export const Inventory = () => {
         ) : (
           <div
             className={style.badge}
-            style={{ backgroundColor: `${badge[thema.type1]}` }}
+            style={{ backgroundColor: `${badge[theme.type1]}` }}
             onClick={() => {
               setModalData({
                 itemCount: 5,
@@ -67,7 +67,7 @@ export const Inventory = () => {
         <span>배경 설정 :</span>
         <img
           className={style.img1}
-          src={`/img/background/background${thema.type2}.png`}
+          src={`/img/background/background${theme.type2}.png`}
           onClick={() => {
             setModalData({
               itemCount: 6,
@@ -84,11 +84,11 @@ export const Inventory = () => {
         <span>테마 설정 :</span>
         <img
           className={style.img2}
-          src={`/img/thema/thema${thema.type3}.png`}
+          src={`/img/theme/theme${theme.type3}.png`}
           onClick={() => {
             setModalData({
               itemCount: 6,
-              source: "/img/thema/thema",
+              source: "/img/theme/theme",
               width: "20%",
               type: 3,
             });

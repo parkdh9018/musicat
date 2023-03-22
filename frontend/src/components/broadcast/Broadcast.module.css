@@ -6,4 +6,15 @@
   height: 40vh;
   min-height: 250px;
   background-color: blue;
+}
+
+.mypage {
+  position: fixed;
+  min-width: 120px;
+  min-height: 60px;
+  width: 30vw;
+  height: 15vw;
+  bottom: 0;
+  z-index: 1;
+  transition: 0.3s;
 }/*# sourceMappingURL=Broadcast.module.css.map */

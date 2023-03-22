@@ -1,4 +1,4 @@
-import { nowSideNav } from "@/atoms/common.atom";
+import { nowSideNavState } from "@/atoms/common.atom";
 import { userInfoState } from "@/atoms/user.atom";
 import { Button } from "@/components/common/button/Button";
 import { useEffect } from "react";
@@ -7,7 +7,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import style from "./NoticeDetail.module.css";
 
 export const NoticeDetail = () => {
-  const setNowSideNav = useSetRecoilState(nowSideNav);
+  const setNowSideNav = useSetRecoilState(nowSideNavState);
   const navigate = useNavigate();
   const userInfo = useRecoilValue(userInfoState);
 
