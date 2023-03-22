@@ -33,11 +33,13 @@ export const Notice = () => {
       />
       {/* 이 위부분 Board는 파란색으로 칠해야 한다. */}
       <Board data={dumyData} grid={"20% 50% 30%"} headRow={[]} />
-      <Button
-        content="모두읽음"
-        onClick={() => {}}
-        style={{ margin: "10px 0 0 88%" }}
-      />
+      <div style={{ textAlign: "right" }}>
+        <Button
+          content="모두읽음"
+          onClick={() => {}}
+          style={{ marginTop: "10px" }}
+        />
+      </div>
       <Pagenation
         number={1}
         first={false}

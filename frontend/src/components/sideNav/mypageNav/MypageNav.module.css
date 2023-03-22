@@ -1,3 +1,11 @@
+@keyframes sideNavEffect {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
 .side_board {
   width: 100%;
   min-width: 188px;
@@ -20,17 +28,34 @@
 }
 .side_board p {
   cursor: pointer;
+  position: relative;
+  color: var(--fade-font-color);
 }
 .side_board p:hover {
   color: rgb(123, 123, 123);
+}
+.side_board p div {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  height: 36px;
+  width: 100%;
+  animation: 0.3s ease-in-out sideNavEffect;
+  background-color: rgba(94, 94, 94, 0.3);
+}
+.side_board p div::after {
+  content: "";
+  float: right;
+  border-right: 6px solid rgba(254, 155, 66, 0.7);
+  border-bottom: 36px solid rgba(254, 155, 66, 0.7);
 }
 .side_board h4 {
   font-weight: bold;
 }
 
 .now {
-  font-weight: bold;
-  text-shadow: 1px 1px 1px gray;
+  color: var(--font-color) !important;
+  text-shadow: 1px 1px 1px rgb(132, 132, 132);
   position: relative;
 }
 
