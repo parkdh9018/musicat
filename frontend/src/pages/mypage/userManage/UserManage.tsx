@@ -45,7 +45,7 @@ export const UserManage = () => {
     <div className={style.userManage}>
       <div className={style.searchBar}>
         <span>유저검색 : </span>
-        <SelectBox options={searchOptions} setValue={() => {}} />
+        <SelectBox options={searchOptions} setValue={() => {}} style={{width: "13%"}}/>
         <Input input={""} setInput={() => {}} />
         <Button content="검색" onClick={() => {}} />
       </div>
@@ -54,11 +54,7 @@ export const UserManage = () => {
       </div>
       <div className={style.userStateChange}>
         <span>변동사항 : </span>
-        <SelectBox
-          options={useStateChangeOptions}
-          setValue={() => {}}
-          style={{ width: "18%" }}
-        />
+        <SelectBox options={useStateChangeOptions} setValue={() => {}} style={{width: "13%"}}/>
         <Button content="적용" onClick={() => {}} />
       </div>
       <div className={style.userList}>
