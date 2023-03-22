@@ -1,0 +1,22 @@
+.mypage {
+  max-width: 1200px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-grow: 1;
+}
+.mypage .leftTab {
+  width: 22%;
+  padding: 1%;
+}
+.mypage .rightTab {
+  width: 78%;
+  min-height: calc(100vh - 60px);
+  padding: 1% 1% 1% 0%;
+}
+.mypage .rightTab .content {
+  width: 100%;
+  min-height: 100%;
+  background-color: var(--background-color);
+}/*# sourceMappingURL=Mypage.module.css.map */

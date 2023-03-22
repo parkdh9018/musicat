@@ -1,0 +1,11 @@
+.bottom_search {
+  margin: 20px 0 0 25%;
+  position: relative;
+}
+.bottom_search .placeholder {
+  position: absolute;
+  top: 23%;
+  left: 3%;
+  color: var(--fade-font-color);
+  pointer-events: none;
+}/*# sourceMappingURL=Notice.module.css.map */

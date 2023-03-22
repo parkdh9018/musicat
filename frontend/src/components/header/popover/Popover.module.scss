@@ -1,0 +1,34 @@
+.popover {
+  position: absolute;
+  width: 180px;
+  top: 50px;
+  left: -120px;
+  z-index: 2;
+
+  .content {
+    background-color: var(--font-color);
+    border-radius: 10px;
+    padding: 7%;
+    padding-top: 3%;
+
+    .content_text {
+      margin-top: 8%;
+      transition: 0.1s;
+
+      &:hover {
+        color: var(--fade-font-color);
+      }
+    }
+  }
+
+  .triangle {
+    position: absolute;
+    width: 0;
+    height: 0;
+    top: -14px;
+    right: 18px;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 15px solid var(--font-color);
+  }
+}

@@ -1,0 +1,15 @@
+.button {
+  border: 1.5px solid var(--font-color);
+  display: inline-block;
+  padding: 10px 20px 8px;
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0);
+  color: var(--font-color);
+  transition: 0.25s;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.button:hover {
+  background-color: var(--fade-font-color);
+  color: var(--background-color);
+}/*# sourceMappingURL=Button.module.css.map */
