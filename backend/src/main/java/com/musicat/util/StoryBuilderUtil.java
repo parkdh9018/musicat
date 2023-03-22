@@ -1,7 +1,6 @@
 package com.musicat.util;
 
 import com.musicat.data.dto.story.StoryInfoDto;
-import com.musicat.data.dto.story.StoryInsertResponseDto;
 import com.musicat.data.dto.story.StoryRequestDto;
 import com.musicat.data.entity.Story;
 import org.springframework.stereotype.Component;
@@ -12,9 +11,11 @@ public class StoryBuilderUtil {
     // Dto -> Entity
     public Story buildStoryEntity(StoryRequestDto storyRequestDto) {
         return Story.builder()
-                .memberSeq(storyRequestDto.getMemberSeq())
+                .userSeq(storyRequestDto.getUserSeq())
                 .storyTitle(storyRequestDto.getStoryTitle())
                 .storyContent(storyRequestDto.getStoryContent())
+                .storyMusicName(storyRequestDto.getStoryMusicName())
+                .storyMusicArtist(storyRequestDto.getStoryMusicArtist())
                 .build();
     }
 
@@ -22,21 +23,25 @@ public class StoryBuilderUtil {
     public StoryInfoDto buildStoryInfoDto(Story story) {
         return StoryInfoDto.builder()
                 .storySeq(story.getStorySeq())
-                .memberSeq(story.getMemberSeq())
-                .storyTitle(story.getStoryTitle())
+                .userSeq(story.getUserSeq())
                 .storyCreatedAt(story.getStoryCreatedAt())
+                .storyReadAt(story.getStoryReadAt())
                 .storyIsRead(story.isStoryIsRead())
                 .storyIsValid(story.isStoryIsValid())
+                .storyIsReady(story.isStoryIsReady())
+                .storyTitle(story.getStoryTitle())
+                .storyContent(story.getStoryContent())
                 .storyWavFileDirectoryRoot(story.getStoryWavFileDirectoryRoot())
+                .storyMusicName(story.getStoryMusicName())
+                .storyMusicArtist(story.getStoryMusicArtist())
+                .storyMusicIsPlayed(story.isStoryMusicIsPlayed())
+                .storyMusicCover(story.getStoryMusicCover())
+                .storyMusicPlayedMs(story.getStoryMusicPlayedMs())
+                .storyMusicLength(story.getStoryMusicLength())
+                .storyMusicYoutubeId(story.getStoryMusicYoutubeId())
                 .build();
     }
 
-    // Story -> StoryInsertDto
-    public StoryInsertResponseDto buildStoryInsertResponseDto(StoryInfoDto storyInfoDto, int playOrder) {
-        return StoryInsertResponseDto.builder()
-                .playOrder(playOrder)
-                .storyInfoDto(storyInfoDto)
-                .build();
-    }
+
 
 }

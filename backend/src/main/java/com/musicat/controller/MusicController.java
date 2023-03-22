@@ -5,7 +5,6 @@ import com.musicat.data.dto.MusicInsertResponseDto;
 import com.musicat.data.dto.MusicRequestDto;
 import com.musicat.data.entity.Music;
 import com.musicat.service.MusicService;
-import com.sun.jdi.request.DuplicateRequestException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -34,8 +33,8 @@ public class MusicController {
     try {
       MusicInsertResponseDto musicInsertResponseDto = musicService.insertMusic(musicRequestDto);
       return ResponseEntity.ok(musicInsertResponseDto);
-    } catch (DuplicateRequestException e) {
-      return ResponseEntity.status(HttpStatus.CONFLICT).build();
+//    } catch (DuplicateRequestException e) {
+//      return ResponseEntity.status(HttpStatus.CONFLICT).build();
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }

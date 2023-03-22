@@ -1,7 +1,7 @@
 package com.musicat.service;
 
-import com.musicat.data.dto.story.StoryInfoDto;
-import com.musicat.data.dto.story.StoryInsertResponseDto;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.musicat.data.dto.story.StoryRequestDto;
 import com.musicat.data.entity.Story;
 import com.musicat.data.repository.StoryRepository;
@@ -38,21 +38,37 @@ public class StoryService {
      * 사연 신청
      */
     @Transactional
-    public StoryInsertResponseDto insertStory(StoryRequestDto storyRequestDto) throws Exception {
+    public void insertStory(StoryRequestDto storyRequestDto) throws Exception {
 
-        Story story = storyRepository.save(
-                storyBuilderUtil.buildStoryEntity(storyRequestDto)); // 영속화
-        long storySeq = story.getStorySeq();
+        // 임시 직렬화 문자열
+        storyRequestDto.setStoryContent("[{\"seq\":0,\"speaker\":\"아나운서\",\"content\":\"대사1\"},{\"seq\":1,\"speaker\":\"할아버지\",\"content\":\"대사2\"}]");
 
-        int playOrder =
-                storyRepository.countByStorySeqLessThanAndStoryIsReadFalseAndStoryIsValidTrue(
-                        storySeq) + 1;
+        storyRepository.save(storyBuilderUtil.buildStoryEntity(storyRequestDto));
 
-        StoryInfoDto storyInfoDto = storyBuilderUtil.buildStoryInfoDto(story);
-
-        // 사연 등록 응답 DTO에 값을 담아서 리턴
-        return storyBuilderUtil.buildStoryInsertResponseDto(storyInfoDto, playOrder);
     }
+
+
+
+
+//    /**
+//     * 사연 신청
+//     */
+//    @Transactional
+//    public StoryInsertResponseDto insertStory(StoryRequestDto storyRequestDto) throws Exception {
+//
+//        Story story = storyRepository.save(
+//                storyBuilderUtil.buildStoryEntity(storyRequestDto)); // 영속화
+//        long storySeq = story.getStorySeq();
+//
+//        int playOrder =
+//                storyRepository.countByStorySeqLessThanAndStoryIsReadFalseAndStoryIsValidTrue(
+//                        storySeq) + 1;
+//
+//        StoryInfoDto storyInfoDto = storyBuilderUtil.buildStoryInfoDto(story);
+//
+//        // 사연 등록 응답 DTO에 값을 담아서 리턴
+//        return storyBuilderUtil.buildStoryInsertResponseDto(storyInfoDto, playOrder);
+//    }
 
     /**
      * 사연 1개 조회 (읽어야 하는 사연)
@@ -73,43 +89,43 @@ public class StoryService {
     /**
      * 사연 중복 검사
      */
-    public boolean isUniqueStory(long memberSeq) throws Exception {
-        Optional<Story> optionalStory = storyRepository.findByMemberSeqAndStoryIsReadFalse(
-                memberSeq);
+    public boolean isUniqueStory(long userSeq) throws Exception {
+        Optional<Story> optionalStory = storyRepository.findByUserSeqAndStoryIsReadFalse(
+                userSeq);
 
         return optionalStory.isPresent();
     }
 
-    /**
-     * 사연 상세 조회
-     */
-    public Object getStory(long storySeq) throws Exception {
-        Optional<Story> optionalStory = storyRepository.findById(storySeq);
-
-        if (optionalStory.isEmpty()) {
-            return null; // 사연이 없음
-        }
-
-        Story story = optionalStory.get(); // 사연이 있음
-
-        return storyBuilderUtil.buildStoryInfoDto(story);
-    }
-
-    /**
-     * 사연 삭제
-     */
-    @Transactional
-    public int deleteStory(long storySeq) throws Exception {
-
-        Optional<Story> optionalStory = storyRepository.findById(storySeq); // 사연 조회
-
-        if (optionalStory.isEmpty()) {
-            return 0; // 사연이 존재하지 않음
-        }
-
-        storyRepository.deleteById(storySeq); // 사연 삭제
-        return 1;
-    }
+//    /**
+//     * 사연 상세 조회
+//     */
+//    public Object getStory(long storySeq) throws Exception {
+//        Optional<Story> optionalStory = storyRepository.findById(storySeq);
+//
+//        if (optionalStory.isEmpty()) {
+//            return null; // 사연이 없음
+//        }
+//
+//        Story story = optionalStory.get(); // 사연이 있음
+//
+//        return storyBuilderUtil.buildStoryInfoDto(story);
+//    }
+//
+//    /**
+//     * 사연 삭제
+//     */
+//    @Transactional
+//    public int deleteStory(long storySeq) throws Exception {
+//
+//        Optional<Story> optionalStory = storyRepository.findById(storySeq); // 사연 조회
+//
+//        if (optionalStory.isEmpty()) {
+//            return 0; // 사연이 존재하지 않음
+//        }
+//
+//        storyRepository.deleteById(storySeq); // 사연 삭제
+//        return 1;
+//    }
 
 
 }
