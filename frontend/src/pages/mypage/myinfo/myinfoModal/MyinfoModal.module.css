@@ -1,3 +1,7 @@
+.myinfoModal {
+  padding: 2% 30px;
+  width: 450px;
+}
 .myinfoModal p {
   color: var(--fade-font-color);
 }
