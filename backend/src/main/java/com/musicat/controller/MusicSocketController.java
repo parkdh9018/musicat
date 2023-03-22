@@ -22,7 +22,7 @@ public class MusicSocketController {
   @Autowired
   private SimpMessagingTemplate simpMessagingTemplate;
 
-  @Scheduled(fixedRate = 1000)
+  //@Scheduled(fixedRate = 1000)
   public void playMusic() throws Exception {
     Music currentPlayingMusic = musicSocketService.getCurrentPlayingMusic();
 

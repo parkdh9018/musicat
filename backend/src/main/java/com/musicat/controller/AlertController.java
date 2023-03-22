@@ -1,6 +1,7 @@
 package com.musicat.controller;
 
 import com.musicat.data.dto.alert.AlertInsertRequestDto;
+import com.musicat.data.dto.alert.AlertModifyRequestDto;
 import com.musicat.data.entity.Alert;
 import com.musicat.service.AlertService;
 import java.util.List;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AlertController {
 
+    // service 정의
     private final AlertService alertService;
 
 
@@ -81,6 +83,46 @@ public class AlertController {
         try {
             Alert alert = alertService.getAlert(alertSeq);
             return ResponseEntity.ok().body(alert);
+        } catch (EntityNotFoundException e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    /**
+     * 알림 수정 (읽음 처리)
+     * @param alertModifyRequestDto
+     * @return
+     */
+    @PatchMapping("")
+    public ResponseEntity<?> modifyAlert(@RequestBody AlertModifyRequestDto alertModifyRequestDto) {
+        try {
+            alertService.modifyAlert(alertModifyRequestDto);
+            return ResponseEntity.ok().build();
+        } catch (EntityNotFoundException e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    /**
+     * 알림 조건부 검색
+     * @param condition
+     * @param userSeq
+     * @param query
+     * @return
+     */
+    @GetMapping("/{condition}/{userSeq}")
+    public ResponseEntity<?> getAlertListByCondition(@PathVariable int condition, @PathVariable long userSeq, @RequestParam String query) {
+        try {
+            List<Alert> alertList = alertService.getAlertListByCondition(condition, userSeq, query);
+            return ResponseEntity.ok().body(alertList);
         } catch (EntityNotFoundException e) {
             System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

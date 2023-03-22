@@ -1,6 +1,7 @@
 package com.musicat.service;
 
 import com.musicat.data.dto.alert.AlertInsertRequestDto;
+import com.musicat.data.dto.alert.AlertModifyRequestDto;
 import com.musicat.data.entity.Alert;
 import com.musicat.data.repository.AlertRepository;
 import java.util.List;
@@ -15,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class AlertService {
 
-    // 알림 레퍼지토리 선언
+    // repository 정의
     private final AlertRepository alertRepository;
 
     /**
@@ -82,6 +83,56 @@ public class AlertService {
             return alert.get();
         } else {
             throw new EntityNotFoundException("Alert not found with alertSeq: " + alertSeq);
+        }
+    }
+
+    /**
+     * 알림 수정 (읽음 처리)
+     * @param alertModifyRequestDto
+     * @throws Exception
+     */
+    @Transactional
+    public void modifyAlert(AlertModifyRequestDto alertModifyRequestDto) throws Exception {
+
+        Optional<Alert> alert = alertRepository.findById(alertModifyRequestDto.getAlertSeq());
+
+        if (alert.isPresent()) {
+            alert.get().setAlertIsRead(alertModifyRequestDto.isAlertIsRead());
+            alertRepository.save(alert.get());
+        } else {
+            throw new EntityNotFoundException("Alert not found with alertSeq: " + alertModifyRequestDto.getAlertSeq());
+        }
+    }
+
+    /**
+     * 알림 조건부 검색
+     * @param condition
+     * @param userSeq
+     * @param query
+     * @return
+     * @throws Exception
+     */
+    public List<Alert> getAlertListByCondition(int condition, long userSeq, String query) throws Exception {
+
+        Optional<List<Alert>> alertList = null;
+
+        switch (condition) {
+            case 0: // 제목
+                alertList = alertRepository.findAllByUserSeqAndAlertTitleContaining(userSeq, query);
+                break;
+            case 1: // 내용
+                alertList = alertRepository.findAllByUserSeqAndAlertContentContaining(userSeq, query);
+                break;
+            case 2: // 제목 + 내용
+                alertList = alertRepository.findAllByUserSeqAndAlertTitleContainingOrAlertContentContaining(userSeq, query, query);
+                break;
+        }
+
+        if (alertList.isPresent() && alertList.get().size() > 0) {
+            return alertList.get();
+        } else {
+            // Todo : 커스텀 예외 처리 예정
+            throw new EntityNotFoundException();
         }
     }
 
