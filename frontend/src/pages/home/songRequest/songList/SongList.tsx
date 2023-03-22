@@ -14,7 +14,7 @@ interface Song {
 }
 
 export const SongList = () => {
-  //  const songs: Song[] = "api 요청 리액트 쿼리로 받아오기"
+  //  const songs: Song[] = "api 요청(/music) 리액트 쿼리로 받아오기"
 
   // 더미데이터
   const songs: Song[] = [

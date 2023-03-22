@@ -1,1 +1,1 @@
-{"version":3,"sources":["SongDetailNav.module.scss","SongDetailNav.module.css"],"names":[],"mappings":"AAAA;EACE,sBAAA;EACA,YAAA;ACCF","file":"SongDetailNav.module.css"}
+{"version":3,"sources":["SongDetailNav.module.scss","SongDetailNav.module.css"],"names":[],"mappings":"AAAA;EACE,sBAAA;EACA,YAAA;EACA,kBAAA;EACA,UAAA;ACCF;;ADEA;EACE,aAAA;EACA,mBAAA;EACA,YAAA;ACCF;;ADEA;EACE,WAAA;EAEA,YAAA;ACAF","file":"SongDetailNav.module.css"}
