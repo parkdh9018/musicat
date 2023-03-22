@@ -1,4 +1,17 @@
 .songDeatilNav {
   background-color: gray;
   color: white;
+  position: absolute;
+  z-index: 1;
+}
+
+.songModal {
+  display: flex;
+  flex-direction: row;
+  padding: 10%;
+}
+
+.songModalImg {
+  width: auto;
+  padding: 10%;
 }/*# sourceMappingURL=SongDetailNav.module.css.map */
