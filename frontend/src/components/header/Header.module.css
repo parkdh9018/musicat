@@ -30,7 +30,15 @@
 .innerHeader .user_info .nickname_other {
   color: var(--font-color);
 }
-.innerHeader .user_info img {
+.innerHeader .user_info:hover .popover_state {
+  visibility: visible;
+  opacity: 100;
+}
+
+.profile_div {
+  position: relative;
+}
+.profile_div img {
   width: 50px;
   height: 50px;
   border-radius: 100%;
@@ -40,9 +48,21 @@
   -o-object-fit: cover;
      object-fit: cover;
 }
-.innerHeader .user_info:hover .popover_state {
-  visibility: visible;
-  opacity: 100;
+.profile_div .badge {
+  position: absolute;
+  border: 1px solid white;
+  width: 21px;
+  height: 21px;
+  background-color: #FF4E4E;
+  border-radius: 50%;
+  padding: 12px;
+  top: -8px;
+  right: -9px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--font-color);
+  font-size: 0.8rem;
 }
 
 .sign_content {

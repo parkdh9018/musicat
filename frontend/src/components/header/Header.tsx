@@ -23,7 +23,10 @@ export const Header = () => {
             <div className={style.popover_state}>
               <Popover />
             </div>
-            <img src={userInfo.userProfile} alt="프로필 이미지" />
+            <div className={style.profile_div}>
+              <img src={userInfo.userProfile} alt="프로필 이미지" />
+              <div className={style.badge}>12</div>
+            </div>
           </div>
         </div>
       </div>
