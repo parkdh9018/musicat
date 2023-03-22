@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import style from "./SongList.module.css";
-import { SongDetailNav } from "../songDetailBox/SongDetailNav";
+import { Modal } from "@/components/common/modal/Modal";
+import { SongDetailModal } from "./SongDetailModal";
 
 interface Song {
   musicSeq: number;
@@ -47,16 +48,10 @@ export const SongList = () => {
     },
   ];
 
-  const [isDetailOpened, setIsDetailOpened] = useState<{
-    [id: number]: boolean;
-  }>({});
+  const [isSongDetailModalOpen, setIsSongDetailModalOpen] = useState(false);
 
-  const toggleSongDetail = (id: number) => {
-    // 다른 부분 클릭하면 기존 창 닫는 로직 추가 필요
-    setIsDetailOpened((prevStatus) => ({
-      ...prevStatus,
-      [id]: !prevStatus[id],
-    }));
+  const onSongDetail = () => {
+    setIsSongDetailModalOpen(true);
   };
 
   const songList: JSX.Element[] = songs.map((song) => (
@@ -64,14 +59,7 @@ export const SongList = () => {
       <span className={style.songSpan}>
         {song.musicName} - {song.musicArtist}
       </span>
-      {isDetailOpened[song.musicSeq] ? (
-        //위치 변경 필요 (버튼에 옆에 떠있는 포지션으로)
-        <SongDetailNav />
-      ) : null}
-      <button
-        className={style.songBtn}
-        onClick={() => toggleSongDetail(song.musicSeq)}
-      >
+      <button className={style.songBtn} onClick={() => onSongDetail()}>
         ...
       </button>
     </div>
@@ -80,7 +68,12 @@ export const SongList = () => {
   return (
     <>
       <div>{songList}</div>
-      <div></div>
+      {isSongDetailModalOpen && (
+        <Modal
+          setModalOpen={setIsSongDetailModalOpen}
+          children={<SongDetailModal />}
+        />
+      )}
     </>
   );
 };

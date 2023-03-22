@@ -1,4 +1,4 @@
-import style from "../SongDetailNav.module.css";
+import style from "./SongList.module.css";
 
 export interface Song {
   title: string;
@@ -21,7 +21,7 @@ export const SongDetailModal = () => {
 
   return (
     <div className={style.songModal}>
-      <img className={style.songModalImg} src={song.coverImg} alt="앨범 사진" />
+      <img className={style.songModalImg} src={song.coverImg} alt="곡 사진" />
       <span>
         <div>{song.title}</div>
         <div>{song.artist}</div>
