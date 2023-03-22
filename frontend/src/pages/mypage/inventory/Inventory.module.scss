@@ -1,0 +1,56 @@
+.inventory {
+  padding: 3%;
+  color: var(--font-color);
+
+  .content_div {
+    margin-top: 40px;
+
+    span {
+      float: left;
+      margin-right: 20px;
+    }
+
+    .badge_span {
+      cursor: pointer;
+      color: var(--fade-font-color);
+      &:hover {
+        color: var(--blue-color);
+      }
+    }
+
+    .badge {
+      width: 30px;
+      height: 30px;
+      display: inline-block;
+      border: none;
+      cursor: pointer;
+      &:hover {
+        border: 2px solid var(--blue-color);
+      }
+    }
+
+    .img1 {
+      display: inline-block;
+      width: 50%;
+      border-radius: 20px;
+      box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+
+      &:hover {
+        border: 2px solid var(--blue-color);
+      }
+    }
+
+    .img2 {
+      display: inline-block;
+      width: 25%;
+      border-radius: 10px;
+      box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+
+      &:hover {
+        border: 2px solid var(--blue-color);
+      }
+    }
+  }
+}
