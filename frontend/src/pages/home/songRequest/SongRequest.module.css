@@ -1,5 +1,6 @@
 .songRequest {
-  padding: 20px;
+  padding: 3%;
+  min-height: 360px;
 }
 
 .songRequestList {
