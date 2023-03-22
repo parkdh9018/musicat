@@ -1,12 +1,16 @@
+import { nowMainPageState } from "@/atoms/common.atom";
 import { userInfoState } from "@/atoms/user.atom";
 import { MypageNav } from "@/components/sideNav/mypageNav/MypageNav";
+import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import style from "./Mypage.module.css";
 
 export const Mypage = () => {
   // <SideNav sideNavTitle={sideNavTitle} sideNavContent={sideNavContent} urls={urls} />
   const userInfo = useRecoilValue(userInfoState);
+  const setNowMainPage = useSetRecoilState(nowMainPageState);
+
   const memberTitle = "마이페이지";
   const adminTitle = "관리자페이지";
   const memberContent = [
@@ -19,8 +23,17 @@ export const Mypage = () => {
   const memberUrls = ["myinfo", "notice", "inventory", ""];
   const adminUrls = ["notice-manage", "user-manage", ""];
 
+  useEffect(() => {
+    setNowMainPage(false);
+  }, []);
+
   return (
-    <div className={style.mypage}>
+    <div
+      className={style.mypage}
+      style={{
+        backgroundImage: "url(../../../public/img/pagebackground/theme1.png)",
+      }}
+    >
       <div className={style.leftTab}>
         <MypageNav
           sideNavContent={

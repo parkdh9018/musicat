@@ -7,13 +7,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import style from "./NoticeManage.module.css";
 import { useSetRecoilState } from "recoil";
-import { nowSideNav } from "@/atoms/common.atom";
+import { nowSideNavState } from "@/atoms/common.atom";
 import { useNavigate } from "react-router-dom";
 
 export const NoticeManage = () => {
   const [input, setInput] = useState("");
   const navigate = useNavigate();
-  const setNowSideNav = useSetRecoilState(nowSideNav);
+  const setNowSideNav = useSetRecoilState(nowSideNavState);
   const dumyData = [
     { a: 213, b: 1234, c: 12345 },
     { a: 213, b: 1234, c: 12345 },

@@ -1,4 +1,4 @@
-import { nowSideNav } from "@/atoms/common.atom";
+import { nowSideNavState } from "@/atoms/common.atom";
 import { userInfoState } from "@/atoms/user.atom";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useResetRecoilState } from "recoil";
@@ -16,7 +16,7 @@ export const MypageNav = ({
   sideNavContent,
   urls,
 }: MypageNavProps) => {
-  const nowNav = useRecoilValue(nowSideNav);
+  const nowNav = useRecoilValue(nowSideNavState);
   const logout = useResetRecoilState(userInfoState);
   const navigate = useNavigate();
 

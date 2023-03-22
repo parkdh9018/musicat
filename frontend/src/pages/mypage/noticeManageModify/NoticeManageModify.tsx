@@ -1,4 +1,4 @@
-import { nowSideNav } from "@/atoms/common.atom";
+import { nowSideNavState } from "@/atoms/common.atom";
 import { Button } from "@/components/common/button/Button";
 import { Input } from "@/components/common/input/Input";
 import { useEffect, useState } from "react";
@@ -11,7 +11,7 @@ export const NoticeManageModify = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const setNowSideNav = useSetRecoilState(nowSideNav);
+  const setNowSideNav = useSetRecoilState(nowSideNavState);
 
   // 리엑트 쿼리를 사용해서 detail 정보를 가져온다.
   // param이 new라면 새로운 글 작성이니까 새글작성 세팅
