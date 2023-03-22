@@ -1,6 +1,7 @@
 package com.musicat.controller.user;
 
 
+import com.musicat.data.dto.notice.NoticeWriteDto;
 import com.musicat.data.dto.user.UserListDto;
 import com.musicat.data.dto.user.UserModifyBanDto;
 import com.musicat.service.user.AdminService;
@@ -13,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/admin")
+@RequestMapping("/admin")
 @RequiredArgsConstructor
 @CrossOrigin
 public class AdminController {
@@ -53,6 +54,13 @@ public class AdminController {
         return ResponseEntity.ok().build();
     }
 
+
+    // 공지사항 작성
+    @PostMapping("/notice")
+    public ResponseEntity<?> writeNotice(@RequestBody NoticeWriteDto noticeWriteDto) {
+        adminService.writeNotice(noticeWriteDto);
+        return ResponseEntity.ok().build();
+    }
 
 
 

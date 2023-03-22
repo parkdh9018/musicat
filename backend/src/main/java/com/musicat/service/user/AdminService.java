@@ -1,11 +1,15 @@
 package com.musicat.service.user;
 
+import com.musicat.data.dto.notice.NoticeWriteDto;
 import com.musicat.data.dto.user.UserListDto;
 import com.musicat.data.dto.user.UserModifyBanDto;
+import com.musicat.data.entity.notice.Notice;
 import com.musicat.data.entity.user.User;
 import com.musicat.data.repository.AuthorityRepository;
+import com.musicat.data.repository.NoticeRepository;
 import com.musicat.data.repository.UserRepository;
 import com.musicat.util.ConstantUtil;
+import com.musicat.util.NoticeBuilderUtil;
 import com.musicat.util.UserBuilderUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,10 +29,15 @@ import java.util.stream.Collectors;
 @Transactional
 public class AdminService {
 
-    private final UserRepository userRepository;
-    private final AuthorityRepository authorityRepository;
-    private final UserBuilderUtil userBuilderUtil;
+
     private final ConstantUtil constantUtil;
+
+    private final UserRepository userRepository;
+    private final UserBuilderUtil userBuilderUtil;
+
+    private final NoticeRepository noticeRepository;
+    private final NoticeBuilderUtil noticeBuilderUtil;
+
 
 
     // 회원 전체 조회 (관리자)
@@ -84,6 +93,7 @@ public class AdminService {
         }
     }
 
+    // 회원 활동 금지 설정
     public void modifyUserBan(UserModifyBanDto modifyBanDto) {
         User user = userRepository.findById(modifyBanDto.getUserSeq()).orElseThrow(() -> new RuntimeException());
         // 금지된 상타래면 해제
@@ -97,5 +107,18 @@ public class AdminService {
             user.setUserIsChattingBan(true);
         }
     }
+
+
+    // 공지사항 작성
+    public void writeNotice(NoticeWriteDto noticeWriteDto) {
+        User user = userRepository.findById(noticeWriteDto.getUserSeq()).orElseThrow(() -> new RuntimeException());
+        Notice notice = noticeBuilderUtil.noticeWriteDtoToNotice(noticeWriteDto, user);
+
+        System.out.println(notice.toString());
+
+        noticeRepository.save(notice);
+    }
+
+
 
 }
