@@ -19,13 +19,15 @@ public class AlertService {
     // repository 정의
     private final AlertRepository alertRepository;
 
+
+
     /**
      * 알림 등록
      * @param alertInsertRequestDto
      * @throws Exception
      */
     @Transactional
-    public void insertAlert(AlertInsertRequestDto alertInsertRequestDto) throws Exception {
+    public void insertAlert(AlertInsertRequestDto alertInsertRequestDto) {
         // 1. request -> entity
         // 2. entity save
         Alert alert = Alert.builder()
@@ -35,6 +37,7 @@ public class AlertService {
                 .build();
 
         alertRepository.save(alert);
+
     }
 
     /**
@@ -43,14 +46,11 @@ public class AlertService {
      * @throws Exception
      */
     @Transactional
-    public void deleteAlert(long alertSeq) throws Exception {
-        Optional<Alert> alert = alertRepository.findById(alertSeq);
-        if (alert.isPresent()) {
-            alertRepository.delete(alert.get());
-        } else {
-            //throw new AlertNotFoundException("Alert not found with seq: " + alertSeq); // Todo : 커스텀 예외 처리 예정
-            throw new EntityNotFoundException("Alert not found with alertSeq: " + alertSeq);
-        }
+    public void deleteAlert(long alertSeq) {
+        Alert alert = alertRepository.findById(alertSeq)
+                .orElseThrow(() -> new EntityNotFoundException());
+        alertRepository.delete(alert);
+
     }
 
     /**
@@ -59,13 +59,12 @@ public class AlertService {
      * @return List<Alert>
      * @throws Exception
      */
-    public List<Alert> getAlertList(long userSeq) throws Exception {
+    public List<Alert> getAlertList(long userSeq) {
         Optional<List<Alert>> alertList = alertRepository.findAllByUserSeq(userSeq);
 
         if (alertList.isPresent() && alertList.get().size() > 0) {
             return alertList.get();
         } else {
-            // Todo : 커스텀 예외 처리 예정
             throw new EntityNotFoundException("Alert not found with userSeq: " + userSeq);
         }
     }
@@ -76,7 +75,7 @@ public class AlertService {
      * @return
      * @throws Exception
      */
-    public Alert getAlert(long alertSeq) throws Exception {
+    public Alert getAlert(long alertSeq) {
         Optional<Alert> alert = alertRepository.findById(alertSeq);
 
         if (alert.isPresent()) {
@@ -92,8 +91,7 @@ public class AlertService {
      * @throws Exception
      */
     @Transactional
-    public void modifyAlert(AlertModifyRequestDto alertModifyRequestDto) throws Exception {
-
+    public void modifyAlert(AlertModifyRequestDto alertModifyRequestDto) {
         Optional<Alert> alert = alertRepository.findById(alertModifyRequestDto.getAlertSeq());
 
         if (alert.isPresent()) {
@@ -112,18 +110,17 @@ public class AlertService {
      * @return
      * @throws Exception
      */
-    public List<Alert> getAlertListByCondition(int condition, long userSeq, String query) throws Exception {
-
+    public List<Alert> getAlertListByCondition(String condition, long userSeq, String query) {
         Optional<List<Alert>> alertList = null;
 
         switch (condition) {
-            case 0: // 제목
+            case "title": // 제목
                 alertList = alertRepository.findAllByUserSeqAndAlertTitleContaining(userSeq, query);
                 break;
-            case 1: // 내용
+            case "content": // 내용
                 alertList = alertRepository.findAllByUserSeqAndAlertContentContaining(userSeq, query);
                 break;
-            case 2: // 제목 + 내용
+            case "any": // 제목 + 내용
                 alertList = alertRepository.findAllByUserSeqAndAlertTitleContainingOrAlertContentContaining(userSeq, query, query);
                 break;
         }
@@ -131,8 +128,7 @@ public class AlertService {
         if (alertList.isPresent() && alertList.get().size() > 0) {
             return alertList.get();
         } else {
-            // Todo : 커스텀 예외 처리 예정
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException("주어진 조건으로 검색한 결과가 없습니다.");
         }
     }
 
