@@ -23,6 +23,7 @@ export const InventoryModal = ({
   const [selected, setSelected] = useState(theme.type2);
   const arr = new Array(itemCount).fill(1);
   const badge = ["none", "red", "skyblue", "green", "gray"];
+
   return (
     <div className={style.inventory_modal}>
       <div className={style.item_flex}>
