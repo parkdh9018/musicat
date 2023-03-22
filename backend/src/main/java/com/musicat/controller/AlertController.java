@@ -1,5 +1,6 @@
 package com.musicat.controller;
 
+import com.musicat.data.dto.alert.AlertAllModifyRequestDto;
 import com.musicat.data.dto.alert.AlertInsertRequestDto;
 import com.musicat.data.dto.alert.AlertModifyRequestDto;
 import com.musicat.service.AlertService;
@@ -18,7 +19,6 @@ public class AlertController {
 
     /**
      * 알람 등록
-     *
      * @param alertInsertRequestDto
      * @return 200, 500
      */
@@ -31,7 +31,6 @@ public class AlertController {
 
     /**
      * 알림 삭제
-     *
      * @param alertSeq
      * @return
      */
@@ -43,7 +42,6 @@ public class AlertController {
 
     /**
      * 알림 전체 조회 (userSeq 기준)
-     *
      * @param userSeq
      * @return
      */
@@ -54,7 +52,6 @@ public class AlertController {
 
     /**
      * 알림 상세 조회 (alerSeq 기준)
-     *
      * @param alertSeq
      * @return
      */
@@ -65,7 +62,6 @@ public class AlertController {
 
     /**
      * 알림 수정 (읽음 처리)
-     *
      * @param alertModifyRequestDto
      * @return
      */
@@ -77,7 +73,6 @@ public class AlertController {
 
     /**
      * 알림 조건부 검색
-     *
      * @param condition
      * @param userSeq
      * @param query
@@ -88,6 +83,30 @@ public class AlertController {
             @PathVariable long userSeq, @RequestParam String query) {
         return ResponseEntity.ok()
                 .body(alertService.getAlertListByCondition(condition, userSeq, query));
+    }
+
+    /**
+     * 안읽은 알림 개수 조회
+     * @param userSeq
+     * @return
+     */
+    @GetMapping("/unread/{userSeq}")
+    public ResponseEntity<?> getAlertCountByAlertIsReadFalse(@PathVariable long userSeq) {
+        return ResponseEntity.ok().body(alertService.getAlertCountByAlertIsReadFalse(userSeq));
+    }
+
+    /**
+     * 안읽은 알림 전체 읽음 처리
+     * @param userSeq
+     * @param alertAllModifyRequestDto
+     * @return
+     */
+    @PatchMapping("/unread/{userSeq}")
+    public ResponseEntity<?> modifyAllAlert(@PathVariable long userSeq, @RequestBody
+            AlertAllModifyRequestDto alertAllModifyRequestDto) {
+
+        alertService.modifyAllAlert(userSeq, alertAllModifyRequestDto);
+        return ResponseEntity.ok().build();
     }
 
 }
