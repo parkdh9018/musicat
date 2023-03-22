@@ -2,6 +2,8 @@ package com.musicat.controller.user;
 
 
 import com.musicat.data.dto.user.UserListDto;
+import com.musicat.data.dto.user.UserModifyBanDto;
+import com.musicat.service.user.AdminService;
 import com.musicat.service.user.UserService;
 import com.musicat.util.ConstantUtil;
 import lombok.Getter;
@@ -16,14 +18,13 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class AdminController {
 
-    private final UserService userService;
-    private final ConstantUtil constantUtil;
+    private final AdminService adminService;
 
     // 모든 유저 정보 가져오기
     @GetMapping("/user")
     public ResponseEntity<?> getUserList(
             @RequestParam(value = "page", defaultValue = "0") int page) {
-        Page<UserListDto> userListDtoPage = userService.getUserList(page, constantUtil.USER_PAGE_SIZE);
+        Page<UserListDto> userListDtoPage = adminService.getUserList(page);
         return ResponseEntity.ok(userListDtoPage);
     }
 
@@ -34,9 +35,25 @@ public class AdminController {
             @RequestParam(defaultValue = "false") String isChattingBan,
             @RequestParam(defaultValue = "false") String isBan) {
 
-        return null;
-
+        Page<UserListDto> userBanListDtoPage = adminService.getUserBanList(page, isChattingBan, isBan);
+        return ResponseEntity.ok(userBanListDtoPage);
     }
+
+    // 회원 채팅 금지 설정
+    @PutMapping("/user/chattingBan")
+    public ResponseEntity<?> modifyUserChattingBan(@RequestBody UserModifyBanDto userModifyBanDto) {
+        adminService.modifyUserChattingBan(userModifyBanDto);
+        return ResponseEntity.ok().build();
+    }
+
+    // 회원 활동 금지 설정
+    @PutMapping("/user/ban")
+    public ResponseEntity<?> modifyUserBan(@RequestBody UserModifyBanDto userModifyBanDto) {
+        adminService.modifyUserBan(userModifyBanDto);
+        return ResponseEntity.ok().build();
+    }
+
+
 
 
 

@@ -27,6 +27,7 @@ public class UserDetailDto {
     // 2022년 12월 10일
     private String userCreatedAt;
     private long userMoney;
+    private List<UserMoneyLogDto> userMoneyLogDtoList = new ArrayList<>();
     private List<String> userAuthority = new ArrayList<>();
     private int userUnreadMessage;
     private boolean userIsDarkmode;

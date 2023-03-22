@@ -3,8 +3,12 @@ package com.musicat.service.user;
 
 import com.musicat.data.dto.user.UserDetailDto;
 import com.musicat.data.dto.user.UserListDto;
+import com.musicat.data.dto.user.UserModifyRequestDto;
+import com.musicat.data.dto.user.UserMoneyLogDto;
+import com.musicat.data.entity.user.MoneyLog;
 import com.musicat.data.entity.user.User;
 import com.musicat.data.repository.AuthorityRepository;
+import com.musicat.data.repository.MoneyLogRepository;
 import com.musicat.data.repository.UserRepository;
 import com.musicat.util.UserBuilderUtil;
 import lombok.RequiredArgsConstructor;
@@ -31,9 +35,9 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
-
     private final AuthorityRepository authorityRepository;
     private final UserBuilderUtil userBuilderUtil;
+    private final MoneyLogRepository moneyLogRepository;
 
 
     // 회원 상세 조회
@@ -44,30 +48,22 @@ public class UserService {
         return userBuilderUtil.userToUserDetailDto(user);
     }
 
-    // 회원 전체 조회 (관리자)
-    // page : 현재 번호, size : 크기
-    // page, size를 입력 받아 해당되는 데이터를 반환한다.
-    public Page<UserListDto> getUserList(int page, int size) {
-        PageRequest pageable = PageRequest.of(page, size);
-        Page<User> userPage = userRepository.findAll(pageable);
-
-        List<UserListDto> userListDtos = userPage.getContent().stream()
-                .map(userBuilderUtil::userToUserListDto)
-                .collect(Collectors.toList());
-
-        // 새로운 Page<UserListDto> 객체 생성
-        Pageable userListDtoPageable = PageRequest.of(userPage.getNumber(), userPage.getSize(), userPage.getSort());
-        Page<UserListDto> userListDtoPage = new PageImpl<>(userListDtos, userListDtoPageable, userPage.getTotalElements());
-        return userListDtoPage;
-    }
-
-    // 금지 회원 전체 조회 (관리자)
-    public Page<UserListDto> getUserBanList(int page, String chattingban, String ban) {
-
-    }
-
-
     // 회원 정보 수정 (닉네임 변경)
+    public void modifyUserNickname(UserModifyRequestDto userModifyRequestDto) {
+        User user = userRepository.findById(userModifyRequestDto.getUserSeq()).orElseThrow(() -> new RuntimeException());
+        user.setUserNickname(userModifyRequestDto.getUserNickname());
+    }
+
+    // 회원 탈퇴
+    public void deleteUser(long userSeq) {
+        userRepository.deleteById(userSeq);
+    }
+
+    // 회원 재화 내역 상세 조회
+    public UserMoneyLogDto getUserMoneyLogDetail(long moneyLogSeq) {
+        MoneyLog moneyLog = moneyLogRepository.findById(moneyLogSeq).orElseThrow(() -> new RuntimeException());
+        return userBuilderUtil.moneyLogToUserMoneyLogDto(moneyLog);
+    }
 
 
 

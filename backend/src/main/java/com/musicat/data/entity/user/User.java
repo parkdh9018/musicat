@@ -58,6 +58,10 @@ public class User {
     @Column(name = "user_money")
     private long userMoney;
 
+    // MoneyLog 와 1:N 연관관계 설정
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<MoneyLog> userMoneyLogList = new ArrayList<>();
+
 
 
     @ManyToMany
@@ -87,11 +91,11 @@ public class User {
     private boolean userIsDarkmode;
 
     @NotNull
-    @Column(name = "user_id_Chatting_ban")
+    @Column(name = "user_is_Chatting_ban")
     private boolean userIsChattingBan;
 
     @NotNull
-    @Column(name = "user_id_ban")
+    @Column(name = "user_is_ban")
     private boolean userIsBan;
 
     @NotNull
@@ -115,6 +119,7 @@ public class User {
         this.userWarnCount = 0;
         this.userUnreadMessage = 0;
         this.userIsDarkmode = false;
+        this.userIsChattingBan = false;
         this.userIsBan = false;
         this.userIsUser = false;
     }
