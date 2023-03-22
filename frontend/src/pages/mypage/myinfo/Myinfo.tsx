@@ -1,5 +1,5 @@
-import { nowSideNav } from "@/atoms/common.atom";
-import { userInfoState, userThemaState } from "@/atoms/user.atom";
+import { nowSideNavState } from "@/atoms/common.atom";
+import { userInfoState, userthemeState } from "@/atoms/user.atom";
 import { Board } from "@/components/common/board/Board";
 import { Button } from "@/components/common/button/Button";
 import { Input } from "@/components/common/input/Input";
@@ -19,10 +19,10 @@ export const Myinfo = () => {
     { a: 213, b: 1234, c: 12345 },
   ];
   //
-  const setNowSideNav = useSetRecoilState(nowSideNav);
+  const setNowSideNav = useSetRecoilState(nowSideNavState);
 
   // 이거 없어져야됨. useQuery로 대채해야 된다.
-  const userThema = useRecoilValue(userThemaState);
+  const usertheme = useRecoilValue(userthemeState);
 
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const [input, setInput] = useState("");
@@ -45,7 +45,7 @@ export const Myinfo = () => {
         <div className={style.toolbar}>
           <div
             className={
-              userThema.darkMode
+              usertheme.darkMode
                 ? style.circle
                 : style.circle + " " + style.circleLeft
             }

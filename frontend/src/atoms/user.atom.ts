@@ -12,13 +12,13 @@ export const userInfoState = atom({
 });
 
 // 나중에 리엑트 쿼리로 대체
-export const userThemaState = atom({
-  key: "userThemaState",
+export const userthemeState = atom({
+  key: "userthemeState",
   default: {
     darkMode: false,
-    type1: 0,
-    type2: 0,
-    type3: 0,
+    type1: 1,
+    type2: 1,
+    type3: 1,
   },
 });
 
