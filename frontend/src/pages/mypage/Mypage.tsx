@@ -29,25 +29,27 @@ export const Mypage = () => {
 
   return (
     <div
-      className={style.mypage}
       style={{
         backgroundImage: "url(../../../public/img/pagebackground/theme1.png)",
+        width: "100vw",
       }}
     >
-      <div className={style.leftTab}>
-        <MypageNav
-          sideNavContent={
-            userInfo.userRole === "admin" ? adminContent : memberContent
-          }
-          sideNavTitle={
-            userInfo.userRole === "admin" ? adminTitle : memberTitle
-          }
-          urls={userInfo.userRole === "admin" ? adminUrls : memberUrls}
-        />
-      </div>
-      <div className={style.rightTab}>
-        <div className={style.content}>
-          <Outlet />
+      <div className={style.mypage}>
+        <div className={style.leftTab}>
+          <MypageNav
+            sideNavContent={
+              userInfo.userRole === "admin" ? adminContent : memberContent
+            }
+            sideNavTitle={
+              userInfo.userRole === "admin" ? adminTitle : memberTitle
+            }
+            urls={userInfo.userRole === "admin" ? adminUrls : memberUrls}
+          />
+        </div>
+        <div className={style.rightTab}>
+          <div className={style.content}>
+            <Outlet />
+          </div>
         </div>
       </div>
     </div>

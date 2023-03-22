@@ -9,7 +9,14 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <Broadcast />
+      <div
+        style={{
+          backgroundImage: "url(../../../public/img/pagebackground/theme1.png)",
+          width: "100vw",
+        }}
+      >
+        <Broadcast />
+      </div>
       {element}
     </div>
   );
