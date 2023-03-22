@@ -1,7 +1,9 @@
 package com.musicat.controller;
 
 import com.musicat.data.dto.alert.AlertInsertRequestDto;
+import com.musicat.data.entity.Alert;
 import com.musicat.service.AlertService;
+import java.util.List;
 import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,11 +33,54 @@ public class AlertController {
         }
     }
 
+    /**
+     * 알림 삭제
+     * @param alertSeq
+     * @return
+     */
     @DeleteMapping("/{alertSeq}")
     public ResponseEntity<Void> deleteAlert(@PathVariable long alertSeq) {
         try {
             alertService.deleteAlert(alertSeq);
             return ResponseEntity.ok().build();
+        } catch (EntityNotFoundException e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    /**
+     * 알림 전체 조회 (userSeq 기준)
+     * @param userSeq
+     * @return
+     */
+    @GetMapping("/{userSeq}")
+    public ResponseEntity<?> getAlertList(@PathVariable long userSeq) {
+        try {
+            List<Alert> alertList = alertService.getAlertList(userSeq);
+            return ResponseEntity.ok().body(alertList);
+        } catch (EntityNotFoundException e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    /**
+     * 알림 상세 조회 (alerSeq 기준)
+     * @param alertSeq
+     * @return
+     */
+    @GetMapping("detail/{alertSeq}")
+    public ResponseEntity<?> getAlert(@PathVariable long alertSeq) {
+        try {
+            Alert alert = alertService.getAlert(alertSeq);
+            return ResponseEntity.ok().body(alert);
         } catch (EntityNotFoundException e) {
             System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
