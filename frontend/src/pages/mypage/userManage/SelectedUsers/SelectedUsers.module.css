@@ -12,6 +12,7 @@
   padding: 15px 15px 10px 15px;
   width: -moz-fit-content;
   width: fit-content;
+  color: var(--fade-font-color);
   border: 1.5px solid var(--font-color);
   border-radius: 20px;
   display: flex;
