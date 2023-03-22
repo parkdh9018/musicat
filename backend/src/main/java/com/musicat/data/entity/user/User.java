@@ -20,7 +20,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "user ")
+@Table(name="user")
 public class User {
 
     @Id
@@ -35,13 +35,9 @@ public class User {
     @Column(name = "user_nickname")
     private String userNickname;
 
-    @NotNull
+
     @Column(name = "user_profile_image")
     private String userProfileImage;
-
-
-    @Column(name = "user_thumbnail_image")
-    private String userThumbnailImage;
 
 
     @Column(name = "user_email")
@@ -49,9 +45,10 @@ public class User {
 
 
     @CreatedDate
+    @Builder.Default
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "user_created_at")
-    private LocalDateTime userCreatedAt;
+    private LocalDateTime userCreatedAt = LocalDateTime.now();
 
 
     @Column(name = "user_money")
@@ -118,7 +115,6 @@ public class User {
         if(userEmail == null) {
             this.userEmail = "";
         }
-
         this.userCreatedAt = LocalDateTime.now();
         this.userMoney = 0;
         this.userWarnCount = 0;

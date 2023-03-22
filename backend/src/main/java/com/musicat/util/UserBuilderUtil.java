@@ -46,7 +46,6 @@ public class UserBuilderUtil {
                 .userSeq(user.getUserSeq())
                 .userNickname(user.getUserNickname())
                 .userProfileImage(user.getUserProfileImage())
-                .userThumbnailImage(user.getUserThumbnailImage())
                 .userEmail(user.getUserEmail())
                 .userCreatedAt(user.getUserCreatedAt().format(constantUtil.simpleFormatter))
                 .userMoney(user.getUserMoney())
