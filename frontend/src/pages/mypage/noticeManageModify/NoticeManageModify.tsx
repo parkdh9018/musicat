@@ -6,6 +6,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import style from "./NoticeManageModify.module.css";
 
+import { $ } from "@/connect/axios/setting";
+
 export const NoticeManageModify = () => {
   const { noticeSeq } = useParams();
   const navigate = useNavigate();
@@ -44,7 +46,16 @@ export const NoticeManageModify = () => {
           }}
           style={{ marginRight: "7px" }}
         />
-        <Button content="등 록" onClick={() => {}} />
+        <Button
+          content="등 록"
+          onClick={() => {
+            $.post("/admin/notice", {
+              userSeq: 1,
+              noticeTitle: title,
+              noticeContent: content,
+            });
+          }}
+        />
       </div>
     </div>
   );

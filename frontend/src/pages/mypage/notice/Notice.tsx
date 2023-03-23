@@ -8,6 +8,7 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import style from "./Notice.module.css";
 import { useSetRecoilState } from "recoil";
 import { nowSideNavState } from "@/atoms/common.atom";
+import { getTop3Notice } from "@/connect/axios/queryHooks/notice";
 
 export const Notice = () => {
   const [input, setInput] = useState("");
@@ -19,6 +20,7 @@ export const Notice = () => {
     { a: 213, b: 1234, c: 12345 },
     { a: 213, b: 1234, c: 12345 },
   ];
+  const { data } = getTop3Notice();
 
   /** 사이드 Nav 초기화 */
   useEffect(() => {
@@ -27,7 +29,7 @@ export const Notice = () => {
   return (
     <div style={{ padding: "40px 3%" }}>
       <Board
-        data={dumyData}
+        data={data}
         grid={"20% 50% 30%"}
         headRow={["번호", "제목", "날짜"]}
       />

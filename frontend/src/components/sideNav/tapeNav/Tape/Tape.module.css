@@ -6,6 +6,7 @@
 
 .fixedRatio {
   width: 100%; /* 원하는 너비 설정 */
+  border-radius: 10px;
   height: auto; /* 높이는 자동으로 설정됨 */
 }
 
@@ -29,6 +30,7 @@
   position: absolute;
   width: 100%;
   height: auto;
+  border-radius: 10px;
 }
 
 .songName {

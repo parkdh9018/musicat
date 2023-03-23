@@ -12,6 +12,7 @@ export const Broadcast = () => {
         nowMainPage ? style.broadcast : style.broadcast + " " + style.mypage
       }
     >
+      <div className={nowMainPage ? style.none : style.mybackground} />
       <LoadingSpinner />
     </div>
   );
