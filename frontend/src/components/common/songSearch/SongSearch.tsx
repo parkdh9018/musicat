@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getSongSearch } from "@/connect/axios/queryHooks/music";
 import style from "./SongSearch.module.css";
 
 interface Props {
@@ -8,6 +9,19 @@ interface Props {
 export const SongSearch = () => {
   const [isFocused, setIsFocused] = useState(false);
   const [isSearched, setIsSearched] = useState(false);
+  const [search, setSearch] = useState("");
+  const [isClick, setIsClicked] = useState(false);
+
+  const songSearch = getSongSearch(search);
+
+  async function getGuestHouseList() {
+    const { data } = await getSongSearch(search);
+    console.log(data);
+  }
+
+  // useEffect(() => {
+  //   console.log(result);
+  // }, [search]);
 
   const onFocus = () => {
     setIsFocused(true);
@@ -17,8 +31,20 @@ export const SongSearch = () => {
     setIsFocused(false);
   };
 
+  const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  };
+
   const onClickSearch = () => {
-    setIsSearched(true);
+    getGuestHouseList();
+
+    setIsClicked(true);
+    // 검색,,,, api 호출
+    console.log(search);
+
+    setIsSearched(true); // isFetching으로 바꾸기
+    // isFetching == true
+
     console.log("드랍박스 보여주고 검색 api 호출");
   };
 
@@ -28,7 +54,13 @@ export const SongSearch = () => {
 
   return (
     <div className={style.searachBox}>
-      <input className={style.inputText} type="text" onFocus={onFocus} />
+      <input
+        className={style.inputText}
+        type="text"
+        onFocus={onFocus}
+        value={search}
+        onChange={onChangeValue}
+      />
       {isFocused ? (
         <div className={style.dropdown}>
           <button
@@ -40,9 +72,9 @@ export const SongSearch = () => {
           </button>
           {isSearched ? (
             <div className={style.dropdownContent}>
-              <a href="#">Link 1</a>
-              <a href="#">Link 2</a>
-              <a href="#">Link 3</a>
+              <div>Link 1</div>
+              <div>Link 2</div>
+              <div>Link 3</div>
             </div>
           ) : null}
         </div>
