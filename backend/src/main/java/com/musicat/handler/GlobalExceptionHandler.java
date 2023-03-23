@@ -4,6 +4,7 @@ package com.musicat.handler;
 import javax.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -40,6 +41,11 @@ public class GlobalExceptionHandler {
         // 여기에서는 INTERNAL_SERVER_ERROR(500)를 사용하였지만, 상황에 따라 적절한 상태 코드를 선택하세요.
         // RunTimeException도 Exception 에 포함되므로 여기서 처리된다.
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Fail " + exception.getMessage());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<String> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("요청 바디의 데이터가 올바르지 않습니다.");
     }
 
 }

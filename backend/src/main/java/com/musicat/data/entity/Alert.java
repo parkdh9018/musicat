@@ -6,6 +6,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Getter
@@ -14,7 +15,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-@ToString
 public class Alert {
 
     @Column(name = "alert_seq")
@@ -29,11 +29,12 @@ public class Alert {
     @Column(name = "alert_title")
     private String alertTitle;
 
-    @Column(name = "alert_content")
+    @Column(name = "alertContent")
     private String alertContent;
 
     @Column(name = "alert_created_at")
     @CreatedDate
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime alertCreatedAt;
 
     @Column(name = "alert_is_read")

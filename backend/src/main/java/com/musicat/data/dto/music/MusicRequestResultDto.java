@@ -1,4 +1,4 @@
-package com.musicat.data.dto;
+package com.musicat.data.dto.music;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MusicModifyResponseDto {
+public class MusicRequestResultDto {
 
   public int status;
 
-  public MusicInfoDto musicInfoDto;
+  public MusicInfoDto musicInfo;
 
   public int playOrder;
 
