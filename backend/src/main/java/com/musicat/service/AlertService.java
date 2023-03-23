@@ -1,13 +1,23 @@
 package com.musicat.service;
 
-import com.musicat.data.dto.alert.AlertInsertRequestDto;
-import com.musicat.data.dto.alert.AlertModifyRequestDto;
+import com.musicat.data.dto.alert.request.AlertAllModifyRequestDto;
+import com.musicat.data.dto.alert.response.AlertDetailResponseDto;
+import com.musicat.data.dto.alert.request.AlertInsertRequestDto;
+import com.musicat.data.dto.alert.response.AlertListResponseDto;
+import com.musicat.data.dto.alert.request.AlertModifyRequestDto;
 import com.musicat.data.entity.Alert;
 import com.musicat.data.repository.AlertRepository;
+import com.musicat.util.AlertBuildUtil;
+import com.musicat.util.ConstantUtil;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +28,10 @@ public class AlertService {
 
     // repository 정의
     private final AlertRepository alertRepository;
+
+    // util 정의
+    private final ConstantUtil constantUtil;
+    private final AlertBuildUtil alertBuildUtil;
 
 
 
@@ -59,14 +73,29 @@ public class AlertService {
      * @return List<Alert>
      * @throws Exception
      */
-    public List<Alert> getAlertList(long userSeq) {
-        Optional<List<Alert>> alertList = alertRepository.findAllByUserSeq(userSeq);
+    public Page<AlertListResponseDto> getAlertList(long userSeq, int page) {
 
-        if (alertList.isPresent() && alertList.get().size() > 0) {
-            return alertList.get();
-        } else {
-            throw new EntityNotFoundException("Alert not found with userSeq: " + userSeq);
-        }
+        PageRequest pageable = PageRequest.of(page, constantUtil.ALERT_PAGE_SIZE);
+        // Page 타입으로 리턴
+        Page<Alert> alertListPage = alertRepository.findAllByUserSeq(userSeq, pageable);
+
+
+        List<AlertListResponseDto> alertListDtos = alertListPage.getContent().stream()
+                .map(alertBuildUtil::alertToAlertListDto)
+                .collect(Collectors.toList());
+
+        Pageable alertListDtoPageable = PageRequest.of(alertListPage.getNumber(),
+                alertListPage.getSize(), alertListPage.getSort());
+        Page<AlertListResponseDto> alertListDtoPage = new PageImpl<>(alertListDtos, alertListDtoPageable, alertListPage.getTotalElements());
+
+        return alertListDtoPage;
+//        Optional<List<Alert>> alertList = alertRepository.findAllByUserSeq(userSeq);
+//
+//        if (alertList.isPresent() && alertList.get().size() > 0) {
+//            return alertList.get();
+//        } else {
+//            throw new EntityNotFoundException("Alert not found with userSeq: " + userSeq);
+//        }
     }
 
     /**
@@ -75,14 +104,12 @@ public class AlertService {
      * @return
      * @throws Exception
      */
-    public Alert getAlert(long alertSeq) {
-        Optional<Alert> alert = alertRepository.findById(alertSeq);
+    public AlertDetailResponseDto getAlert(long alertSeq) {
+        Alert alert = alertRepository.findById(alertSeq).orElseThrow(
+                () -> new EntityNotFoundException("알림 정보가 존재하지 않습니다.")
+        );
 
-        if (alert.isPresent()) {
-            return alert.get();
-        } else {
-            throw new EntityNotFoundException("Alert not found with alertSeq: " + alertSeq);
-        }
+        return alertBuildUtil.alertToAlertDetailDto(alert);
     }
 
     /**
@@ -92,14 +119,19 @@ public class AlertService {
      */
     @Transactional
     public void modifyAlert(AlertModifyRequestDto alertModifyRequestDto) {
-        Optional<Alert> alert = alertRepository.findById(alertModifyRequestDto.getAlertSeq());
+        Alert alert = alertRepository.findById(alertModifyRequestDto.getAlertSeq()).orElseThrow(
+                () -> new EntityNotFoundException()
+        );
 
-        if (alert.isPresent()) {
-            alert.get().setAlertIsRead(alertModifyRequestDto.isAlertIsRead());
-            alertRepository.save(alert.get());
-        } else {
-            throw new EntityNotFoundException("Alert not found with alertSeq: " + alertModifyRequestDto.getAlertSeq());
-        }
+        alert.setAlertIsRead(alertModifyRequestDto.isAlertIsRead());
+
+
+//        if (alert.isPresent()) {
+//            alert.get().setAlertIsRead(alertModifyRequestDto.isAlertIsRead());
+//            alertRepository.save(alert.get());
+//        } else {
+//            throw new EntityNotFoundException("Alert not found with alertSeq: " + alertModifyRequestDto.getAlertSeq());
+//        }
     }
 
     /**
@@ -130,6 +162,31 @@ public class AlertService {
         } else {
             throw new EntityNotFoundException("주어진 조건으로 검색한 결과가 없습니다.");
         }
+    }
+
+    /**
+     * 안읽은 알림 개수 조회
+     * @param userSeq
+     * @return
+     */
+    public long getAlertCountByAlertIsReadFalse(long userSeq) {
+        return alertRepository.countByUserSeqAndAlertIsReadFalse(userSeq);
+    }
+
+    /**
+     * 안읽은 알림 전체 읽음 처리
+     * @param userSeq
+     * @param alertAllModifyRequestDto
+     */
+    @Transactional
+    public void modifyAllAlert(long userSeq, AlertAllModifyRequestDto alertAllModifyRequestDto) {
+        List<Alert> alertList = alertRepository.findAllByUserSeq(userSeq)
+                .orElseThrow(() -> new EntityNotFoundException("조회 결과가 없습니다."));
+
+        for (Alert alert : alertList) {
+            alert.setAlertIsRead(true);
+        }
+
     }
 
 }

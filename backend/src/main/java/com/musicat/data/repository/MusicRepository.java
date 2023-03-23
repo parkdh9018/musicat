@@ -9,21 +9,21 @@ public interface MusicRepository extends JpaRepository<Music, Long> {
 
 //  @Query(value = "SELECT m FROM Music m  WHERE m.musicName = :musicName AND m.musicArtist = :musicArtist AND m.musicIsPlayed = false")
 //  public Optional<Music> findByNameAndArtist(@Param("musicName") String musicName, @Param("musicArtist") String musicArtist);
-  public Optional<Music> findByMusicNameAndMusicArtistAndMusicIsPlayedFalse(String musicName,
+  public Optional<Music> findByMusicTitleAndMusicArtistAndMusicPlayedFalse(String musicTitle,
       String musicArtist);
 
 //  @Query(value = "SELECT m FROM Music m WHERE m.memberSeq = :memberSeq AND m.musicIsPlayed = false")
 //  Optional<Music> findUnplayedMusicByMemberSeq(@Param("memberSeq") long memberSeq);
-  public Optional<Music> findByMemberSeqAndMusicIsPlayedFalse(Long memberSeq);
+  public Optional<Music> findByUserSeqAndMusicPlayedFalse(Long userSeq);
 
 //  @Query(value = "SELECT COUNT(*) FROM Music m WHERE m.musicSeq < :musicSeq AND m.musicIsPlayed = false")
 //  public int countUnplayedMusicBefore(@Param("musicSeq") Long musicSeq);
-  public int countByMusicSeqLessThanAndMusicIsPlayedFalse(Long musicSeq);
+  public int countByMusicSeqLessThanAndMusicPlayedFalse(Long musicSeq);
 
-  public Optional<List<Music>> findTop10ByMusicIsPlayedFalseOrderByMusicSeqAsc();
+  public Optional<List<Music>> findTop10ByMusicPlayedFalseOrderByMusicSeqAsc();
 
-  public Optional<Music> findTop1ByMusicIsPlayedTrueOrderByMusicSeqDesc();
+  public Optional<Music> findTop1ByMusicPlayedTrueOrderByMusicSeqDesc();
 
-  public Optional<Music> findTop1ByMusicIsPlayedFalseOrderByMusicSeqAsc();
+  public Optional<Music> findTop1ByMusicPlayedFalseOrderByMusicSeqAsc();
 
 }

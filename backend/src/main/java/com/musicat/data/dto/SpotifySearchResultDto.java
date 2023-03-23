@@ -4,22 +4,19 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MusicModifyDto {
+public class SpotifySearchResultDto {
 
-  private long memberSeq;
-
-  private String musicName;
-
+  private String musicTitle;
   private String musicArtist;
-
-  private String youtubeVideoId;
-
-  private long musicLength;
-
-  private String musicCover;
+  private String musicAlbum;
+  private String musicImage;
+  private String musicGenre;
+  private String musicReleaseDate;
 }
