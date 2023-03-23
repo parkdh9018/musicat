@@ -34,7 +34,7 @@ export const Chat = () => {
   const [isModalOpen, setModal] = useState(false);
 
   return (
-    <div style={{ minHeight: "100%", height: "auto" }}>
+    <div style={{ minHeight: "360px", height: "auto" }}>
       Chat
       <Button
         content={"강rkd"}
@@ -60,11 +60,6 @@ export const Chat = () => {
         last={false}
         totalPages={14}
         url={""}
-      />
-      <Board
-        data={dumyData}
-        grid={"40% 30% 30%"}
-        headRow={["1번", "2번", "3번"]}
       />
       <button onClick={() => setModal(true)}>모달열기</button>
       {isModalOpen && (

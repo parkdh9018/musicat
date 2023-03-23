@@ -5,7 +5,7 @@
 }
 
 .innerHeader {
-  height: 72px;
+  height: 65px;
   max-width: var.$최대넓이;
   margin-left: auto;
   margin-right: auto;
@@ -15,29 +15,50 @@
 
   .innerContent {
     width: 30%;
+    margin-top: 3px;
     display: flex;
     justify-content: center;
   }
 
   .logo_img {
+    width: 130px;
     margin-left: 20px;
+    margin-top: 3px;
+    transition: 0.1s;
+
+    &:hover {
+      width: 133px;
+      box-shadow: 1px 1px 0 1px rgb(0, 0, 0, 0.1);
+    }
   }
 
   .user_info {
     display: flex;
     align-items: center;
     margin-right: 20px;
+    cursor: pointer;
+
     .nickname {
       color: var(--fade-font-color);
+      transition: 0.2s;
     }
 
     .nickname_other {
       color: var(--font-color);
+      transition: 0.2s;
     }
 
     &:hover .popover_state {
       visibility: visible;
       opacity: 100;
+    }
+
+    &:hover .nickname_other {
+      color: var(--fade-font-color);
+    }
+
+    &:hover .nickname {
+      color: var(--font-color);
     }
   }
 }
@@ -46,8 +67,8 @@
   position: relative;
 
   img {
-    width: 50px;
-    height: 50px;
+    width: 42px;
+    height: 42px;
     border-radius: 100%;
     box-shadow: 0 4px 4px 0 rgb(0, 0, 0, 25%);
     margin-left: 10px;
@@ -58,18 +79,18 @@
   .badge {
     position: absolute;
     border: 1px solid white;
-    width: 21px;
-    height: 21px;
+    width: 18px;
+    height: 18px;
     background-color: #ff4e4e;
     border-radius: 50%;
-    padding: 12px;
+    padding: 10px;
     top: -8px;
     right: -9px;
     display: flex;
     justify-content: center;
     align-items: center;
     color: var(--font-color);
-    font-size: 0.8rem;
+    font-size: 0.7rem;
   }
 }
 
