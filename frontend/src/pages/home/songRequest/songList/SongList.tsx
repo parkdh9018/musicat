@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import style from "./SongList.module.css";
 import { Modal } from "@/components/common/modal/Modal";
 import { SongDetailModal } from "./SongDetailModal";
+import { getSongList } from "@/connect/axios/queryHooks/music";
 
 interface Song {
   musicSeq: number;
@@ -47,6 +48,9 @@ export const SongList = () => {
       musicCover: null,
     },
   ];
+  // 404 웅렬님께서 수정중이심...
+  // const data = getSongList();
+  // console.log(data);
 
   const [isSongDetailModalOpen, setIsSongDetailModalOpen] = useState(false);
 

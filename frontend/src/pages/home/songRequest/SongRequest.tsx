@@ -1,6 +1,6 @@
 import style from "./SongRequest.module.css";
 import { SongList } from "./songList/SongList";
-import { SongSearch } from "./songSearch/SongSearch";
+import { SongSearch } from "@/components/common/songSearch/SongSearch";
 
 export const SongRequest = () => {
   return (
