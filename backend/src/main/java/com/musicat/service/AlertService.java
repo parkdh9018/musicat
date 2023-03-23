@@ -34,9 +34,9 @@ public class AlertService {
     private final AlertBuildUtil alertBuildUtil;
 
 
-
     /**
      * 알림 등록
+     *
      * @param alertInsertRequestDto
      * @throws Exception
      */
@@ -56,19 +56,21 @@ public class AlertService {
 
     /**
      * 알림 삭제
+     *
      * @param alertSeq
      * @throws Exception
      */
     @Transactional
     public void deleteAlert(long alertSeq) {
         Alert alert = alertRepository.findById(alertSeq)
-                .orElseThrow(() -> new EntityNotFoundException());
+                .orElseThrow(EntityNotFoundException::new);
         alertRepository.delete(alert);
 
     }
 
     /**
      * 알림 전체 조회 (userSeq 기준)
+     *
      * @param userSeq
      * @return List<Alert>
      * @throws Exception
@@ -79,14 +81,14 @@ public class AlertService {
         // Page 타입으로 리턴
         Page<Alert> alertListPage = alertRepository.findAllByUserSeq(userSeq, pageable);
 
-
         List<AlertListResponseDto> alertListDtos = alertListPage.getContent().stream()
                 .map(alertBuildUtil::alertToAlertListDto)
                 .collect(Collectors.toList());
 
         Pageable alertListDtoPageable = PageRequest.of(alertListPage.getNumber(),
                 alertListPage.getSize(), alertListPage.getSort());
-        Page<AlertListResponseDto> alertListDtoPage = new PageImpl<>(alertListDtos, alertListDtoPageable, alertListPage.getTotalElements());
+        Page<AlertListResponseDto> alertListDtoPage = new PageImpl<>(alertListDtos,
+                alertListDtoPageable, alertListPage.getTotalElements());
 
         return alertListDtoPage;
 //        Optional<List<Alert>> alertList = alertRepository.findAllByUserSeq(userSeq);
@@ -100,6 +102,7 @@ public class AlertService {
 
     /**
      * 알림 상세 조회 (alertSeq 기준)
+     *
      * @param alertSeq
      * @return
      * @throws Exception
@@ -114,17 +117,16 @@ public class AlertService {
 
     /**
      * 알림 수정 (읽음 처리)
+     *
      * @param alertModifyRequestDto
      * @throws Exception
      */
     @Transactional
     public void modifyAlert(AlertModifyRequestDto alertModifyRequestDto) {
-        Alert alert = alertRepository.findById(alertModifyRequestDto.getAlertSeq()).orElseThrow(
-                () -> new EntityNotFoundException()
-        );
+        Alert alert = alertRepository.findById(alertModifyRequestDto.getAlertSeq())
+                .orElseThrow(EntityNotFoundException::new);
 
         alert.setAlertIsRead(alertModifyRequestDto.isAlertIsRead());
-
 
 //        if (alert.isPresent()) {
 //            alert.get().setAlertIsRead(alertModifyRequestDto.isAlertIsRead());
@@ -136,6 +138,7 @@ public class AlertService {
 
     /**
      * 알림 조건부 검색
+     *
      * @param condition
      * @param userSeq
      * @param query
@@ -143,17 +146,19 @@ public class AlertService {
      * @throws Exception
      */
     public List<Alert> getAlertListByCondition(String condition, long userSeq, String query) {
-        Optional<List<Alert>> alertList = null;
+        Optional<List<Alert>> alertList = Optional.empty();
 
         switch (condition) {
             case "title": // 제목
                 alertList = alertRepository.findAllByUserSeqAndAlertTitleContaining(userSeq, query);
                 break;
             case "content": // 내용
-                alertList = alertRepository.findAllByUserSeqAndAlertContentContaining(userSeq, query);
+                alertList = alertRepository.findAllByUserSeqAndAlertContentContaining(userSeq,
+                        query);
                 break;
             case "any": // 제목 + 내용
-                alertList = alertRepository.findAllByUserSeqAndAlertTitleContainingOrAlertContentContaining(userSeq, query, query);
+                alertList = alertRepository.findAllByUserSeqAndAlertTitleContainingOrAlertContentContaining(
+                        userSeq, query, query);
                 break;
         }
 
@@ -166,6 +171,7 @@ public class AlertService {
 
     /**
      * 안읽은 알림 개수 조회
+     *
      * @param userSeq
      * @return
      */
@@ -175,6 +181,7 @@ public class AlertService {
 
     /**
      * 안읽은 알림 전체 읽음 처리
+     *
      * @param userSeq
      * @param alertAllModifyRequestDto
      */
