@@ -1,5 +1,6 @@
 package com.musicat.service.user;
 
+import com.musicat.data.dto.notice.NoticeModifyDto;
 import com.musicat.data.dto.notice.NoticeWriteDto;
 import com.musicat.data.dto.user.UserListDto;
 import com.musicat.data.dto.user.UserModifyBanDto;
@@ -11,6 +12,7 @@ import com.musicat.data.repository.UserRepository;
 import com.musicat.util.ConstantUtil;
 import com.musicat.util.NoticeBuilderUtil;
 import com.musicat.util.UserBuilderUtil;
+import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -21,7 +23,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
-
 
 
 @Service
@@ -39,22 +40,22 @@ public class AdminService {
     private final NoticeBuilderUtil noticeBuilderUtil;
 
 
-
     // 회원 전체 조회 (관리자)
     // page : 현재 번호, size : 크기
     // page, size를 입력 받아 해당되는 데이터를 반환한다.
-    public Page<UserListDto> getUserList(int page ) {
+    public Page<UserListDto> getUserList(int page) {
         PageRequest pageable = PageRequest.of(page, constantUtil.USER_PAGE_SIZE);
         Page<User> userListPage = userRepository.findAll(pageable);
-
 
         List<UserListDto> userListDtos = userListPage.getContent().stream()
                 .map(userBuilderUtil::userToUserListDto)
                 .collect(Collectors.toList());
 
         // 새로운 Page<UserListDto> 객체 생성
-        Pageable userListDtoPageable = PageRequest.of(userListPage.getNumber(), userListPage.getSize(), userListPage.getSort());
-        Page<UserListDto> userListDtoPage = new PageImpl<>(userListDtos, userListDtoPageable, userListPage.getTotalElements());
+        Pageable userListDtoPageable = PageRequest.of(userListPage.getNumber(),
+                userListPage.getSize(), userListPage.getSort());
+        Page<UserListDto> userListDtoPage = new PageImpl<>(userListDtos, userListDtoPageable,
+                userListPage.getTotalElements());
         return userListDtoPage;
     }
 
@@ -66,15 +67,18 @@ public class AdminService {
         boolean userIsBan = Boolean.parseBoolean(isBan);
 
         PageRequest pageable = PageRequest.of(page, constantUtil.USER_PAGE_SIZE);
-        Page<User> userBanListPage = userRepository.findByUserIsChattingBanAndUserIsBan(userIsChattingBan, userIsBan, pageable);
+        Page<User> userBanListPage = userRepository.findByUserIsChattingBanAndUserIsBan(
+                userIsChattingBan, userIsBan, pageable);
 
         List<UserListDto> userBanListDto = userBanListPage.getContent().stream()
                 .map(userBuilderUtil::userToUserListDto)
                 .collect(Collectors.toList());
 
         // 새로운 Page<UserListDto> 객체 생성
-        Pageable userListDtoPageable = PageRequest.of(userBanListPage.getNumber(), userBanListPage.getSize(), userBanListPage.getSort());
-        Page<UserListDto> userBanListDtoPage = new PageImpl<>(userBanListDto, userListDtoPageable, userBanListPage.getTotalElements());
+        Pageable userListDtoPageable = PageRequest.of(userBanListPage.getNumber(),
+                userBanListPage.getSize(), userBanListPage.getSort());
+        Page<UserListDto> userBanListDtoPage = new PageImpl<>(userBanListDto, userListDtoPageable,
+                userBanListPage.getTotalElements());
 
         return userBanListDtoPage;
     }
@@ -82,7 +86,8 @@ public class AdminService {
 
     // 회원 채팅 금지 설정
     public void modifyUserChattingBan(UserModifyBanDto modifyBanDto) {
-        User user = userRepository.findById(modifyBanDto.getUserSeq()).orElseThrow(() -> new RuntimeException());
+        User user = userRepository.findById(modifyBanDto.getUserSeq())
+                .orElseThrow(() -> new RuntimeException());
         // 금지된 상태라면 해제
         if (user.isUserIsChattingBan()) {
             user.setUserIsChattingBan(false);
@@ -95,7 +100,8 @@ public class AdminService {
 
     // 회원 활동 금지 설정
     public void modifyUserBan(UserModifyBanDto modifyBanDto) {
-        User user = userRepository.findById(modifyBanDto.getUserSeq()).orElseThrow(() -> new RuntimeException());
+        User user = userRepository.findById(modifyBanDto.getUserSeq())
+                .orElseThrow(() -> new RuntimeException());
         // 금지된 상타래면 해제
         if (user.isUserIsBan()) {
             user.setUserIsBan(false);
@@ -111,7 +117,8 @@ public class AdminService {
 
     // 공지사항 작성
     public void writeNotice(NoticeWriteDto noticeWriteDto) {
-        User user = userRepository.findById(noticeWriteDto.getUserSeq()).orElseThrow(() -> new RuntimeException());
+        User user = userRepository.findById(noticeWriteDto.getUserSeq())
+                .orElseThrow(() -> new RuntimeException());
         Notice notice = noticeBuilderUtil.noticeWriteDtoToNotice(noticeWriteDto, user);
 
         System.out.println(notice.toString());
@@ -119,6 +126,30 @@ public class AdminService {
         noticeRepository.save(notice);
     }
 
+    /**
+     * 공지사항 수정
+     * @param noticeModifyDto
+     */
+    public void modifyNotice(NoticeModifyDto noticeModifyDto) {
+        Notice notice = noticeRepository.findById(noticeModifyDto.getNoticeSeq())
+                .orElseThrow(() -> new EntityNotFoundException("공지사항이 존재하지 않습니다."));
+
+        notice.setNoticeTitle(noticeModifyDto.getNoticeTitle());
+        notice.setNoticeContent(noticeModifyDto.getNoticeContent());
+
+        noticeRepository.save(notice);
+    }
+
+    /**
+     * 공지사항 삭제
+     * @param noticeSeq
+     */
+    public void deleteNotice(long noticeSeq) {
+        Notice notice = noticeRepository.findById(noticeSeq)
+                .orElseThrow(() -> new EntityNotFoundException("공지사항이 존재하지 않습니다."));
+
+        noticeRepository.delete(notice);
+    }
 
 
 }

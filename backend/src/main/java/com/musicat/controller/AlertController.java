@@ -5,6 +5,7 @@ import com.musicat.data.dto.alert.AlertInsertRequestDto;
 import com.musicat.data.dto.alert.AlertModifyRequestDto;
 import com.musicat.service.AlertService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,19 +21,19 @@ public class AlertController {
     /**
      * 알람 등록
      * @param alertInsertRequestDto
-     * @return 200, 500
+     * @return 201, 500
      */
     @PostMapping("")
-    public ResponseEntity<Void> insertAlert(
+    public ResponseEntity<?> insertAlert(
             @RequestBody AlertInsertRequestDto alertInsertRequestDto) {
         alertService.insertAlert(alertInsertRequestDto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).body("알림 등록에 성공하였습니다.");
     }
 
     /**
      * 알림 삭제
      * @param alertSeq
-     * @return
+     * @return 201, 404, 500
      */
     @DeleteMapping("/{alertSeq}")
     public ResponseEntity<Void> deleteAlert(@PathVariable long alertSeq) {
