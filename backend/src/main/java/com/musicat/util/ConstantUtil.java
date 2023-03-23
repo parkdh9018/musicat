@@ -21,6 +21,9 @@ public class ConstantUtil {
     // 공지사항 페이지
     public final int NOTICE_PAGE_SIZE = 10;
 
+    // 알림 페이지
+    public final int ALERT_PAGE_SIZE = 10;
+
     // 2022년 12월 10일 같은 형색
     public DateTimeFormatter simpleFormatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
     // 2022년 12월 10일 (수) 18:30

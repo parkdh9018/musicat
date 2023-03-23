@@ -1,4 +1,4 @@
-package com.musicat.data.dto.alert;
+package com.musicat.data.dto.alert.request;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

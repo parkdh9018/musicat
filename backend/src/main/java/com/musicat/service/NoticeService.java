@@ -35,7 +35,7 @@ public class NoticeService {
 
   // 공지사항 최신 3개 조회
   public List<NoticeListDto> getNoticeTop3() {
-    List<Notice> noticeList = noticeRepository.findTop3ByOrderByNoticeCreatedAtDesc().orElseThrow(() -> new EntityNotFoundException("공지사항이 3개 이상 존재하지 않습니다."));
+    List<Notice> noticeList = noticeRepository.findTop3ByOrderByNoticeCreatedAtDesc().orElseThrow(() -> new EntityNotFoundException("공지사항이 존재하지 않습니다."));
     return noticeList.stream()
             .map(notice -> noticeBuilderUtil.noticeToNoticeListDto(notice))
             .collect(Collectors.toList());
