@@ -21,6 +21,10 @@ export function getSongList() {
   return query;
 }
 
+export function getSongSearch(search: string) {
+  return $.get(`/music/search?queryString=${search}`);
+}
+
 export function postSongRequest(req: Song) {
   $.post("/music/request", req);
 }
