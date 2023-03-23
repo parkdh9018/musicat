@@ -1,6 +1,7 @@
 package com.musicat.controller.user;
 
 
+import com.musicat.data.dto.notice.NoticeModifyDto;
 import com.musicat.data.dto.notice.NoticeWriteDto;
 import com.musicat.data.dto.user.UserListDto;
 import com.musicat.data.dto.user.UserModifyBanDto;
@@ -62,7 +63,27 @@ public class AdminController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * 공지사항 수정
+     * @param noticeModifyDto
+     * @return 200, 404, 500
+     */
+    @PatchMapping("/notice")
+    public ResponseEntity<?> modifyNotice(@RequestBody NoticeModifyDto noticeModifyDto) {
+        adminService.modifyNotice(noticeModifyDto);
+        return ResponseEntity.ok().build();
+    }
 
+    /**
+     * 공지사항 삭제
+     * @param noticeSeq
+     * @return 200, 404, 500
+     */
+    @DeleteMapping("/notice/{noticeSeq}")
+    public ResponseEntity<?> deleteNotice(@PathVariable long noticeSeq) {
+        adminService.deleteNotice(noticeSeq);
+        return ResponseEntity.ok().build();
+    }
 
 
 }

@@ -1,4 +1,4 @@
-package com.musicat.data.dto.alert;
+package com.musicat.data.dto.alert.response;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,11 +10,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class AlertInsertRequestDto {
+public class AlertDetailResponseDto {
 
-    private long userSeq;
+    private long alertSeq;
 
     private String alertTitle;
 
     private String alertContent;
+
+    private String alertCreatedAt;
+
 }
