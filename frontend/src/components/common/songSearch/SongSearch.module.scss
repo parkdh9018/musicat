@@ -1,0 +1,83 @@
+.searachBox {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+
+.inputText {
+  width: 100%;
+  height: 30px;
+  padding: 5px 15px 3px;
+  border: 1.5px solid var(--font-color);
+  background-color: var(--background-color);
+  color: var(--font-color);
+  border-radius: 20px;
+  margin-bottom: 12px;
+}
+
+// 검색칸에 포커스 했을 때 너비 꽉 차게
+// .inputText:focus {
+//   width: 100%;
+//   height: 30px;
+// }
+
+.input_text::placeholder {
+  font-size: 1rem;
+  color: var(--fade-font-color);
+}
+
+.searchBtn {
+  position: absolute;
+  top: 10%;
+  right: 5%;
+  z-index: 1;
+}
+
+.requestBtn {
+}
+
+/* Style The Dropdown Button */
+.dropbtn {
+  background-color: #4caf50;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdownContent {
+  display: block;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  right: 0;
+  top: 90%;
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdownContent a:hover {
+  background-color: #f1f1f1;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
+}

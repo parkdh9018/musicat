@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import style from "./SongList.module.css";
-import { SongDetailNav } from "../songDetailBox/SongDetailNav";
+import { Modal } from "@/components/common/modal/Modal";
+import { SongDetailModal } from "./SongDetailModal";
+import { getSongList } from "@/connect/axios/queryHooks/music";
 
 interface Song {
   musicSeq: number;
@@ -14,7 +16,7 @@ interface Song {
 }
 
 export const SongList = () => {
-  //  const songs: Song[] = "api 요청 리액트 쿼리로 받아오기"
+  //  const songs: Song[] = "api 요청(/music) 리액트 쿼리로 받아오기"
 
   // 더미데이터
   const songs: Song[] = [
@@ -46,17 +48,14 @@ export const SongList = () => {
       musicCover: null,
     },
   ];
+  // 404 웅렬님께서 수정중이심...
+  // const data = getSongList();
+  // console.log(data);
 
-  const [isDetailOpened, setIsDetailOpened] = useState<{
-    [id: number]: boolean;
-  }>({});
+  const [isSongDetailModalOpen, setIsSongDetailModalOpen] = useState(false);
 
-  const toggleSongDetail = (id: number) => {
-    // 다른 부분 클릭하면 기존 창 닫는 로직 추가 필요
-    setIsDetailOpened((prevStatus) => ({
-      ...prevStatus,
-      [id]: !prevStatus[id],
-    }));
+  const onSongDetail = () => {
+    setIsSongDetailModalOpen(true);
   };
 
   const songList: JSX.Element[] = songs.map((song) => (
@@ -64,14 +63,7 @@ export const SongList = () => {
       <span className={style.songSpan}>
         {song.musicName} - {song.musicArtist}
       </span>
-      {isDetailOpened[song.musicSeq] ? (
-        //위치 변경 필요 (버튼에 옆에 떠있는 포지션으로)
-        <SongDetailNav />
-      ) : null}
-      <button
-        className={style.songBtn}
-        onClick={() => toggleSongDetail(song.musicSeq)}
-      >
+      <button className={style.songBtn} onClick={() => onSongDetail()}>
         ...
       </button>
     </div>
@@ -80,7 +72,12 @@ export const SongList = () => {
   return (
     <>
       <div>{songList}</div>
-      <div></div>
+      {isSongDetailModalOpen && (
+        <Modal
+          setModalOpen={setIsSongDetailModalOpen}
+          children={<SongDetailModal />}
+        />
+      )}
     </>
   );
 };

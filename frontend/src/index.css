@@ -46,7 +46,11 @@ a {
 }
 
 a:visited {
-  color: black;
+  color: var(--background-color);
+}
+
+a:link {
+  color: var(--background-color);
 }
 
 li {

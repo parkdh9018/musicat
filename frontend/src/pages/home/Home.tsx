@@ -14,17 +14,19 @@ export const Home = () => {
 
   return (
     <div
-      className={style.home}
       style={{
-        backgroundImage: "url(../../../public/img/pagebackground/theme1.png)",
+        backgroundImage: "url(/img/pagebackground/theme1.png)",
+        width: "100vw",
       }}
     >
-      <div className={style.leftTab}>
-        <TapeNav />
-      </div>
-      <div className={style.rightTab}>
-        <div className={style.content}>
-          <Outlet />
+      <div className={style.home}>
+        <div className={style.leftTab}>
+          <TapeNav />
+        </div>
+        <div className={style.rightTab}>
+          <div className={style.content}>
+            <Outlet />
+          </div>
         </div>
       </div>
     </div>

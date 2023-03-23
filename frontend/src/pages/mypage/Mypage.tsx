@@ -7,7 +7,6 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import style from "./Mypage.module.css";
 
 export const Mypage = () => {
-  // <SideNav sideNavTitle={sideNavTitle} sideNavContent={sideNavContent} urls={urls} />
   const userInfo = useRecoilValue(userInfoState);
   const setNowMainPage = useSetRecoilState(nowMainPageState);
 
@@ -29,25 +28,27 @@ export const Mypage = () => {
 
   return (
     <div
-      className={style.mypage}
       style={{
-        backgroundImage: "url(../../../public/img/pagebackground/theme1.png)",
+        backgroundImage: "url(/img/pagebackground/theme1.png)",
+        width: "100vw",
       }}
     >
-      <div className={style.leftTab}>
-        <MypageNav
-          sideNavContent={
-            userInfo.userRole === "admin" ? adminContent : memberContent
-          }
-          sideNavTitle={
-            userInfo.userRole === "admin" ? adminTitle : memberTitle
-          }
-          urls={userInfo.userRole === "admin" ? adminUrls : memberUrls}
-        />
-      </div>
-      <div className={style.rightTab}>
-        <div className={style.content}>
-          <Outlet />
+      <div className={style.mypage}>
+        <div className={style.leftTab}>
+          <MypageNav
+            sideNavContent={
+              userInfo.userRole === "admin" ? adminContent : memberContent
+            }
+            sideNavTitle={
+              userInfo.userRole === "admin" ? adminTitle : memberTitle
+            }
+            urls={userInfo.userRole === "admin" ? adminUrls : memberUrls}
+          />
+        </div>
+        <div className={style.rightTab}>
+          <div className={style.content}>
+            <Outlet />
+          </div>
         </div>
       </div>
     </div>
