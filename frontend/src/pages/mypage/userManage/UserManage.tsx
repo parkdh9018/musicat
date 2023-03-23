@@ -3,6 +3,7 @@ import { Board } from "@/components/common/board/Board";
 import { Button } from "@/components/common/button/Button";
 import { Input } from "@/components/common/input/Input";
 import { SelectBox } from "@/components/common/selectBox/SelectBox";
+import { getAllUsers } from "@/connect/axios/queryHooks/admin";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import { SelectedUsers } from "./SelectedUsers/SelectedUsers";
@@ -10,11 +11,14 @@ import { SelectedUsers } from "./SelectedUsers/SelectedUsers";
 import style from "./UserManage.module.css";
 
 export const UserManage = () => {
+
   const setNowSideNav = useSetRecoilState(nowSideNavState);
 
   useEffect(() => {
     setNowSideNav("유저관리");
   }, []);
+
+  const mygetAllUsers = getAllUsers(0);
 
   const searchOptions = [
     { value: "all", name: "모두" },
@@ -45,17 +49,30 @@ export const UserManage = () => {
     <div className={style.userManage}>
       <div className={style.searchBar}>
         <span>유저검색 : </span>
-        <SelectBox options={searchOptions} setValue={() => {}} style={{width: "13%"}}/>
+        <SelectBox
+          options={searchOptions}
+          setValue={() => {}}
+          style={{ width: "13%" }}
+        />
         <Input input={""} setInput={() => {}} />
-        <Button content="검색" onClick={() => {}} />
+        <Button content="검색" onClick={() => {
+          const { data } = mygetAllUsers;
+          console.log(data)
+        }} />
       </div>
       <div className={style.seleceted_userList}>
         <SelectedUsers />
       </div>
       <div className={style.userStateChange}>
         <span>변동사항 : </span>
-        <SelectBox options={useStateChangeOptions} setValue={() => {}} style={{width: "13%"}}/>
-        <Button content="적용" onClick={() => {}} />
+        <SelectBox
+          options={useStateChangeOptions}
+          setValue={() => {}}
+          style={{ width: "13%" }}
+        />
+        <Button content="적용" onClick={() => {
+          
+        }} />
       </div>
       <div className={style.userList}>
         <Board
