@@ -53,7 +53,7 @@ export const NoticeManageModify = () => {
               userSeq: 1,
               noticeTitle: title,
               noticeContent: content,
-            });
+            }).then();
           }}
         />
       </div>

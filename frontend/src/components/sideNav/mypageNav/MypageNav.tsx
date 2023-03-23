@@ -26,9 +26,11 @@ export const MypageNav = ({
       <hr />
       {sideNavContent.map((data, i) => {
         return (
-          <p
+          <div
             key={uuidv4()}
-            className={nowNav === data ? style.now : undefined}
+            className={
+              nowNav === data ? style.now + " " + style.nav : style.nav
+            }
             onClick={() => {
               if (data === "로그아웃") {
                 logout();
@@ -39,8 +41,8 @@ export const MypageNav = ({
             }}
           >
             {data}
-            {nowNav === data ? <div></div> : null}
-          </p>
+            {nowNav === data ? <div className={style.tag} /> : null}
+          </div>
         );
       })}
       <hr />
