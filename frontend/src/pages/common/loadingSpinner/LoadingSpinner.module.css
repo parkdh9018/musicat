@@ -4,7 +4,7 @@
   width: 50px;
   margin: auto;
   position: relative;
-  top: calc(50% - 50px);
+  top: calc(50% - 20px);
 }
 
 .loader:before,

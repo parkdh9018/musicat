@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from "uuid";
 interface BoardProps {
   headRow: string[];
   grid: string;
-  data: any[];
+  data?: any[];
   url?: string;
   setIsModalOpen?: (d: boolean) => void;
 }
@@ -45,7 +45,7 @@ export const Board = ({
             className={style.content_container}
             style={{ gridTemplateColumns: grid }}
           >
-            {Object.keys(content).map((contentRow: any) => {
+            {Object.values(content).map((contentRow: any) => {
               return (
                 <div
                   key={uuidv4()}
