@@ -1,74 +1,54 @@
 package com.musicat.util;
 
-import com.musicat.data.dto.MusicInfoDto;
-import com.musicat.data.dto.MusicInsertResponseDto;
-import com.musicat.data.dto.MusicModifyResponseDto;
-import com.musicat.data.dto.MusicRequestDto;
+import com.musicat.data.dto.music.MusicInfoDto;
+import com.musicat.data.dto.music.MusicRequestResultDto;
+import com.musicat.data.dto.music.MusicRequestDto;
+import com.musicat.data.dto.YoutubeSearchResultDto;
 import com.musicat.data.entity.Music;
 import org.springframework.stereotype.Component;
 
 @Component
 public class MusicBuilderUtil {
 
-  public MusicInsertResponseDto buildMusicInsertResponseDto(Music music, int status,
+  public MusicRequestResultDto buildMusicRequestResultDto(int status, Music music,
       int playOrder) {
-    MusicInfoDto musicInfo = MusicInfoDto.builder()
-        .memberSeq(music.getMemberSeq())
-        .musicPlayedAt(music.getMusicPlayedAt())
-        .musicCreatedAt(music.getMusicCreatedAt())
-        .musicName(music.getMusicName())
-        .musicArtist(music.getMusicArtist())
-        .youtubeVideoId(music.getYoutubeVideoId())
-        .musicCover(music.getMusicCover())
-        .musicLength(music.getMusicLength())
-        .build();
-    return MusicInsertResponseDto.builder()
+    return MusicRequestResultDto.builder()
         .status(status)
-        .musicInfoDto(musicInfo)
+        .musicInfo(music == null ? null : buildMusicInfoDto(music))
         .playOrder(playOrder)
         .build();
   }
 
-  public MusicModifyResponseDto buildMusicModifyResponseDto(Music music, int status,
-      int playOrder) {
-    MusicInfoDto musicInfo = MusicInfoDto.builder()
-        .memberSeq(music.getMemberSeq())
-        .musicPlayedAt(music.getMusicPlayedAt())
-        .musicCreatedAt(music.getMusicCreatedAt())
-        .musicName(music.getMusicName())
-        .musicArtist(music.getMusicArtist())
-        .youtubeVideoId(music.getYoutubeVideoId())
-        .musicCover(music.getMusicCover())
-        .musicLength(music.getMusicLength())
-        .build();
-    return MusicModifyResponseDto.builder()
-        .status(status)
-        .musicInfoDto(musicInfo)
-        .playOrder(playOrder)
-        .build();
-  }
-
-  public Music buildMusicEntity(MusicRequestDto musicRequestDto) {
+  public Music buildMusicEntity(MusicRequestDto musicRequestDto, YoutubeSearchResultDto youtubeSearchResult) {
     return Music.builder()
-        .memberSeq(musicRequestDto.getMemberSeq())
-        .musicName(musicRequestDto.getMusicName())
+        .userSeq(musicRequestDto.getUserSeq())
+        .musicTitle(musicRequestDto.getMusicTitle())
+        .musicGenre(musicRequestDto.getMusicGenre())
         .musicArtist(musicRequestDto.getMusicArtist())
-        .youtubeVideoId(musicRequestDto.getYoutubeVideoId())
-        .musicLength(musicRequestDto.getMusicLength())
-        .musicCover(musicRequestDto.getMusicCover())
+        .musicAlbum(musicRequestDto.getMusicAlbum())
+        .musicImage(musicRequestDto.getMusicImage())
+        .musicYoutubeId(youtubeSearchResult.getVideoId())
+        .musicLength(youtubeSearchResult.getMusicLength())
+        .musicIntro(null)
+        .musicOutro(null)
+        .musicReleaseDate(musicRequestDto.getMusicReleaseDate())
         .build();
   }
 
   public MusicInfoDto buildMusicInfoDto(Music music) {
     return MusicInfoDto.builder()
-        .memberSeq(music.getMemberSeq())
-        .musicPlayedAt(music.getMusicPlayedAt())
-        .musicCreatedAt(music.getMusicCreatedAt())
-        .musicName(music.getMusicName())
+        .musicSeq(music.getMusicSeq())
+        .userSeq(music.getUserSeq())
+        .musicTitle(music.getMusicTitle())
+        .musicGenre(music.getMusicGenre())
         .musicArtist(music.getMusicArtist())
-        .youtubeVideoId(music.getYoutubeVideoId())
+        .musicAlbum(music.getMusicAlbum())
+        .musicImage(music.getMusicImage())
+        .musicYoutubeId(music.getMusicYoutubeId())
         .musicLength(music.getMusicLength())
-        .musicCover(music.getMusicCover())
+        .musicReleaseDate(music.getMusicReleaseDate())
+        .musicCreatedAt(music.getMusicCreatedAt())
+        .musicIsPlayed(music.isMusicPlayed())
         .build();
   }
 
