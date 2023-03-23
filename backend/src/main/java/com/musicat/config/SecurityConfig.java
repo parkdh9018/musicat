@@ -2,6 +2,9 @@ package com.musicat.config;
 
 
 import com.musicat.Oauth.CustomUserOAuth2Service;
+import com.musicat.handler.OAuth2AuthenticationSuccessHandler;
+import com.musicat.jwt.JwtAccessDeniedHandler;
+import com.musicat.jwt.JwtAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,8 +12,10 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.filter.CorsFilter;
 
 @EnableWebSecurity
@@ -21,7 +26,10 @@ public class SecurityConfig {
 
 
     private final CorsFilter corsFilter;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final CustomUserOAuth2Service CustomUserOAuth2Service;
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
     /*
     webSecurityCustomizer 인터페이스의 customize 메소드를 구현하면 WebSecurity 객체를 사용해 보안 설정을 변경할 수 있다.
@@ -38,6 +46,7 @@ public class SecurityConfig {
             web.ignoring()
                     .antMatchers("/api-document/**", "/swagger-ui/**")
                     .antMatchers("/swagger/**","/v3/**","/swagger-resources/**");
+
         };
     }
 
@@ -51,10 +60,39 @@ public class SecurityConfig {
                 // 설정된 로그인 URL로 오는 요청을 감시하며, 유저인증을 처리합니다. 인증 실패 시, AuthenticationFailureHandler를 실행합니다.
                 .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
 
+                // exception handling 할 때 우리가 만든 클래스를 추가
+//                .exceptionHandling()
+//                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+//                .accessDeniedHandler(jwtAccessDeniedHandler)
+
+
+                // 세션을 사용하지 않기 때문에 STATELESS로 설정
+                //.and()
+//                .sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
+                // HtppServletRequest을 사용하는 요청들에 대해 접근 제한 설정
+//                .and()
+//                .authorizeHttpRequests()
+//                // Preflight 요청은 허용한다는 의미
+//                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+//
+//                .antMatchers("/api/login").permitAll()
+//                .antMatchers("/api/user/**").permitAll()
+//                .antMatchers("/tag/**").permitAll()
+//                .antMatchers("/oauth2/**").permitAll()
+//                .antMatchers("/login**").permitAll()
+
                 // oauth2 를 이용한 소셜 로그인
+                // .and()
                 .oauth2Login()
                 .userInfoEndpoint()
-                .userService(CustomUserOAuth2Service);
+                .userService(CustomUserOAuth2Service)
+
+                .and()
+                .successHandler(oAuth2AuthenticationSuccessHandler);
+
+
 
 
         return http.build();

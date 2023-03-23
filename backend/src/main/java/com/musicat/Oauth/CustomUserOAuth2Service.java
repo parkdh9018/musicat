@@ -65,8 +65,6 @@ public class CustomUserOAuth2Service extends DefaultOAuth2UserService {
                     .userAuthority(Collections.singleton(authority)) // 꼭 DB에 ROLE_USER를 먼저 넣기
                     .build();
 
-
-
             System.out.println(user.getUserAuthority().toString());
 
             userRepository.save(user);
