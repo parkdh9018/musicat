@@ -51,8 +51,8 @@ public class AlertController {
      * @return
      */
     @GetMapping("/{userSeq}")
-    public ResponseEntity<?> getAlertList(@PathVariable long userSeq, @RequestParam(required = false, defaultValue = "0") int page) {
-        return ResponseEntity.ok().body(alertService.getAlertList(userSeq, page));
+    public ResponseEntity<?> getAlertList(@PathVariable long userSeq, @RequestParam(required = false, defaultValue = "") String query, @RequestParam(required = false, defaultValue = "0") int page) {
+        return ResponseEntity.ok().body(alertService.getAlertList(userSeq, query, page));
     }
 
     /**
@@ -78,20 +78,20 @@ public class AlertController {
         return ResponseEntity.ok().build();
     }
 
-    /**
-     * 알림 조건부 검색
-     *
-     * @param condition
-     * @param userSeq
-     * @param query
-     * @return
-     */
-    @GetMapping("/{condition}/{userSeq}")
-    public ResponseEntity<?> getAlertListByCondition(@PathVariable String condition,
-            @PathVariable long userSeq, @RequestParam(required = false, defaultValue = "") String query) {
-        return ResponseEntity.ok()
-                .body(alertService.getAlertListByCondition(condition, userSeq, query));
-    }
+//    /**
+//     * 알림 조건부 검색
+//     *
+//     * @param condition
+//     * @param userSeq
+//     * @param query
+//     * @return
+//     */
+//    @GetMapping("/{condition}/{userSeq}")
+//    public ResponseEntity<?> getAlertListByCondition(@PathVariable String condition,
+//            @PathVariable long userSeq, @RequestParam(required = false, defaultValue = "") String query) {
+//        return ResponseEntity.ok()
+//                .body(alertService.getAlertListByCondition(condition, userSeq, query));
+//    }
 
     /**
      * 안읽은 알림 개수 조회
