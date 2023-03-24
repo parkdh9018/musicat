@@ -17,7 +17,7 @@ export const UserManage = () => {
     setNowSideNav("유저관리");
   }, []);
 
-  const mygetAllUsers = getAllUsers(0);
+  const {data, isLoading} = getAllUsers(0);
 
   const searchOptions = [
     { value: "all", name: "모두" },
@@ -30,7 +30,7 @@ export const UserManage = () => {
     { value: "banChat", name: "채팅금지" },
     { value: "not_ban_chat", name: "채팅허용" },
   ];
-  const userList_grid = "20% 20% 20% 20% 20%";
+  const userList_grid = "20% 25% 25% 15% 15%";
   const userList_headRow = [
     "닉네임",
     "이메일",
@@ -39,10 +39,6 @@ export const UserManage = () => {
     "정지여부",
   ];
 
-  const dumyData = [
-    // { userNickname : 213, userEmail: 1234, userCreatedAt: 123451,  userIsBan:true, userIsUser:true},
-    { a: "", b: "", c: "", d: "", e: "" },
-  ];
 
   return (
     <div className={style.userManage}>
@@ -64,8 +60,7 @@ export const UserManage = () => {
         <Button
           content="검색"
           onClick={() => {
-            const { data } = mygetAllUsers;
-            console.log(data);
+            // 
           }}
         />
       </div>
@@ -90,10 +85,10 @@ export const UserManage = () => {
       </div>
       <div className={style.userList}>
         <Board
-          data={dumyData}
+          data={data?.content}
           grid={userList_grid}
           headRow={userList_headRow}
-          type={""}
+          type={"userManage"}
         />
       </div>
     </div>
