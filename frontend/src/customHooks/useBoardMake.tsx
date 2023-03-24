@@ -1,10 +1,28 @@
-export function useBoardMake(type: string, data: any): JSX.Element[] {
+export function useBoardMake(
+  type: string,
+  data: any,
+  userRole: string
+): JSX.Element[] {
   const arr = [];
 
   if (type === "noticeAll") {
-    arr.push(<span style={{ color: "var(--blue-color)" }}>공지</span>);
     arr.push(
-      <span style={{ color: "var(--blue-color)" }}>{data.noticeTitle}</span>
+      <span
+        style={
+          userRole !== "admin" ? { color: "var(--blue-color)" } : undefined
+        }
+      >
+        {userRole === "admin" ? data.noticeSeq : "공지"}
+      </span>
+    );
+    arr.push(
+      <span
+        style={
+          userRole !== "admin" ? { color: "var(--blue-color)" } : undefined
+        }
+      >
+        {data.noticeTitle}
+      </span>
     );
     arr.push(<span>{data.noticeCreatedAt}</span>);
   }
@@ -46,7 +64,7 @@ export function useBoardMake(type: string, data: any): JSX.Element[] {
   }
 
   if (type === "userMoney") {
-    console.log("그만해");
+    //
   }
 
   if (type === "userManage") {
@@ -60,7 +78,7 @@ export function useBoardMake(type: string, data: any): JSX.Element[] {
           data.userIsChattingBan
             ? { color: "var(--red-color)" }
             : { color: "var(--green-color)" }
-        }  
+        }
       >
         {data.userIsChattingBan ? "금지" : "허용"}
       </span>
@@ -71,7 +89,7 @@ export function useBoardMake(type: string, data: any): JSX.Element[] {
           data.userIsBan
             ? { color: "var(--red-color)" }
             : { color: "var(--green-color)" }
-        }  
+        }
       >
         {data.userIsBan ? "금지" : "허용"}
       </span>
