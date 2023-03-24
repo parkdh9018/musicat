@@ -17,7 +17,7 @@ export const SongDetailModal = (song: Song) => {
 
   return (
     <div className={style.songModalContainer}>
-      <img className={style.songModalImg} src={song.musicCover} alt="곡 사진" />
+      {/* <img className={style.songModalImg} src={song.musicCover} alt="곡 사진" /> */}
       <span>
         <div>{song.musicTitle}</div>
         <div>{song.musicArtist}</div>
