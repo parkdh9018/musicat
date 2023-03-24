@@ -1,0 +1,20 @@
+.songModalContainer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.songModal {
+  display: flex;
+  flex-direction: row;
+  padding: 5%;
+}
+
+.songModalImg {
+  padding: 5%;
+  width: 50%;
+}
+
+.songModalContentBox {
+  color: white;
+}

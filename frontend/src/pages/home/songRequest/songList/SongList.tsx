@@ -2,8 +2,9 @@ import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import style from "./SongList.module.css";
 import { Modal } from "@/components/common/modal/Modal";
-import { SongDetailModal } from "./SongDetailModal";
+import { SongDetailModal } from "./songDetailModal/SongDetailModal";
 import { getSongList, Song } from "@/connect/axios/queryHooks/music";
+import { $ } from "@/connect/axios/setting";
 
 export const SongList = () => {
   const { data: songs } = getSongList();
@@ -39,19 +40,18 @@ export const SongList = () => {
     </div>
   ));
 
-  // const songDetailModal = selectedSong ? (
-  //   <SongDetailModal song={selectedSong} />
-  // ) : null;
+  const songDetailModal = selectedSong ? (
+    <SongDetailModal song={selectedSong} />
+  ) : null;
 
   return (
     <>
-      {/* <div>{songList}</div>
+      <div>{songList}</div>
       {isSongDetailModalOpen && (
-        <Modal
-          setModalOpen={setIsSongDetailModalOpen}
-          children={songDetailModal}
-        ></Modal>
-      )} */}
+        <Modal setModalOpen={setIsSongDetailModalOpen}>
+          <div>{songDetailModal}</div>
+        </Modal>
+      )}
     </>
   );
 };
