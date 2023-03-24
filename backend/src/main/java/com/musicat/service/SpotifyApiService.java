@@ -72,12 +72,8 @@ public class SpotifyApiService {
             // Get additional album information
             GetAlbumRequest getAlbumRequest = spotifyApi.getAlbum(track.getAlbum().getId()).build();
             Album album = getAlbumRequest.execute();
-            String[] genres = album.getGenres();
-            System.out.println(album.toString());
-            System.out.println(album.getName());
-            System.out.println(Arrays.toString(genres));
 
-            String musicGenre = album.getGenres().length > 0 ? album.getGenres()[0] : "장르 확인 안됨";
+            String musicGenre = album.getGenres().length > 0 ? album.getGenres()[0] : "";
             String musicReleaseDate = album.getReleaseDate();
 
             SpotifySearchResultDto spotifySearchResultDto = SpotifySearchResultDto.builder()
