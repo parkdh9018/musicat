@@ -86,7 +86,9 @@ export const InventoryModal = ({
         </p>
         <Button
           content="변경 하기"
-          onClick={() => {}}
+          onClick={() => {
+            return;
+          }}
           style={
             (selected !== theme.type2 && churu - 50 < 0) ||
             selected === theme.type2

@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from "uuid";
 import style from "./SongList.module.css";
 import { Modal } from "@/components/common/modal/Modal";
 import { SongDetailModal } from "./SongDetailModal";
-import { getSongList } from "@/connect/axios/queryHooks/music";
 
 interface Song {
   musicSeq: number;
@@ -73,10 +72,9 @@ export const SongList = () => {
     <>
       <div>{songList}</div>
       {isSongDetailModalOpen && (
-        <Modal
-          setModalOpen={setIsSongDetailModalOpen}
-          children={<SongDetailModal />}
-        />
+        <Modal setModalOpen={setIsSongDetailModalOpen}>
+          <SongDetailModal />
+        </Modal>
       )}
     </>
   );

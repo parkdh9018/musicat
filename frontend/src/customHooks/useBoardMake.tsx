@@ -46,9 +46,11 @@ export function useBoardMake(type: string, data: any): JSX.Element[] {
   }
 
   if (type === "userMoney") {
+    console.log("그만해");
   }
 
   if (type === "userManage") {
+    console.log("그만해");
   }
 
   return arr;

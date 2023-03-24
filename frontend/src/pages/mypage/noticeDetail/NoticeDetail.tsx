@@ -48,12 +48,22 @@ export const NoticeDetail = () => {
               }}
               style={{ marginRight: "10px" }}
             />
-            <Button content="삭제" onClick={() => {}} />
+            <Button
+              content="삭제"
+              onClick={() => {
+                return;
+              }}
+            />
           </div>
         </div>
       ) : (
         <div style={{ textAlign: "center", marginTop: "20px" }}>
-          <Button content="목록으로" onClick={() => {}} />
+          <Button
+            content="목록으로"
+            onClick={() => {
+              return;
+            }}
+          />
         </div>
       )}
     </div>

@@ -11,7 +11,6 @@ import { SelectedUsers } from "./SelectedUsers/SelectedUsers";
 import style from "./UserManage.module.css";
 
 export const UserManage = () => {
-
   const setNowSideNav = useSetRecoilState(nowSideNavState);
 
   useEffect(() => {
@@ -51,14 +50,24 @@ export const UserManage = () => {
         <span>유저검색 : </span>
         <SelectBox
           options={searchOptions}
-          setValue={() => {}}
+          setValue={() => {
+            console.log("뭘봐");
+          }}
           style={{ width: "13%" }}
         />
-        <Input input={""} setInput={() => {}} />
-        <Button content="검색" onClick={() => {
-          const { data } = mygetAllUsers;
-          console.log(data)
-        }} />
+        <Input
+          input={""}
+          setInput={() => {
+            return;
+          }}
+        />
+        <Button
+          content="검색"
+          onClick={() => {
+            const { data } = mygetAllUsers;
+            console.log(data);
+          }}
+        />
       </div>
       <div className={style.seleceted_userList}>
         <SelectedUsers />
@@ -67,18 +76,24 @@ export const UserManage = () => {
         <span>변동사항 : </span>
         <SelectBox
           options={useStateChangeOptions}
-          setValue={() => {}}
+          setValue={() => {
+            return;
+          }}
           style={{ width: "13%" }}
         />
-        <Button content="적용" onClick={() => {
-          
-        }} />
+        <Button
+          content="적용"
+          onClick={() => {
+            return;
+          }}
+        />
       </div>
       <div className={style.userList}>
         <Board
           data={dumyData}
           grid={userList_grid}
           headRow={userList_headRow}
+          type={""}
         />
       </div>
     </div>

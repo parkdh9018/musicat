@@ -1,7 +1,5 @@
-import { Board } from "@/components/common/board/Board";
 import { Button } from "@/components/common/button/Button";
 import { Input } from "@/components/common/input/Input";
-import { Modal } from "@/components/common/modal/Modal";
 import { Pagenation } from "@/components/common/pagenation/Pagenation";
 import { SelectBox } from "@/components/common/selectBox/SelectBox";
 import { useState } from "react";
@@ -38,7 +36,9 @@ export const Chat = () => {
       Chat
       <Button
         content={"강rkd"}
-        onClick={() => {}}
+        onClick={() => {
+          return;
+        }}
         style={{
           borderRadius: "100px",
           fontSize: "16px",
@@ -62,25 +62,6 @@ export const Chat = () => {
         url={""}
       />
       <button onClick={() => setModal(true)}>모달열기</button>
-      {isModalOpen && (
-        <Modal
-          setModalOpen={setModal}
-          children={
-            <div>
-              모달이 등장!!! 등장!!! 등장 !!!
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-            </div>
-          }
-        />
-      )}
     </div>
   );
 };

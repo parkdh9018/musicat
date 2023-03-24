@@ -64,16 +64,24 @@ export const Myinfo = () => {
         <Input input={input} setInput={setInput} />
         <Button
           content="중복확인"
-          onClick={() => {}}
+          onClick={() => {
+            return;
+          }}
           style={{ margin: "0 5px" }}
         />
-        <Button content="변 경" onClick={() => {}} />
+        <Button
+          content="변 경"
+          onClick={() => {
+            return;
+          }}
+        />
         <h3 style={{ margin: "40px 0" }}>나의 츄르 : 456p</h3>
         <Board
           data={dumyData}
           grid={"40% 30% 30%"}
           headRow={["날짜", "변동내역", "상새내역"]}
           setIsModalOpen={setIsModalOpen}
+          type={""}
         />
         <Pagenation
           number={1}
@@ -84,10 +92,9 @@ export const Myinfo = () => {
         />
       </div>
       {isModalOpen && (
-        <Modal
-          setModalOpen={setIsModalOpen}
-          children={<MyinfoModal dataSeq={1} />}
-        />
+        <Modal setModalOpen={setIsModalOpen}>
+          <MyinfoModal dataSeq={1} />
+        </Modal>
       )}
     </div>
   );

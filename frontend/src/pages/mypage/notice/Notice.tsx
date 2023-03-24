@@ -88,7 +88,9 @@ export const Notice = () => {
       <div style={{ textAlign: "right" }}>
         <Button
           content="모두읽음"
-          onClick={() => {}}
+          onClick={() => {
+            return;
+          }}
           style={{ marginTop: "10px" }}
         />
       </div>
