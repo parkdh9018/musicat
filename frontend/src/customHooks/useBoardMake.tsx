@@ -50,6 +50,7 @@ export function useBoardMake(type: string, data: any): JSX.Element[] {
   }
 
   if (type === "userManage") {
+    arr.push(<span>{data.userSeq}</span>);
     arr.push(<span>{data.userNickname}</span>);
     arr.push(<span>{data.userEmail}</span>);
     arr.push(<span>{data.userCreatedAt}</span>);

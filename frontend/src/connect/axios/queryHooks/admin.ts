@@ -32,12 +32,12 @@ export function getAllUsers(page: number) {
 
 // 금지 회원 전체 조회 (관리자)
 
-export function getAllBanUsers(page: number) {
+export function getAllBanUsers(page: number, isChattingBan = false, isBan = false) {
   const { data, isLoading } = useQuery(
     ["getAllBanUsers"],
-    async (): Promise<User> => {
+    async (): Promise<PagableResponse<User>> => {
       const { data } = await $.get(
-        `/admin/user/ban?page=${page}&isChattingBan=false&isBan=false`
+        `/admin/user/ban?page=${page}&isChattingBan=${isChattingBan}&isBan=${isBan}`
       );
       return data;
     }
@@ -47,14 +47,14 @@ export function getAllBanUsers(page: number) {
 }
 
 // 회원 채팅 금지 조치 (관리자)
-// export function putBanChatting(payload: UserSeq) {
-//   const { data, isLoading } = useMutation(async (): Promise<BanUser> => {
-//     const { data } = await $.put(`/admin/user/chattingBan`, payload);
-//     return data;
-//   });
+export function putBanChatting(payload: UserSeq) {
+  const { data, isLoading } = useMutation(async (): Promise<User> => {
+    const { data } = await $.put(`/admin/user/chattingBan`, payload);
+    return data;
+  });
 
-//   return { data, isLoading };
-// }
+  return { data, isLoading };
+}
 
 // 회원 활동 금지 조치 (관리자)
 export function putBanUser() {
