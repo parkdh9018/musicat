@@ -32,7 +32,7 @@ public class MusicService {
 
   private final YoutubeApiService youtubeApiService;
 
-  private KafkaProducerService kafkaProducerService;
+  private final KafkaProducerService kafkaProducerService;
 
   /**
    * 사용자가 신청한 노래를 DB에 저장합니다. 만약 사용자가 이미 곡을 신청했거나, 신청한 곡이 이미 DB에 존재할 경우 저장하지 않습니다.
@@ -82,7 +82,7 @@ public class MusicService {
     // 곡 저장
     Music music = musicRepository.save(musicBuilderUtil.buildMusicEntity(musicRequestDto, youtubeSearchResult));
 
-//    kafkaProducerService.sendKafkaMessage("musicRequest", music);
+    kafkaProducerService.send("musicRequest", music);
 
     int playOrder =
         musicRepository.countByMusicSeqLessThanAndMusicPlayedFalse(music.getMusicSeq()) + 1;
