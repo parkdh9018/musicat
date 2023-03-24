@@ -16,7 +16,7 @@ interface BoardProps {
   grid: string;
   data?: any[];
   url?: string;
-  type: string;
+  type: "noticeAll" | "noticeList" | "userMoney" | "userManage";
   pageNum?: number;
   setIsModalOpen?: (bol: boolean) => void;
 }
