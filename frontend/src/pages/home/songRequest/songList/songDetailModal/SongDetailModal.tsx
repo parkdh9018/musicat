@@ -11,6 +11,9 @@ export const SongDetailModal = ({ song }: SongDetailModalProps) => {
     return null;
   }
 
+  if (song.musicImage) {
+    return null;
+  }
   const getSongDetail = async () => {
     console.log(song);
     const detailFromAPI = await $.get(`/music/${song.musicSeq}`);
