@@ -26,7 +26,7 @@ public class AlertBuildUtil {
                 .alertSeq(alert.getAlertSeq())
                 .alertTitle(alert.getAlertTitle())
                 .alertContent(alert.getAlertContent())
-                .alertCreatedAt(alert.getAlertCreatedAt().format(constantUtil.simpleFormatter))
+                .alertCreatedAt(alert.getAlertCreatedAt().format(constantUtil.detailFormatter))
                 .build();
     }
 
