@@ -1,9 +1,9 @@
 import { $ } from "@/connect/axios/setting";
 import { useQuery } from "@tanstack/react-query";
 
-interface Song {
+export interface Song {
   memberSeq: number;
-  musicName: string;
+  musicTitle: string;
   musicArtist: string;
   musicLength: TimeRanges | null;
   musicCover: ImageData | null;

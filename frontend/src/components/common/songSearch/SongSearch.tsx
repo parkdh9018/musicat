@@ -1,18 +1,15 @@
 import { useEffect, useState } from "react";
-import { getSongSearch } from "@/connect/axios/queryHooks/music";
 import style from "./SongSearch.module.css";
 import { $ } from "@/connect/axios/setting";
-
-interface Props {
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
-}
+import { Song } from "@/connect/axios/queryHooks/music";
+import { v4 as uuidv4 } from "uuid";
 
 export const SongSearch = () => {
   const [isFocused, setIsFocused] = useState(false);
   const [isSearched, setIsSearched] = useState(false);
   const [search, setSearch] = useState("");
-  const [searchResult, setSearchResult] = useState([]);
-  // const songSearch = getSongSearch(search);
+  const [searchResults, setSearchResults] = useState<Song[]>([]);
+  const [requestSong, setRequestSong] = useState<Song>();
 
   const onFocus = () => {
     setIsFocused(true);
@@ -28,22 +25,36 @@ export const SongSearch = () => {
 
   const onClickSearch = async () => {
     setIsSearched(true);
-    console.log(searchResult);
-
-    // data 가져 오기 전까지 검색중,,, 띄우고
+    // 여기 타입 설정 어카지....ㅠ
     const SearchResult: any = await $.get(
       `/music/search?queryString=${search}`
     );
-    setSearchResult(SearchResult);
-    console.log(searchResult);
-
-    // isFetching == true
-
-    console.log("드랍박스 보여주고 검색 api 호출");
+    setSearchResults(SearchResult.data);
   };
 
-  const onClickReq = () => {
+  const onClickSelectSong = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const value = e.currentTarget.value;
+    const selectedSong = JSON.parse(value);
+    setRequestSong(selectedSong);
+    console.log(selectedSong);
+    setSearch(`${selectedSong.musicTitle}_${selectedSong.musicArtist}`);
+    setIsFocused(false);
+  };
+
+  const songSearchedList: JSX.Element[] = searchResults.map((searchResult) => (
+    <button
+      key={uuidv4()}
+      onClick={onClickSelectSong}
+      value={JSON.stringify(searchResult)}
+    >
+      {searchResult.musicTitle}_{searchResult.musicArtist}
+    </button>
+  ));
+
+  const onClickReq = async () => {
     console.log("음악 신청 api 호출!!");
+    console.log(requestSong);
+    $.post("/music/request", requestSong);
   };
 
   return (
@@ -66,9 +77,11 @@ export const SongSearch = () => {
           </button>
           {isSearched ? (
             <div className={style.dropdownContent}>
-              <div>Link 1</div>
-              <div>Link 2</div>
-              <div>Link 3</div>
+              {searchResults.length > 0 ? (
+                <>{songSearchedList}</>
+              ) : (
+                <div>검색중..</div>
+              )}
             </div>
           ) : null}
         </div>

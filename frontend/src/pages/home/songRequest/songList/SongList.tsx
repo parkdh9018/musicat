@@ -3,16 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import style from "./SongList.module.css";
 import { Modal } from "@/components/common/modal/Modal";
 import { SongDetailModal } from "./SongDetailModal";
-
-interface Song {
-  musicSeq: number;
-  memberSeq: number;
-  musicCreatedAt: Date | null;
-  musicName: string;
-  musicArtist: string;
-  musicLength: TimeRanges | null;
-  musicCover: ImageData | null;
-}
+import { Song } from "@/connect/axios/queryHooks/music";
 
 export const SongList = () => {
   //  const songs: Song[] = "api 요청(/music) 리액트 쿼리로 받아오기"
@@ -23,7 +14,7 @@ export const SongList = () => {
       musicSeq: 1,
       memberSeq: 1,
       musicCreatedAt: null,
-      musicName: "ditto",
+      musicTitle: "ditto",
       musicArtist: "newjeans",
       musicLength: null,
       musicCover: null,
@@ -32,7 +23,7 @@ export const SongList = () => {
       musicSeq: 2,
       memberSeq: 1,
       musicCreatedAt: null,
-      musicName: "파이팅해야지",
+      musicTitle: "파이팅해야지",
       musicArtist: "부석순",
       musicLength: null,
       musicCover: null,
@@ -41,7 +32,7 @@ export const SongList = () => {
       musicSeq: 3,
       memberSeq: 1,
       musicCreatedAt: null,
-      musicName: "죽겠다",
+      musicTitle: "죽겠다",
       musicArtist: "ikon",
       musicLength: null,
       musicCover: null,
@@ -60,7 +51,7 @@ export const SongList = () => {
   const songList: JSX.Element[] = songs.map((song) => (
     <div className={style.songList} key={uuidv4()}>
       <span className={style.songSpan}>
-        {song.musicName} - {song.musicArtist}
+        {song.musicTitle} - {song.musicArtist}
       </span>
       <button className={style.songBtn} onClick={() => onSongDetail()}>
         ...
