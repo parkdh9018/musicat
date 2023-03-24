@@ -7,6 +7,7 @@ import com.google.api.services.youtube.model.Video;
 import com.google.api.services.youtube.model.VideoListResponse;
 import com.musicat.data.dto.YoutubeSearchResultDto;
 import com.musicat.util.ConvertTime;
+import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,9 +27,9 @@ public class YoutubeApiService {
     String query = title + " " + artist;
     YouTube.Search.List searchRequest;
     try {
-        searchRequest = youtubeApi.search().list("id,snippet");
+        searchRequest = youtubeApi.search().list(Arrays.asList("id","snippet"));
         searchRequest.setQ(query);
-        searchRequest.setType("video");
+        searchRequest.setType(Arrays.asList("video"));
         searchRequest.setMaxResults(3L);
         searchRequest.setFields("items(id(videoId),snippet(publishedAt,channelId,title,description))");
 
@@ -40,8 +41,8 @@ public class YoutubeApiService {
 
         for (SearchResult searchResult : searchResults) {
             String videoId = searchResult.getId().getVideoId();
-            VideoListResponse videoResponse = youtubeApi.videos().list("id,statistics,contentDetails")
-                    .setId(videoId)
+            VideoListResponse videoResponse = youtubeApi.videos().list(Arrays.asList("id","statistics","contentDetails"))
+                    .setId(Arrays.asList(videoId))
                     .execute();
 
             Video video = videoResponse.getItems().get(0);
