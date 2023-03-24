@@ -1,8 +1,6 @@
 import { $ } from "@/connect/axios/setting";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { PagableResponse } from "@/types/mypage";
-import { useState } from "react";
-
 
 interface UserSeq {
   userSeq: number;
@@ -27,30 +25,28 @@ export function getAllUsers(page: number) {
       return data;
     }
   );
-  const [userList, setUserList] = useState<User[] | undefined>([]);
-
-  // console.log(data?.content)
-  // data?.content ? setUserList((prev) => [...prev, data?.content]) : undefined;
-
-  return { isLoading, userList, setUserList };
+  const userList = data?.content;
+  return { isLoading, userList };
 }
 
 // 금지 회원 전체 조회 (관리자)
 
-export function getAllBanUsers(page: number, isChattingBan = false, isBan = false) {
+export function getAllBanUsers(page: number, isChattingBan?:boolean, isBan?:boolean) {
+
+  const url = `/admin/user/ban?page=${page}` 
+  + isChattingBan == undefined ? `` : `&isChattingBan=${isChattingBan}`
+  + isBan == undefined ? `` : `&isChattingBan=${isBan}`;
+  
   const { data, isLoading } = useQuery(
     ["getAllBanUsers"],
     async (): Promise<PagableResponse<User>> => {
-      const { data } = await $.get(
-        `/admin/user/ban?page=${page}&isChattingBan=${isChattingBan}&isBan=${isBan}`
-      );
+      const { data } = await $.get(url);
       return data;
-    }
+    },
   );
-  
-  const [userList, setUserList] = useState<User[] | undefined>([]);
 
-  return { isLoading, userList, setUserList };
+  const userList = data?.content;
+  return { userList, isLoading };
 }
 
 // TODO : 이거 토글 말고 정지는 정지, 해제는 해제로 바꿔야 함
