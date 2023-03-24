@@ -50,7 +50,31 @@ export function useBoardMake(type: string, data: any): JSX.Element[] {
   }
 
   if (type === "userManage") {
-    console.log("그만해");
+    arr.push(<span>{data.userNickname}</span>);
+    arr.push(<span>{data.userEmail}</span>);
+    arr.push(<span>{data.userCreatedAt}</span>);
+    arr.push(
+      <span
+        style={
+          data.userIsChattingBan
+            ? { color: "var(--red-color)" }
+            : { color: "var(--green-color)" }
+        }  
+      >
+        {data.userIsChattingBan ? "금지" : "허용"}
+      </span>
+    );
+    arr.push(
+      <span
+        style={
+          data.userIsBan
+            ? { color: "var(--red-color)" }
+            : { color: "var(--green-color)" }
+        }  
+      >
+        {data.userIsBan ? "금지" : "허용"}
+      </span>
+    );
   }
 
   return arr;
