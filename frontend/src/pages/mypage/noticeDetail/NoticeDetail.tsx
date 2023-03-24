@@ -1,8 +1,9 @@
 import { nowSideNavState } from "@/atoms/common.atom";
 import { userInfoState } from "@/atoms/user.atom";
 import { Button } from "@/components/common/button/Button";
+import { getAlertDetail } from "@/connect/axios/queryHooks/alert";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import style from "./NoticeDetail.module.css";
 
@@ -10,6 +11,8 @@ export const NoticeDetail = () => {
   const setNowSideNav = useSetRecoilState(nowSideNavState);
   const navigate = useNavigate();
   const userInfo = useRecoilValue(userInfoState);
+  const { noticeSeq } = useParams();
+  // const { data: detail } = getAlertDetail(noticeSeq[0] === "n" ? "" : "");
 
   useEffect(() => {
     if (userInfo.userRole === "admin") setNowSideNav("공지사항");
