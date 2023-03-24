@@ -8,8 +8,20 @@ export const TapeButtons = () => {
 
   return (
     <div className={style.bg}>
-      <Button content="재생" onClick={() => {}} className={style.play} />
-      <Button content="정지" onClick={() => {}} className={style.stop} />
+      <Button
+        content="재생"
+        onClick={() => {
+          return;
+        }}
+        className={style.play}
+      />
+      <Button
+        content="정지"
+        onClick={() => {
+          return;
+        }}
+        className={style.stop}
+      />
       <NavLink
         to="/"
         className={({ isActive }) =>

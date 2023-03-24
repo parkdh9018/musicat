@@ -98,17 +98,14 @@ export const Inventory = () => {
         <div style={{ clear: "both" }} />
       </div>
       {isModalOpen && (
-        <Modal
-          setModalOpen={setIsModalOpen}
-          children={
-            <InventoryModal
-              itemCount={modalData.itemCount}
-              source={modalData.source}
-              width={modalData.width}
-              type={modalData.type}
-            />
-          }
-        />
+        <Modal setModalOpen={setIsModalOpen}>
+          <InventoryModal
+            itemCount={modalData.itemCount}
+            source={modalData.source}
+            width={modalData.width}
+            type={modalData.type}
+          />
+        </Modal>
       )}
     </div>
   );

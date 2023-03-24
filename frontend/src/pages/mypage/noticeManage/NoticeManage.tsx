@@ -62,7 +62,13 @@ export const NoticeManage = () => {
             <span> 제목 + 내용</span>
           </div>
         )}
-        <Button content="검색" onClick={() => {}} style={{ margin: "0 5px" }} />
+        <Button
+          content="검색"
+          onClick={() => {
+            return;
+          }}
+          style={{ margin: "0 5px" }}
+        />
       </div>
     </div>
   );
