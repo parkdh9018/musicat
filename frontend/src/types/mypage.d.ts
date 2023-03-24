@@ -29,3 +29,13 @@ interface Pageable {
     empty: boolean;
   }
   
+  export interface User {
+    userSeq: number;
+    userCreatedAt: string;
+    userEmail: string;
+    userIsBan: boolean;
+    userIsChattingBan: boolean;
+    userIsUser: boolean;
+    useNickname: string;
+  }
+  

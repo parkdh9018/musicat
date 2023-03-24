@@ -17,6 +17,7 @@ interface BoardProps {
   url?: string;
   type: "noticeAll" | "noticeList" | "userMoney" | "userManage";
   setIsModalOpen?: (bol: boolean) => void;
+  boardColumnClick?: (seq: number, nickname: string) => void;
 }
 
 export const Board = ({
@@ -26,6 +27,7 @@ export const Board = ({
   url,
   type,
   setIsModalOpen,
+  boardColumnClick,
 }: BoardProps) => {
   const navigate = useNavigate();
   return (
@@ -57,6 +59,9 @@ export const Board = ({
                       ? navigate(
                           url + `${content.alertSeq || content.noticeSeq}`
                         )
+                      : undefined;
+                    boardColumnClick
+                      ? boardColumnClick(content.userSeq, content.userNickname)
                       : undefined;
                   }}
                 >
