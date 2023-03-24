@@ -4,7 +4,7 @@ import { Button } from "@/components/common/button/Button";
 import { Input } from "@/components/common/input/Input";
 import { SelectBox } from "@/components/common/selectBox/SelectBox";
 import { getAllUsers } from "@/connect/axios/queryHooks/admin";
-import { useEffect, useState } from "react";
+import { MouseEventHandler, useEffect, useMemo, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { SelectedUsers } from "./SelectedUsers/SelectedUsers";
 
@@ -20,19 +20,11 @@ interface selectedUser {
 export const UserManage = () => {
   const setNowSideNav = useSetRecoilState(nowSideNavState);
 
-  const { setUserList, userList, isLoading } = getAllUsers(0);
-  const [ selectedUserList, setSelectedUserList] = useState<selectedUser[]>([]);
-
   useEffect(() => {
     setNowSideNav("유저관리");
   }, []);
 
-  const boardColumnClick = (seq: number, nickname: string) => {
-    if(!userList?.every(v => v.userSeq != seq)) return;
-    setSelectedUserList((prev) => [...prev, { userNickname: nickname, userSeq: seq }]);
-  };
-
-
+  const { userList, isLoading } = getAllUsers(0);
 
   const searchOptions = [
     { value: "all", name: "모두" },
@@ -55,52 +47,80 @@ export const UserManage = () => {
     "정지여부",
   ];
 
+  const [selectedUserList, setSelectedUserList] = useState<selectedUser[]>([]);
+  const [searchInput, setSearchInput] = useState<string>("");
+  const [searchSelectValue, setSearchSelectValue] = useState<string>("all");
+  const [changeSelectValue, setChangeSelectValue] = useState<string>("ban");
+
+  const filtered_userList = useMemo(() => {
+    const set = new Set(selectedUserList.map((v) => v.userSeq));
+    return userList?.filter((v) => !set.has(v.userSeq));
+  }, [userList, selectedUserList]);
+
+
+  // click eventListener
+  const boardColumnClick = (seq: number, nickname: string) => {
+    if (!selectedUserList?.every((v) => v.userSeq != seq)) return;
+    setSelectedUserList((prev) => [
+      ...prev,
+      { userNickname: nickname, userSeq: seq },
+    ]);
+  };
+
+  const userClick = (seq: number) => {
+    setSelectedUserList((prev) => prev.filter((v) => v.userSeq != seq));
+  };
+
+  const searchClick:MouseEventHandler = () => {
+    // //
+    // getAllBanUsers()
+  }
+
+  const changeClick:MouseEventHandler = () => {
+    //
+  }
+
+
+
   return (
     <div className={style.userManage}>
       <div className={style.searchBar}>
         <span>유저검색 : </span>
         <SelectBox
           options={searchOptions}
-          setValue={() => {
-            console.log("뭘봐");
-          }}
+          setValue={setSearchSelectValue}
           style={{ width: "13%" }}
         />
         <Input
-          input={""}
-          setInput={() => {
-            return;
-          }}
+          input={searchInput}
+          setInput={setSearchInput}
         />
         <Button
           content="검색"
-          onClick={() => {
-            //
-          }}
+          onClick={searchClick}
         />
       </div>
       <div className={style.seleceted_userList}>
-        <SelectedUsers selectedUserList={selectedUserList} setSelectedUserList={setSelectedUserList} />
+        <SelectedUsers
+          selectedUserList={selectedUserList}
+          userClick={userClick}
+        />
       </div>
       <div className={style.userStateChange}>
         <span>변동사항 : </span>
         <SelectBox
           options={useStateChangeOptions}
-          setValue={() => {
-            return;
-          }}
+          setValue={setChangeSelectValue}
           style={{ width: "13%" }}
         />
         <Button
           content="적용"
-          onClick={() => {
-            return;
-          }}
+          onClick={changeClick}
         />
       </div>
       <div className={style.userList}>
         <Board
-          data={userList}
+          data={filtered_userList}
           grid={userList_grid}
           headRow={userList_headRow}
           type={"userManage"}
