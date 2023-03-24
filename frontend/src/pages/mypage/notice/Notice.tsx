@@ -8,17 +8,24 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { useSetRecoilState } from "recoil";
 import { nowSideNavState } from "@/atoms/common.atom";
 import { getTop3Notice } from "@/connect/axios/queryHooks/notice";
-import { getAlertList } from "@/connect/axios/queryHooks/alert";
+import {
+  getAlertList,
+  patchReadAllAlerts,
+} from "@/connect/axios/queryHooks/alert";
 import style from "./Notice.module.css";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const Notice = () => {
   const location = useLocation();
-  console.log(location);
-  const [input, setInput] = useState("");
+  const searchParams = new URLSearchParams(location.search);
+  const page = searchParams.get("page");
+  const search = searchParams.get("search") || "";
+
+  const [input, setInput] = useState(search);
+  const navigate = useNavigate();
   const setNowSideNav = useSetRecoilState(nowSideNavState);
   const { data: notice } = getTop3Notice();
-  const { data: alertList } = getAlertList(1);
+  const { data: alertList } = getAlertList(Number(page), search);
 
   /** 사이드 Nav 초기화 */
   useEffect(() => {
@@ -32,7 +39,7 @@ export const Notice = () => {
         grid={"20% 50% 30%"}
         headRow={["번호", "제목", "날짜"]}
         type={"noticeAll"}
-        url={"/mypage/notice/"}
+        url={"/mypage/notice/n"}
       />
       {/* 이 위부분 Board는 파란색으로 칠해야 한다. */}
       <Board
@@ -40,23 +47,25 @@ export const Notice = () => {
         grid={"20% 50% 30%"}
         headRow={[]}
         type={"noticeList"}
-        url={"/mypage/notice/n"}
+        url={"/mypage/notice/"}
       />
       <div style={{ textAlign: "right" }}>
         <Button
           content="모두읽음"
           onClick={() => {
-            return;
+            patchReadAllAlerts(1);
+            // 나중에 고치자
+            window.location.reload();
           }}
           style={{ marginTop: "10px" }}
         />
       </div>
       <Pagenation
-        number={1}
-        first={false}
-        last={false}
-        totalPages={3}
-        url={""}
+        number={alertList?.number}
+        first={alertList?.first}
+        last={alertList?.last}
+        totalPages={alertList?.totalPages}
+        url={`?search=${search ? search : ""}&page=`}
       />
       <div className={style.bottom_search}>
         <Input
@@ -74,7 +83,7 @@ export const Notice = () => {
         <Button
           content="검색"
           onClick={() => {
-            return;
+            navigate(`?search=${input ? input : ""}&page=1`);
           }}
           style={{ margin: "0 5px" }}
         />

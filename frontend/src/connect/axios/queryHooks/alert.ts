@@ -14,26 +14,35 @@ interface Alert {
 }
 
 // 알람 list를 받아오기
-export function getAlertList(pageNum: number) {
+export function getAlertList(pageNum: number, search: string | null) {
   async function fetchAlertList(): Promise<PagableResponse<Alert>> {
-    const { data } = await $.get("/alert/1?page=0&content=");
+    const { data } = await $.get(
+      `/alert/1?page=${pageNum ? pageNum - 1 : ""}&query=${
+        search ? search : ""
+      }`
+    );
     return data;
   }
-  const { data, isLoading } = useQuery(
-    ["AlertListUser", pageNum],
+  const { data, isLoading, refetch } = useQuery(
+    ["AlertListUser" + search, pageNum],
     fetchAlertList
   );
-  return { data, isLoading };
+  return { data, isLoading, refetch };
 }
 
-// 알람 detail를 받아오기
+// 알람/공지사항 detail를 받아오기 => 분류가 애매함
 export function getAlertDetail(url: string) {
-  async function fetchAlertDetail(): Promise<PagableResponse<Alert>> {
+  async function fetchAlertDetail(): Promise<any> {
     const { data } = await $.get(url);
     return data;
   }
   const { data, isLoading } = useQuery(["AlertDetail" + url], fetchAlertDetail);
   return { data, isLoading };
+}
+
+// 알람을 모두 읽었다는  api 요청
+export function patchReadAllAlerts(userSeq: number) {
+  $.patch(`/alert/unread/${userSeq}`, { alertIsRead: true });
 }
 
 /** 
