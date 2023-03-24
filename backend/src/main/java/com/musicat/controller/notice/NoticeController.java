@@ -34,8 +34,8 @@ public class NoticeController {
      * @return
      */
     @GetMapping("")
-    public ResponseEntity<?> getNoticeList(@RequestParam int page) {
-        return ResponseEntity.ok(noticeService.getNoticeList(page));
+    public ResponseEntity<?> getNoticeList(@RequestParam(required = false, defaultValue = "0") int page, @RequestParam(required = false, defaultValue = "") String query) {
+        return ResponseEntity.ok(noticeService.getNoticeList(page, query));
 
     }
     

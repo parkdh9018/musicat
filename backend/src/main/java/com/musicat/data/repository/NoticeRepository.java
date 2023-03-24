@@ -14,4 +14,6 @@ public interface NoticeRepository extends JpaRepository<Notice, Long> {
     Optional<List<Notice>> findTop3ByOrderByNoticeCreatedAtDesc();
 
     Page<Notice> findAll(Pageable pageable);
+
+    Page<Notice> findAllByNoticeTitleContainingOrNoticeContentContaining(Pageable pageable, String noticeTitle, String noticeContent);
 }
