@@ -55,7 +55,8 @@ export const SongSearch = () => {
   const onClickReq = async () => {
     console.log("음악 신청 api 호출!!");
     console.log(requestSong);
-    $.post("/music/request", requestSong);
+    // song.ts 파일로 빼내기
+    $.post("/music/request", { ...requestSong, userSeq: 2 });
   };
 
   return (
