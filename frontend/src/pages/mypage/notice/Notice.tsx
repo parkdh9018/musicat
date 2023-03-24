@@ -10,8 +10,11 @@ import { nowSideNavState } from "@/atoms/common.atom";
 import { getTop3Notice } from "@/connect/axios/queryHooks/notice";
 import { getAlertList } from "@/connect/axios/queryHooks/alert";
 import style from "./Notice.module.css";
+import { useLocation } from "react-router-dom";
 
 export const Notice = () => {
+  const location = useLocation();
+  console.log(location);
   const [input, setInput] = useState("");
   const setNowSideNav = useSetRecoilState(nowSideNavState);
   const { data: notice } = getTop3Notice();
@@ -29,14 +32,15 @@ export const Notice = () => {
         grid={"20% 50% 30%"}
         headRow={["번호", "제목", "날짜"]}
         type={"noticeAll"}
+        url={"/mypage/notice/"}
       />
       {/* 이 위부분 Board는 파란색으로 칠해야 한다. */}
       <Board
-        data={alertList.content}
+        data={alertList?.content}
         grid={"20% 50% 30%"}
         headRow={[]}
         type={"noticeList"}
-        pageNum={1}
+        url={"/mypage/notice/n"}
       />
       <div style={{ textAlign: "right" }}>
         <Button

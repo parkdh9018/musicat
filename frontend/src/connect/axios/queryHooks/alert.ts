@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { PagableResponse } from "@/types/mypage";
 import { $ } from "../setting";
 
 interface Alert {
@@ -14,7 +15,7 @@ interface Alert {
 
 // 알람 list를 받아오기
 export function getAlertList(pageNum: number) {
-  async function fetchAlertList(): Promise<Alert[]> {
+  async function fetchAlertList(): Promise<PagableResponse<Alert>> {
     const { data } = await $.get("/alert/1?page=0&content=");
     return data;
   }
@@ -25,6 +26,17 @@ export function getAlertList(pageNum: number) {
   return { data, isLoading };
 }
 
+// 알람 detail를 받아오기
+export function getAlertDetail(url: string) {
+  async function fetchAlertDetail(): Promise<PagableResponse<Alert>> {
+    const { data } = await $.get(url);
+    return data;
+  }
+  const { data, isLoading } = useQuery(["AlertDetail" + url], fetchAlertDetail);
+  return { data, isLoading };
+}
+
+/** 
 // 알람을 읽었다고 optimistic update
 export function temp(pageNum: any, alertSeq: any) {
   const queryClient = useQueryClient();
@@ -36,7 +48,6 @@ export function temp(pageNum: any, alertSeq: any) {
     });
     return data;
   }
-
   const { mutate: readAlert } = useMutation(fetchAlert, {
     onMutate: async () => {
       await queryClient.cancelQueries(["AlertListUser", pageNum]);
@@ -70,3 +81,4 @@ export function temp(pageNum: any, alertSeq: any) {
 
   return readAlert;
 }
+ */
