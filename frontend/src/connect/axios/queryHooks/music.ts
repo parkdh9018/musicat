@@ -9,12 +9,12 @@ export interface Song {
   musicCover: ImageData | null;
   //
   musicSeq: number;
-  musicCreatedAt: Date | null;
+  musicCreatedAt: Date;
 }
 
 export function getSongList() {
   async function fetchSongList(): Promise<Song[]> {
-    const { data } = await $.get("/music");
+    const { data } = await $.get("/music/");
     return data;
   }
   const query = useQuery(["SongRequset"], fetchSongList);

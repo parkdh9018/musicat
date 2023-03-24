@@ -41,6 +41,7 @@ export const SongSearch = () => {
     setIsFocused(false);
   };
 
+  // 검색 결과 없을 때 보여줄 화면 만들기
   const songSearchedList: JSX.Element[] = searchResults.map((searchResult) => (
     <button
       key={uuidv4()}

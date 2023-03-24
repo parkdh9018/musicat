@@ -1,34 +1,38 @@
 import style from "./SongList.module.css";
+import { Song } from "@/connect/axios/queryHooks/music";
 
-export interface Song {
-  title: string;
-  artist: string;
-  releaseDate: string;
-  genre: string;
-  album: string;
-  coverImg: string;
+interface SongDetailModalProps {
+  song: Song;
 }
 
-export const SongDetailModal = () => {
-  const song: Song = {
-    title: "ditto",
-    artist: "newjeans",
-    releaseDate: "2023-01-02",
-    genre: "k-pop",
-    album: "ditto",
-    coverImg: "dummy src",
-  };
+export const SongDetailModal = (song: Song) => {
+  // const song: Song = {
+  //   title: "ditto",
+  //   artist: "newjeans",
+  //   releaseDate: "2023-01-02",
+  //   genre: "k-pop",
+  //   album: "ditto",
+  //   coverImg: "dummy src",
+  // };
 
   return (
-    <div className={style.songModal}>
-      <img className={style.songModalImg} src={song.coverImg} alt="곡 사진" />
+    <div className={style.songModalContainer}>
+      <img className={style.songModalImg} src={song.musicCover} alt="곡 사진" />
       <span>
-        <div>{song.title}</div>
-        <div>{song.artist}</div>
-        <div>{song.releaseDate}</div>
-        <div>{song.genre}</div>
-        <div>{song.album}</div>
+        <div>{song.musicTitle}</div>
+        <div>{song.musicArtist}</div>
+        {/* <div>{song.musicCreatedAt}</div>
+        <div>{song.album}</div> */}
       </span>
     </div>
   );
 };
+
+// memberSeq: number;
+// musicTitle: string;
+// musicArtist: string;
+// musicLength: TimeRanges | null;
+// musicCover: ImageData | null;
+// //
+// musicSeq: number;
+// musicCreatedAt: Date | null;
