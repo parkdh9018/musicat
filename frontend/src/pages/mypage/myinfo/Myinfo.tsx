@@ -49,7 +49,10 @@ export const Myinfo = () => {
                 ? style.circle
                 : style.circle + " " + style.circleLeft
             }
-          ></div>
+            onClick={() => {
+              return;
+            }}
+          />
         </div>
         <p className={style.ffc}>가입 날짜</p>
         <p className={style.fc} style={{ marginBottom: "40px" }}>
