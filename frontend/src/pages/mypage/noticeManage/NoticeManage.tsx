@@ -32,7 +32,7 @@ export const NoticeManage = () => {
         data={dumyData}
         grid={"20% 50% 30%"}
         headRow={["번호", "제목", "날짜"]}
-        type={""}
+        type={"noticeList"}
       />
       <div style={{ textAlign: "right" }}>
         <Button

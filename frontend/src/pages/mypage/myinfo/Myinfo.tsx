@@ -84,7 +84,7 @@ export const Myinfo = () => {
           grid={"40% 30% 30%"}
           headRow={["날짜", "변동내역", "상새내역"]}
           setIsModalOpen={setIsModalOpen}
-          type={""}
+          type={"userMoney"}
         />
         <Pagenation
           number={1}

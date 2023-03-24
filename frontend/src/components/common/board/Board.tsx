@@ -2,7 +2,6 @@ import style from "./Board.module.css";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { useBoardMake } from "@/customHooks/useBoardMake";
-import { temp } from "@/connect/axios/queryHooks/notice";
 
 /** headRow : 맨 첫번째 row에 무엇을 넣을 것인가? 제목 내용 등등등
  *  grid : 각각의 내용들에 어느정도의 width를 할당할 것인가? 데이터 예시 ex) "40% 30% 30%"
@@ -17,7 +16,6 @@ interface BoardProps {
   data?: any[];
   url?: string;
   type: "noticeAll" | "noticeList" | "userMoney" | "userManage";
-  pageNum?: number;
   setIsModalOpen?: (bol: boolean) => void;
 }
 
@@ -27,7 +25,6 @@ export const Board = ({
   data,
   url,
   type,
-  pageNum,
   setIsModalOpen,
 }: BoardProps) => {
   const navigate = useNavigate();
@@ -56,6 +53,11 @@ export const Board = ({
                   key={uuidv4()}
                   onClick={() => {
                     setIsModalOpen ? setIsModalOpen(true) : undefined;
+                    url
+                      ? navigate(
+                          url + `${content.alertSeq || content.noticeSeq}`
+                        )
+                      : undefined;
                   }}
                 >
                   {contentRow}
