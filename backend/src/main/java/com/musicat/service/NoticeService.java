@@ -46,11 +46,15 @@ public class NoticeService {
    * @param page
    * @return Page<NoticeListDto>
    */
-  public Page<NoticeListDto> getNoticeList(int page) {
+  public Page<NoticeListDto> getNoticeList(int page, String query) {
     PageRequest pageable = PageRequest.of(page, constantUtil.NOTICE_PAGE_SIZE);
     // Page 타입으로 리턴
-    Page<Notice> noticeListPage = noticeRepository.findAll(pageable);
-
+    Page<Notice> noticeListPage = null;
+    if (query.equals("")) { // 아무것도 입력하지 않은 경우
+      noticeListPage = noticeRepository.findAll(pageable);
+    } else { // 무언가 입력한 경우
+      noticeListPage = noticeRepository.findAllByNoticeTitleContainingOrNoticeContentContaining(pageable, query, query);
+    }
 
     // Dto를 담은 List 타입으로 변환 (N + 1 문제 해결 및 원하는 데이터만 넘기기 위해서)
     List<NoticeListDto> noticeListDtos = noticeListPage.getContent().stream()
@@ -61,9 +65,8 @@ public class NoticeService {
     // List 타입 -> Page 타입
     Pageable noticeListDtoPageable = PageRequest.of(noticeListPage.getNumber(),
             noticeListPage.getSize(), noticeListPage.getSort());
-    Page<NoticeListDto> noticeListDtoPage = new PageImpl<>(noticeListDtos, noticeListDtoPageable, noticeListPage.getTotalElements());
 
-    return noticeListDtoPage;
+    return new PageImpl<>(noticeListDtos, noticeListDtoPageable, noticeListPage.getTotalElements());
   }
 
   // 공지사항 상세 조회
