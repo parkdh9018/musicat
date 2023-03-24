@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getSongSearch } from "@/connect/axios/queryHooks/music";
 import style from "./SongSearch.module.css";
+import { $ } from "@/connect/axios/setting";
 
 interface Props {
   onClick: React.MouseEventHandler<HTMLButtonElement>;
@@ -10,18 +11,8 @@ export const SongSearch = () => {
   const [isFocused, setIsFocused] = useState(false);
   const [isSearched, setIsSearched] = useState(false);
   const [search, setSearch] = useState("");
-  const [isClick, setIsClicked] = useState(false);
-
-  const songSearch = getSongSearch(search);
-
-  async function getGuestHouseList() {
-    const { data } = await getSongSearch(search);
-    console.log(data);
-  }
-
-  // useEffect(() => {
-  //   console.log(result);
-  // }, [search]);
+  const [searchResult, setSearchResult] = useState([]);
+  // const songSearch = getSongSearch(search);
 
   const onFocus = () => {
     setIsFocused(true);
@@ -35,14 +26,17 @@ export const SongSearch = () => {
     setSearch(e.target.value);
   };
 
-  const onClickSearch = () => {
-    getGuestHouseList();
+  const onClickSearch = async () => {
+    setIsSearched(true);
+    console.log(searchResult);
 
-    setIsClicked(true);
-    // 검색,,,, api 호출
-    console.log(search);
+    // data 가져 오기 전까지 검색중,,, 띄우고
+    const SearchResult: any = await $.get(
+      `/music/search?queryString=${search}`
+    );
+    setSearchResult(SearchResult);
+    console.log(searchResult);
 
-    setIsSearched(true); // isFetching으로 바꾸기
     // isFetching == true
 
     console.log("드랍박스 보여주고 검색 api 호출");
