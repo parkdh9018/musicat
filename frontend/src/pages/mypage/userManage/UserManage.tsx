@@ -4,13 +4,15 @@ import { Button } from "@/components/common/button/Button";
 import { Input } from "@/components/common/input/Input";
 import { SelectBox } from "@/components/common/selectBox/SelectBox";
 import { getAllUsers } from "@/connect/axios/queryHooks/admin";
-import { MouseEventHandler, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { SelectedUsers } from "./SelectedUsers/SelectedUsers";
 
+// import { User } from "@/types/mypage";
+
 import style from "./UserManage.module.css";
 
-interface userType {
+interface selectedUser {
   userNickname: string;
   userSeq: number;
 }
@@ -18,18 +20,19 @@ interface userType {
 export const UserManage = () => {
   const setNowSideNav = useSetRecoilState(nowSideNavState);
 
+  const { setUserList, userList, isLoading } = getAllUsers(0);
+  const [ selectedUserList, setSelectedUserList] = useState<selectedUser[]>([]);
+
   useEffect(() => {
     setNowSideNav("유저관리");
   }, []);
 
   const boardColumnClick = (seq: number, nickname: string) => {
-    if(!userList.every(v => v.userSeq != seq)) return;
-    setUserList((prev) => [...prev, { userNickname: nickname, userSeq: seq }]);
+    if(!userList?.every(v => v.userSeq != seq)) return;
+    setSelectedUserList((prev) => [...prev, { userNickname: nickname, userSeq: seq }]);
   };
 
-  const [userList, setUserList] = useState<userType[]>([]);
 
-  const { data, isLoading } = getAllUsers(0);
 
   const searchOptions = [
     { value: "all", name: "모두" },
@@ -77,7 +80,7 @@ export const UserManage = () => {
         />
       </div>
       <div className={style.seleceted_userList}>
-        <SelectedUsers userList={userList} setUserList={setUserList} />
+        <SelectedUsers selectedUserList={selectedUserList} setSelectedUserList={setSelectedUserList} />
       </div>
       <div className={style.userStateChange}>
         <span>변동사항 : </span>
@@ -97,7 +100,7 @@ export const UserManage = () => {
       </div>
       <div className={style.userList}>
         <Board
-          data={data?.content}
+          data={userList}
           grid={userList_grid}
           headRow={userList_headRow}
           type={"userManage"}

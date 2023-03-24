@@ -1,6 +1,7 @@
 import { $ } from "@/connect/axios/setting";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { PagableResponse } from "@/types/mypage";
+import { useState } from "react";
 
 
 interface UserSeq {
@@ -26,8 +27,12 @@ export function getAllUsers(page: number) {
       return data;
     }
   );
+  const [userList, setUserList] = useState<User[] | undefined>([]);
 
-  return { data, isLoading };
+  // console.log(data?.content)
+  // data?.content ? setUserList((prev) => [...prev, data?.content]) : undefined;
+
+  return { isLoading, userList, setUserList };
 }
 
 // 금지 회원 전체 조회 (관리자)
@@ -42,11 +47,14 @@ export function getAllBanUsers(page: number, isChattingBan = false, isBan = fals
       return data;
     }
   );
+  
+  const [userList, setUserList] = useState<User[] | undefined>([]);
 
-  return { data, isLoading };
+  return { isLoading, userList, setUserList };
 }
 
-// 회원 채팅 금지 조치 (관리자)
+// TODO : 이거 토글 말고 정지는 정지, 해제는 해제로 바꿔야 함
+// 회원 채팅 금지 조치 (관리자) 
 export function putBanChatting(payload: UserSeq) {
   const { data, isLoading } = useMutation(async (): Promise<User> => {
     const { data } = await $.put(`/admin/user/chattingBan`, payload);

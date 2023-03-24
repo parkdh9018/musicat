@@ -10,20 +10,20 @@ interface userType {
 }
 
 interface props {
-  setUserList: React.Dispatch<React.SetStateAction<userType[]>>;
-  userList : userType[];
+  setSelectedUserList: React.Dispatch<React.SetStateAction<userType[]>>;
+  selectedUserList : userType[];
 }
 
-export const SelectedUsers = ({setUserList, userList}:props) => {
+export const SelectedUsers = ({setSelectedUserList, selectedUserList}:props) => {
 
   const userClick = (index:number) => {
-    setUserList(prev => prev.filter((_, i) => i != index))
+    setSelectedUserList(prev => prev.filter((_, i) => i != index))
   }
 
   return (
     <div className={style.selectedUsers}>
       <div className={style.container}>
-        {userList.map((user, i) => (
+        {selectedUserList.map((user, i) => (
           <div key={uuidv4()} className={style.userComponent} onClick={() => userClick(i)}>
             <span>{user.userSeq}-{user.userNickname}</span>
             <FontAwesomeIcon icon={faXmark} className={style.close} />
