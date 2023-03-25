@@ -1,6 +1,7 @@
 import { $ } from "@/connect/axios/setting";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import { PagableResponse } from "@/types/mypage";
+import { useEffect, useMemo, useState } from "react";
 
 interface UserSeq {
   userSeq: number;
@@ -15,59 +16,94 @@ interface User extends UserSeq {
   useNickname: string;
 }
 
-
 // 회원 전체 관리(관리자)
-export function getAllUsers(page: number) {
-  const { data, isLoading } = useQuery(
-    ["getAllUsers"],
-    async (): Promise<PagableResponse<User>> => {
-      const { data } = await $.get(`/admin/user?page=${page}`);
-      return data;
+export function getUsers() {
+  const [searchInput, setSearchInput] = useState<string>("");
+  const [searchSelectValue, setSearchSelectValue] = useState<string>("all");
+
+  let isChattingBan: boolean | null = null;
+  let isBan: boolean | null = null;
+
+  useEffect(() => {
+    if (searchSelectValue === "banChat") {
+      isChattingBan = true;
+    } else if (searchSelectValue === "notBanChat") {
+      isChattingBan = false;
     }
-  );
-  const userList = data?.content;
-  return { isLoading, userList };
-}
 
-// 금지 회원 전체 조회 (관리자)
+    if (searchSelectValue === "ban") {
+      isBan = true;
+    } else if (searchSelectValue === "notBan") {
+      isBan = false;
+    }
+  }, [searchSelectValue]);
 
-export function getAllBanUsers(page: number, isChattingBan?:boolean, isBan?:boolean) {
+  const { data, isLoading, refetch, fetchNextPage, isFetchingNextPage } =
+    useInfiniteQuery(
+      ["getAllUsers"],
+      async ({ pageParam = 0 }): Promise<PagableResponse<User>> => {
+        const { data } = await $.get(
+          `/admin/user?page=${pageParam}&userNickname=${searchInput}&isChattingBan=${isChattingBan}&isBan=${isBan}`
+        );
+        return data;
+      },
+      {
+        getNextPageParam: ({ number, last }) => {
+          if (!last) return number + 1;
+        },
+      }
+    );
 
-  const url = `/admin/user/ban?page=${page}` 
-  + isChattingBan == undefined ? `` : `&isChattingBan=${isChattingBan}`
-  + isBan == undefined ? `` : `&isChattingBan=${isBan}`;
-  
-  const { data, isLoading } = useQuery(
-    ["getAllBanUsers"],
-    async (): Promise<PagableResponse<User>> => {
-      const { data } = await $.get(url);
-      return data;
-    },
-  );
+  const banMutation = (url: string, filterd_list: User[]) => {
+    const { mutate } = useMutation(
+      async (): Promise<void> => {
+        const { data } = await $.put(
+          url,
+          filterd_list?.map((v) => {
+            v.userSeq;
+          })
+        );
+        return data;
+      },
+      {
+        onSuccess: () => {
+          refetch();
+        },
+      }
+    );
 
-  const userList = data?.content;
-  return { userList, isLoading };
-}
+    return mutate;
+  };
 
-// TODO : 이거 토글 말고 정지는 정지, 해제는 해제로 바꿔야 함
-// 회원 채팅 금지 조치 (관리자) 
-export function putBanChatting(payload: UserSeq) {
-  const { data, isLoading } = useMutation(async (): Promise<User> => {
-    const { data } = await $.put(`/admin/user/chattingBan`, payload);
-    return data;
-  });
+  const chattingBanMutate = (filterd_list: User[]) => banMutation(`/admin/user/chatting-ban`, filterd_list);
+  const chattingNotBanMutate = (filterd_list: User[]) => banMutation(`/admin/user/not-chatting-ban`, filterd_list);
+  const BanMutate = (filterd_list: User[]) => banMutation(`/admin/user/ban`, filterd_list);
+  const NotBanMutate = (filterd_list: User[]) => banMutation(`/admin/user/not-ban`, filterd_list);
 
-  return { data, isLoading };
-}
+  const userList = useMemo(() => {
+    const result: User[] = [];
+    data?.pages.forEach((page) => {
+      page.content.forEach((item) => {
+        result.push(item);
+      });
+    });
 
-// 회원 활동 금지 조치 (관리자)
-export function putBanUser() {
-  const { mutate } = useMutation(
-    async (payload: UserSeq) => {
-      const { data } = await $.put(`/admin/user/ban`, payload);
-      return data;
-    },
-  );
+    return result;
+  }, [data]);
 
-  return { mutate };
+  return {
+    isLoading,
+    userList,
+    searchInput,
+    searchSelectValue,
+    isFetchingNextPage,
+    refetch,
+    setSearchInput,
+    setSearchSelectValue,
+    chattingBanMutate,
+    chattingNotBanMutate,
+    BanMutate,
+    NotBanMutate,
+    fetchNextPage,
+  };
 }
