@@ -3,7 +3,7 @@ import { Board } from "@/components/common/board/Board";
 import { Button } from "@/components/common/button/Button";
 import { Input } from "@/components/common/input/Input";
 import { SelectBox } from "@/components/common/selectBox/SelectBox";
-import { getAllUsers } from "@/connect/axios/queryHooks/admin";
+import { getUsers } from "@/connect/axios/queryHooks/admin";
 import { MouseEventHandler, useEffect, useMemo, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { SelectedUsers } from "./SelectedUsers/SelectedUsers";
@@ -24,12 +24,14 @@ export const UserManage = () => {
     setNowSideNav("유저관리");
   }, []);
 
-  const { userList, isLoading } = getAllUsers(0);
+  const { userList, isLoading, refetch, searchInput, setSearchInput, searchSelectValue, setSearchSelectValue } = getUsers();
 
   const searchOptions = [
     { value: "all", name: "모두" },
-    { value: "banChat", name: "채팅여부" },
-    { value: "ban", name: "정지여부" },
+    { value: "banChat", name: "채팅정지" },
+    { value: "ban", name: "권한정지" },
+    { value: "notBanChat", name: "채팅허용" },
+    { value: "notBan", name: "권한허용" },
   ];
   const useStateChangeOptions = [
     { value: "ban", name: "권한정지" },
@@ -48,8 +50,7 @@ export const UserManage = () => {
   ];
 
   const [selectedUserList, setSelectedUserList] = useState<selectedUser[]>([]);
-  const [searchInput, setSearchInput] = useState<string>("");
-  const [searchSelectValue, setSearchSelectValue] = useState<string>("all");
+
   const [changeSelectValue, setChangeSelectValue] = useState<string>("ban");
 
   const filtered_userList = useMemo(() => {
@@ -74,6 +75,7 @@ export const UserManage = () => {
   const searchClick:MouseEventHandler = () => {
     // //
     // getAllBanUsers()
+    refetch()
   }
 
   const changeClick:MouseEventHandler = () => {
