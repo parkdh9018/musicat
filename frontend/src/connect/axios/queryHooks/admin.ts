@@ -7,6 +7,11 @@ interface UserSeq {
   userSeq: number;
 }
 
+interface selectedUser {
+  userNickname: string;
+  userSeq: number;
+}
+
 interface User extends UserSeq {
   userCreatedAt: string;
   userEmail: string;
@@ -18,9 +23,47 @@ interface User extends UserSeq {
 
 // 회원 전체 관리(관리자)
 export function getUsers() {
+
   const [searchInput, setSearchInput] = useState<string>("");
   const [searchSelectValue, setSearchSelectValue] = useState<string>("all");
+  const [selectedUserList, setSelectedUserList] = useState<selectedUser[]>([]);
+  const [changeSelectValue, setChangeSelectValue] = useState<string>("ban");
 
+  const { data, isLoading, refetch, fetchNextPage, isFetchingNextPage } =
+  useInfiniteQuery(
+    ["getAllUsers"],
+    async ({ pageParam = 0 }): Promise<PagableResponse<User>> => {
+      const { data } = await $.get(
+        `/admin/user?page=${pageParam}&userNickname=${searchInput}&isChattingBan=${isChattingBan}&isBan=${isBan}`
+      );
+      return data;
+    },
+    {
+      getNextPageParam: ({ number, last }) => {
+        if (!last) return number + 1;
+      },
+    }
+  );
+
+  // 유저 리스트
+  const userList = useMemo(() => {
+    const result: User[] = [];
+    data?.pages.forEach((page) => {
+      page.content.forEach((item) => {
+        result.push(item);
+      });
+    });
+
+    return result;
+  }, [data]);
+
+  // 선택된 유저는 제외한 리스트
+  const filtered_userList = useMemo(() => {
+    const set = new Set(selectedUserList.map((v) => v.userSeq));
+    return userList?.filter((v) => !set.has(v.userSeq));
+  }, [userList, selectedUserList]);
+
+  // select box value
   let isChattingBan: boolean | null = null;
   let isBan: boolean | null = null;
 
@@ -38,28 +81,15 @@ export function getUsers() {
     }
   }, [searchSelectValue]);
 
-  const { data, isLoading, refetch, fetchNextPage, isFetchingNextPage } =
-    useInfiniteQuery(
-      ["getAllUsers"],
-      async ({ pageParam = 0 }): Promise<PagableResponse<User>> => {
-        const { data } = await $.get(
-          `/admin/user?page=${pageParam}&userNickname=${searchInput}&isChattingBan=${isChattingBan}&isBan=${isBan}`
-        );
-        return data;
-      },
-      {
-        getNextPageParam: ({ number, last }) => {
-          if (!last) return number + 1;
-        },
-      }
-    );
 
-  const banMutation = (url: string, filterd_list: User[]) => {
+
+  // mutation
+  const banMutation = (url: string) => {
     const { mutate } = useMutation(
       async (): Promise<void> => {
         const { data } = await $.put(
           url,
-          filterd_list?.map((v) => {
+          filtered_userList?.map((v) => {
             v.userSeq;
           })
         );
@@ -75,21 +105,12 @@ export function getUsers() {
     return mutate;
   };
 
-  const chattingBanMutate = (filterd_list: User[]) => banMutation(`/admin/user/chatting-ban`, filterd_list);
-  const chattingNotBanMutate = (filterd_list: User[]) => banMutation(`/admin/user/not-chatting-ban`, filterd_list);
-  const BanMutate = (filterd_list: User[]) => banMutation(`/admin/user/ban`, filterd_list);
-  const NotBanMutate = (filterd_list: User[]) => banMutation(`/admin/user/not-ban`, filterd_list);
+  const chattingBanMutate = banMutation(`/admin/user/chatting-ban`);
+  const chattingNotBanMutate = banMutation(`/admin/user/not-chatting-ban`);
+  const BanMutate = banMutation(`/admin/user/ban`);
+  const NotBanMutate = banMutation(`/admin/user/not-ban`);
 
-  const userList = useMemo(() => {
-    const result: User[] = [];
-    data?.pages.forEach((page) => {
-      page.content.forEach((item) => {
-        result.push(item);
-      });
-    });
 
-    return result;
-  }, [data]);
 
   return {
     isLoading,
@@ -97,6 +118,9 @@ export function getUsers() {
     searchInput,
     searchSelectValue,
     isFetchingNextPage,
+    selectedUserList,
+    changeSelectValue,
+    filtered_userList,
     refetch,
     setSearchInput,
     setSearchSelectValue,
@@ -105,5 +129,7 @@ export function getUsers() {
     BanMutate,
     NotBanMutate,
     fetchNextPage,
+    setSelectedUserList,
+    setChangeSelectValue,
   };
 }
