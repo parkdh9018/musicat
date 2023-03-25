@@ -24,7 +24,18 @@ export const UserManage = () => {
     setNowSideNav("유저관리");
   }, []);
 
-  const { userList, isLoading, refetch, searchInput, setSearchInput, searchSelectValue, setSearchSelectValue } = getUsers();
+  const {
+    userList,
+    isLoading,
+    refetch,
+    searchInput,
+    setSearchInput,
+    setSearchSelectValue,
+    chattingBanMutate,
+    chattingNotBanMutate,
+    BanMutate,
+    NotBanMutate,
+  } = getUsers();
 
   const searchOptions = [
     { value: "all", name: "모두" },
@@ -37,7 +48,7 @@ export const UserManage = () => {
     { value: "ban", name: "권한정지" },
     { value: "not_ban", name: "정지해제" },
     { value: "banChat", name: "채팅금지" },
-    { value: "not_ban_chat", name: "채팅허용" },
+    { value: "not_banchat", name: "채팅허용" },
   ];
   const userList_grid = "8% 15% 32% 25% 10% 10%";
   const userList_headRow = [
@@ -58,7 +69,6 @@ export const UserManage = () => {
     return userList?.filter((v) => !set.has(v.userSeq));
   }, [userList, selectedUserList]);
 
-
   // click eventListener
   const boardColumnClick = (seq: number, nickname: string) => {
     if (!selectedUserList?.every((v) => v.userSeq != seq)) return;
@@ -72,17 +82,28 @@ export const UserManage = () => {
     setSelectedUserList((prev) => prev.filter((v) => v.userSeq != seq));
   };
 
-  const searchClick:MouseEventHandler = () => {
-    // //
-    // getAllBanUsers()
-    refetch()
-  }
+  const searchClick: MouseEventHandler = () => {
+    refetch();
+  };
 
-  const changeClick:MouseEventHandler = () => {
-    //
-  }
-
-
+  const changeClick: MouseEventHandler = () => {
+    switch (changeSelectValue) {
+      case "ban":
+        BanMutate()
+        break;
+      case "not_ban":
+        NotBanMutate();
+        break;
+      case "banChat":
+        chattingBanMutate();
+        break;
+      case "not_banChat":
+        chattingNotBanMutate();
+        break;
+      default:
+        break;
+    }
+  };
 
   return (
     <div className={style.userManage}>
@@ -93,14 +114,8 @@ export const UserManage = () => {
           setValue={setSearchSelectValue}
           style={{ width: "13%" }}
         />
-        <Input
-          input={searchInput}
-          setInput={setSearchInput}
-        />
-        <Button
-          content="검색"
-          onClick={searchClick}
-        />
+        <Input input={searchInput} setInput={setSearchInput} />
+        <Button content="검색" onClick={searchClick} />
       </div>
       <div className={style.seleceted_userList}>
         <SelectedUsers
@@ -115,10 +130,7 @@ export const UserManage = () => {
           setValue={setChangeSelectValue}
           style={{ width: "13%" }}
         />
-        <Button
-          content="적용"
-          onClick={changeClick}
-        />
+        <Button content="적용" onClick={changeClick} />
       </div>
       <div className={style.userList}>
         <Board
