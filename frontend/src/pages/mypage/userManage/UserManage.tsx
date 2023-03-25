@@ -8,8 +8,6 @@ import { MouseEventHandler, useEffect, useMemo, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { SelectedUsers } from "./SelectedUsers/SelectedUsers";
 
-// import { User } from "@/types/mypage";
-
 import style from "./UserManage.module.css";
 
 interface selectedUser {
@@ -27,8 +25,10 @@ export const UserManage = () => {
   const {
     userList,
     isLoading,
-    refetch,
     searchInput,
+    isFetchingNextPage,
+    fetchNextPage,
+    refetch,
     setSearchInput,
     setSearchSelectValue,
     chattingBanMutate,
@@ -61,7 +61,6 @@ export const UserManage = () => {
   ];
 
   const [selectedUserList, setSelectedUserList] = useState<selectedUser[]>([]);
-
   const [changeSelectValue, setChangeSelectValue] = useState<string>("ban");
 
   const filtered_userList = useMemo(() => {
@@ -89,21 +88,33 @@ export const UserManage = () => {
   const changeClick: MouseEventHandler = () => {
     switch (changeSelectValue) {
       case "ban":
-        BanMutate()
+        BanMutate(filtered_userList);
         break;
       case "not_ban":
-        NotBanMutate();
+        NotBanMutate(filtered_userList);
         break;
       case "banChat":
-        chattingBanMutate();
+        chattingBanMutate(filtered_userList);
         break;
       case "not_banChat":
-        chattingNotBanMutate();
+        chattingNotBanMutate(filtered_userList);
         break;
       default:
         break;
     }
   };
+
+  const handleScroll = () => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop >=
+        document.documentElement.offsetHeight &&
+      !isFetchingNextPage
+    ) {
+      fetchNextPage();
+    }
+  };
+
+  window.addEventListener("scroll", handleScroll);
 
   return (
     <div className={style.userManage}>

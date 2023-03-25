@@ -1,5 +1,5 @@
 import { $ } from "@/connect/axios/setting";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import { PagableResponse } from "@/types/mypage";
 import { useEffect, useMemo, useState } from "react";
 
@@ -38,22 +38,28 @@ export function getUsers() {
     }
   }, [searchSelectValue]);
 
-  const { data, isLoading, refetch } = useQuery(
-    ["getAllUsers"],
-    async (): Promise<PagableResponse<User>> => {
-      const { data } = await $.get(
-        `/admin/user?page=0&userNickname=${searchInput}&isChattingBan=${isChattingBan}&isBan=${isBan}`
-      );
-      return data;
-    }
-  );
+  const { data, isLoading, refetch, fetchNextPage, isFetchingNextPage } =
+    useInfiniteQuery(
+      ["getAllUsers"],
+      async ({ pageParam = 0 }): Promise<PagableResponse<User>> => {
+        const { data } = await $.get(
+          `/admin/user?page=${pageParam}&userNickname=${searchInput}&isChattingBan=${isChattingBan}&isBan=${isBan}`
+        );
+        return data;
+      },
+      {
+        getNextPageParam: ({ number, last }) => {
+          if (!last) return number + 1;
+        },
+      }
+    );
 
-  const banMutation = (url: string) => {
+  const banMutation = (url: string, filterd_list: User[]) => {
     const { mutate } = useMutation(
       async (): Promise<void> => {
         const { data } = await $.put(
           url,
-          userList?.map((v) => {
+          filterd_list?.map((v) => {
             v.userSeq;
           })
         );
@@ -69,18 +75,28 @@ export function getUsers() {
     return mutate;
   };
 
-  const chattingBanMutate = banMutation(`/admin/user/chatting-ban`);
-  const chattingNotBanMutate = banMutation(`/admin/user/not-chatting-ban`);
-  const BanMutate = banMutation(`/admin/user/ban`);
-  const NotBanMutate = banMutation(`/admin/user/not-ban`);
+  const chattingBanMutate = (filterd_list: User[]) => banMutation(`/admin/user/chatting-ban`, filterd_list);
+  const chattingNotBanMutate = (filterd_list: User[]) => banMutation(`/admin/user/not-chatting-ban`, filterd_list);
+  const BanMutate = (filterd_list: User[]) => banMutation(`/admin/user/ban`, filterd_list);
+  const NotBanMutate = (filterd_list: User[]) => banMutation(`/admin/user/not-ban`, filterd_list);
 
-  const userList = useMemo(() => data?.content, [data]);
+  const userList = useMemo(() => {
+    const result: User[] = [];
+    data?.pages.forEach((page) => {
+      page.content.forEach((item) => {
+        result.push(item);
+      });
+    });
+
+    return result;
+  }, [data]);
 
   return {
     isLoading,
     userList,
     searchInput,
     searchSelectValue,
+    isFetchingNextPage,
     refetch,
     setSearchInput,
     setSearchSelectValue,
@@ -88,5 +104,6 @@ export function getUsers() {
     chattingNotBanMutate,
     BanMutate,
     NotBanMutate,
+    fetchNextPage,
   };
 }
