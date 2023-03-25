@@ -20,13 +20,14 @@ export const UserManage = () => {
   }, []);
 
   const {
-    userList,
     isLoading,
     searchInput,
     isFetchingNextPage,
     selectedUserList,
     changeSelectValue,
     filtered_userList,
+    isFetching,
+    isRefetching,
     fetchNextPage,
     refetch,
     setSearchInput,
@@ -104,7 +105,7 @@ export const UserManage = () => {
     if (
       window.innerHeight + document.documentElement.scrollTop >=
         document.documentElement.offsetHeight &&
-      !isFetchingNextPage
+      !isFetchingNextPage && !isFetching && !isRefetching
     ) {
       fetchNextPage();
     }

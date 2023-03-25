@@ -29,7 +29,7 @@ export function getUsers() {
   const [selectedUserList, setSelectedUserList] = useState<selectedUser[]>([]);
   const [changeSelectValue, setChangeSelectValue] = useState<string>("ban");
 
-  const { data, isLoading, refetch, fetchNextPage, isFetchingNextPage } =
+  const { data, isLoading, refetch, fetchNextPage, isFetchingNextPage, isFetching, isRefetching } =
   useInfiniteQuery(
     ["getAllUsers"],
     async ({ pageParam = 0 }): Promise<PagableResponse<User>> => {
@@ -42,6 +42,7 @@ export function getUsers() {
       getNextPageParam: ({ number, last }) => {
         if (!last) return number + 1;
       },
+      staleTime: 4000,
     }
   );
 
@@ -121,6 +122,8 @@ export function getUsers() {
     selectedUserList,
     changeSelectValue,
     filtered_userList,
+    isFetching,
+    isRefetching,
     refetch,
     setSearchInput,
     setSearchSelectValue,
