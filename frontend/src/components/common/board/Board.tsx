@@ -2,6 +2,8 @@ import style from "./Board.module.css";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { useBoardMake } from "@/customHooks/useBoardMake";
+import { useRecoilValue } from "recoil";
+import { userInfoState } from "@/atoms/user.atom";
 
 /** headRow : 맨 첫번째 row에 무엇을 넣을 것인가? 제목 내용 등등등
  *  grid : 각각의 내용들에 어느정도의 width를 할당할 것인가? 데이터 예시 ex) "40% 30% 30%"
@@ -30,6 +32,8 @@ export const Board = ({
   boardColumnClick,
 }: BoardProps) => {
   const navigate = useNavigate();
+  const userInfo = useRecoilValue(userInfoState);
+
   return (
     <>
       {headRow.length !== 0 && (
@@ -49,26 +53,33 @@ export const Board = ({
             className={style.content_container}
             style={{ gridTemplateColumns: grid }}
           >
-            {useBoardMake(type, content).map((contentRow: any) => {
-              return (
-                <div
-                  key={uuidv4()}
-                  onClick={() => {
-                    setIsModalOpen ? setIsModalOpen(true) : undefined;
-                    url
-                      ? navigate(
-                          url + `${content.alertSeq || content.noticeSeq}`
-                        )
-                      : undefined;
-                    boardColumnClick
-                      ? boardColumnClick(content.userSeq, content.userNickname)
-                      : undefined;
-                  }}
-                >
-                  {contentRow}
-                </div>
-              );
-            })}
+            {useBoardMake(type, content, userInfo.userRole).map(
+              (contentRow: any) => {
+                return (
+                  <div
+                    key={uuidv4()}
+                    onClick={() => {
+                      setIsModalOpen ? setIsModalOpen(true) : undefined;
+
+                      url
+                        ? navigate(
+                            url + `${content.alertSeq || content.noticeSeq}`
+                          )
+                        : undefined;
+
+                      boardColumnClick
+                        ? boardColumnClick(
+                            content.userSeq,
+                            content.userNickname
+                          )
+                        : undefined;
+                    }}
+                  >
+                    {contentRow}
+                  </div>
+                );
+              }
+            )}
           </div>
         );
       })}

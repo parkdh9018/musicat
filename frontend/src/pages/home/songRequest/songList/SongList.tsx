@@ -2,69 +2,54 @@ import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import style from "./SongList.module.css";
 import { Modal } from "@/components/common/modal/Modal";
-import { SongDetailModal } from "./SongDetailModal";
-import { Song } from "@/connect/axios/queryHooks/music";
+import { SongDetailModal } from "./songDetailModal/SongDetailModal";
+import { getSongList, Song } from "@/connect/axios/queryHooks/music";
+import { $ } from "@/connect/axios/setting";
 
 export const SongList = () => {
-  //  const songs: Song[] = "api 요청(/music) 리액트 쿼리로 받아오기"
+  const { data: songs } = getSongList();
+  const [selectedSong, setSelectedSong] = useState<Song | null>(null);
 
-  // 더미데이터
-  const songs: Song[] = [
-    {
-      musicSeq: 1,
-      memberSeq: 1,
-      musicCreatedAt: null,
-      musicTitle: "ditto",
-      musicArtist: "newjeans",
-      musicLength: null,
-      musicCover: null,
-    },
-    {
-      musicSeq: 2,
-      memberSeq: 1,
-      musicCreatedAt: null,
-      musicTitle: "파이팅해야지",
-      musicArtist: "부석순",
-      musicLength: null,
-      musicCover: null,
-    },
-    {
-      musicSeq: 3,
-      memberSeq: 1,
-      musicCreatedAt: null,
-      musicTitle: "죽겠다",
-      musicArtist: "ikon",
-      musicLength: null,
-      musicCover: null,
-    },
-  ];
-  // 404 웅렬님께서 수정중이심...
-  // const data = getSongList();
-  // console.log(data);
+  console.log(songs);
 
   const [isSongDetailModalOpen, setIsSongDetailModalOpen] = useState(false);
 
-  const onSongDetail = () => {
+  const onSongDetail = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const value = e.currentTarget.value;
+    const song = JSON.parse(value);
+    setSelectedSong(song);
     setIsSongDetailModalOpen(true);
   };
+
+  if (!songs) {
+    return <div>로딩 중...</div>;
+  }
 
   const songList: JSX.Element[] = songs.map((song) => (
     <div className={style.songList} key={uuidv4()}>
       <span className={style.songSpan}>
         {song.musicTitle} - {song.musicArtist}
       </span>
-      <button className={style.songBtn} onClick={() => onSongDetail()}>
+      <button
+        className={style.songBtn}
+        value={JSON.stringify(song)}
+        onClick={onSongDetail}
+      >
         ...
       </button>
     </div>
   ));
+
+  const songDetailModal = selectedSong ? (
+    <SongDetailModal song={selectedSong} />
+  ) : null;
 
   return (
     <>
       <div>{songList}</div>
       {isSongDetailModalOpen && (
         <Modal setModalOpen={setIsSongDetailModalOpen}>
-          <SongDetailModal />
+          <div>{songDetailModal}</div>
         </Modal>
       )}
     </>

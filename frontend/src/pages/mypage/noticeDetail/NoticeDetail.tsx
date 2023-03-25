@@ -2,6 +2,7 @@ import { nowSideNavState } from "@/atoms/common.atom";
 import { userInfoState } from "@/atoms/user.atom";
 import { Button } from "@/components/common/button/Button";
 import { getAlertDetail } from "@/connect/axios/queryHooks/alert";
+import { requestNoticeModify } from "@/connect/axios/queryHooks/notice";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
@@ -56,13 +57,22 @@ export const NoticeDetail = () => {
             <Button
               content="수정"
               onClick={() => {
-                navigate(`/mypage/notice-manage/${noticeSeq}`);
+                navigate(
+                  `/mypage/notice-manage/${noticeSeq?.replace("n", "")}`
+                );
               }}
-              style={{ marginRight: "10px" }}
+              style={{ marginRight: "5px" }}
             />
             <Button
               content="삭제"
               onClick={() => {
+                requestNoticeModify(
+                  "delete",
+                  navigate,
+                  "",
+                  "",
+                  noticeSeq?.replace("n", "")
+                );
                 return;
               }}
             />

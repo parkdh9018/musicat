@@ -17,14 +17,4 @@
   border: none;
   align-items: center;
   color: white;
-}
-
-.songModal {
-  display: flex;
-  flex-direction: row;
-  padding: 5%;
-}
-
-.songModalImg {
-  padding: 5%;
 }/*# sourceMappingURL=SongList.module.css.map */
