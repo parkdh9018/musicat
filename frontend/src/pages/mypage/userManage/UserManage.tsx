@@ -10,10 +10,7 @@ import { SelectedUsers } from "./SelectedUsers/SelectedUsers";
 
 import style from "./UserManage.module.css";
 
-interface selectedUser {
-  userNickname: string;
-  userSeq: number;
-}
+
 
 export const UserManage = () => {
   const setNowSideNav = useSetRecoilState(nowSideNavState);
@@ -23,10 +20,14 @@ export const UserManage = () => {
   }, []);
 
   const {
-    userList,
     isLoading,
     searchInput,
     isFetchingNextPage,
+    selectedUserList,
+    changeSelectValue,
+    filtered_userList,
+    isFetching,
+    isRefetching,
     fetchNextPage,
     refetch,
     setSearchInput,
@@ -35,6 +36,9 @@ export const UserManage = () => {
     chattingNotBanMutate,
     BanMutate,
     NotBanMutate,
+    setSelectedUserList,
+    setChangeSelectValue,
+
   } = getUsers();
 
   const searchOptions = [
@@ -60,13 +64,6 @@ export const UserManage = () => {
     "정지여부",
   ];
 
-  const [selectedUserList, setSelectedUserList] = useState<selectedUser[]>([]);
-  const [changeSelectValue, setChangeSelectValue] = useState<string>("ban");
-
-  const filtered_userList = useMemo(() => {
-    const set = new Set(selectedUserList.map((v) => v.userSeq));
-    return userList?.filter((v) => !set.has(v.userSeq));
-  }, [userList, selectedUserList]);
 
   // click eventListener
   const boardColumnClick = (seq: number, nickname: string) => {
@@ -88,16 +85,16 @@ export const UserManage = () => {
   const changeClick: MouseEventHandler = () => {
     switch (changeSelectValue) {
       case "ban":
-        BanMutate(filtered_userList);
+        BanMutate();
         break;
       case "not_ban":
-        NotBanMutate(filtered_userList);
+        NotBanMutate();
         break;
       case "banChat":
-        chattingBanMutate(filtered_userList);
+        chattingBanMutate();
         break;
       case "not_banChat":
-        chattingNotBanMutate(filtered_userList);
+        chattingNotBanMutate();
         break;
       default:
         break;
@@ -108,7 +105,7 @@ export const UserManage = () => {
     if (
       window.innerHeight + document.documentElement.scrollTop >=
         document.documentElement.offsetHeight &&
-      !isFetchingNextPage
+      !isFetchingNextPage && !isFetching && !isRefetching
     ) {
       fetchNextPage();
     }
