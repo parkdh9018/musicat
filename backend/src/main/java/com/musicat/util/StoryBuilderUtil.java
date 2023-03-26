@@ -8,37 +8,35 @@ import org.springframework.stereotype.Component;
 @Component
 public class StoryBuilderUtil {
 
-    // Dto -> Entity
+    // Dto -> Story(Entity)
     public Story buildStoryEntity(StoryRequestDto storyRequestDto) {
         return Story.builder()
                 .userSeq(storyRequestDto.getUserSeq())
                 .storyTitle(storyRequestDto.getStoryTitle())
                 .storyContent(storyRequestDto.getStoryContent())
-                .storyMusicName(storyRequestDto.getStoryMusicName())
+                .storyMusicTitle(storyRequestDto.getStoryMusicTitle())
                 .storyMusicArtist(storyRequestDto.getStoryMusicArtist())
                 .build();
     }
 
     // Story -> StoryInfoDto
+    // Todo : 프론트 측에서 필요한 데이터만 제공할 예정
     public StoryInfoDto buildStoryInfoDto(Story story) {
         return StoryInfoDto.builder()
-                .storySeq(story.getStorySeq())
-                .userSeq(story.getUserSeq())
+//                .storySeq(story.getStorySeq())
+//                .userSeq(story.getUserSeq())
                 .storyCreatedAt(story.getStoryCreatedAt())
-                .storyReadAt(story.getStoryReadAt())
-                .storyIsRead(story.isStoryIsRead())
-                .storyIsValid(story.isStoryIsValid())
-                .storyIsReady(story.isStoryIsReady())
+                .storyReaded(story.isStoryReaded())
+                .storyValid(story.getStoryValid())
                 .storyTitle(story.getStoryTitle())
-                .storyContent(story.getStoryContent())
-                .storyWavFileDirectoryRoot(story.getStoryWavFileDirectoryRoot())
-                .storyMusicName(story.getStoryMusicName())
+//                .storyContent(story.getStoryContent())
+                .storyMusicTitle(story.getStoryMusicTitle())
                 .storyMusicArtist(story.getStoryMusicArtist())
-                .storyMusicIsPlayed(story.isStoryMusicIsPlayed())
                 .storyMusicCover(story.getStoryMusicCover())
-                .storyMusicPlayedMs(story.getStoryMusicPlayedMs())
-                .storyMusicLength(story.getStoryMusicLength())
+//                .storyMusicLength(story.getStoryMusicLength())
                 .storyMusicYoutubeId(story.getStoryMusicYoutubeId())
+                .storyReaction(story.getStoryReaction())
+                .storyOutro(story.getStoryOutro())
                 .build();
     }
 
