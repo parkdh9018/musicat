@@ -20,4 +20,19 @@
   min-height: 100%;
   background-color: var(--background-color);
   border-radius: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  .home {
+    flex-direction: column;
+  }
+  .home .leftTab {
+    width: 100%;
+    padding: 1%;
+    margin-bottom: 30px;
+  }
+  .home .rightTab {
+    width: 100%;
+    padding: 2%;
+  }
 }/*# sourceMappingURL=Home.module.css.map */

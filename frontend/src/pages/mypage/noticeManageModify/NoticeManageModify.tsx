@@ -18,7 +18,7 @@ export const NoticeManageModify = () => {
   const setNowSideNav = useSetRecoilState(nowSideNavState);
 
   // param이 new라면 새로운 글 작성이니까 새글작성 세팅
-  const { data: detail } = getNoticeDetail(
+  const { isLoading } = getNoticeDetail(
     `/notice/detail?noticeSeq=${noticeSeq}`,
     noticeSeq,
     setTitle,
