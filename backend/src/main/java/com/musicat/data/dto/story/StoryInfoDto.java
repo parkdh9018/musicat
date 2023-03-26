@@ -17,7 +17,7 @@ public class StoryInfoDto { // 사연 정보 Dto
 //
 //    private long userSeq;
 
-    private LocalDateTime storyCreatedAt;
+    private String storyCreatedAt;
 
     private boolean storyReaded;
 
