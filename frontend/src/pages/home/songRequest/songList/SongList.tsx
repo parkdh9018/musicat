@@ -10,6 +10,8 @@ export const SongList = () => {
   const { data: songs } = getSongList();
   const [selectedSong, setSelectedSong] = useState<Song | null>(null);
 
+  const userSeq = 1;
+
   console.log(songs);
 
   const [isSongDetailModalOpen, setIsSongDetailModalOpen] = useState(false);
@@ -27,9 +29,20 @@ export const SongList = () => {
 
   const songList: JSX.Element[] = songs.map((song) => (
     <div className={style.songList} key={uuidv4()}>
-      <span className={style.songSpan}>
-        {song.musicTitle} - {song.musicArtist}
-      </span>
+      {song.userSeq === userSeq ? (
+        <span className={style.userSongSpan}>
+          {song.musicTitle} - {song.musicArtist}
+        </span>
+      ) : song.isMusicPlayed ? (
+        <span className={style.playingSongSpan}>
+          {song.musicTitle} - {song.musicArtist}
+        </span>
+      ) : (
+        <span className={style.songSpan}>
+          {song.musicTitle} - {song.musicArtist}
+        </span>
+      )}
+
       <button
         className={style.songBtn}
         value={JSON.stringify(song)}
