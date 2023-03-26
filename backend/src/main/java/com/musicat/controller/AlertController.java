@@ -66,17 +66,17 @@ public class AlertController {
         return ResponseEntity.ok().body(alertService.getAlert(alertSeq));
     }
 
-    /**
-     * 알림 수정 (읽음 처리)
-     *
-     * @param alertModifyRequestDto
-     * @return
-     */
-    @PatchMapping("")
-    public ResponseEntity<?> modifyAlert(@RequestBody AlertModifyRequestDto alertModifyRequestDto) {
-        alertService.modifyAlert(alertModifyRequestDto);
-        return ResponseEntity.ok().build();
-    }
+//    /**
+//     * 알림 수정 (읽음 처리)
+//     *
+//     * @param alertModifyRequestDto
+//     * @return
+//     */
+//    @PatchMapping("")
+//    public ResponseEntity<?> modifyAlert(@RequestBody AlertModifyRequestDto alertModifyRequestDto) {
+//        alertService.modifyAlert(alertModifyRequestDto);
+//        return ResponseEntity.ok().build();
+//    }
 
 //    /**
 //     * 알림 조건부 검색

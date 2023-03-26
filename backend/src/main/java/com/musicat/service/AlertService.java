@@ -98,33 +98,36 @@ public class AlertService {
     }
 
     /**
-     * 알림 상세 조회 (alertSeq 기준)
+     * 알림 상세 조회 (alertSeq 기준) : 읽는 순간 읽음 처리 !
      *
      * @param alertSeq
      * @return
      * @throws Exception
      */
+    @Transactional
     public AlertDetailResponseDto getAlert(long alertSeq) {
         Alert alert = alertRepository.findById(alertSeq).orElseThrow(
                 () -> new EntityNotFoundException("알림 정보가 존재하지 않습니다.")
         );
 
+        alert.setAlertIsRead(true);
+
         return alertBuildUtil.alertToAlertDetailDto(alert);
     }
 
-    /**
-     * 알림 수정 (읽음 처리)
-     *
-     * @param alertModifyRequestDto
-     * @throws Exception
-     */
-    @Transactional
-    public void modifyAlert(AlertModifyRequestDto alertModifyRequestDto) {
-        Alert alert = alertRepository.findById(alertModifyRequestDto.getAlertSeq())
-                .orElseThrow(EntityNotFoundException::new);
-
-        alert.setAlertIsRead(alertModifyRequestDto.isAlertIsRead());
-    }
+//    /**
+//     * 알림 수정 (읽음 처리)
+//     *
+//     * @param alertModifyRequestDto
+//     * @throws Exception
+//     */
+//    @Transactional
+//    public void modifyAlert(AlertModifyRequestDto alertModifyRequestDto) {
+//        Alert alert = alertRepository.findById(alertModifyRequestDto.getAlertSeq())
+//                .orElseThrow(EntityNotFoundException::new);
+//
+//        alert.setAlertIsRead(alertModifyRequestDto.isAlertIsRead());
+//    }
 
 
     /**

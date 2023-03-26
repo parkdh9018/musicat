@@ -69,6 +69,8 @@ public class StoryController {
 
     /**
      * 사연 신청
+     * @param map
+     * @return
      */
     @PostMapping("")
     public ResponseEntity<?> insertStory(/**@RequestBody StoryRequestDto storyRequestDto**/
@@ -83,9 +85,9 @@ public class StoryController {
         logger.debug("변환 후 타입 : {}", jsonStoryContent.getClass().getName());
 
         Object objUserSeq = map.get("userSeq");
-        logger.debug("objUserSeq : {}" , objUserSeq);
-        long longUserSeq =  Long.valueOf(String.valueOf(objUserSeq));
-        logger.debug("longUserSeq : {}" , longUserSeq);
+        logger.debug("objUserSeq : {}", objUserSeq);
+        long longUserSeq = Long.valueOf(String.valueOf(objUserSeq));
+        logger.debug("longUserSeq : {}", longUserSeq);
 
         StoryRequestDto storyRequestDto = StoryRequestDto.builder()
                 .userSeq(longUserSeq)
@@ -96,12 +98,14 @@ public class StoryController {
                 .build();
 
         // 이미 신청한 사연이 있음
-        if (storyService.isUniqueStory(longUserSeq)) return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 요청한 사연이 있습니다.");
+        if (storyService.isUniqueStory(longUserSeq)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 요청한 사연이 있습니다.");
+        }
 
         // 사연 등록 비즈니스로직 수행
         storyService.insertStory(storyRequestDto);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 //    /**
@@ -137,6 +141,7 @@ public class StoryController {
 
     /**
      * 사연 상세 조회
+     *
      * @param storySeq
      * @return
      */

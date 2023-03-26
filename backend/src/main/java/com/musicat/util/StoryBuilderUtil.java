@@ -3,10 +3,14 @@ package com.musicat.util;
 import com.musicat.data.dto.story.StoryInfoDto;
 import com.musicat.data.dto.story.StoryRequestDto;
 import com.musicat.data.entity.Story;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class StoryBuilderUtil {
+
+    private final ConstantUtil constantUtil;
 
     // Dto -> Story(Entity)
     public Story buildStoryEntity(StoryRequestDto storyRequestDto) {
@@ -25,7 +29,7 @@ public class StoryBuilderUtil {
         return StoryInfoDto.builder()
 //                .storySeq(story.getStorySeq())
 //                .userSeq(story.getUserSeq())
-                .storyCreatedAt(story.getStoryCreatedAt())
+                .storyCreatedAt(constantUtil.detailFormatter.format(story.getStoryCreatedAt()))
                 .storyReaded(story.isStoryReaded())
                 .storyValid(story.getStoryValid())
                 .storyTitle(story.getStoryTitle())
