@@ -26,3 +26,20 @@
     }
   }
 }
+
+@media screen and (max-width: 768px) {
+  .home {
+    flex-direction: column;
+
+    .leftTab {
+      width: 100%;
+      padding: 1%;
+      margin-bottom: 30px;
+    }
+
+    .rightTab {
+      width: 100%;
+      padding: 2%;
+    }
+  }
+}

@@ -28,7 +28,7 @@ export const VolumeBar = () => {
         value={volume}
         onChange={(e) => setVolume(e.target.valueAsNumber)}
         className={style.rangeInput}
-      ></input>
+      />
       <img src="img/volumeBar.png" className={style.bgImg} />
     </div>
   );

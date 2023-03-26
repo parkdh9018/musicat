@@ -12,7 +12,7 @@ function App() {
       <div
         style={{
           backgroundImage: "url(/img/pagebackground/theme1.png)",
-          width: "100vw",
+          width: "100%",
         }}
       >
         <Broadcast />

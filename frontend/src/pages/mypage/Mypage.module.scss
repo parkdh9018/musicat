@@ -26,3 +26,16 @@
     }
   }
 }
+
+@media screen and (max-width: 768px) {
+  .mypage {
+    .leftTab {
+      display: none;
+    }
+
+    .rightTab {
+      width: 100%;
+      padding: 2%;
+    }
+  }
+}

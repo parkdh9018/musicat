@@ -37,4 +37,10 @@
   height: 10px;
   background: #e73730;
   cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  .volumeBar {
+    display: none;
+  }
 }/*# sourceMappingURL=VolumeBar.module.css.map */

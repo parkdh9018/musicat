@@ -1,16 +1,23 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { PagableResponse } from "@/types/mypage";
 import { $ } from "../setting";
+import { NoticeDetail } from "./notice";
 
 interface Alert {
   alertSeq: number;
   // 이거 필요없음
   userSeq: number;
+
   alertTitle: string;
   // 이거 필요없음
   alertContent: string;
+
   alertCreatedAt: string;
   alertIsRead: boolean;
+}
+
+interface AlertDetail extends Alert {
+  alertContent: string;
 }
 
 // 알람 list를 받아오기
@@ -32,7 +39,7 @@ export function getAlertList(pageNum: number, search: string | null) {
 
 // 알람/공지사항 detail를 받아오기 => 분류가 애매함
 export function getAlertDetail(url: string) {
-  async function fetchAlertDetail(): Promise<any> {
+  async function fetchAlertDetail(): Promise<AlertDetail | NoticeDetail> {
     const { data } = await $.get(url);
     return data;
   }
