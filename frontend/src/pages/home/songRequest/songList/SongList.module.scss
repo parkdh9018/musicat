@@ -1,3 +1,5 @@
+// @use "../../../_var.scss";
+
 .songList {
   display: flex;
   justify-content: space-between;
@@ -18,4 +20,20 @@
   border: none;
   align-items: center;
   color: white;
+}
+
+.userSongSpan {
+  background: none;
+  border: none;
+  align-items: center;
+  // color: var(--font-color);
+  color: pink;
+}
+
+.playingSongSpan {
+  background: none;
+  border: none;
+  align-items: center;
+  // color: var(--font-color);
+  color: blue;
 }

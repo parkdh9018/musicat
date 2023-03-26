@@ -3,6 +3,8 @@ import style from "./SongSearch.module.css";
 import { $ } from "@/connect/axios/setting";
 import { Song } from "@/connect/axios/queryHooks/music";
 import { v4 as uuidv4 } from "uuid";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 export const SongSearch = () => {
   const [isFocused, setIsFocused] = useState(false);
@@ -24,12 +26,15 @@ export const SongSearch = () => {
   };
 
   const onClickSearch = async () => {
-    setIsSearched(true);
-    // 여기 타입 설정 어카지....ㅠ
-    const SearchResult: any = await $.get(
-      `/music/search?queryString=${search}`
-    );
-    setSearchResults(SearchResult.data);
+    if (search) {
+      setSearchResults([]);
+      setIsSearched(true);
+      // 여기 타입 설정 어카지....ㅠ
+      const SearchResult: any = await $.get(
+        `/music/search?queryString=${search}`
+      );
+      setSearchResults(SearchResult.data);
+    }
   };
 
   const onClickSelectSong = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -43,20 +48,24 @@ export const SongSearch = () => {
 
   // 검색 결과 없을 때 보여줄 화면 만들기
   const songSearchedList: JSX.Element[] = searchResults.map((searchResult) => (
-    <button
-      key={uuidv4()}
-      onClick={onClickSelectSong}
-      value={JSON.stringify(searchResult)}
-    >
-      {searchResult.musicTitle}_{searchResult.musicArtist}
-    </button>
+    <>
+      <button
+        className={style.searchReasult}
+        key={uuidv4()}
+        onClick={onClickSelectSong}
+        value={JSON.stringify(searchResult)}
+      >
+        {searchResult.musicTitle}_{searchResult.musicArtist}
+      </button>
+      <hr />
+    </>
   ));
 
   const onClickReq = async () => {
     console.log("음악 신청 api 호출!!");
     console.log(requestSong);
     // song.ts 파일로 빼내기
-    $.post("/music/request", { ...requestSong, userSeq: 2 });
+    $.post("/music/request", { ...requestSong, userSeq: 1 });
   };
 
   return (
@@ -67,29 +76,32 @@ export const SongSearch = () => {
         onFocus={onFocus}
         value={search}
         onChange={onChangeValue}
+        onKeyUp={onClickSearch}
       />
       {isFocused ? (
-        <div className={style.dropdown}>
+        <>
           <button
             className={style.searchBtn}
             onClick={onClickSearch}
             onBlur={onBlur}
           >
-            검색
+            <FontAwesomeIcon icon={faMagnifyingGlass} />
           </button>
-          {isSearched ? (
-            <div className={style.dropdownContent}>
-              {searchResults.length > 0 ? (
-                <>{songSearchedList}</>
-              ) : (
-                <div>검색중..</div>
-              )}
-            </div>
-          ) : null}
-        </div>
+          <div className={style.dropdown}>
+            {isSearched ? (
+              <div className={style.dropdownContent}>
+                {searchResults.length > 0 ? (
+                  <>{songSearchedList}</>
+                ) : (
+                  <div>검색중..</div>
+                )}
+              </div>
+            ) : null}
+          </div>
+        </>
       ) : (
         <button className={style.requestBtn} onClick={onClickReq}>
-          신청
+          20C
         </button>
       )}
     </div>

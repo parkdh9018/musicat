@@ -17,4 +17,18 @@
   border: none;
   align-items: center;
   color: white;
+}
+
+.userSongSpan {
+  background: none;
+  border: none;
+  align-items: center;
+  color: pink;
+}
+
+.playingSongSpan {
+  background: none;
+  border: none;
+  align-items: center;
+  color: blue;
 }/*# sourceMappingURL=SongList.module.css.map */
