@@ -3,11 +3,8 @@ package com.musicat.controller.notice;
 
 import com.musicat.data.dto.notice.NoticeDetailDto;
 import com.musicat.data.dto.notice.NoticeListDto;
-import com.musicat.data.dto.user.UserListDto;
 import com.musicat.service.NoticeService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

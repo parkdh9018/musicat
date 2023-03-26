@@ -18,6 +18,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.filter.CorsFilter;
 
+import javax.servlet.http.HttpServletResponse;
+
 @EnableWebSecurity
 @EnableMethodSecurity
 @Configuration
@@ -90,12 +92,21 @@ public class SecurityConfig {
                 .userService(CustomUserOAuth2Service)
 
                 .and()
-                .successHandler(oAuth2AuthenticationSuccessHandler);
+                .successHandler(oAuth2AuthenticationSuccessHandler)
 
-
-
+                // 로그아웃
+                .and()
+                .logout()
+                .logoutUrl("/api/logout")
+                .logoutSuccessHandler((request, response, authentication) -> {
+                    // 로그아웃 성공 시 처리 로직, 예를 들어, 성공 메시지 반환
+                    response.setStatus(HttpServletResponse.SC_OK);
+                    response.getWriter().write("Successfully logged out");
+                })
+                .invalidateHttpSession(true); // 로그아웃 시 현재 세션을 무효화
 
         return http.build();
+
     }
 
     

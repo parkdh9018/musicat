@@ -1,11 +1,10 @@
 package com.musicat.jwt;
 
 import com.musicat.auth.PrincipalDetails;
+import com.musicat.data.dto.user.UserInfoJwtDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -14,7 +13,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -85,7 +83,6 @@ public class TokenProvider implements InitializingBean {
     1. JWT를 파싱해 클레임을 획득
     2. 클레임에서 사용자 정보 및 권한 정보 추출
     3. 사용자 정보와 권한 정보를 이용해 Authentication 객체를 생성
-
      */
     public Authentication getAuthentication(String token) {
 
@@ -131,6 +128,26 @@ public class TokenProvider implements InitializingBean {
             logger.info("JWT 토큰이 잘못되었습니다.");
         }
         return false;
+    }
+
+
+    /*
+    token에서 사용자 정보를 추출하는 메소드
+     */
+    public UserInfoJwtDto getUserInfo(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        return UserInfoJwtDto.builder()
+                .userSeq(Long.valueOf(claims.getSubject()))
+                .userNickname(claims.get("userNickname", String.class))
+                .userProfileImage(claims.get("userProfileImage", String.class))
+                .userIsChattingBan(claims.get("userIsChattingBan", Boolean.class))
+                .userIsBan(claims.get("userIsBan", Boolean.class))
+                .build();
     }
 
 

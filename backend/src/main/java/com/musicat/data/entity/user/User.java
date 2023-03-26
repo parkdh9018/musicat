@@ -1,6 +1,9 @@
 package com.musicat.data.entity.user;
 
 
+import com.musicat.data.entity.item.Background;
+import com.musicat.data.entity.item.Badge;
+import com.musicat.data.entity.item.Theme;
 import com.musicat.data.entity.notice.Notice;
 import com.sun.istack.NotNull;
 import lombok.*;
@@ -80,6 +83,25 @@ public class User {
 
     @Column(name = "user_unread_message")
     private int userUnreadMessage;
+
+    /*
+    아이템 3종
+    뱃지, 배경, 테마
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "badge_seq")
+    private Badge badge;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "background_seq")
+    private Background background;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "theme_seq")
+    private Theme theme;
+
+
 
     /*
 

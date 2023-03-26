@@ -1,21 +1,19 @@
 package com.musicat.service.user;
 
 
-import com.musicat.data.dto.user.UserDetailDto;
-import com.musicat.data.dto.user.UserListDto;
-import com.musicat.data.dto.user.UserModifyRequestDto;
-import com.musicat.data.dto.user.UserMoneyLogDto;
+import com.musicat.data.dto.user.*;
 import com.musicat.data.entity.user.MoneyLog;
 import com.musicat.data.entity.user.User;
 import com.musicat.data.repository.AuthorityRepository;
 import com.musicat.data.repository.MoneyLogRepository;
 import com.musicat.data.repository.UserRepository;
+import com.musicat.jwt.TokenProvider;
+import com.musicat.util.ConstantUtil;
 import com.musicat.util.UserBuilderUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -38,14 +36,61 @@ public class UserService {
     private final AuthorityRepository authorityRepository;
     private final UserBuilderUtil userBuilderUtil;
     private final MoneyLogRepository moneyLogRepository;
+    private final TokenProvider tokenProvider;
+    private final ConstantUtil constantUtil;
 
 
     // 회원 상세 조회
-    public UserDetailDto getUserDetail(long userSeq)   {
+    // 이메일 + 생성날짜
+    public UserDetailDto getUserDetail(String token)   {
+        // 토큰에서 유저 정부 추출
+        UserInfoJwtDto userInfo = tokenProvider.getUserInfo(token);
+
+        // user 정보 획득
         User user = userRepository
-                .findById(userSeq)
-                .orElseThrow(() -> new RuntimeException("User not found with userSeq: " + userSeq));
+                .findById(userInfo.getUserSeq())
+                .orElseThrow(() -> new RuntimeException());
         return userBuilderUtil.userToUserDetailDto(user);
+    }
+
+    // 회원 재화 조회
+    public UserMoneyDto getUserMoney(String token) {
+        UserInfoJwtDto userInfo = tokenProvider.getUserInfo(token);
+
+        // user 정보 획득
+        User user = userRepository
+                .findById(userInfo.getUserSeq())
+                .orElseThrow(() -> new RuntimeException());
+
+        return userBuilderUtil.userToUserMoneyDto(user);
+    }
+
+    // 회원 읽지 않은 메세지 조회
+    public UserUnreadMessageDto getUserUnreadMessage(String token) {
+        UserInfoJwtDto userInfo = tokenProvider.getUserInfo(token);
+
+        // user 정보 획득
+        User user = userRepository
+                .findById(userInfo.getUserSeq())
+                .orElseThrow(() -> new RuntimeException());
+
+        return userBuilderUtil.userToUserUnreadMessageDto(user);
+    }
+
+    // 회원 재화 내역 조회
+    public Page<UserMoneyLogPageDto> getUserMoneyLog(String token, int page) {
+        // user 정보 획득
+        UserInfoJwtDto userInfo = tokenProvider.getUserInfo(token);
+        User user = userRepository
+                .findById(userInfo.getUserSeq())
+                .orElseThrow(() -> new RuntimeException());
+
+        // page 설정 : 현재 페이지, 페이지 사이즈, 정렬
+        PageRequest pageable = PageRequest.of(page, constantUtil.USER_PAGE_SIZE, Sort.by(Sort.Direction.DESC, "moneyLogCreatedAt"));
+        Page<MoneyLog> moneyLogList = moneyLogRepository.findByUser(user, pageable);
+
+        // 꼭 확인하기!!
+        return moneyLogList.map(userBuilderUtil::moneyLogToUserMoneyLogPageDto);
     }
 
     // 회원 정보 수정 (닉네임 변경)
@@ -55,8 +100,9 @@ public class UserService {
     }
 
     // 회원 탈퇴
-    public void deleteUser(long userSeq) {
-        userRepository.deleteById(userSeq);
+    public void deleteUser(String token) {
+        UserInfoJwtDto userInfo = tokenProvider.getUserInfo(token);
+        userRepository.deleteById(userInfo.getUserSeq());
     }
 
     // 회원 재화 내역 상세 조회
