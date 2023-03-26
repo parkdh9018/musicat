@@ -29,6 +29,8 @@ public class ConstantUtil {
     // 2022년 12월 10일 (수) 18:30
     public DateTimeFormatter detailFormatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 (E) HH:mm", Locale.KOREA);
 
+    // 사연 재생 경로 Todo : EC2 서버에 Intro 음성 파일 경로 저장 예정
+    public String STORY_INTRO = "something";
 
 
 }
