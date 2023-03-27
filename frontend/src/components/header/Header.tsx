@@ -18,6 +18,23 @@ export const Header = () => {
   const { isLoading: userMoneyLoading } = getUserMoney();
   const { isLoading: userConfigLoading } = getUserConfig();
 
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "visible") {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const base64Payload = token.split(".")[1];
+        const payload = Buffer.from(base64Payload, "base64");
+        const result = JSON.parse(payload.toString());
+        setUserInfo({
+          userSeq: result.sub,
+          userRole: result.userRole,
+          userProfile: result.userProfileImage,
+          userNick: result.userNickname,
+        });
+      }
+    }
+  });
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
