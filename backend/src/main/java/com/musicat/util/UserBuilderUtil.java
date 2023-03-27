@@ -81,8 +81,13 @@ public class UserBuilderUtil {
                 .build();
     }
 
+    /*
+    MoneyLog -> MoneyLogPageDto
+     */
+
     public UserMoneyLogPageDto moneyLogToUserMoneyLogPageDto(MoneyLog moneyLog) {
         return UserMoneyLogPageDto.builder()
+                .moneyLogSeq(moneyLog.getMoneyLogSeq())
                 .moneyLogType(moneyLog.getMoneyLogType())
                 .moneyLogChange(moneyLog.getMoneyLogChange())
                 .moneyLogCreatedAt(moneyLog.getMoneyLogCreatedAt().format(constantUtil.simpleFormatter))

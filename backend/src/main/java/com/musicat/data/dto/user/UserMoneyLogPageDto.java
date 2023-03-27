@@ -9,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class UserMoneyLogPageDto {
+    private long moneyLogSeq;
     private String moneyLogType;
     private long moneyLogChange;
     private String moneyLogCreatedAt;
