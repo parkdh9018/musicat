@@ -3,7 +3,8 @@ import router from "@/pages/router";
 import { useRoutes } from "react-router-dom";
 import { Header } from "./components/header/Header";
 import { Broadcast } from "./components/broadcast/Broadcast";
-
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 function App() {
   const element = useRoutes(router);
   return (
@@ -18,6 +19,7 @@ function App() {
         <Broadcast />
       </div>
       {element}
+      <ToastContainer/>
     </div>
   );
 }

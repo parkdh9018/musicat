@@ -2,6 +2,7 @@ import { $ } from "@/connect/axios/setting";
 import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import { PagableResponse } from "@/types/mypage";
 import { useEffect, useMemo, useState } from "react";
+import { useCustomToast } from "@/customHooks/useCustomToast";
 
 interface UserSeq {
   userSeq: number;
@@ -98,6 +99,7 @@ export function getUsers() {
       {
         onSuccess: () => {
           refetch();
+          useCustomToast("success","상태가 변경되었습니다");
         },
       }
     );
