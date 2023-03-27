@@ -1,19 +1,11 @@
 package com.musicat.util;
 
 
-import com.musicat.data.dto.user.UserDetailDto;
-import com.musicat.data.dto.user.UserListDto;
-import com.musicat.data.dto.user.UserMoneyLogDto;
-import com.musicat.data.entity.user.Authority;
+import com.musicat.data.dto.user.*;
 import com.musicat.data.entity.user.MoneyLog;
 import com.musicat.data.entity.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Locale;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -25,42 +17,36 @@ public class UserBuilderUtil {
     user -> userDetailDto
      */
     public UserDetailDto userToUserDetailDto(User user) {
-
-        // 권한 설정 저장
-        List<String> authorities = user.getUserAuthority().stream()
-                .map(Authority::getAuthorityName) // Authority 클래스에 'getRole' 메소드가 있다고 가정합니다.
-                .collect(Collectors.toList());
-
-        // moneylog 가져오기
-        List<UserMoneyLogDto> userMoneyLogDtoList = user.getUserMoneyLogList().stream()
-                .map(moneyLog -> new UserMoneyLogDto(
-                        moneyLog.getMoneyLogSeq(),
-                        moneyLog.getMoneyLogType(),
-                        moneyLog.getMoneyLogDetail(),
-                        moneyLog.getMoneyLogChange(),
-                        moneyLog.getMoneyLogCreatedAt().format(constantUtil.simpleFormatter)
-                ))
-                .collect(Collectors.toList());
-
         return UserDetailDto.builder()
-                .userSeq(user.getUserSeq())
-                .userNickname(user.getUserNickname())
-                .userProfileImage(user.getUserProfileImage())
-                .userThumbnailImage(user.getUserThumbnailImage())
                 .userEmail(user.getUserEmail())
                 .userCreatedAt(user.getUserCreatedAt().format(constantUtil.simpleFormatter))
-                .userMoney(user.getUserMoney())
-                .userMoneyLogDtoList(userMoneyLogDtoList)
-                .userAuthority(authorities)
-                .userUnreadMessage(user.getUserUnreadMessage())
-                .userIsDarkmode(user.isUserIsDarkmode())
-                .userIsBan(user.isUserIsBan())
-                .userIsUser(user.isUserIsUser())
                 .build();
     }
 
-    public UserListDto userToUserListDto(User user) {
-        return UserListDto.builder()
+    /*
+    user -> userMoneyDto
+     */
+    public UserMoneyDto userToUserMoneyDto(User user) {
+        return UserMoneyDto.builder()
+                .userMoney(user.getUserMoney())
+                .build();
+    }
+
+    /*
+    user -> userMoneyDto
+     */
+    public UserUnreadMessageDto userToUserUnreadMessageDto(User user) {
+        return UserUnreadMessageDto.builder()
+                .userUnreadMessage(user.getUserUnreadMessage())
+                .build();
+    }
+
+
+    /*
+    user -> userPageDto
+     */
+    public UserPageDto userToUserPageDto(User user) {
+        return UserPageDto.builder()
                 .userSeq(user.getUserSeq())
                 .userNickname(user.getUserNickname())
                 .userEmail(user.getUserEmail())
@@ -80,6 +66,16 @@ public class UserBuilderUtil {
                 .moneyLogCreatedAt(moneyLog.getMoneyLogCreatedAt().format(constantUtil.detailFormatter))
                 .build();
     }
+
+    public UserMoneyLogPageDto moneyLogToUserMoneyLogPageDto(MoneyLog moneyLog) {
+        return UserMoneyLogPageDto.builder()
+                .moneyLogType(moneyLog.getMoneyLogType())
+                .moneyLogChange(moneyLog.getMoneyLogChange())
+                .moneyLogCreatedAt(moneyLog.getMoneyLogCreatedAt().format(constantUtil.simpleFormatter))
+                .build();
+    }
+
+
 
 
 

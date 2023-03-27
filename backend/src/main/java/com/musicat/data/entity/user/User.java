@@ -1,6 +1,9 @@
 package com.musicat.data.entity.user;
 
 
+import com.musicat.data.entity.item.Background;
+import com.musicat.data.entity.item.Badge;
+import com.musicat.data.entity.item.Theme;
 import com.musicat.data.entity.notice.Notice;
 import com.sun.istack.NotNull;
 import lombok.*;
@@ -20,7 +23,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "user ")
+@Table(name="user")
 public class User {
 
     @Id
@@ -35,13 +38,9 @@ public class User {
     @Column(name = "user_nickname")
     private String userNickname;
 
-    @NotNull
+
     @Column(name = "user_profile_image")
     private String userProfileImage;
-
-
-    @Column(name = "user_thumbnail_image")
-    private String userThumbnailImage;
 
 
     @Column(name = "user_email")
@@ -49,9 +48,10 @@ public class User {
 
 
     @CreatedDate
+    @Builder.Default
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "user_created_at")
-    private LocalDateTime userCreatedAt;
+    private LocalDateTime userCreatedAt = LocalDateTime.now();
 
 
     @Column(name = "user_money")
@@ -83,6 +83,25 @@ public class User {
 
     @Column(name = "user_unread_message")
     private int userUnreadMessage;
+
+    /*
+    아이템 3종
+    뱃지, 배경, 테마
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "badge_seq")
+    private Badge badge;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "background_seq")
+    private Background background;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "theme_seq")
+    private Theme theme;
+
+
 
     /*
 
@@ -118,7 +137,6 @@ public class User {
         if(userEmail == null) {
             this.userEmail = "";
         }
-
         this.userCreatedAt = LocalDateTime.now();
         this.userMoney = 0;
         this.userWarnCount = 0;

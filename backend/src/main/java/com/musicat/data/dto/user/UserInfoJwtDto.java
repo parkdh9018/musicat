@@ -1,15 +1,11 @@
 package com.musicat.data.dto.user;
 
 
-// user list에 들어갈 dto
-
 import lombok.*;
-
-import java.time.LocalDateTime;
 
 /*
 
-List를 반환하는데 사용되는 DTO
+token에서 사용자 정보를 담는 DTO
 
  */
 
@@ -18,16 +14,10 @@ List를 반환하는데 사용되는 DTO
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserListDto {
-
+public class UserInfoJwtDto {
     private long userSeq;
     private String userNickname;
-    private String userEmail;
-
-    // 2022년 12월 10일
-    private String userCreatedAt;
+    private String userProfileImage;
     private boolean userIsChattingBan;
     private boolean userIsBan;
-    private boolean userIsUser;
-
 }
