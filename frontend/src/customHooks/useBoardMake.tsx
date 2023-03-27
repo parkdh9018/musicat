@@ -9,16 +9,16 @@ export function useBoardMake(
     arr.push(
       <span
         style={
-          userRole !== "admin" ? { color: "var(--blue-color)" } : undefined
+          userRole !== "ROLE_ADMIN" ? { color: "var(--blue-color)" } : undefined
         }
       >
-        {userRole === "admin" ? data.noticeSeq : "공지"}
+        {userRole === "ROLE_ADMIN" ? data.noticeSeq : "공지"}
       </span>
     );
     arr.push(
       <span
         style={
-          userRole !== "admin" ? { color: "var(--blue-color)" } : undefined
+          userRole !== "ROLE_ADMIN" ? { color: "var(--blue-color)" } : undefined
         }
       >
         {data.noticeTitle}

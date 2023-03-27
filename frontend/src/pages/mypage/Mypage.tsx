@@ -1,5 +1,7 @@
 import { nowMainPageState } from "@/atoms/common.atom";
 import { userInfoState } from "@/atoms/user.atom";
+import { Broadcast } from "@/components/broadcast/Broadcast";
+import { Header } from "@/components/header/Header";
 import { MypageNav } from "@/components/sideNav/mypageNav/MypageNav";
 import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
@@ -27,30 +29,43 @@ export const Mypage = () => {
   }, []);
 
   return (
-    <div
-      style={{
-        backgroundImage: "url(/img/pagebackground/theme1.png)",
-        width: "100%",
-      }}
-    >
-      <div className={style.mypage}>
-        <div className={style.leftTab}>
-          <MypageNav
-            sideNavContent={
-              userInfo.userRole === "admin" ? adminContent : memberContent
-            }
-            sideNavTitle={
-              userInfo.userRole === "admin" ? adminTitle : memberTitle
-            }
-            urls={userInfo.userRole === "admin" ? adminUrls : memberUrls}
-          />
-        </div>
-        <div className={style.rightTab}>
-          <div className={style.content}>
-            <Outlet />
+    <>
+      <Header />
+      <div
+        style={{
+          backgroundImage: "url(/img/pagebackground/theme1.png)",
+          width: "100%",
+        }}
+      >
+        <Broadcast />
+      </div>
+      <div
+        style={{
+          backgroundImage: "url(/img/pagebackground/theme1.png)",
+          width: "100%",
+        }}
+      >
+        <div className={style.mypage}>
+          <div className={style.leftTab}>
+            <MypageNav
+              sideNavContent={
+                userInfo.userRole === "ROLE_ADMIN"
+                  ? adminContent
+                  : memberContent
+              }
+              sideNavTitle={
+                userInfo.userRole === "ROLE_ADMIN" ? adminTitle : memberTitle
+              }
+              urls={userInfo.userRole === "ROLE_ADMIN" ? adminUrls : memberUrls}
+            />
+          </div>
+          <div className={style.rightTab}>
+            <div className={style.content}>
+              <Outlet />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
