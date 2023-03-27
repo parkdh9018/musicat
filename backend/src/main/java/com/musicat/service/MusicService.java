@@ -1,14 +1,15 @@
 package com.musicat.service;
 
-import com.musicat.data.dto.MusicModifyDto;
-import com.musicat.data.dto.MusicInfoDto;
-import com.musicat.data.dto.MusicInsertResponseDto;
-import com.musicat.data.dto.MusicModifyResponseDto;
-import com.musicat.data.dto.MusicRequestDto;
+import com.musicat.data.dto.music.MusicInfoDto;
+import com.musicat.data.dto.music.MusicRequestResultDto;
+import com.musicat.data.dto.music.MusicRequestDto;
+import com.musicat.data.dto.SpotifySearchResultDto;
+import com.musicat.data.dto.YoutubeSearchResultDto;
 import com.musicat.data.entity.Music;
 import com.musicat.data.repository.MusicRepository;
 import com.musicat.util.MusicBuilderUtil;
-import com.musicat.util.ConvertTimeToMillisecond;
+import com.musicat.util.ConvertTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -22,56 +23,70 @@ public class MusicService {
 
   // Utility 정의
   private final MusicBuilderUtil musicBuilderUtil;
-  private final ConvertTimeToMillisecond timeConverter;
+  private final ConvertTime timeConverter;
 
   // Repository 정의
   private final MusicRepository musicRepository;
 
+  private final SpotifyApiService spotifyApiService;
+
+  private final YoutubeApiService youtubeApiService;
+
+  private final KafkaProducerService kafkaProducerService;
 
   /**
    * 사용자가 신청한 노래를 DB에 저장합니다. 만약 사용자가 이미 곡을 신청했거나, 신청한 곡이 이미 DB에 존재할 경우 저장하지 않습니다.
    *
    * @param musicRequestDto
    * @return musicInsertResponseDto
-   * MusicInsertResponseDto.status : 해당 요청의 성공 여부 (0 : 성공, 1 : 중복 신청, 2 : 중복 곡)
+   * MusicInsertResponseDto.status : 해당 요청의 성공 여부 (0 : 성공, 1 : 중복 신청, 2 : 중복 곡, 3 : 재생 가능한 유튜브 노래 없음)
    * MusicInsertResponseDto.musicInfoDto : status에 맞는 곡 정보
    * MusicInsertResponseDto.playOrder : status에 맞는 곡의 순서
    * @throws Exception
    */
   @Transactional
-  public MusicInsertResponseDto insertMusic(MusicRequestDto musicRequestDto) throws Exception {
+  public MusicRequestResultDto requestMusic(MusicRequestDto musicRequestDto) throws Exception {
 
     // 검증 로직에 사용할 변수 호출
-    String musicName = musicRequestDto.getMusicName();
+    String musicTitle = musicRequestDto.getMusicTitle();
     String musicArtist = musicRequestDto.getMusicArtist();
-    long memberSeq = musicRequestDto.getMemberSeq();
+    long UserSeq = musicRequestDto.getUserSeq();
 
     // 중복 신청 여부 체크
-    Optional<Music> existingMusicByMember = musicRepository.findByMemberSeqAndMusicIsPlayedFalse(
-        memberSeq);
-    if (existingMusicByMember.isPresent()) {
-      Music music = existingMusicByMember.get();
+    Optional<Music> existingMusicByUser = musicRepository.findByUserSeqAndMusicPlayedFalse(
+        UserSeq);
+    if (existingMusicByUser.isPresent()) {
+      Music music = existingMusicByUser.get();
       int playOrder =
-          musicRepository.countByMusicSeqLessThanAndMusicIsPlayedFalse(music.getMusicSeq()) + 1;
-      return musicBuilderUtil.buildMusicInsertResponseDto(music, 1, playOrder);
+          musicRepository.countByMusicSeqLessThanAndMusicPlayedFalse(music.getMusicSeq()) + 1;
+      return musicBuilderUtil.buildMusicRequestResultDto(1, music, playOrder);
     }
 
     // 중복 곡 여부 체크
-    Optional<Music> existingMusicByNameAndArtist = musicRepository.findByMusicNameAndMusicArtistAndMusicIsPlayedFalse(
-        musicName,
+    Optional<Music> existingMusicByTitleAndArtist = musicRepository.findByMusicTitleAndMusicArtistAndMusicPlayedFalse(
+        musicTitle,
         musicArtist);
-    if (existingMusicByNameAndArtist.isPresent()) {
-      Music music = existingMusicByNameAndArtist.get();
+    if (existingMusicByTitleAndArtist.isPresent()) {
+      Music music = existingMusicByTitleAndArtist.get();
       int playOrder =
-          musicRepository.countByMusicSeqLessThanAndMusicIsPlayedFalse(music.getMusicSeq()) + 1;
-      return musicBuilderUtil.buildMusicInsertResponseDto(music, 2, playOrder);
+          musicRepository.countByMusicSeqLessThanAndMusicPlayedFalse(music.getMusicSeq()) + 1;
+      return musicBuilderUtil.buildMusicRequestResultDto(2, music, playOrder);
+    }
+
+    // 유튜브 곡 검색
+    YoutubeSearchResultDto youtubeSearchResult = youtubeApiService.findVideo(musicTitle, musicArtist);
+    if (youtubeSearchResult == null) {
+      return musicBuilderUtil.buildMusicRequestResultDto(3, null, -1);
     }
 
     // 곡 저장
-    Music music = musicRepository.save(musicBuilderUtil.buildMusicEntity(musicRequestDto));
+    Music music = musicRepository.save(musicBuilderUtil.buildMusicEntity(musicRequestDto, youtubeSearchResult));
+
+    kafkaProducerService.send("musicRequest", music);
+
     int playOrder =
-        musicRepository.countByMusicSeqLessThanAndMusicIsPlayedFalse(music.getMusicSeq()) + 1;
-    return musicBuilderUtil.buildMusicInsertResponseDto(music, 0, playOrder);
+        musicRepository.countByMusicSeqLessThanAndMusicPlayedFalse(music.getMusicSeq()) + 1;
+    return musicBuilderUtil.buildMusicRequestResultDto(0, music, playOrder);
   }
 
   /**
@@ -89,78 +104,35 @@ public class MusicService {
   }
 
   /**
-   * 대기열에 등록된 노래를 제거합니다.
-   *
-   * @param memberSeq
-   * @throws Exception
-   */
-  @Transactional
-  public void deleteMusic(long memberSeq) throws Exception {
-    Optional<Music> existingMusicByMember = musicRepository.findByMemberSeqAndMusicIsPlayedFalse(
-        memberSeq);
-    if (existingMusicByMember.isPresent()) {
-      Music music = existingMusicByMember.get();
-      musicRepository.deleteById(music.getMusicSeq());
-    }
-  }
-
-  /**
-   * 등록된 노래를 수정합니다. 만약 사용자가 대기열에 노래를 등록하지 않았거나, 바꾸려는 노래가 이미 대기열에 있다면 바꾸지 않습니다.
-   *
-   * @param musicModifyDto
-   * @return musicModifyResponseDto
-   * MusicModifyResponseDto.status : 해당 요청의 성공 여부 (0 : 성공, 1 : 신청하지 않음, 2 : 중복 곡)
-   * MusicModifyResponseDto.musicInfoDto : status에 맞는 곡 정보
-   * MusicModifyResponseDto.playOrder : status에 맞는 곡의 순서
-   * @throws Exception
-   */
-  @Transactional
-  public MusicModifyResponseDto modifyMusic(MusicModifyDto musicModifyDto) throws Exception {
-
-    // 검증 로직에 사용할 변수 호출
-    String musicName = musicModifyDto.getMusicName();
-    String musicArtist = musicModifyDto.getMusicArtist();
-    long memberSeq = musicModifyDto.getMemberSeq();
-
-    // 중복 신청 여부 체크
-    Optional<Music> existingMusicByMember = musicRepository.findByMemberSeqAndMusicIsPlayedFalse(
-        memberSeq);
-    if (existingMusicByMember.isPresent()) {
-      // 중복 곡 여부 체크
-      Optional<Music> existingMusicByNameAndArtist = musicRepository.findByMusicNameAndMusicArtistAndMusicIsPlayedFalse(
-          musicName,
-          musicArtist);
-      if (existingMusicByNameAndArtist.isPresent()) {
-        Music music = existingMusicByNameAndArtist.get();
-        int playOrder =
-            musicRepository.countByMusicSeqLessThanAndMusicIsPlayedFalse(music.getMusicSeq()) + 1;
-        return musicBuilderUtil.buildMusicModifyResponseDto(music, 2, playOrder);
-      }
-      Music music = musicRepository.findById(musicModifyDto.getMemberSeq())
-          .orElseThrow(IllegalArgumentException::new);
-      int playOrder =
-            musicRepository.countByMusicSeqLessThanAndMusicIsPlayedFalse(music.getMusicSeq()) + 1;
-      music.setMusicArtist(musicModifyDto.getMusicArtist());
-      music.setMusicCover(musicModifyDto.getMusicCover());
-      music.setMusicLength(musicModifyDto.getMusicLength());
-      music.setYoutubeVideoId(musicModifyDto.getYoutubeVideoId());
-      music.setMusicName(musicModifyDto.getMusicName());
-      musicRepository.save(music);
-      return musicBuilderUtil.buildMusicModifyResponseDto(music, 0, playOrder);
-    }
-    return musicBuilderUtil.buildMusicModifyResponseDto(null, 1, 0);
-  }
-
-  /**
    * 대기열 상위 10개의 노래를 반환합니다.
+   *
    * @return musicInfoList
    * @throws Exception
    */
-  public List<Music> getMusicInfoList() throws Exception {
-    return musicRepository
-        .findTop10ByMusicIsPlayedFalseOrderByMusicSeqAsc()
-        .orElseThrow(IllegalArgumentException::new);
+  public List<MusicInfoDto> getMusicInfoList() throws Exception {
+    Optional<List<Music>> OptionalMusicList = musicRepository
+        .findTop10ByMusicPlayedFalseOrderByMusicSeqAsc();
+    if (OptionalMusicList.isPresent()) {
+      List<Music> musicList = OptionalMusicList.get();
+      List<MusicInfoDto> result = new ArrayList<>();
+      for (Music music : musicList) {
+        result.add(musicBuilderUtil.buildMusicInfoDto(music));
+      }
+      return result;
+    } else {
+      throw new Exception();
+    }
   }
 
 
+  /**
+   * SpotifyAPI를 이용해 노래를 검색합니다.
+   *
+   * @param querystring
+   * @return spotifySearchResultList
+   * @throws Exception
+   */
+  public List<SpotifySearchResultDto> searchMusic(String querystring) throws Exception {
+        return spotifyApiService.searchSpotifyMusicList(querystring);
+    }
 }

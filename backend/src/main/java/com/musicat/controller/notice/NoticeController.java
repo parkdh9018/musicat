@@ -25,11 +25,15 @@ public class NoticeController {
         return ResponseEntity.ok(noticeTop3);
     }
 
-    // 공지사항 전체 조회
+    /**
+     * 공지사항 10개 조회 (페이지네이션)
+     * @param page
+     * @return
+     */
     @GetMapping("")
-    public ResponseEntity<?> getNoticeList(@RequestParam int page) {
+    public ResponseEntity<?> getNoticeList(@RequestParam(required = false, defaultValue = "0") int page, @RequestParam(required = false, defaultValue = "") String query) {
+        return ResponseEntity.ok(noticeService.getNoticeList(page, query));
 
-        return null;
     }
     
     // 공지사항 상세 조회

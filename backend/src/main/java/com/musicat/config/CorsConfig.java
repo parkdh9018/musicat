@@ -28,6 +28,9 @@ public class CorsConfig {
         // CorsConfiguration 객체를 생성
         // 이 객체에 모든 출저, 헤더 및 HTTP 메소드를 허용하도록 구성 
         CorsConfiguration config = new CorsConfiguration();
+
+
+
         config.addAllowedOriginPattern("*");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
