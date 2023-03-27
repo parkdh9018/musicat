@@ -23,7 +23,7 @@ public class AdminController {
 
 
     // 회원 전체 조회
-    // 회원 닉네임, 채팅 금지 여부, 활동 금지 여부를 인수로 받는다.
+    // 회원 닉네임, 채팅 금지 여부, 활동 금지 여부를 인수로 받는다..
     @GetMapping("/user")
     public ResponseEntity<?> getUserList(
             @RequestParam(defaultValue = "0") int page,
