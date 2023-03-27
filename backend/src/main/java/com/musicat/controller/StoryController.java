@@ -126,19 +126,16 @@ public class StoryController {
 //        }
 //    }
 
-//    /**
-//     * 사연 중복 검사 (신청 사연 리스트에 memberSeq로 신청한 사연이 있는지 여부 true  : 중복 있음 (사연 신청 불가능) false : 중복 없음 (사연 신청
-//     * 가능)
-//     */
-//    @GetMapping("/unique/{userSeq}")
-//    public ResponseEntity<Boolean> isUniqueStory(@PathVariable long userSeq) {
-//        try {
-//            return ResponseEntity.ok(storyService.isUniqueStory(userSeq));
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-//    }
+    /**
+     * 사연 중복 검사 (신청 사연 리스트에 memberSeq로 신청한 사연이 있는지 여부 true  : 중복 있음 (사연 신청 불가능) false : 중복 없음 (사연 신청
+     * 가능)
+     */
+    @GetMapping("/unique/{userSeq}")
+    public ResponseEntity<?> isUniqueStory(@PathVariable long userSeq) {
+        storyService.isUniqueStory(userSeq);
+        return ResponseEntity.ok().build();
+
+    }
 
     /**
      * 사연 상세 조회
