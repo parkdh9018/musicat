@@ -9,7 +9,7 @@ export const LoginSuccess = () => {
   const token: any = searchParams.get("token");
 
   useEffect(() => {
-    sessionStorage.setItem("token", token);
+    localStorage.setItem("token", token);
     console.log("이거?");
     window.close();
   }, []);
