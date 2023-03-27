@@ -14,6 +14,7 @@ token에서 사용자 정보를 담는 DTO
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString
 public class UserInfoJwtDto {
     private long userSeq;
     private String userAuthority;

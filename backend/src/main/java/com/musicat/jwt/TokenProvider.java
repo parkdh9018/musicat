@@ -2,6 +2,8 @@ package com.musicat.jwt;
 
 import com.musicat.auth.PrincipalDetails;
 import com.musicat.data.dto.user.UserInfoJwtDto;
+import com.musicat.data.entity.user.Authority;
+import com.musicat.data.entity.user.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -76,6 +78,28 @@ public class TokenProvider implements InitializingBean {
                 .signWith(key, SignatureAlgorithm.HS256) // jwt에 서명할 암호화 키와 알고리즘을 설정
                 .setExpiration(validity) // jwt 만료 시간 설정
                 .compact();
+    }
+
+    public String createUserToken(User user) {
+
+        String authorities = user.getUserAuthority().stream()
+                .map(Authority::getAuthorityName)
+                .collect(Collectors.joining(","));
+
+        long now = (new Date()).getTime();
+        Date validity = new Date(now + this.tokenValidityInMilliseconds);
+
+        return Jwts.builder()
+                .setSubject(String.valueOf(user.getUserSeq()))
+                .claim(AUTHORITIES_KEY, authorities) // 권한 정보
+                .claim("userNickname", user.getUserNickname())
+                .claim("userProfileImage", user.getUserProfileImage())
+                .claim("userIsChattingBan", user.isUserIsChattingBan())
+                .claim("userIsBan", user.isUserIsBan())
+                .signWith(key, SignatureAlgorithm.HS256) // jwt에 서명할 암호화 키와 알고리즘을 설정
+                .setExpiration(validity) // jwt 만료 시간 설정
+                .compact();
+
     }
 
     /*
