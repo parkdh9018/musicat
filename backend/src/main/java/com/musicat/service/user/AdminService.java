@@ -42,9 +42,11 @@ public class AdminService {
         Optional<String> optionalNickname = Optional.ofNullable(nickname).filter(s -> !s.isEmpty());
         Optional<Boolean> optionalIsChattingBan = Optional.ofNullable(isChattingBan).filter(s -> !s.isEmpty()).map(Boolean::parseBoolean);
         Optional<Boolean> optionalIsBan = Optional.ofNullable(isBan).filter(s -> !s.isEmpty()).map(Boolean::parseBoolean);
+        PageRequest pageable = PageRequest.of(page, constantUtil.USER_PAGE_SIZE);
 
         Page<User> userPage = userRepository.findUsersByNicknameAndIsChattingBanAndIsBan(optionalNickname, optionalIsChattingBan, optionalIsBan, pageable);
         return userPage.map(userBuilderUtil::userToUserPageDto);
+
     }
 
     // 회원 채팅 금지 설정
@@ -52,15 +54,6 @@ public class AdminService {
         for (Long userSeq : userSeqList) {
             User user = userRepository.findById(userSeq).orElseThrow();
             user.setUserIsChattingBan(true);
-        }
-    }
-
-
-    // 회원 채팅 금지 해재
-    public void userNotChattingBan(List<Long> userSeqList) {
-        for (Long userSeq : userSeqList) {
-            User user = userRepository.findById(userSeq).orElseThrow();
-            user.setUserIsChattingBan(false);
         }
     }
 
@@ -90,7 +83,8 @@ public class AdminService {
             user.setUserIsBan(false);
         }
     }
-    
+
+
 
 
     // 공지사항 작성
