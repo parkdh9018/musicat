@@ -20,6 +20,8 @@ interface AlertDetail extends Alert {
   alertContent: string;
 }
 
+interface NoticeAlertDetail extends AlertDetail, NoticeDetail {}
+
 // 알람 list를 받아오기
 export function getAlertList(pageNum: number, search: string | null) {
   async function fetchAlertList(): Promise<PagableResponse<Alert>> {
@@ -39,7 +41,7 @@ export function getAlertList(pageNum: number, search: string | null) {
 
 // 알람/공지사항 detail를 받아오기 => 분류가 애매함
 export function getAlertDetail(url: string) {
-  async function fetchAlertDetail(): Promise<AlertDetail | NoticeDetail> {
+  async function fetchAlertDetail(): Promise<NoticeAlertDetail> {
     const { data } = await $.get(url);
     return data;
   }
