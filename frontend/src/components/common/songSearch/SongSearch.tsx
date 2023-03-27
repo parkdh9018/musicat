@@ -9,12 +9,16 @@ import { v4 as uuidv4 } from "uuid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
-export const SongSearch = () => {
+interface SongSearchProps {
+  setRequestSong: any; // 선택한 음악 객체 반환하는 함수
+  width: number; // % 값을 주면 됩니다.
+}
+
+export const SongSearch = ({ setRequestSong, width }: SongSearchProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState<Song[]>([]);
-  const [requestSong, setRequestSong] = useState<Song>();
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();
   const [noResults, setNoResults] = useState(false);
 
@@ -74,7 +78,7 @@ export const SongSearch = () => {
 
   // 스포티파이 검색 결과 목록
   const songSearchedList: JSX.Element[] = searchResults.map((searchResult) => (
-    <div key={uuidv4()}>
+    <span key={uuidv4()}>
       <button
         className={style.searchReasult}
         onClick={onClickSelectSong}
@@ -83,54 +87,26 @@ export const SongSearch = () => {
         {searchResult.musicTitle}_{searchResult.musicArtist}
       </button>
       <hr />
-    </div>
+    </span>
   ));
 
-  // 서버에 신청곡 전송
-  const onClickReq = async () => {
-    if (requestSong) {
-      // console.log("음악 신청 api 호출!!");
-      const req = { ...requestSong, userSeq: 4 }; // 리코일 유저 만들어지면 유저 시퀀스 가져와서 적용하기
-      // console.log(requestSong);
-      const result = await postSongRequest(req);
-      setSearch("");
-
-      // 신청한 곡이 아직 플레이 리스트에 남아있는 경우
-      if (result.data.status === 1) {
-        alert("내가 신청한 곡이 재생된 이후에 다시 신청할 수 있습니다!");
-      }
-      // 다른 사람이 이미 신청한 곡인 경우
-      if (result.data.status === 2) {
-        alert(
-          `다른 사용자가 해당 곡을 이미 신청했습니다. 해당 곡은 ${result.data.playOrder}번째로 재생될 예정입니다.`
-        );
-      }
-      // 유튜브 검색 결과가 없어 재생할 수 없는 경우
-      if (result.data.status === 3) {
-        alert("죄송합니다 재생할 수 없는 곡입니다. 다른곡을 신청해주세요");
-      }
-
-      // console.log(result);
-    }
-  };
-
   return (
-    <div className={style.searachBox}>
+    <span className={style.searachBox}>
       <input
         className={style.inputText}
         type="text"
         onFocus={onFocus}
         value={search}
         onChange={onChangeValue}
-        // onBlur={onBlur} 이걸 넣으면 적용이 안됌
         onKeyUp={onKeyUpSearch}
       />
       {isFocused ? (
         <>
-          <button className={style.searchBtn} onBlur={onBlur}>
+          {/* <span className={style.searchBtn} onBlur={onBlur}>
             <FontAwesomeIcon icon={faMagnifyingGlass} />
-          </button>
-          <div className={style.dropdown}>
+          </span> */}
+
+          <span className={style.dropdown}>
             {isSearching ? (
               <div className={style.dropdownContent}>
                 {searchResults.length > 0 ? (
@@ -140,13 +116,9 @@ export const SongSearch = () => {
                 )}
               </div>
             ) : null}
-          </div>
+          </span>
         </>
-      ) : (
-        <button className={style.requestBtn} onClick={onClickReq}>
-          20C
-        </button>
-      )}
-    </div>
+      ) : null}
+    </span>
   );
 };
