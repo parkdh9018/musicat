@@ -1,3 +1,7 @@
 export const Page404 = () => {
-  return <div>Page404</div>;
+  return (
+    <div>
+      <h2>404 Error</h2>
+    </div>
+  );
 };

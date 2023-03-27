@@ -40,7 +40,7 @@ export const Popover = () => {
     <div className={style.popover}>
       <div className={style.triangle}></div>
       <div className={style.content}>
-        {userInfo.userRole == "admin" ? adminComponent : userComponent}
+        {userInfo.userRole === "ROLE_ADMIN" ? adminComponent : userComponent}
       </div>
     </div>
   );

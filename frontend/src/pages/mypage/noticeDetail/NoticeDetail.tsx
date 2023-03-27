@@ -20,7 +20,7 @@ export const NoticeDetail = () => {
   );
 
   useEffect(() => {
-    if (userInfo.userRole === "admin") setNowSideNav("공지사항");
+    if (userInfo.userRole === "ROLE_ADMIN") setNowSideNav("공지사항");
     else setNowSideNav("알림 / 공지사항");
   }, []);
 
@@ -39,7 +39,7 @@ export const NoticeDetail = () => {
         {detail?.alertContent || detail?.noticeContent}
       </div>
       <hr className={style.thin_hr} />
-      {userInfo.userRole === "admin" ? (
+      {userInfo.userRole === "ROLE_ADMIN" ? (
         <div
           style={{
             display: "flex",

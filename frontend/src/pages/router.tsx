@@ -1,5 +1,8 @@
 import { Home } from "@/pages/home/Home";
 import { RouteObject } from "react-router-dom";
+import { LoginSuccess } from "./common/loginSuccess/LoginSuccess";
+import { Page404 } from "./common/page404/Page404";
+import { ExceptionPage } from "./ExceptionPage";
 import { About } from "./home/about/About";
 import { Chat } from "./home/chat/Chat";
 import { Introduce } from "./home/introduce/Introduce";
@@ -37,6 +40,14 @@ const router: RouteObject[] = [
       { path: "notice-manage", element: <NoticeManage /> },
       { path: "notice-manage/:noticeSeq", element: <NoticeManageModify /> },
       { path: "user-manage", element: <UserManage /> },
+    ],
+  },
+  {
+    path: "/except",
+    element: <ExceptionPage />,
+    children: [
+      { path: "login-success", element: <LoginSuccess /> },
+      { path: "404", element: <Page404 /> },
     ],
   },
 ];
