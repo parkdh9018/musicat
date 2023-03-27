@@ -1,5 +1,6 @@
 package com.musicat.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.musicat.data.dto.SpotifySearchResultDto;
 import com.musicat.data.dto.YoutubeSearchResultDto;
 import com.musicat.data.dto.story.StoryInfoDto;
@@ -11,6 +12,8 @@ import com.musicat.util.StoryBuilderUtil;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +48,9 @@ public class StoryService {
      */
     @Transactional
     public void insertStory(StoryRequestDto storyRequestDto) {
+
+        Story story = null;
+
         // 1. Spotify, Youtube API를 사용해서 DB에 반영하기
         String spotifyQuery =
                 storyRequestDto.getStoryMusicTitle() + " " + storyRequestDto.getStoryMusicArtist();
@@ -69,33 +75,39 @@ public class StoryService {
                 logger.debug("유튜브 검색 결과 : {}", youtubeSearchResultDto);
 
                 if (youtubeSearchResultDto == null) {
+                    logger.debug("유튜브 검색 결과가 없습니다.");
                     throw new RuntimeException("유튜브 검색 결과가 없습니다.");
                 }
 
                 // c. 스포티파이 + 유튜브 검색 성공시 -> DB
-                Story story = storyRepository.save(
+                story = storyRepository.save(
                         storyBuilderUtil.buildStoryEntity(storyRequestDto));
                 story.setStoryMusicCover(spotifyResult.getMusicImage());
                 story.setStoryMusicYoutubeId(youtubeSearchResultDto.getVideoId());
                 story.setStoryMusicLength(youtubeSearchResultDto.getMusicLength());
 
             } else {
+                logger.debug("스포티파이 검색 결과가 없습니다.");
                 throw new RuntimeException("스포티파이 검색 결과가 없습니다.");
             }
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-            throw new RuntimeException("입출력 예외 발생");
+        } catch (Exception e) {
+            logger.debug("서버 예외 발생");
+            throw new RuntimeException("서버 예외 발생");
         }
 
+
+
         // 2. 사연 데이터, 신청곡 를 카프카로 전송 -> 파이썬 서버에서 valid 체크 후 DB 반영, 인트로 음성 파일 생성, Reaction 음성 파일 생성, Outro 음성 파일 생성
-//        try {
-//            // Todo : Topic과 보낼 데이터 재정의 필요
-//            kafkaProducerService.send("storyContent", story.getStoryContent());
-//            kafkaProducerService.send("musicRequest", story.getStoryMusicTitle());
-//        } catch (JsonProcessingException e) {
-//            System.err.println(e.getMessage());
-//            throw new RuntimeException(카프카 에러);
-//        }
+        try {
+            // Todo : Topic과 보낼 데이터 재정의 필요
+            // storySeq, storyContent
+            // storyMusicTitle, storyMusicContent
+            kafkaProducerService.send("verifyStory", story.getStoryContent());
+            kafkaProducerService.send("musicRequest", story.getStoryMusicTitle());
+        } catch (JsonProcessingException e) {
+            System.err.println(e.getMessage());
+            throw new RuntimeException("카프카 에러");
+        }
 
     }
 
@@ -141,11 +153,12 @@ public class StoryService {
      * @param userSeq
      * @return
      */
-    public boolean isUniqueStory(long userSeq) {
-        Optional<Story> optionalStory = storyRepository.findByUserSeqAndStoryReadedFalse(
+    public void isUniqueStory(long userSeq) {
+        Optional<Story> optionalStory = storyRepository.findByUserSeqAndStoryReadedFalseOrStoryReadedNull(
                 userSeq);
 
-        return optionalStory.isPresent();
+        if (optionalStory.isPresent()) throw new EntityExistsException("중복 사연이 존재합니다.");
+
     }
 
 
@@ -157,26 +170,23 @@ public class StoryService {
      */
     public StoryInfoDto getStory(long storySeq) {
         Story story = storyRepository.findById(storySeq)
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(EntityNotFoundException::new);
 
         return storyBuilderUtil.buildStoryInfoDto(story);
     }
-//
-//    /**
-//     * 사연 삭제
-//     */
-//    @Transactional
-//    public int deleteStory(long storySeq) throws Exception {
-//
-//        Optional<Story> optionalStory = storyRepository.findById(storySeq); // 사연 조회
-//
-//        if (optionalStory.isEmpty()) {
-//            return 0; // 사연이 존재하지 않음
-//        }
-//
-//        storyRepository.deleteById(storySeq); // 사연 삭제
-//        return 1;
-//    }
+
+    /**
+     * 사연 삭제
+     * @param storySeq
+     */
+    @Transactional
+    public void deleteStory(long storySeq) {
+
+        Story story = storyRepository.findById(storySeq)
+                .orElseThrow(() -> new EntityNotFoundException("사연이 존재하지 않습니다.")); // 사연 조회
+
+        storyRepository.deleteById(storySeq); // 사연 삭제
+    }
 
 
 }
