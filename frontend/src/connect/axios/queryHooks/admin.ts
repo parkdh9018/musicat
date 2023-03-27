@@ -65,8 +65,8 @@ export function getUsers() {
   }, [userList, selectedUserList]);
 
   // select box value
-  let isChattingBan: boolean | null = null;
-  let isBan: boolean | null = null;
+  let isChattingBan: boolean | "" = "";
+  let isBan: boolean | "" = "";
 
   useEffect(() => {
     if (searchSelectValue === "banChat") {
@@ -88,11 +88,10 @@ export function getUsers() {
   const banMutation = (url: string) => {
     const { mutate } = useMutation(
       async (): Promise<void> => {
+
         const { data } = await $.put(
           url,
-          filtered_userList?.map((v) => {
-            v.userSeq;
-          })
+          selectedUserList?.map((v) => v.userSeq)
         );
         return data;
       },
