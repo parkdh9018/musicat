@@ -97,7 +97,7 @@ public class SecurityConfig {
                 // 로그아웃
                 .and()
                 .logout()
-                .logoutUrl("/api/logout")
+                .logoutUrl("/logout")
                 .logoutSuccessHandler((request, response, authentication) -> {
                     // 로그아웃 성공 시 처리 로직, 예를 들어, 성공 메시지 반환
                     response.setStatus(HttpServletResponse.SC_OK);
