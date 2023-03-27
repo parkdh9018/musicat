@@ -1,5 +1,6 @@
 import { StoryContent, StoryRequest } from "@/types/home";
 import { atom, selector, useRecoilCallback } from "recoil";
+import { userInfoState } from "./user.atom";
 
 
 export const storyTitleState = atom<string>({
@@ -22,11 +23,12 @@ export const allStorySelector = selector({
   get: ({ get }):StoryRequest => {
     const storyTitle = get(storyTitleState);
     const storyContent = get(storyContentState);
+    const user = get(userInfoState);
     // TODO : 일단 고정값, 나중에 수정 필요
     // const storyMusicName = get(songTitleState);
 
     return {
-      userSeq: 2,
+      userSeq: user.userSeq,
       storyTitle,
       storyContent,
       // TODO : 일단 고정값, 나중에 수정 필요
