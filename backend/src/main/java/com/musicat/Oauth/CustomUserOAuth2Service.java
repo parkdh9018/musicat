@@ -2,9 +2,16 @@ package com.musicat.Oauth;
 
 
 import com.musicat.auth.PrincipalDetails;
+import com.musicat.data.entity.item.Background;
+import com.musicat.data.entity.item.Badge;
+import com.musicat.data.entity.item.Theme;
 import com.musicat.data.entity.user.Authority;
 import com.musicat.data.entity.user.User;
 import com.musicat.data.repository.UserRepository;
+import com.musicat.data.repository.item.BackgroundRepository;
+import com.musicat.data.repository.item.BadgeRepository;
+import com.musicat.data.repository.item.ThemeRepository;
+import com.musicat.util.ConstantUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -24,6 +31,11 @@ import java.util.Map;
 public class CustomUserOAuth2Service extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
+    private final BackgroundRepository backgroundRepository;
+    private final BadgeRepository badgeRepository;
+    private final ThemeRepository themeRepository;
+    private final ConstantUtil constantUtil;
+
 
     private static final Logger logger = LoggerFactory.getLogger(CustomUserOAuth2Service.class);
 
@@ -57,15 +69,21 @@ public class CustomUserOAuth2Service extends DefaultOAuth2UserService {
                     .authorityName("ROLE_USER") // ROLE_ 이런 형식으로 권한을 표시해야한다.
                     .build();
 
+            // 기본 아이템 넣기
+            Background background = backgroundRepository.findById(constantUtil.DEFAULT_NUMBER).orElseThrow();
+            Badge badge = badgeRepository.findById(constantUtil.DEFAULT_NUMBER).orElseThrow();
+            Theme theme = themeRepository.findById(constantUtil.DEFAULT_NUMBER).orElseThrow();
+
             user = User.builder()
                     .userId(oAuth2UserInfo.getProviderId())
                     .userNickname(oAuth2UserInfo.getNickname())
                     .userProfileImage(oAuth2UserInfo.getProfileImage())
                     .userEmail(oAuth2UserInfo.getEmail())
                     .userAuthority(Collections.singleton(authority)) // 꼭 DB에 ROLE_USER를 먼저 넣기
+                    .background(background)
+                    .badge(badge)
+                    .theme(theme)
                     .build();
-
-            System.out.println(user.getUserAuthority().toString());
 
             userRepository.save(user);
         }
