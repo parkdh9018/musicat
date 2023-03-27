@@ -102,6 +102,7 @@ public class SecurityConfig {
                     // 로그아웃 성공 시 처리 로직, 예를 들어, 성공 메시지 반환
                     response.setStatus(HttpServletResponse.SC_OK);
                     response.getWriter().write("Successfully logged out");
+                    response.sendRedirect("https://musicat.kr");
                 })
                 .invalidateHttpSession(true); // 로그아웃 시 현재 세션을 무효화
 
