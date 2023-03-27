@@ -4,7 +4,6 @@ import { Button } from "@/components/common/button/Button";
 import { ContentBox } from "./contentBox/ContentBox";
 import { ContentPlus } from "./contentPlus/ContentPlus";
 import { v4 as uuidv4 } from "uuid";
-
 import {
   allStorySelector,
   songTitleState,
@@ -12,6 +11,8 @@ import {
   storyTitleState,
 } from "@/atoms/story.atoms";
 import { useRecoilState, useRecoilValue } from "recoil";
+import { SongSearch } from "@/components/common/songSearch/SongSearch";
+import { postRequestStory } from "@/connect/axios/queryHooks/story";
 
 export const Story = () => {
 
@@ -22,7 +23,7 @@ export const Story = () => {
   const allStory = useRecoilValue(allStorySelector);
 
   const requestStoryEvent = () => {
-    console.log(allStory)
+    postRequestStory(allStory);
   }
 
   return (
@@ -41,15 +42,9 @@ export const Story = () => {
             <ContentPlus />
           </div>
         </div>
-        <div className={style.group}>
-          <span className={style.content_label}>신청곡</span>
-          <Input
-            style={{ width: "80%" }}
-            input={songTitle}
-            setInput={setSongTitle}
-          />
-        </div>
-        <div>
+        <span className={style.content_label}>신청곡</span>
+        <SongSearch/>
+         <div>
           <Button content="등록하기" onClick={requestStoryEvent} />
         </div>
       </div>

@@ -52,11 +52,11 @@ export const UserManage = () => {
     { value: "ban", name: "권한정지" },
     { value: "not_ban", name: "정지해제" },
     { value: "banChat", name: "채팅금지" },
-    { value: "not_banchat", name: "채팅허용" },
+    { value: "not_banChat", name: "채팅허용" },
   ];
-  const userList_grid = "8% 15% 32% 25% 10% 10%";
+  const userList_grid = "9% 15% 31% 25% 10% 10%";
   const userList_headRow = [
-    "번호",
+    "일련번호",
     "닉네임",
     "이메일",
     "가입일",
@@ -125,14 +125,16 @@ export const UserManage = () => {
         <Input input={searchInput} setInput={setSearchInput} />
         <Button content="검색" onClick={searchClick} />
       </div>
+      <div className={style.horizontal_line}></div>
       <div className={style.seleceted_userList}>
+        <div>선택된 유저들</div>
         <SelectedUsers
           selectedUserList={selectedUserList}
           userClick={userClick}
         />
       </div>
       <div className={style.userStateChange}>
-        <span>변동사항 : </span>
+        <span>유저 상태변경 : </span>
         <SelectBox
           options={useStateChangeOptions}
           setValue={setChangeSelectValue}
@@ -140,7 +142,9 @@ export const UserManage = () => {
         />
         <Button content="적용" onClick={changeClick} />
       </div>
+      <div className={style.horizontal_line}></div>
       <div className={style.userList}>
+        <div>유저 리스트</div>
         <Board
           data={filtered_userList}
           grid={userList_grid}
@@ -148,6 +152,7 @@ export const UserManage = () => {
           type={"userManage"}
           boardColumnClick={boardColumnClick}
         />
+
       </div>
     </div>
   );

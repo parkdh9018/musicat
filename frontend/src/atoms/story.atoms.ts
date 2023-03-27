@@ -1,10 +1,6 @@
+import { StoryContent, StoryRequest } from "@/types/home";
 import { atom, selector, useRecoilCallback } from "recoil";
 
-interface content {
-  type: "normal" | "narr";
-  speaker: string;
-  value: string;
-}
 
 export const storyTitleState = atom<string>({
   key: "title",
@@ -16,26 +12,33 @@ export const songTitleState = atom<string>({
   default: "",
 });
 
-export const storyContentState = atom<content[]>({
+export const storyContentState = atom<StoryContent[]>({
   key: "content",
-  default: [{ type: "normal", speaker: "male", value: "" }],
+  default: [{ speaker: "narr", content: "" }],
 });
 
 export const allStorySelector = selector({
   key: "allStory",
-  get: ({ get }) => {
+  get: ({ get }):StoryRequest => {
     const storyTitle = get(storyTitleState);
-    const storyContents = get(storyContentState);
-    const storyMusicName = get(songTitleState);
+    const storyContent = get(storyContentState);
+    // TODO : 일단 고정값, 나중에 수정 필요
+    // const storyMusicName = get(songTitleState);
 
-    // TODO : api에 맞게 수정필요
-    return JSON.stringify({ storyTitle, storyContents, storyMusicName });
+    return {
+      userSeq: 2,
+      storyTitle,
+      storyContent,
+      // TODO : 일단 고정값, 나중에 수정 필요
+      storyMusicArtist: "NewJeans",
+      storyMusicTitle: "Ditto",
+    }
   },
 });
 
 export const addStoryContent = () => {
   const callback = useRecoilCallback(({ set }) => {
-    return (payload: content) => {
+    return (payload: StoryContent) => {
       set(storyContentState, (prev) => [...prev, payload]);
     };
   }, []);
@@ -59,10 +62,10 @@ export const deleteStoryContent = () => {
 export const editStoryConent = () => {
   const callback = useRecoilCallback(
     ({ set }) => {
-      return (index: number, value: string) => {
+      return (index: number, content: string) => {
         set(storyContentState, (prev) => {
           const pr = [...prev];
-          pr[index] = { ...pr[index], value };
+          pr[index] = { ...pr[index], content };
           return pr;
         });
       };

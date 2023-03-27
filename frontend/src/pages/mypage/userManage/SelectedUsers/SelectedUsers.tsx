@@ -19,6 +19,7 @@ export const SelectedUsers = ({userClick, selectedUserList}:props) => {
   return (
     <div className={style.selectedUsers}>
       <div className={style.container}>
+        {selectedUserList.length == 0 ? <span>선택된 유저가 없습니다</span> : ""}
         {selectedUserList.map((user) => (
           <div key={uuidv4()} className={style.userComponent} onClick={() => userClick(user.userSeq)}>
             <span>{user.userSeq}-{user.userNickname}</span>

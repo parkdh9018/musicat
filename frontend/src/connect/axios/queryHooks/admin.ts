@@ -2,6 +2,7 @@ import { $ } from "@/connect/axios/setting";
 import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import { PagableResponse } from "@/types/mypage";
 import { useEffect, useMemo, useState } from "react";
+import { useCustomToast } from "@/customHooks/useCustomToast";
 
 interface UserSeq {
   userSeq: number;
@@ -65,8 +66,8 @@ export function getUsers() {
   }, [userList, selectedUserList]);
 
   // select box value
-  let isChattingBan: boolean | null = null;
-  let isBan: boolean | null = null;
+  let isChattingBan: boolean | "" = "";
+  let isBan: boolean | "" = "";
 
   useEffect(() => {
     if (searchSelectValue === "banChat") {
@@ -88,17 +89,17 @@ export function getUsers() {
   const banMutation = (url: string) => {
     const { mutate } = useMutation(
       async (): Promise<void> => {
+
         const { data } = await $.put(
           url,
-          filtered_userList?.map((v) => {
-            v.userSeq;
-          })
+          selectedUserList?.map((v) => v.userSeq)
         );
         return data;
       },
       {
         onSuccess: () => {
           refetch();
+          useCustomToast("success","상태가 변경되었습니다");
         },
       }
     );
