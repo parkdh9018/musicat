@@ -66,4 +66,23 @@
 }
 .myinfo .rightbox h3 {
   margin-left: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  .myinfo {
+    flex-direction: column;
+  }
+  .myinfo .leftbox {
+    width: 100%;
+  }
+  .myinfo .leftbox .toolbar {
+    width: 16%;
+  }
+  .myinfo .middle_hr {
+    writing-mode: horizontal-tb;
+    margin: 30px 0px;
+  }
+  .myinfo .rightbox {
+    width: 100%;
+  }
 }/*# sourceMappingURL=Myinfo.module.css.map */
