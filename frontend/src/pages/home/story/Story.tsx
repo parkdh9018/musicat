@@ -12,19 +12,28 @@ import {
 } from "@/atoms/story.atoms";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { SongSearch } from "@/components/common/songSearch/SongSearch";
-import { postRequestStory } from "@/connect/axios/queryHooks/story";
+import { isAlreadyReqeustStory, postRequestStory } from "@/connect/axios/queryHooks/story";
+import { userInfoState } from "@/atoms/user.atom";
+import { useEffect } from "react";
 
 export const Story = () => {
 
+  const disable:React.CSSProperties = {opacity: "0.5",pointerEvents:"none"};
+
   const [title, setTitle] = useRecoilState(storyTitleState);
   const content = useRecoilValue(storyContentState);
-  const [songTitle, setSongTitle] = useRecoilState(songTitleState);
+  // const [songTitle, setSongTitle] = useRecoilState(songTitleState);
 
   const allStory = useRecoilValue(allStorySelector);
+  const user = useRecoilValue(userInfoState);
 
   const requestStoryEvent = () => {
-    postRequestStory(allStory);
+    postRequestStory(user.userSeq, allStory);
   }
+
+  useEffect(() => {
+    isAlreadyReqeustStory(user.userSeq);
+  },[])
 
   return (
     <>
@@ -43,9 +52,9 @@ export const Story = () => {
           </div>
         </div>
         <span className={style.content_label}>신청곡</span>
-        <SongSearch/>
+        {/* <SongSearch/> */}
          <div>
-          <Button content="등록하기" onClick={requestStoryEvent} />
+          <Button content="등록하기" style={!user.userSeq ? disable : {}} onClick={requestStoryEvent} />
         </div>
       </div>
     </>
