@@ -55,15 +55,20 @@ public class UserController {
         return ResponseEntity.ok(userMoneyLogPage);
     }
 
-
-
+    // 회원 다크모드 설정
+    @PutMapping("/darkmode")
+    public ResponseEntity<?> modifyDarkmode(@RequestHeader("token") String token)  {
+        userService.modifyDarkmode(token);
+        return ResponseEntity.ok().build();
+    }
 
 
     // 회원 정보 수정
     @PutMapping("/nickname")
-    public ResponseEntity<?> modifyUserNickname(@RequestBody UserModifyRequestDto userModifyRequestDto)  {
-        userService.modifyUserNickname(userModifyRequestDto);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<?> modifyUserNickname(@RequestHeader("token") String token,
+                                                @RequestBody UserModifyRequestDto userModifyRequestDto)  {
+        UserModifyResponseDto userModifyResponseDto = userService.modifyUserNickname(token, userModifyRequestDto);
+        return ResponseEntity.ok(userModifyResponseDto);
     }
 
     // 회원 탈퇴

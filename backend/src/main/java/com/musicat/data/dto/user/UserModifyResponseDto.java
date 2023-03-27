@@ -1,6 +1,5 @@
 package com.musicat.data.dto.user;
 
-
 import lombok.*;
 
 @Getter
@@ -8,8 +7,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserModifyRequestDto {
-
-    private String userNickname;
-
+public class UserModifyResponseDto {
+    private String token;
 }

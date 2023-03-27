@@ -46,6 +46,8 @@ public class UserService {
         // 토큰에서 유저 정부 추출
         UserInfoJwtDto userInfo = tokenProvider.getUserInfo(token);
 
+        System.out.println(userInfo.toString());
+
         // user 정보 획득
         User user = userRepository
                 .findById(userInfo.getUserSeq())
@@ -105,10 +107,31 @@ public class UserService {
         return moneyLogList.map(userBuilderUtil::moneyLogToUserMoneyLogPageDto);
     }
 
+    // 회원 다크모드 설정
+    public void modifyDarkmode(String token) {
+        UserInfoJwtDto userInfo = tokenProvider.getUserInfo(token);
+
+        User user = userRepository
+                .findById(userInfo.getUserSeq())
+                .orElseThrow(() -> new RuntimeException());
+
+        if(user.isUserIsDarkmode()) {
+            user.setUserIsDarkmode(false);
+        }
+        else {
+            user.setUserIsDarkmode(true);
+        }
+    }
+
     // 회원 정보 수정 (닉네임 변경)
-    public void modifyUserNickname(UserModifyRequestDto userModifyRequestDto) {
-        User user = userRepository.findById(userModifyRequestDto.getUserSeq()).orElseThrow(() -> new RuntimeException());
+    public UserModifyResponseDto modifyUserNickname(String token, UserModifyRequestDto userModifyRequestDto) {
+        UserInfoJwtDto userInfo = tokenProvider.getUserInfo(token);
+        User user = userRepository.findByUserSeqWithAuthorities(userInfo.getUserSeq()).orElseThrow();
         user.setUserNickname(userModifyRequestDto.getUserNickname());
+
+        return UserModifyResponseDto.builder()
+                .token(tokenProvider.createUserToken(user))
+                .build();
     }
 
     // 회원 탈퇴

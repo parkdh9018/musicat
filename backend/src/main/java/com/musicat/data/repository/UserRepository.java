@@ -26,6 +26,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u JOIN FETCH u.userAuthority WHERE u.userId = :userId")
     Optional<User> findByIdWithAuthorities(@Param("userId") String userId);
 
+    @Query("SELECT u FROM User u JOIN FETCH u.userAuthority WHERE u.userSeq = :userSeq")
+    Optional<User> findByUserSeqWithAuthorities(@Param("userSeq") long userSeq);
+
 
 
     // 카카오에서 제공한 ID로 회원이 이미 가입되어 있는지 확인
