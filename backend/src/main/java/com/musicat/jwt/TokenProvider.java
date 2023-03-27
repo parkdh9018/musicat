@@ -141,8 +141,14 @@ public class TokenProvider implements InitializingBean {
                 .parseClaimsJws(token)
                 .getBody();
 
+
+        // System.out.println(claims.get(AUTHORITIES_KEY, String.class));
+
+
+
         return UserInfoJwtDto.builder()
                 .userSeq(Long.valueOf(claims.getSubject()))
+                .userAuthority(claims.get(AUTHORITIES_KEY, String.class))
                 .userNickname(claims.get("userNickname", String.class))
                 .userProfileImage(claims.get("userProfileImage", String.class))
                 .userIsChattingBan(claims.get("userIsChattingBan", Boolean.class))

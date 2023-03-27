@@ -68,12 +68,11 @@ public class User {
 
 
     @ManyToMany
-    @Builder.Default
     @JoinTable(
             name = "user_authority",
             joinColumns = {@JoinColumn(name = "user_seq", referencedColumnName = "user_seq")},
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
-    private Set<Authority> userAuthority = new HashSet<>();
+    private Set<Authority> userAuthority;
 
 
 
