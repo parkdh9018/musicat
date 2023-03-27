@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -69,6 +70,7 @@ public class StoryController {
 
     /**
      * 사연 신청
+     *
      * @param map
      * @return
      */
@@ -98,9 +100,8 @@ public class StoryController {
                 .build();
 
         // 이미 신청한 사연이 있음
-        if (storyService.isUniqueStory(longUserSeq)) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 요청한 사연이 있습니다.");
-        }
+        storyService.isUniqueStory(longUserSeq);
+
 
         // 사연 등록 비즈니스로직 수행
         storyService.insertStory(storyRequestDto);
@@ -152,22 +153,17 @@ public class StoryController {
         return ResponseEntity.ok(storyInfoDto);
     }
 
-//    /**
-//     * 사연 삭제
-//     * 0 : (204) 사연이 존재하지 않음
-//     * 1 : (200) 사연 삭제 성공
-//     */
-//    @DeleteMapping("/story/{storySeq}")
-//    public ResponseEntity<Void> deleteStory(@PathVariable long storySeq) {
-//        try {
-//            if (storyService.deleteStory(storySeq) == 0) return ResponseEntity.noContent().build(); // 사연 검색 결과 없음
-//
-//            return ResponseEntity.ok().build(); // 사연 삭제 성공
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-//    }
+    /**
+     * 사연 삭제
+     * @param storySeq
+     * @return
+     */
+    @DeleteMapping("/{storySeq}")
+    public ResponseEntity<Void> deleteStory(@PathVariable long storySeq) {
+        storyService.deleteStory(storySeq);
+
+        return ResponseEntity.ok().build();
+    }
 
 
 }

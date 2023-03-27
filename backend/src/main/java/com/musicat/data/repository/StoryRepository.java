@@ -10,7 +10,7 @@ public interface StoryRepository extends JpaRepository<Story, Long> {
 //    public Optional<Story> findTop1ByStoryReadedFalseAndStoryValidTrueOrderByStoryCreatedAt();
 
     // (memberSeq로 조회, 읽지 않은 사연) 사연 리스트에서 1개의 사연 가져오기
-    public Optional<Story> findByUserSeqAndStoryReadedFalse(long userSeq);
+    public Optional<Story> findByUserSeqAndStoryReadedFalseOrStoryReadedNull(long userSeq);
 
     // 신청 사연 리스트에서 순번 조회
 //    public int countByStorySeqLessThanAndStoryReadedFalseAndStoryValidTrue(long storySeq);
