@@ -1,17 +1,17 @@
 package com.musicat.auth;
 
 
+import com.musicat.data.entity.user.Authority;
 import com.musicat.data.entity.user.User;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import javax.transaction.Transactional;
+import java.util.*;
 
 
 /*
@@ -60,9 +60,16 @@ public class PrincipalDetails implements OAuth2User {
 
     // 해당 user의 권한을 리턴하는 메소드
     @Override
+    @Transactional
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> listRole = new ArrayList<>();
-        listRole.add(new SimpleGrantedAuthority("ROLE_USER"));
+
+        Set<Authority> userAuthority = user.getUserAuthority();
+        for (Authority auth : userAuthority) {
+            listRole.add(new SimpleGrantedAuthority(auth.getAuthorityName()));
+        }
+
+        // listRole.add(new SimpleGrantedAuthority("ROLE_USER"));
         return listRole;
     }
 

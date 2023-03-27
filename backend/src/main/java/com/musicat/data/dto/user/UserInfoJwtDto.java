@@ -16,6 +16,7 @@ token에서 사용자 정보를 담는 DTO
 @Builder
 public class UserInfoJwtDto {
     private long userSeq;
+    private String userAuthority;
     private String userNickname;
     private String userProfileImage;
     private boolean userIsChattingBan;
