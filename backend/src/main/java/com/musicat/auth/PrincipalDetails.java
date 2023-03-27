@@ -35,7 +35,7 @@ JWT와 함께 Spring Security를 사용하려면 다음과 같은 설정을 적�
 즉, Spring Security를 사용하되, 세션을 관리하지 않고 JWT를 사용하여 인증 및 인가를 처리할 수 있습니다.
 이렇게 하면 세션 관리에 따른 서버 부하를 줄이고, 확장성을 개선할 수 있습니다.
 
-로컬 로그인을 구현하지 않을거기 때문에 implements UserDetails를 제거했다.
+로컬 로그인을 구현하지 않을거기 때문에 implements UserDetails를 제거했다...
 
  */
 
