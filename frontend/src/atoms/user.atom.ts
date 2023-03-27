@@ -1,15 +1,22 @@
-import { atom } from "recoil";
+import { $ } from "@/connect/axios/setting";
+import { atom, Resetter, useResetRecoilState } from "recoil";
 
 export const userInfoState = atom({
   key: "userInfo",
   default: {
-    userSeq: 1,
-    userRole: "user",
-    userProfile:
-      "https://dimg.donga.com/ugc/CDB/SHINDONGA/Article/5f/9a/4c/f6/5f9a4cf615cfd2738de6.jpg",
-    userNick: "라이온",
+    userSeq: 0,
+    userRole: "",
+    userProfile: "",
+    userNick: "",
   },
 });
+
+export function logoutUser(func: Resetter) {
+  localStorage.clear();
+  func();
+  $.post("/logout", {});
+  console.log("요청 보냈다!!!");
+}
 
 // 나중에 리엑트 쿼리로 대체
 export const userthemeState = atom({

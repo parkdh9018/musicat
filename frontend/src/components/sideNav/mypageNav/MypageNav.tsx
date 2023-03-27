@@ -1,5 +1,5 @@
 import { nowSideNavState } from "@/atoms/common.atom";
-import { userInfoState } from "@/atoms/user.atom";
+import { logoutUser, userInfoState } from "@/atoms/user.atom";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useResetRecoilState } from "recoil";
 import { v4 as uuidv4 } from "uuid";
@@ -17,7 +17,7 @@ export const MypageNav = ({
   urls,
 }: MypageNavProps) => {
   const nowNav = useRecoilValue(nowSideNavState);
-  const logout = useResetRecoilState(userInfoState);
+  const clear = useResetRecoilState(userInfoState);
   const navigate = useNavigate();
 
   return (
@@ -33,7 +33,7 @@ export const MypageNav = ({
             }
             onClick={() => {
               if (data === "로그아웃") {
-                logout();
+                logoutUser(clear);
                 navigate("/");
               } else {
                 navigate(urls[i]);

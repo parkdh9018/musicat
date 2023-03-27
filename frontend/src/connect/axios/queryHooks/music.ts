@@ -5,7 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 export interface Song {
   userSeq: number;
   isMusicPlayed: boolean;
-  memberSeq: number;
   musicTitle: string;
   musicArtist: string;
   musicLength: TimeRanges | null;
@@ -29,5 +28,5 @@ export function getSongSearch(search: string) {
 }
 
 export function postSongRequest(req: Song) {
-  $.post("/music/request", req);
+  return $.post("/music/request", req);
 }

@@ -63,29 +63,15 @@
 .dropdownContent {
   display: block;
   position: absolute;
+  padding: 3%;
+  margin: 1%;
   width: 100%;
-  background-color: var(--background-color);
   min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  color: var(--font-color);
+  background-color: var(--background-color);
   right: 0;
   top: 90%;
   z-index: 1;
-}
-
-/* Links inside the dropdown */
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-/* Change color of dropdown links on hover */
-.dropdownContent a:hover {
-  background-color: #f1f1f1;
-}
-
-/* Change the background color of the dropdown button when the dropdown content is shown */
-.dropdown:hover .dropbtn {
-  background-color: #3e8e41;
+  border: 1.5px dotted var(--font-color);
+  border-radius: 2%;
 }/*# sourceMappingURL=SongSearch.module.css.map */
