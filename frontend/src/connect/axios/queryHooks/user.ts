@@ -35,15 +35,19 @@ export function getUserDetailInfo() {
   const { data, isLoading } = useQuery(["getUserDetailInfo"], async () => {
     return await $.get(`/user/detail`);
   });
-
   return { data, isLoading };
 }
 
 // 회원의 츄르갯수 조회
 export function getUserMoney() {
-  const { data, isLoading } = useQuery(["getUserMoney"], async () => {
-    return await $.get(`/user/money`);
-  });
+  const userInfo = useRecoilValue(userInfoState);
+  const { data, isLoading } = useQuery(
+    ["getUserMoney"],
+    async () => {
+      return await $.get(`/user/money`);
+    },
+    { enabled: !!userInfo.userRole }
+  );
   return { data, isLoading };
 }
 
@@ -63,9 +67,14 @@ export function getUserUnreadMsgNum() {
 
 // 회원의 설정 조회
 export function getUserConfig() {
-  const { data, isLoading } = useQuery(["getUserConfig"], async () => {
-    return await $.get(`/user/config`);
-  });
+  const userInfo = useRecoilValue(userInfoState);
+  const { data, isLoading } = useQuery(
+    ["getUserConfig"],
+    async () => {
+      return await $.get(`/user/config`);
+    },
+    { enabled: !!userInfo.userRole }
+  );
 
   return { data, isLoading };
 }
@@ -75,7 +84,7 @@ export function getUserMoneyList(pageNum: number) {
   const { data, isLoading } = useQuery(
     ["getUserMoneyList", pageNum],
     async () => {
-      return await $.get(`/user/money-log?page=${pageNum}`);
+      return await $.get(`/user/money-log?page=${pageNum ? pageNum - 1 : 0}`);
     }
   );
 

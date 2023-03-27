@@ -6,14 +6,20 @@ import style from "./Header.module.css";
 import { Buffer } from "buffer";
 import { OnairSign } from "./onairSign/onairSign";
 import { Popover } from "./popover/Popover";
-import { getUserUnreadMsgNum } from "@/connect/axios/queryHooks/user";
+import {
+  getUserConfig,
+  getUserMoney,
+  getUserUnreadMsgNum,
+} from "@/connect/axios/queryHooks/user";
 
 export const Header = () => {
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const { isLoading: unreadMsgLoading } = getUserUnreadMsgNum();
+  const { isLoading: userMoneyLoading } = getUserMoney();
+  const { isLoading: userConfigLoading } = getUserConfig();
 
   useEffect(() => {
-    const token = sessionStorage.getItem("access-token");
+    const token = sessionStorage.getItem("token");
     if (token) {
       const base64Payload = token.split(".")[1];
       const payload = Buffer.from(base64Payload, "base64");
@@ -24,7 +30,6 @@ export const Header = () => {
         userProfile: result.userProfileImage,
         userNick: result.userNickname,
       });
-      console.log(result);
     }
   }, []);
 

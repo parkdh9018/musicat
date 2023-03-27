@@ -1,4 +1,5 @@
-import { atom } from "recoil";
+import { $ } from "@/connect/axios/setting";
+import { atom, Resetter, useResetRecoilState } from "recoil";
 
 export const userInfoState = atom({
   key: "userInfo",
@@ -9,6 +10,13 @@ export const userInfoState = atom({
     userNick: "",
   },
 });
+
+export function logoutUser(func: Resetter) {
+  sessionStorage.clear();
+  func();
+  $.post("/logout", {});
+  console.log("요청 보냈다!!!");
+}
 
 // 나중에 리엑트 쿼리로 대체
 export const userthemeState = atom({
