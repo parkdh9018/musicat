@@ -5,12 +5,23 @@ import { Button } from "@/components/common/button/Button";
 import { Input } from "@/components/common/input/Input";
 import { Modal } from "@/components/common/modal/Modal";
 import { Pagenation } from "@/components/common/pagenation/Pagenation";
+import {
+  getUserDetailInfo,
+  getUserMoneyList,
+} from "@/connect/axios/queryHooks/user";
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import style from "./Myinfo.module.css";
 import { MyinfoModal } from "./myinfoModal/MyinfoModal";
 
 export const Myinfo = () => {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const page = searchParams.get("page");
+
+  const { data: moneyList } = getUserMoneyList(Number(page));
+  const { data: userDetailInfo } = getUserDetailInfo();
   const dumyData = [
     { a: 213, b: 1234, c: 12345 },
     { a: 213, b: 1234, c: 12345 },
@@ -56,10 +67,10 @@ export const Myinfo = () => {
         </div>
         <p className={style.ffc}>가입 날짜</p>
         <p className={style.fc} style={{ marginBottom: "40px" }}>
-          2022년 10월 12일
+          {userDetailInfo?.data.userCreatedAt}
         </p>
         <p className={style.ffc}>이메일</p>
-        <p className={style.fc}>ramenbuang@gmail.com</p>
+        <p className={style.fc}>{userDetailInfo?.data.userEmail}</p>
       </div>
       <hr className={style.middle_hr} />
       <div className={style.rightbox}>
@@ -80,18 +91,18 @@ export const Myinfo = () => {
         />
         <h3 style={{ margin: "40px 0" }}>나의 츄르 : 456p</h3>
         <Board
-          data={dumyData}
+          data={moneyList?.data.content}
           grid={"40% 30% 30%"}
           headRow={["날짜", "변동내역", "상새내역"]}
           setIsModalOpen={setIsModalOpen}
           type={"userMoney"}
         />
         <Pagenation
-          number={1}
-          first={false}
-          last={false}
-          totalPages={3}
-          url={""}
+          number={moneyList?.data.number}
+          first={moneyList?.data.first}
+          last={moneyList?.data.last}
+          totalPages={moneyList?.data.totalPages}
+          url={`?page=`}
         />
       </div>
       {isModalOpen && (

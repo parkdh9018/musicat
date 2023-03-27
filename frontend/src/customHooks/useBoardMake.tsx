@@ -64,7 +64,19 @@ export function useBoardMake(
   }
 
   if (type === "userMoney") {
-    //
+    arr.push(<span>{data.moneyLogCreatedAt}</span>);
+    if (data.moneyLogChange > 0)
+      arr.push(
+        <span style={{ color: "var(--green-color)" }}>
+          +{data.moneyLogChange}
+        </span>
+      );
+    else if (data.moneyLogChange < 0)
+      arr.push(
+        <span style={{ color: "var(--red-color)" }}>{data.moneyLogChange}</span>
+      );
+    else arr.push(<span>{data.moneyLogChange}</span>);
+    arr.push(<span>{data.moneyLogType}</span>);
   }
 
   if (type === "userManage") {

@@ -1,11 +1,12 @@
-import { userInfoState } from "@/atoms/user.atom";
-import { Link } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { logoutUser, userInfoState } from "@/atoms/user.atom";
+import { Link, useNavigate } from "react-router-dom";
+import { useRecoilValue, useResetRecoilState } from "recoil";
 import style from "./Popover.module.css";
 
 export const Popover = () => {
   const userInfo = useRecoilValue(userInfoState);
-  // TODO : 로그아웃 구현 필요
+  const navigate = useNavigate();
+  const clear = useResetRecoilState(userInfoState);
   const userComponent = (
     <>
       <Link to="/mypage/myinfo">
@@ -18,7 +19,15 @@ export const Popover = () => {
         <div className={style.content_text}>인벤토리</div>
       </Link>
       <Link to="">
-        <div className={style.content_text}>로그아웃</div>
+        <div
+          className={style.content_text}
+          onClick={() => {
+            logoutUser(clear);
+            navigate("/");
+          }}
+        >
+          로그아웃
+        </div>
       </Link>
     </>
   );
