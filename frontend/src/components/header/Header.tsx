@@ -20,6 +20,7 @@ export const Header = () => {
 
   document.addEventListener("visibilitychange", function () {
     if (document.visibilityState === "visible") {
+      console.log("감지를 했다!!!!");
       const token = localStorage.getItem("token");
       if (token) {
         const base64Payload = token.split(".")[1];
@@ -32,6 +33,8 @@ export const Header = () => {
           userNick: result.userNickname,
         });
       }
+    } else {
+      console.log("focous 벗어남");
     }
   });
 
