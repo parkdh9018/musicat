@@ -1,9 +1,8 @@
 package com.musicat.controller.item;
 
 
-import com.musicat.data.dto.item.BackgroundListDto;
-import com.musicat.data.dto.item.ThemeListDto;
-import com.musicat.service.ItemService;
+import com.musicat.data.dto.item.*;
+import com.musicat.service.item.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,4 +37,29 @@ public class ItemController {
         List<ThemeListDto> themeListDto = itemService.getThemeListDto();
         return ResponseEntity.ok(themeListDto);
     }
+
+    // 배경 변경
+    @PutMapping("/background")
+    public ResponseEntity<?> modifyBackground(@RequestHeader("token") String token,
+                                              @RequestBody BackgroundModifyRequestDto backgroundModifyDto) {
+        BackgroundModifyResponseDto backgroundModifyResponseDto = itemService.modifyBackground(token, backgroundModifyDto);
+        return ResponseEntity.ok(backgroundModifyResponseDto);
+    }
+
+    // 뱃지 변경
+    @PutMapping("/badge")
+    public ResponseEntity<?> modifyBadge(@RequestHeader("token") String token,
+                                         @RequestBody BadgeModifyRequestDto badgeModifyRequestDto) {
+        BadgeModifyResponseDto badgeModifyResponseDto = itemService.modifyBadge(token, badgeModifyRequestDto);
+        return ResponseEntity.ok(badgeModifyResponseDto);
+    }
+
+    // 테마 변경
+    @PutMapping("/theme")
+    public ResponseEntity<?> modifyTheme(@RequestHeader("token") String token,
+                                         @RequestBody ThemeModifyRequestDto themeModifyRequestDto) {
+        ThemeModifyResponseDto themeModifyResponseDto = itemService.modifyTheme(token, themeModifyRequestDto);
+        return ResponseEntity.ok(themeModifyResponseDto);
+    }
+
 }

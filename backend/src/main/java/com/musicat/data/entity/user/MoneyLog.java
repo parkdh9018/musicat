@@ -28,23 +28,24 @@ public class MoneyLog {
     @JoinColumn(name = "user_seq")
     private User user;
 
-    @NotNull
+
     @Column(name = "money_log_type")
     private String moneyLogType;
 
-    @NotNull
+
     @Column(name = "money_log_detail")
     private String moneyLogDetail;
 
-    @NotNull
+
     @Column(name = "money_log_change")
     private long moneyLogChange;
 
-    @NotNull
+
     @CreatedDate
+    @Builder.Default
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "money_log_created_at")
-    private LocalDateTime moneyLogCreatedAt;
+    private LocalDateTime moneyLogCreatedAt = LocalDateTime.now();
 
     @PrePersist
     public void perPersist() {
