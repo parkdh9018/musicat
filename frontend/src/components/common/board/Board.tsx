@@ -20,6 +20,7 @@ interface BoardProps {
   type: "noticeAll" | "noticeList" | "userMoney" | "userManage";
   setIsModalOpen?: (bol: boolean) => void;
   boardColumnClick?: (seq: number, nickname: string) => void;
+  setMoneySeq?: (num: number) => void;
 }
 
 export const Board = ({
@@ -30,6 +31,7 @@ export const Board = ({
   type,
   setIsModalOpen,
   boardColumnClick,
+  setMoneySeq,
 }: BoardProps) => {
   const navigate = useNavigate();
   const userInfo = useRecoilValue(userInfoState);
@@ -59,6 +61,10 @@ export const Board = ({
                   <div
                     key={uuidv4()}
                     onClick={() => {
+                      setMoneySeq
+                        ? setMoneySeq(content.moneyLogSeq)
+                        : undefined;
+
                       setIsModalOpen ? setIsModalOpen(true) : undefined;
 
                       url
