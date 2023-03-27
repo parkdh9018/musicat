@@ -17,12 +17,12 @@ public class ConstantUtil {
     // yml 파일로 값을 주입하면 완벽
     //  @Value("${user.page.size}")
     public final int USER_PAGE_SIZE = 10;
-
     // 공지사항 페이지
     public final int NOTICE_PAGE_SIZE = 10;
 
     // 알림 페이지
     public final int ALERT_PAGE_SIZE = 10;
+    // 재화 내역 페이지
     public final int MONEY_PAGE_SIZE = 5;
 
     // 2022년 12월 10일 같은 형색
@@ -32,6 +32,9 @@ public class ConstantUtil {
 
     // 사연 재생 경로 Todo : EC2 서버에 Intro 음성 파일 경로 저장 예정
     public String STORY_INTRO = "something";
+
+    // 아이템의 기본 번호
+    public final long DEFAULT_NUMBER = 1L;
 
 
 }
