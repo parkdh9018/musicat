@@ -12,7 +12,7 @@ export const userInfoState = atom({
 });
 
 export function logoutUser(func: Resetter) {
-  sessionStorage.clear();
+  localStorage.clear();
   func();
   $.post("/logout", {});
   console.log("요청 보냈다!!!");

@@ -19,7 +19,7 @@ export const Header = () => {
   const { isLoading: userConfigLoading } = getUserConfig();
 
   useEffect(() => {
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     if (token) {
       const base64Payload = token.split(".")[1];
       const payload = Buffer.from(base64Payload, "base64");
