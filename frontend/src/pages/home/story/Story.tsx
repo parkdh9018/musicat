@@ -12,35 +12,45 @@ import {
 } from "@/atoms/story.atoms";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { SongSearch } from "@/components/common/songSearch/SongSearch";
-import { isAlreadyReqeustStory, postRequestStory } from "@/connect/axios/queryHooks/story";
+import {
+  isAlreadyReqeustStory,
+  postRequestStory,
+} from "@/connect/axios/queryHooks/story";
 import { userInfoState } from "@/atoms/user.atom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export const Story = () => {
-
-  const disable:React.CSSProperties = {opacity: "0.5",pointerEvents:"none"};
+  const disable: React.CSSProperties = {
+    opacity: "0.5",
+    pointerEvents: "none",
+  };
 
   const [title, setTitle] = useRecoilState(storyTitleState);
-  const content = useRecoilValue(storyContentState);
+  const [requestButton, setRequestButton] = useState(true);
   // const [songTitle, setSongTitle] = useRecoilState(songTitleState);
+  const content = useRecoilValue(storyContentState);
 
   const allStory = useRecoilValue(allStorySelector);
   const user = useRecoilValue(userInfoState);
 
   const requestStoryEvent = () => {
-    postRequestStory(user.userSeq, allStory);
-  }
+    postRequestStory(user.userSeq, allStory, setRequestButton);
+  };
 
   useEffect(() => {
-    isAlreadyReqeustStory(user.userSeq);
-  },[])
+    isAlreadyReqeustStory(user.userSeq, setRequestButton);
+  }, []);
 
   return (
     <>
       <div className={style.story}>
         <div className={style.group}>
           <span className={style.content_label}>제목</span>
-          <Input style={{ width: "80%", marginLeft: "2%" }} input={title} setInput={setTitle} />
+          <Input
+            style={{ width: "80%", marginLeft: "2%" }}
+            input={title}
+            setInput={setTitle}
+          />
         </div>
         <div className={style.group}>
           <span className={style.content_label}>내용</span>
@@ -53,8 +63,12 @@ export const Story = () => {
         </div>
         <span className={style.content_label}>신청곡</span>
         {/* <SongSearch/> */}
-         <div>
-          <Button content="등록하기" style={!user.userSeq ? disable : {}} onClick={requestStoryEvent} />
+        <div>
+          <Button
+            content="등록하기"
+            style={requestButton ? {} : disable}
+            onClick={requestStoryEvent}
+          />
         </div>
       </div>
     </>
