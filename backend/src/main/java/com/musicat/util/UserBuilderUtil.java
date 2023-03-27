@@ -41,6 +41,20 @@ public class UserBuilderUtil {
                 .build();
     }
 
+    /*
+    user -> userConfigDto
+     */
+    public UserConfigDto userToUserConfigDto(User user) {
+        return UserConfigDto.builder()
+                .userIsDarkmode(user.isUserIsDarkmode())
+                .backgroundSeq(user.getBackground().getBackgroundSeq())
+                .badgeSeq(user.getBadge().getBadgeSeq())
+                .themeSeq(user.getTheme().getThemeSeq())
+                .build();
+    }
+
+
+
 
     /*
     user -> userPageDto

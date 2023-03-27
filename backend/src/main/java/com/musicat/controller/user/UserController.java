@@ -39,6 +39,14 @@ public class UserController {
         return ResponseEntity.ok(userUnreadMessageDto);
     }
 
+
+    // 회원 설정 조회 (다크모드 + 아이템 3종)
+    @GetMapping("/config")
+    public ResponseEntity<?> getUserConfig(@RequestHeader("token") String token)  {
+        UserConfigDto userConfigDto = userService.getUserConfig(token);
+        return ResponseEntity.ok(userConfigDto);
+    }
+
     // 회원 재화 내역 조회
     @GetMapping("/money-log")
     public ResponseEntity<?> getUserMoneyLog(@RequestHeader("token") String token,
@@ -46,6 +54,8 @@ public class UserController {
         Page<UserMoneyLogPageDto> userMoneyLogPage = userService.getUserMoneyLog(token, page);
         return ResponseEntity.ok(userMoneyLogPage);
     }
+
+
 
 
 

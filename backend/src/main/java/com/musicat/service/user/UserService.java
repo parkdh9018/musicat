@@ -77,6 +77,18 @@ public class UserService {
         return userBuilderUtil.userToUserUnreadMessageDto(user);
     }
 
+    // 회원 설정 조회 (다크모드 + 아이템 3종)
+    public UserConfigDto getUserConfig(String token) {
+        UserInfoJwtDto userInfo = tokenProvider.getUserInfo(token);
+
+        // user 정보 획득
+        User user = userRepository
+                .findById(userInfo.getUserSeq())
+                .orElseThrow(() -> new RuntimeException());
+
+        return userBuilderUtil.userToUserConfigDto(user);
+    }
+
     // 회원 재화 내역 조회
     public Page<UserMoneyLogPageDto> getUserMoneyLog(String token, int page) {
         // user 정보 획득
@@ -86,7 +98,7 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException());
 
         // page 설정 : 현재 페이지, 페이지 사이즈, 정렬
-        PageRequest pageable = PageRequest.of(page, constantUtil.USER_PAGE_SIZE, Sort.by(Sort.Direction.DESC, "moneyLogCreatedAt"));
+        PageRequest pageable = PageRequest.of(page, constantUtil.MONEY_PAGE_SIZE, Sort.by(Sort.Direction.DESC, "moneyLogCreatedAt"));
         Page<MoneyLog> moneyLogList = moneyLogRepository.findByUser(user, pageable);
 
         // 꼭 확인하기!!
