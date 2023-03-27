@@ -92,10 +92,13 @@ export function getUserMoneyList(pageNum: number) {
 }
 
 // 회원 재화 내역 상세 조회
-export function getUserMoneyDetail(moneyLogSeq: string) {
-  const { data, isLoading } = useQuery(["getUserMoneyDetail"], async () => {
-    return await $.get(`/user/money?moneyLogSeq=${moneyLogSeq}`);
-  });
+export function getUserMoneyDetail(moneyLogSeq: number) {
+  const { data, isLoading } = useQuery(
+    ["getUserMoneyDetail", moneyLogSeq],
+    async () => {
+      return await $.get(`/user/money/detail?moneyLogSeq=${moneyLogSeq}`);
+    }
+  );
 
   return { data, isLoading };
 }

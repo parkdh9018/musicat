@@ -1,5 +1,5 @@
 import { nowSideNavState } from "@/atoms/common.atom";
-import { userInfoState, userthemeState } from "@/atoms/user.atom";
+import { userInfoState } from "@/atoms/user.atom";
 import { Board } from "@/components/common/board/Board";
 import { Button } from "@/components/common/button/Button";
 import { Input } from "@/components/common/input/Input";
@@ -9,6 +9,7 @@ import {
   getUserDetailInfo,
   getUserMoneyList,
 } from "@/connect/axios/queryHooks/user";
+import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -20,23 +21,16 @@ export const Myinfo = () => {
   const searchParams = new URLSearchParams(location.search);
   const page = searchParams.get("page");
 
+  const queryClient = useQueryClient();
   const { data: moneyList } = getUserMoneyList(Number(page));
   const { data: userDetailInfo } = getUserDetailInfo();
-  const dumyData = [
-    { a: 213, b: 1234, c: 12345 },
-    { a: 213, b: 1234, c: 12345 },
-    { a: 213, b: 1234, c: 12345 },
-    { a: 213, b: 1234, c: 12345 },
-    { a: 213, b: 1234, c: 12345 },
-  ];
-  //
+  const userConfig = queryClient.getQueryData<any>(["getUserConfig"]);
+  const userMoney = queryClient.getQueryData<any>(["getUserMoney"]);
   const setNowSideNav = useSetRecoilState(nowSideNavState);
-
-  // 이거 없어져야됨. useQuery로 대채해야 된다.
-  const usertheme = useRecoilValue(userthemeState);
 
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const [input, setInput] = useState("");
+  const [moneySeq, setMoneySeq] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   /** 사이드 Nav 초기화 */
@@ -56,11 +50,13 @@ export const Myinfo = () => {
         <div className={style.toolbar}>
           <div
             className={
-              usertheme.darkMode
+              userConfig?.data.userIsDarkmode
                 ? style.circle
                 : style.circle + " " + style.circleLeft
             }
             onClick={() => {
+              queryClient.invalidateQueries(["getUserConfig"]);
+              console.log("dd");
               return;
             }}
           />
@@ -77,25 +73,22 @@ export const Myinfo = () => {
         <h3>닉네임</h3>
         <Input input={input} setInput={setInput} />
         <Button
-          content="중복확인"
-          onClick={() => {
-            return;
-          }}
-          style={{ margin: "0 5px" }}
-        />
-        <Button
           content="변 경"
+          style={{ marginLeft: "5px" }}
           onClick={() => {
             return;
           }}
         />
-        <h3 style={{ margin: "40px 0" }}>나의 츄르 : 456p</h3>
+        <h3 style={{ margin: "40px 0" }}>
+          나의 츄르 : {userMoney?.data.userMoney}p
+        </h3>
         <Board
           data={moneyList?.data.content}
           grid={"40% 30% 30%"}
           headRow={["날짜", "변동내역", "상새내역"]}
           setIsModalOpen={setIsModalOpen}
           type={"userMoney"}
+          setMoneySeq={setMoneySeq}
         />
         <Pagenation
           number={moneyList?.data.number}
@@ -107,7 +100,7 @@ export const Myinfo = () => {
       </div>
       {isModalOpen && (
         <Modal setModalOpen={setIsModalOpen}>
-          <MyinfoModal dataSeq={1} />
+          <MyinfoModal dataSeq={moneySeq} />
         </Modal>
       )}
     </div>

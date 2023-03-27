@@ -61,6 +61,9 @@
   writing-mode: vertical-rl;
   height: 96%;
 }
+.myinfo .rightbox {
+  min-width: 50%;
+}
 .myinfo .rightbox h3 {
   margin-left: 10px;
 }/*# sourceMappingURL=Myinfo.module.css.map */

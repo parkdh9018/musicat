@@ -11,13 +11,19 @@ import {
   getUserMoney,
   getUserUnreadMsgNum,
 } from "@/connect/axios/queryHooks/user";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const Header = () => {
+  const queryClient = useQueryClient();
+  const userUnreadMsgNum = queryClient.getQueryData<any>([
+    "getUserUnreadMsgNum",
+  ]);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const { isLoading: unreadMsgLoading } = getUserUnreadMsgNum();
   const { isLoading: userMoneyLoading } = getUserMoney();
   const { isLoading: userConfigLoading } = getUserConfig();
 
+  // 나중에 다시 확인
   document.addEventListener("visibilitychange", function () {
     if (document.visibilityState === "visible") {
       console.log("감지를 했다!!!!");
@@ -89,7 +95,11 @@ export const Header = () => {
               </div>
               <div className={style.profile_div}>
                 <img src={userInfo.userProfile} alt="프로필 이미지" />
-                <div className={style.badge}>12</div>
+                {userUnreadMsgNum?.data.userUnreadMessage ? (
+                  <div className={style.badge}>
+                    {userUnreadMsgNum?.data.userUnreadMessage}
+                  </div>
+                ) : null}
               </div>
             </div>
           )}
