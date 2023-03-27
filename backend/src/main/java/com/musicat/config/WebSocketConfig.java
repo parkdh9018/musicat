@@ -6,28 +6,25 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSocketMessageBroker
 @EnableScheduling
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-  @Override
-  public void configureMessageBroker(MessageBrokerRegistry config) {
-    config.enableSimpleBroker("/topic");
-    config.setApplicationDestinationPrefixes("/app");
-  }
+    @Override
+    public void configureMessageBroker(MessageBrokerRegistry config) {
+        config.enableSimpleBroker("/topic");
+        config.setApplicationDestinationPrefixes("/app");
+        //config.setUserDestinationPrefix("/user"); // 특정 유저에게 메시지 전송
+    }
 
-  @Override
-  public void registerStompEndpoints(StompEndpointRegistry registry) {
-    registry.addEndpoint("/websocket/music")
-        .setAllowedOrigins("http://127.0.0.1:5500") // 프론트엔드 주소를 허용하도록 설정
-        .withSockJS();
-  }
+    @Override
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry.addEndpoint("/ws")
+                .setAllowedOrigins("http://127.0.0.1:5500") // 프론트엔드 주소를 허용하도록 설정
+                .withSockJS();
+    }
 
 //  @Bean
 //  public CorsFilter corsFilter() {

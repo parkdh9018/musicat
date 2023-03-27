@@ -9,7 +9,6 @@ import com.musicat.data.entity.Story;
 import com.musicat.data.repository.StoryRepository;
 import com.musicat.util.ConstantUtil;
 import com.musicat.util.StoryBuilderUtil;
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityExistsException;
@@ -19,7 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+// Todo : 사연 Valid 검사 false일 경우 readed 처리 해줘야 한다. -> 이미 신청한 사연이 있는지 검증하기 위해서
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -112,26 +111,6 @@ public class StoryService {
     }
 
 //    /**
-//     * 사연 신청
-//     */
-//    @Transactional
-//    public StoryInsertResponseDto insertStory(StoryRequestDto storyRequestDto) throws Exception {
-//
-//        Story story = storyRepository.save(
-//                storyBuilderUtil.buildStoryEntity(storyRequestDto)); // 영속화
-//        long storySeq = story.getStorySeq();
-//
-//        int playOrder =
-//                storyRepository.countByStorySeqLessThanAndStoryIsReadFalseAndStoryIsValidTrue(
-//                        storySeq) + 1;
-//
-//        StoryInfoDto storyInfoDto = storyBuilderUtil.buildStoryInfoDto(story);
-//
-//        // 사연 등록 응답 DTO에 값을 담아서 리턴
-//        return storyBuilderUtil.buildStoryInsertResponseDto(storyInfoDto, playOrder);
-//    }
-
-//    /**
 //     * 사연 1개 조회 (읽어야 하는 사연)
 //     */
 //    public Object getTopStoryInfo() throws Exception {
@@ -185,7 +164,7 @@ public class StoryService {
         Story story = storyRepository.findById(storySeq)
                 .orElseThrow(() -> new EntityNotFoundException("사연이 존재하지 않습니다.")); // 사연 조회
 
-        storyRepository.deleteById(storySeq); // 사연 삭제
+        storyRepository.delete(story); // 사연 삭제
     }
 
 
