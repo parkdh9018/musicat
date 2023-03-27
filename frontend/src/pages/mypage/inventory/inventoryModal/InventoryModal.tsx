@@ -45,7 +45,7 @@ export const InventoryModal = ({
                   onClick={() => {
                     setSelected(i + 1);
                   }}
-                ></div>
+                />
               ) : (
                 <img
                   className={
