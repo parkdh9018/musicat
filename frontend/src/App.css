@@ -1,4 +1,4 @@
-:root {
+:root[color-theme="dark"] {
   --background-color: #313131;
   --font-color: #ececec;
   --fade-font-color: #8d8d8d;
@@ -6,6 +6,16 @@
   --red-color: #e89393;
   --blue-color: #5b69ea;
   --modal-background: rgb(52, 52, 52);
+}
+
+:root[color-theme="light"] {
+  --background-color: #979797;
+  --font-color: #242424;
+  --fade-font-color: #515151;
+  --green-color: #6dae73;
+  --red-color: #935d5d;
+  --blue-color: #363f8d;
+  --modal-background: rgb(105, 105, 105);
 }
 
 .App {

@@ -17,11 +17,19 @@ export const Header = () => {
     getUserUnreadMsgNum();
 
   //헤더가 아니라 어디선가 받아야 하나?
-  const { isLoading: userConfigLoading } = getUserConfig();
+  const { data: checkDarkMode, isLoading } = getUserConfig();
 
   useEffect(() => {
     loginUser(setUserInfo);
   }, []);
+
+  useEffect(() => {
+    if (!isLoading) {
+      if (checkDarkMode?.data.userIsDarkmode)
+        document.documentElement.setAttribute("color-theme", "dark");
+      else document.documentElement.setAttribute("color-theme", "light");
+    }
+  }, [checkDarkMode]);
 
   return (
     <header className={style.header}>
