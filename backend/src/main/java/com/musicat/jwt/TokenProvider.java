@@ -53,7 +53,7 @@ public class TokenProvider implements InitializingBean {
 
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
+                .collect(Collectors.joining("/"));
 
         long now = (new Date()).getTime();
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
@@ -85,7 +85,7 @@ public class TokenProvider implements InitializingBean {
 
         String authorities = user.getUserAuthority().stream()
                 .map(Authority::getAuthorityName)
-                .collect(Collectors.joining(","));
+                .collect(Collectors.joining("/"));
 
         long now = (new Date()).getTime();
         Date validity = new Date(now + this.tokenValidityInMilliseconds);
@@ -170,6 +170,7 @@ public class TokenProvider implements InitializingBean {
 
         // System.out.println(claims.get(AUTHORITIES_KEY, String.class));
         System.out.println(claims.get("userNickname", String.class));
+        System.out.println(claims.get(AUTHORITIES_KEY, String.class));
 
 
 
