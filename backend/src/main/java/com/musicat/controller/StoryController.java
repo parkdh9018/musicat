@@ -49,10 +49,8 @@ public class StoryController {
             @RequestBody
             Map<String, Object> map) {
 
-        // spotify 검색 결과
+        // spotify, youtube 검색 결과
         HashMap<String, String> storySongMap = (HashMap<String, String>) map.get("storySong");
-        // youtube 검색 결과
-        HashMap<String, Object> youtubeResultMap = (HashMap<String, Object>) map.get("youtubeResult");
 
         Gson gson = new Gson();
         // Object -> Json 타입 변환
@@ -60,7 +58,7 @@ public class StoryController {
 
         // Todo : JWT에서 userSeq 꺼내는 로직으로 변경해야함
         long longUserSeq = Long.parseLong(String.valueOf(map.get("userSeq")));
-        long musicLength = Long.parseLong(String.valueOf(youtubeResultMap.get("musicLength")));
+        long musicLength = Long.parseLong(String.valueOf(storySongMap.get("musicLength")));
 
 
         StoryRequestDto storyRequestDto = StoryRequestDto.builder()
@@ -70,7 +68,7 @@ public class StoryController {
                 .storyMusicTitle(storySongMap.get("musicTitle"))
                 .storyMusicArtist(storySongMap.get("musicArtist"))
                 .storyMusicCover(storySongMap.get("musicImage"))
-                .videoId((String) youtubeResultMap.get("videoId"))
+                .videoId(storySongMap.get("videoId"))
                 .musicLength(musicLength)
                 .build();
 
