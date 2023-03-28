@@ -1,7 +1,5 @@
 package com.musicat.data.entity.notice;
 
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.*;
 
@@ -40,14 +38,10 @@ public class Notice {
   @Column(name = "notice_created_at")
   private LocalDateTime noticeCreatedAt;
 
-  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-  @Column(name = "notice_updated_at")
-  private LocalDateTime noticeUpdatedAt;
 
   @PrePersist
   public void prePersist() {
     this.noticeCreatedAt = LocalDateTime.now();
-    this.noticeUpdatedAt = LocalDateTime.now();
   }
 
 
