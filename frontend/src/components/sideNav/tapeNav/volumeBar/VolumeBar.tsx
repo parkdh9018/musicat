@@ -9,7 +9,7 @@ export const VolumeBar = () => {
   // 그냥 파일 넘겨주는거 받아서 리스트에 넣어서 사용하면 될듯
   // 유튜브는 embed로 ==> <audio> 소스로 이용 방법 고민해보기
 
-  const [music] = useState(new Audio(sound));
+  const music = new Audio(sound);
 
   useEffect(() => {
     // console.log(volume);

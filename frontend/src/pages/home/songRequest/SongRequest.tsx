@@ -49,7 +49,7 @@ export const SongRequest = () => {
     <>
       <div className={style.songRequest} onFocus={onFocus}>
         <div className={style.songSearch}>
-          <SongSearch setRequestSong={setRequestSong} width={80} />
+          <SongSearch setRequestSong={setRequestSong} width={90} />
           <button className={style.requestBtn} onClick={onClickReq}>
             20Chur
           </button>
