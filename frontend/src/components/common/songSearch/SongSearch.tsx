@@ -1,13 +1,8 @@
 import { useState, useEffect } from "react";
 import style from "./SongSearch.module.css";
-import {
-  getSongSearch,
-  postSongRequest,
-  Song,
-} from "@/connect/axios/queryHooks/music";
+import { getSongSearch } from "@/connect/axios/queryHooks/music";
 import { v4 as uuidv4 } from "uuid";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { Song } from "@/types/home";
 
 interface SongSearchProps {
   setRequestSong: any; // 선택한 음악 객체 반환하는 함수
@@ -33,6 +28,10 @@ export const SongSearch = ({ setRequestSong, width }: SongSearchProps) => {
 
   // 스포티파이에 보낼 검색어(인풋)
   const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // {}[]^|%\ 입력 불가...
+    // if (e.target.value === "") {
+    //   setNoResults(false);
+    // }
     setSearch(e.target.value);
   };
 
@@ -91,7 +90,7 @@ export const SongSearch = ({ setRequestSong, width }: SongSearchProps) => {
   ));
 
   return (
-    <span className={style.searachBox}>
+    <span className={style.searachBox} style={{ width: `${width}%` }}>
       <input
         className={style.inputText}
         type="text"
@@ -99,25 +98,20 @@ export const SongSearch = ({ setRequestSong, width }: SongSearchProps) => {
         value={search}
         onChange={onChangeValue}
         onKeyUp={onKeyUpSearch}
+        placeholder="가수나 노래 제목을 입력하세요"
       />
       {isFocused ? (
-        <>
-          {/* <span className={style.searchBtn} onBlur={onBlur}>
-            <FontAwesomeIcon icon={faMagnifyingGlass} />
-          </span> */}
-
-          <span className={style.dropdown}>
-            {isSearching ? (
-              <div className={style.dropdownContent}>
-                {searchResults.length > 0 ? (
-                  <>{songSearchedList}</>
-                ) : (
-                  <div>{noResults ? "검색 결과가 없습니다." : "검색중.."}</div>
-                )}
-              </div>
-            ) : null}
-          </span>
-        </>
+        <span>
+          {isSearching ? (
+            <div className={style.dropdownContent}>
+              {searchResults.length > 0 ? (
+                <>{songSearchedList}</>
+              ) : (
+                <div>{noResults ? "검색 결과가 없습니다." : "검색중.."}</div>
+              )}
+            </div>
+          ) : null}
+        </span>
       ) : null}
     </span>
   );
