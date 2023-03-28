@@ -3,6 +3,7 @@ package com.musicat.controller.notice;
 
 import com.musicat.data.dto.notice.NoticeDetailDto;
 import com.musicat.data.dto.notice.NoticeListDto;
+import com.musicat.data.dto.notice.NoticePageDto;
 import com.musicat.service.NoticeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +33,7 @@ public class NoticeController {
      */
     @GetMapping("")
     public ResponseEntity<?> getNoticeList(@RequestParam(required = false, defaultValue = "0") int page, @RequestParam(required = false, defaultValue = "") String query) {
-        return ResponseEntity.ok(noticeService.getNoticeList(page, query));
-
+        return ResponseEntity.ok(noticeService.getNoticePage(page, query));
     }
     
     // 공지사항 상세 조회

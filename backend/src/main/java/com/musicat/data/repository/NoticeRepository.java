@@ -4,6 +4,8 @@ import com.musicat.data.entity.notice.Notice;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +16,12 @@ public interface NoticeRepository extends JpaRepository<Notice, Long> {
     Optional<List<Notice>> findTop3ByOrderByNoticeCreatedAtDesc();
 
     Page<Notice> findAll(Pageable pageable);
+
+
+    // 공지사항 제목 검색 page 형식으로 최신순으로 받아오기
+    Page<Notice> findByNoticeTitleContainingIgnoreCaseOrderByNoticeCreatedAtDesc(String query, Pageable pageable);
+
+
 
     Page<Notice> findAllByNoticeTitleContainingOrNoticeContentContaining(Pageable pageable, String noticeTitle, String noticeContent);
 }

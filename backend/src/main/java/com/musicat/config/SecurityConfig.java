@@ -94,6 +94,7 @@ public class SecurityConfig {
                 .and()
                 .successHandler(oAuth2AuthenticationSuccessHandler)
 
+
                 // 로그아웃
                 .and()
                 .logout()

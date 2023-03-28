@@ -2,6 +2,7 @@ package com.musicat.util;
 
 import com.musicat.data.dto.notice.NoticeDetailDto;
 import com.musicat.data.dto.notice.NoticeListDto;
+import com.musicat.data.dto.notice.NoticePageDto;
 import com.musicat.data.dto.notice.NoticeWriteDto;
 import com.musicat.data.entity.notice.Notice;
 import com.musicat.data.entity.user.User;
@@ -33,11 +34,22 @@ public class NoticeBuilderUtil {
     public NoticeListDto noticeToNoticeListDto(Notice notice) {
         return NoticeListDto.builder()
                 .noticeSeq(notice.getNoticeSeq())
-                .userNickname(notice.getUser().getUserNickname())
                 .noticeTitle(notice.getNoticeTitle())
                 .noticeCreatedAt(notice.getNoticeCreatedAt().format(constantUtil.simpleFormatter))
                 .build();
     }
+
+
+    // Page를 만들 때 사용
+    // notice -> NoticePage
+    public NoticePageDto noticeToNoticePageDto(Notice notice) {
+        return NoticePageDto.builder()
+                .noticeSeq(notice.getNoticeSeq())
+                .noticeTitle(notice.getNoticeTitle())
+                .noticeCreatedAt(notice.getNoticeCreatedAt().format(constantUtil.simpleFormatter))
+                .build();
+    }
+
 
     // 공지사항 상세 페이지를 정보를 보낼 때 사용
     // notice -> NoticeDetailDto

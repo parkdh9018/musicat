@@ -102,7 +102,6 @@ public class TokenProvider implements InitializingBean {
                 .signWith(key, SignatureAlgorithm.HS256) // jwt에 서명할 암호화 키와 알고리즘을 설정
                 .setExpiration(validity) // jwt 만료 시간 설정
                 .compact();
-
     }
 
     /*
