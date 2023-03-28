@@ -22,8 +22,7 @@ export const Popover = () => {
         <div
           className={style.content_text}
           onClick={() => {
-            logoutUser(clear);
-            navigate("/");
+            logoutUser(clear, navigate);
           }}
         >
           로그아웃
@@ -40,7 +39,12 @@ export const Popover = () => {
       <Link to="/mypage/user-manage">
         <div className={style.content_text}>유저관리</div>
       </Link>
-      <Link to="">
+      <Link
+        to=""
+        onClick={() => {
+          logoutUser(clear, navigate);
+        }}
+      >
         <div className={style.content_text}>로그아웃</div>
       </Link>
     </>

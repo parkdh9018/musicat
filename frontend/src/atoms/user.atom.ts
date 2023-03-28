@@ -1,4 +1,5 @@
 import { $ } from "@/connect/axios/setting";
+import { NavigateFunction } from "react-router-dom";
 import { atom, Resetter, useResetRecoilState } from "recoil";
 
 export const userInfoState = atom({
@@ -11,10 +12,12 @@ export const userInfoState = atom({
   },
 });
 
-export function logoutUser(func: Resetter) {
+export function logoutUser(func: Resetter, navigate: NavigateFunction) {
   localStorage.clear();
-  func();
-  $.post("/logout", {});
+  $.post("/logout", {}).then(() => {
+    func();
+    navigate("/");
+  });
   console.log("요청 보냈다!!!");
 }
 
