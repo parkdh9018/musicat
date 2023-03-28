@@ -27,8 +27,8 @@ public class ItemController {
     // 뱃지 전체 조회
     @GetMapping("/badge")
     public ResponseEntity<?> getBadge() {
-        List<BackgroundListDto> backgroundListDto = itemService.getBackgroundListDto();
-        return ResponseEntity.ok(backgroundListDto);
+        List<BadgeListDto> badgeListDto = itemService.getBadgeListDto();
+        return ResponseEntity.ok(badgeListDto);
     }
 
     // 테마 전체 조회
