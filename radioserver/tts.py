@@ -4,7 +4,7 @@ import sys
 import urllib.request
 import urllib.parse
 import aiohttp
-from api_key import client_id, client_secret
+from shared_env import client_id, client_secret
 
 async def generate_tts_clova(text, name, speaker):
     val = {
