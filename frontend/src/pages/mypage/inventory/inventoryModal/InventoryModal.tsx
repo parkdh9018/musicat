@@ -1,33 +1,44 @@
 import style from "./InventoryModal.module.css";
 import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
-import { useRecoilValue } from "recoil";
-import { userthemeState } from "@/atoms/user.atom";
 import { Button } from "@/components/common/button/Button";
+import { getUserMoney } from "@/connect/axios/queryHooks/user";
+import {
+  getBackground,
+  getBadge,
+  getTheme,
+  putItem,
+} from "@/connect/axios/queryHooks/item";
+import { useQueryClient } from "@tanstack/react-query";
+import { useCustomToast } from "@/customHooks/useCustomToast";
 
 interface InventoryModalProps {
-  itemCount: number;
+  originSelet: number;
   source: string;
   width: string;
   type: number;
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const InventoryModal = ({
-  itemCount,
+  originSelet,
   source,
   width,
   type,
+  setIsModalOpen,
 }: InventoryModalProps) => {
-  const churu = 130;
-  const theme = useRecoilValue(userthemeState);
-  const [selected, setSelected] = useState(theme.type2);
-  const arr = new Array(itemCount).fill(1);
+  const queryClient = useQueryClient();
+  const { data: userMoney } = getUserMoney();
+  const [selected, setSelected] = useState(originSelet);
   const badge = ["none", "red", "skyblue", "green", "gray"];
+
+  const { data: item } =
+    type === 1 ? getBadge() : type === 2 ? getBackground() : getTheme();
 
   return (
     <div className={style.inventory_modal}>
       <div className={style.item_flex}>
-        {arr.map((x, i) => {
+        {item?.map((x, i) => {
           return (
             <div
               key={uuidv4()}
@@ -64,12 +75,18 @@ export const InventoryModal = ({
         })}
       </div>
       <div className={style.cal_box}>
-        <p>나의 츄르 : {churu}</p>
+        <p>나의 츄르 : {userMoney?.data.userMoney}</p>
         <p>
-          {selected === theme.type2 ? (
+          {selected === originSelet ? (
             <span>0츄르</span>
           ) : (
-            <span className={style.red}>-50츄르</span>
+            <span className={style.red}>
+              -
+              {item?.at(selected - 1)?.badgeCost ||
+                item?.at(selected - 1)?.backgroundCost ||
+                item?.at(selected - 1)?.themeCost}
+              츄르
+            </span>
           )}
         </p>
         <hr style={{ width: "20vw" }} />
@@ -77,21 +94,46 @@ export const InventoryModal = ({
           남은 츄르 :
           <span
             className={
-              selected !== theme.type2 && churu - 50 < 0 ? style.red : undefined
+              selected !== originSelet &&
+              userMoney?.data.userMoney -
+                (item?.at(selected - 1)?.badgeCost ||
+                  item?.at(selected - 1)?.backgroundCost ||
+                  item?.at(selected - 1)?.themeCost ||
+                  0) <
+                0
+                ? style.red
+                : undefined
             }
             style={{ marginLeft: "5px" }}
           >
-            {selected === theme.type2 ? churu : churu - 50}
+            {selected === originSelet
+              ? userMoney?.data.userMoney
+              : userMoney?.data.userMoney -
+                (item?.at(selected - 1)?.badgeCost ||
+                  item?.at(selected - 1)?.backgroundCost ||
+                  item?.at(selected - 1)?.themeCost ||
+                  0)}
           </span>
         </p>
         <Button
           content="변경 하기"
           onClick={() => {
-            return;
+            putItem(type, selected)?.then(() => {
+              queryClient.invalidateQueries(["getUserMoney"]);
+              queryClient.invalidateQueries(["getUserConfig"]);
+              useCustomToast("success", "아이탬을 변경하였습니다.");
+              setIsModalOpen(false);
+            });
           }}
           style={
-            (selected !== theme.type2 && churu - 50 < 0) ||
-            selected === theme.type2
+            (selected !== originSelet &&
+              userMoney?.data.userMoney -
+                (item?.at(selected - 1)?.badgeCost ||
+                  item?.at(selected - 1)?.backgroundCost ||
+                  item?.at(selected - 1)?.themeCost ||
+                  0) <
+                0) ||
+            selected === originSelet
               ? { opacity: "0.5", pointerEvents: "none" }
               : undefined
           }

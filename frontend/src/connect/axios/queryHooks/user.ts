@@ -1,7 +1,9 @@
 import { userInfoState } from "@/atoms/user.atom";
 import { $ } from "@/connect/axios/setting";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useRecoilValue } from "recoil";
+import { SetterOrUpdater, useRecoilValue } from "recoil";
+import { Buffer } from "buffer";
+import { useCustomToast } from "@/customHooks/useCustomToast";
 
 interface UserSeq {
   userSeq: number;
@@ -11,14 +13,50 @@ interface ModifyRequest extends UserSeq {
   userNickname: string;
 }
 
-// 회원 정보 수정
-export function putModifyUser(payload: ModifyRequest) {
-  const { data, isLoading } = useMutation(["putModifyUser"], async () => {
-    const { data } = await $.put(`/user/nickname`, payload);
-    return data;
-  });
+interface UserInfo {
+  userSeq: number;
+  userRole: string;
+  userProfile: string;
+  userNick: string;
+}
 
-  return { data, isLoading };
+// 로그인
+export function loginUser(setUserInfo: SetterOrUpdater<UserInfo>) {
+  const token = localStorage.getItem("token");
+  if (token) {
+    const base64Payload = token.split(".")[1];
+    const payload = Buffer.from(base64Payload, "base64");
+    const result = JSON.parse(payload.toString());
+
+    setUserInfo({
+      userSeq: result.sub,
+      userRole:
+        result.userRole.split("/").length === 1
+          ? result.userRole
+          : "ROLE_ADIMIN",
+      userProfile: result.userProfileImage,
+      userNick: result.userNickname,
+    });
+  }
+}
+
+// 회원 정보 수정
+export function putModifyUser(payload: string) {
+  const { mutate } = useMutation(
+    ["putModifyUser"],
+    async () => {
+      const { data } = await $.put(`/user/nickname`, payload);
+      return data;
+    },
+    {
+      onSuccess: (data) => {
+        console.log(data);
+        useCustomToast("success", "닉네임 변경 성공!");
+      },
+    }
+  );
+
+  return mutate;
 }
 
 // 회원 탈퇴
@@ -101,4 +139,9 @@ export function getUserMoneyDetail(moneyLogSeq: number) {
   );
 
   return { data, isLoading };
+}
+
+// 다크모드 변경
+export function putDarkMode() {
+  return $.put(`/user/darkmode`, {});
 }

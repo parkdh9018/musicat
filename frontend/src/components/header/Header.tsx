@@ -1,62 +1,34 @@
 import { userInfoState } from "@/atoms/user.atom";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import style from "./Header.module.css";
-import { Buffer } from "buffer";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { OnairSign } from "./onairSign/onairSign";
 import { Popover } from "./popover/Popover";
 import {
   getUserConfig,
-  getUserMoney,
   getUserUnreadMsgNum,
+  loginUser,
 } from "@/connect/axios/queryHooks/user";
-import { useQueryClient } from "@tanstack/react-query";
+import style from "./Header.module.css";
 
 export const Header = () => {
-  const queryClient = useQueryClient();
-  const userUnreadMsgNum = queryClient.getQueryData<any>([
-    "getUserUnreadMsgNum",
-  ]);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
-  const { isLoading: unreadMsgLoading } = getUserUnreadMsgNum();
-  const { isLoading: userMoneyLoading } = getUserMoney();
+  const { data: userUnreadMsgNum, isLoading: unreadMsgLoading } =
+    getUserUnreadMsgNum();
   const { isLoading: userConfigLoading } = getUserConfig();
 
   // 나중에 다시 확인
   document.addEventListener("visibilitychange", function () {
     if (document.visibilityState === "visible") {
       console.log("감지를 했다!!!!");
-      const token = localStorage.getItem("token");
-      if (token) {
-        const base64Payload = token.split(".")[1];
-        const payload = Buffer.from(base64Payload, "base64");
-        const result = JSON.parse(payload.toString());
-        setUserInfo({
-          userSeq: result.sub,
-          userRole: result.userRole,
-          userProfile: result.userProfileImage,
-          userNick: result.userNickname,
-        });
-      }
+      loginUser(setUserInfo);
     } else {
       console.log("focous 벗어남");
     }
   });
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      const base64Payload = token.split(".")[1];
-      const payload = Buffer.from(base64Payload, "base64");
-      const result = JSON.parse(payload.toString());
-      setUserInfo({
-        userSeq: result.sub,
-        userRole: result.userRole,
-        userProfile: result.userProfileImage,
-        userNick: result.userNickname,
-      });
-    }
+    loginUser(setUserInfo);
   }, []);
 
   return (

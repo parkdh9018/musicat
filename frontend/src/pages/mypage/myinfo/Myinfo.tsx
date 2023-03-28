@@ -6,10 +6,16 @@ import { Input } from "@/components/common/input/Input";
 import { Modal } from "@/components/common/modal/Modal";
 import { Pagenation } from "@/components/common/pagenation/Pagenation";
 import {
+  getUserConfig,
   getUserDetailInfo,
+  getUserMoney,
   getUserMoneyList,
+  loginUser,
+  putDarkMode,
 } from "@/connect/axios/queryHooks/user";
-import { useQueryClient } from "@tanstack/react-query";
+import { $ } from "@/connect/axios/setting";
+import { useCustomToast } from "@/customHooks/useCustomToast";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -24,19 +30,41 @@ export const Myinfo = () => {
   const queryClient = useQueryClient();
   const { data: moneyList } = getUserMoneyList(Number(page));
   const { data: userDetailInfo } = getUserDetailInfo();
-  const userConfig = queryClient.getQueryData<any>(["getUserConfig"]);
-  const userMoney = queryClient.getQueryData<any>(["getUserMoney"]);
+  const { data: userMoney } = getUserMoney();
   const setNowSideNav = useSetRecoilState(nowSideNavState);
 
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const [input, setInput] = useState("");
   const [moneySeq, setMoneySeq] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { data } = getUserConfig();
+
+  const { mutate } = useMutation(
+    async () => {
+      const { data } = await $.put(`/user/nickname`, input);
+      return data;
+    },
+    {
+      onSuccess: (data) => {
+        localStorage.setItem("token", data.token);
+        loginUser(setUserInfo);
+        setInput("");
+        useCustomToast("success", "닉네임 변경 성공!");
+      },
+    }
+  );
 
   /** 사이드 Nav 초기화 */
   useEffect(() => {
     setNowSideNav("나의 정보 관리");
   }, []);
+
+  useEffect(() => {
+    if (input.length > 15) {
+      useCustomToast("warning", "닉네임은 15자를 넘을 수 없습니다!");
+      setInput(input.slice(0, 14));
+    }
+  }, [input]);
 
   return (
     <div className={style.myinfo}>
@@ -50,13 +78,14 @@ export const Myinfo = () => {
         <div className={style.toolbar}>
           <div
             className={
-              userConfig?.data.userIsDarkmode
+              data?.data.userIsDarkmode
                 ? style.circle
                 : style.circle + " " + style.circleLeft
             }
             onClick={() => {
-              queryClient.invalidateQueries(["getUserConfig"]);
-              console.log("dd");
+              putDarkMode().then(() => {
+                queryClient.invalidateQueries(["getUserConfig"]);
+              });
               return;
             }}
           />
@@ -76,7 +105,7 @@ export const Myinfo = () => {
           content="변 경"
           style={{ marginLeft: "5px" }}
           onClick={() => {
-            return;
+            mutate();
           }}
         />
         <h3 style={{ margin: "40px 0" }}>

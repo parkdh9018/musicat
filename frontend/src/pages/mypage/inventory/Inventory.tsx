@@ -1,17 +1,17 @@
 import { nowSideNavState } from "@/atoms/common.atom";
-import { userthemeState } from "@/atoms/user.atom";
 import { Modal } from "@/components/common/modal/Modal";
+import { getUserConfig } from "@/connect/axios/queryHooks/user";
 import { useEffect, useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import style from "./Inventory.module.css";
 import { InventoryModal } from "./inventoryModal/InventoryModal";
 
 export const Inventory = () => {
   const setNowSideNav = useSetRecoilState(nowSideNavState);
-  const theme = useRecoilValue(userthemeState);
+  const { data: theme } = getUserConfig();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState({
-    itemCount: 0,
+    originSelet: 0,
     source: "",
     width: "",
     type: 0,
@@ -30,12 +30,12 @@ export const Inventory = () => {
         style={{ marginTop: "0", minHeight: "40px" }}
       >
         <span>배지 장착 :</span>
-        {theme.type1 === 0 ? (
+        {theme?.data.badgeSeq === 1 ? (
           <span
             className={style.badge_span}
             onClick={() => {
               setModalData({
-                itemCount: 5,
+                originSelet: theme?.data.badgeSeq,
                 source: "",
                 width: "10%",
                 type: 1,
@@ -48,10 +48,10 @@ export const Inventory = () => {
         ) : (
           <div
             className={style.badge}
-            style={{ backgroundColor: `${badge[theme.type1]}` }}
+            style={{ backgroundColor: `${badge[theme?.data.badgeSeq - 1]}` }}
             onClick={() => {
               setModalData({
-                itemCount: 5,
+                originSelet: theme?.data.badgeSeq,
                 source: "",
                 width: "10%",
                 type: 1,
@@ -67,10 +67,10 @@ export const Inventory = () => {
         <span>배경 설정 :</span>
         <img
           className={style.img1}
-          src={`/img/background/background${theme.type2}.png`}
+          src={`/img/background/background${theme?.data.backgroundSeq}.png`}
           onClick={() => {
             setModalData({
-              itemCount: 6,
+              originSelet: theme?.data.backgroundSeq,
               source: "/img/background/background",
               width: "40%",
               type: 2,
@@ -84,10 +84,10 @@ export const Inventory = () => {
         <span>테마 설정 :</span>
         <img
           className={style.img2}
-          src={`/img/theme/theme${theme.type3}.png`}
+          src={`/img/theme/theme${theme?.data.themeSeq}.png`}
           onClick={() => {
             setModalData({
-              itemCount: 6,
+              originSelet: theme?.data.themeSeq,
               source: "/img/theme/theme",
               width: "20%",
               type: 3,
@@ -100,10 +100,11 @@ export const Inventory = () => {
       {isModalOpen && (
         <Modal setModalOpen={setIsModalOpen}>
           <InventoryModal
-            itemCount={modalData.itemCount}
+            originSelet={modalData.originSelet}
             source={modalData.source}
             width={modalData.width}
             type={modalData.type}
+            setIsModalOpen={setIsModalOpen}
           />
         </Modal>
       )}
