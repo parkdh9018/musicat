@@ -6,18 +6,17 @@ import { ContentPlus } from "./contentPlus/ContentPlus";
 import { v4 as uuidv4 } from "uuid";
 import {
   allStorySelector,
-  songTitleState,
+  storySongState,
   storyContentState,
   storyTitleState,
 } from "@/atoms/story.atoms";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { SongSearch } from "@/components/common/songSearch/SongSearch";
-import {
-  isAlreadyReqeustStory,
-  postRequestStory,
-} from "@/connect/axios/queryHooks/story";
 import { userInfoState } from "@/atoms/user.atom";
 import { useEffect, useState } from "react";
+import { storyHook } from "@/connect/axios/queryHooks/story";
+import { useCustomToast } from "@/customHooks/useCustomToast";
+import { LoadingSpinner } from "@/pages/common/loadingSpinner/LoadingSpinner";
 
 export const Story = () => {
   const disable: React.CSSProperties = {
@@ -25,25 +24,32 @@ export const Story = () => {
     pointerEvents: "none",
   };
 
+  const userSeq = useRecoilValue(userInfoState).userSeq;
+
+  const { button, mutate, setButton, isLoading } = storyHook(userSeq);
+
   const [title, setTitle] = useRecoilState(storyTitleState);
-  const [requestButton, setRequestButton] = useState(true);
-  // const [songTitle, setSongTitle] = useRecoilState(songTitleState);
+  const [song, setSong] = useRecoilState(storySongState);
   const content = useRecoilValue(storyContentState);
 
+  useEffect(() => {
+    if (userSeq > 0) {
+      setButton(true);
+    } else {
+      useCustomToast("warning", "로그인이 필요합니다.");
+    }
+  }, [userSeq]);
+
   const allStory = useRecoilValue(allStorySelector);
-  const user = useRecoilValue(userInfoState);
 
   const requestStoryEvent = () => {
-    postRequestStory(user.userSeq, allStory, setRequestButton);
+    mutate(allStory);
   };
-
-  useEffect(() => {
-    isAlreadyReqeustStory(user.userSeq, setRequestButton);
-  }, []);
 
   return (
     <>
       <div className={style.story}>
+        {/* {isLoading ? "나 로딩중" : "로딩안함"} */}
         <div className={style.group}>
           <span className={style.content_label}>제목</span>
           <Input
@@ -51,6 +57,12 @@ export const Story = () => {
             input={title}
             setInput={setTitle}
           />
+        </div>
+        <div className={style.group}>
+          <span className={style.content_label} style={{ marginRight: "20px" }}>
+            신청곡
+          </span>
+          <SongSearch width={85} setRequestSong={setSong} />
         </div>
         <div className={style.group}>
           <span className={style.content_label}>내용</span>
@@ -61,14 +73,17 @@ export const Story = () => {
             <ContentPlus />
           </div>
         </div>
-        <span className={style.content_label}>신청곡</span>
-        {/* <SongSearch/> */}
+
         <div>
-          <Button
-            content="등록하기"
-            style={requestButton ? {} : disable}
-            onClick={requestStoryEvent}
-          />
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            <Button
+              content="등록하기"
+              style={button ? {} : disable}
+              onClick={requestStoryEvent}
+            />
+          )}
         </div>
       </div>
     </>
