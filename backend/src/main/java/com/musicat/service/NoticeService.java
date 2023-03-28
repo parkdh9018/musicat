@@ -3,6 +3,7 @@ package com.musicat.service;
 
 import com.musicat.data.dto.notice.NoticeDetailDto;
 import com.musicat.data.dto.notice.NoticeListDto;
+import com.musicat.data.dto.notice.NoticePageDto;
 import com.musicat.data.entity.notice.Notice;
 import com.musicat.data.repository.NoticeRepository;
 
@@ -12,11 +13,7 @@ import javax.transaction.Transactional;
 
 import com.musicat.util.NoticeBuilderUtil;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Not;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,30 +40,36 @@ public class NoticeService {
 
   /**
    * 공지사항 10개 조회 (페이지네이션)
+   *
    * @param page
    * @return Page<NoticeListDto>
    */
-  public Page<NoticeListDto> getNoticeList(int page, String query) {
-    PageRequest pageable = PageRequest.of(page, constantUtil.NOTICE_PAGE_SIZE);
-    // Page 타입으로 리턴
-    Page<Notice> noticeListPage = null;
-    if (query.equals("")) { // 아무것도 입력하지 않은 경우
-      noticeListPage = noticeRepository.findAll(pageable);
-    } else { // 무언가 입력한 경우
-      noticeListPage = noticeRepository.findAllByNoticeTitleContainingOrNoticeContentContaining(pageable, query, query);
-    }
-
-    // Dto를 담은 List 타입으로 변환 (N + 1 문제 해결 및 원하는 데이터만 넘기기 위해서)
-    List<NoticeListDto> noticeListDtos = noticeListPage.getContent().stream()
-            .map(noticeBuilderUtil::noticeToNoticeListDto)
-            .collect(Collectors.toList());
-
-
-    // List 타입 -> Page 타입
-    Pageable noticeListDtoPageable = PageRequest.of(noticeListPage.getNumber(),
-            noticeListPage.getSize(), noticeListPage.getSort());
-
-    return new PageImpl<>(noticeListDtos, noticeListDtoPageable, noticeListPage.getTotalElements());
+//  public Page<NoticeListDto> getNoticeList(int page, String query) {
+//    PageRequest pageable = PageRequest.of(page, constantUtil.NOTICE_PAGE_SIZE);
+//    // Page 타입으로 리턴
+//    Page<Notice> noticeListPage = null;
+//    if (query.equals("")) { // 아무것도 입력하지 않은 경우
+//      noticeListPage = noticeRepository.findAll(pageable);
+//    } else { // 무언가 입력한 경우
+//      noticeListPage = noticeRepository.findAllByNoticeTitleContainingOrNoticeContentContaining(pageable, query, query);
+//    }
+//
+//    // Dto를 담은 List 타입으로 변환 (N + 1 문제 해결 및 원하는 데이터만 넘기기 위해서)
+//    List<NoticeListDto> noticeListDtos = noticeListPage.getContent().stream()
+//            .map(noticeBuilderUtil::noticeToNoticeListDto)
+//            .collect(Collectors.toList());
+//
+//
+//    // List 타입 -> Page 타입
+//    Pageable noticeListDtoPageable = PageRequest.of(noticeListPage.getNumber(),
+//            noticeListPage.getSize(), noticeListPage.getSort());
+//
+//    return new PageImpl<>(noticeListDtos, noticeListDtoPageable, noticeListPage.getTotalElements());
+//  }
+  public Page<NoticePageDto> getNoticePage(int page, String query) {
+    PageRequest pageable = PageRequest.of(page, constantUtil.NOTICE_PAGE_SIZE, Sort.by(Sort.Direction.DESC, "noticeCreatedAt"));
+    Page<Notice> noticePage = noticeRepository.findByNoticeTitleContainingIgnoreCaseOrderByNoticeCreatedAtDesc(query, pageable);
+    return noticePage.map(noticeBuilderUtil::noticeToNoticePageDto);
   }
 
   // 공지사항 상세 조회

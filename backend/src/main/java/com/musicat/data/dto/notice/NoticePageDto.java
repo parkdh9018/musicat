@@ -8,8 +8,10 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class NoticeListDto {
+public class NoticePageDto {
+
     private long noticeSeq;
     private String noticeTitle;
     private String noticeCreatedAt; // (2022년 12월 14일)
+
 }
