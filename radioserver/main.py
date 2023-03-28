@@ -18,6 +18,7 @@ queue = deque(['story', 'chat', 'chat', 'chat', 'music', 'chat', 'chat', 'chat',
 
 state_transition_allowed = asyncio.Event()
 
+
 async def process_finish_state_data():
     global state_transition_allowed
     state_transition_allowed.set()
