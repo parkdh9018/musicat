@@ -7,7 +7,6 @@ import com.musicat.data.dto.music.MusicRequestResultDto;
 import com.musicat.service.MusicService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,46 +25,43 @@ public class MusicController {
 
     private final MusicService musicService;
 
+    /**
+     * 노래 신청
+     *
+     * @param musicRequestDto
+     * @return
+     * @throws Exception
+     */
     @PostMapping("/request")
     public ResponseEntity<MusicRequestResultDto> requestMusic(
-            @RequestBody MusicRequestDto musicRequestDto)
-            throws Exception {
-        try {
-            MusicRequestResultDto musicInsertResponseDto = musicService.requestMusic(
-                    musicRequestDto);
-            return ResponseEntity.ok(musicInsertResponseDto);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+            @RequestBody MusicRequestDto musicRequestDto) {
+
+        MusicRequestResultDto musicInsertResponseDto = musicService.requestMusic(
+                musicRequestDto);
+        return ResponseEntity.ok(musicInsertResponseDto);
+
 
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<MusicInfoDto>> getRequestMusic() throws Exception {
+    public ResponseEntity<List<MusicInfoDto>> getRequestMusic() {
 
         List<MusicInfoDto> requestMusic = musicService.getMusicInfoList();
 
-        try {
-            return ResponseEntity.ok(requestMusic);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        return ResponseEntity.ok(requestMusic);
+
     }
 
     @GetMapping("/{musicSeq}")
-    public ResponseEntity<MusicInfoDto> getMusic(@PathVariable long musicSeq) throws Exception {
+    public ResponseEntity<MusicInfoDto> getMusic(@PathVariable long musicSeq) {
 
-        try {
-            MusicInfoDto musicInfoDto = musicService.getMusic(musicSeq);
-            return ResponseEntity.ok(musicInfoDto);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        MusicInfoDto musicInfoDto = musicService.getMusic(musicSeq);
+        return ResponseEntity.ok(musicInfoDto);
+
     }
 
     @GetMapping("/search")
-    public List<SpotifySearchResultDto> searchMusic(@RequestParam String queryString)
-            throws Exception {
+    public List<SpotifySearchResultDto> searchMusic(@RequestParam String queryString) {
         return musicService.searchMusic(queryString);
     }
 

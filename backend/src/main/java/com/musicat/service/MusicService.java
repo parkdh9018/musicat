@@ -1,5 +1,6 @@
 package com.musicat.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.musicat.data.dto.music.MusicInfoDto;
 import com.musicat.data.dto.music.MusicRequestResultDto;
 import com.musicat.data.dto.music.MusicRequestDto;
@@ -9,9 +10,11 @@ import com.musicat.data.entity.Music;
 import com.musicat.data.repository.MusicRepository;
 import com.musicat.util.MusicBuilderUtil;
 import com.musicat.util.ConvertTime;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,7 +45,7 @@ public class MusicService {
      * @throws Exception
      */
     @Transactional
-    public MusicRequestResultDto requestMusic(MusicRequestDto musicRequestDto) throws Exception {
+    public MusicRequestResultDto requestMusic(MusicRequestDto musicRequestDto) {
 
         // 검증 로직에 사용할 변수 호출
         String musicTitle = musicRequestDto.getMusicTitle();
@@ -72,18 +75,15 @@ public class MusicService {
             return musicBuilderUtil.buildMusicRequestResultDto(2, music, playOrder);
         }
 
-        // 유튜브 곡 검색
-        YoutubeSearchResultDto youtubeSearchResult = youtubeApiService.findVideo(musicTitle,
-                musicArtist);
-        if (youtubeSearchResult == null) {
-            return musicBuilderUtil.buildMusicRequestResultDto(3, null, -1);
-        }
-
         // 곡 저장
         Music music = musicRepository.save(
-                musicBuilderUtil.buildMusicEntity(musicRequestDto, youtubeSearchResult));
+                musicBuilderUtil.buildMusicEntity(musicRequestDto));
 
-        kafkaProducerService.send("musicRequest", music);
+        try {
+            kafkaProducerService.send("musicRequest", music);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
 
         int playOrder =
                 musicRepository.countByMusicSeqLessThanAndMusicPlayedFalse(music.getMusicSeq()) + 1;
@@ -97,7 +97,7 @@ public class MusicService {
      * @return musicInfoDto
      * @throws Exception
      */
-    public MusicInfoDto getMusic(long musicSeq) throws Exception {
+    public MusicInfoDto getMusic(long musicSeq) {
         Music music = musicRepository.findById(musicSeq)
                 .orElseThrow(IllegalArgumentException::new);
 
@@ -110,19 +110,16 @@ public class MusicService {
      * @return musicInfoList
      * @throws Exception
      */
-    public List<MusicInfoDto> getMusicInfoList() throws Exception {
-        Optional<List<Music>> OptionalMusicList = musicRepository
-                .findTop10ByMusicPlayedFalseOrderByMusicSeqAsc();
-        if (OptionalMusicList.isPresent()) {
-            List<Music> musicList = OptionalMusicList.get();
-            List<MusicInfoDto> result = new ArrayList<>();
-            for (Music music : musicList) {
-                result.add(musicBuilderUtil.buildMusicInfoDto(music));
-            }
-            return result;
-        } else {
-            throw new Exception();
+    public List<MusicInfoDto> getMusicInfoList() {
+        List<Music> musicList = musicRepository
+                .findTop10ByMusicPlayedFalseOrderByMusicSeqAsc()
+                .orElseThrow(() -> new EntityNotFoundException("검색 결과가 없습니다."));
+
+        List<MusicInfoDto> result = new ArrayList<>();
+        for (Music music : musicList) {
+            result.add(musicBuilderUtil.buildMusicInfoDto(music));
         }
+        return result;
     }
 
 
@@ -133,8 +130,12 @@ public class MusicService {
      * @return spotifySearchResultList
      * @throws Exception
      */
-    public List<SpotifySearchResultDto> searchMusic(String querystring) throws Exception {
-        return spotifyApiService.searchSpotifyMusicList(querystring);
+    public List<SpotifySearchResultDto> searchMusic(String querystring)  {
+        try {
+            return spotifyApiService.searchSpotifyMusicList(querystring);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public YoutubeSearchResultDto searchMusicByYoutube(String musicTitle, String musicArtist) {

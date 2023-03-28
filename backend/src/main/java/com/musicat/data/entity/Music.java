@@ -42,10 +42,6 @@ public class Music {
   @NotNull
   private String musicTitle;
 
-  @Column (name = "music_genre")
-  @NotNull
-  private String musicGenre;
-
   @Column (name = "music_artist")
   @NotNull
   private String musicArtist;
