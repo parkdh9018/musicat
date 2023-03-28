@@ -60,7 +60,6 @@ public class NoticeBuilderUtil {
                 .noticeTitle(notice.getNoticeTitle())
                 .noticeContent(notice.getNoticeContent())
                 .noticeCreatedAt(notice.getNoticeCreatedAt().format(constantUtil.detailFormatter))
-                .noticeUpdatedAt(notice.getNoticeUpdatedAt().format(constantUtil.detailFormatter))
                 .build();
     }
 
