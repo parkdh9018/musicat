@@ -81,7 +81,6 @@ public class SpotifyApiService {
                     .musicArtist(track.getArtists()[0].getName())
                     .musicAlbum(track.getAlbum().getName())
                     .musicImage(imageUrl)
-                    .musicGenre(musicGenre)
                     .musicReleaseDate(musicReleaseDate)
                     .build();
 

@@ -17,6 +17,5 @@ public class SpotifySearchResultDto {
   private String musicArtist;
   private String musicAlbum;
   private String musicImage;
-  private String musicGenre;
   private String musicReleaseDate;
 }

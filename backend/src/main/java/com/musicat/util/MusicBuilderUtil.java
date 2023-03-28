@@ -19,16 +19,15 @@ public class MusicBuilderUtil {
         .build();
   }
 
-  public Music buildMusicEntity(MusicRequestDto musicRequestDto, YoutubeSearchResultDto youtubeSearchResult) {
+  public Music buildMusicEntity(MusicRequestDto musicRequestDto) {
     return Music.builder()
         .userSeq(musicRequestDto.getUserSeq())
         .musicTitle(musicRequestDto.getMusicTitle())
-        .musicGenre(musicRequestDto.getMusicGenre())
         .musicArtist(musicRequestDto.getMusicArtist())
         .musicAlbum(musicRequestDto.getMusicAlbum())
         .musicImage(musicRequestDto.getMusicImage())
-        .musicYoutubeId(youtubeSearchResult.getVideoId())
-        .musicLength(youtubeSearchResult.getMusicLength())
+        .musicYoutubeId(musicRequestDto.getMusicYoutubeId())
+        .musicLength(musicRequestDto.getMusicLength())
         .musicIntro(null)
         .musicOutro(null)
         .musicReleaseDate(musicRequestDto.getMusicReleaseDate())
@@ -40,7 +39,6 @@ public class MusicBuilderUtil {
         .musicSeq(music.getMusicSeq())
         .userSeq(music.getUserSeq())
         .musicTitle(music.getMusicTitle())
-        .musicGenre(music.getMusicGenre())
         .musicArtist(music.getMusicArtist())
         .musicAlbum(music.getMusicAlbum())
         .musicImage(music.getMusicImage())
