@@ -5,7 +5,6 @@ import com.musicat.data.entity.item.Background;
 import com.musicat.data.entity.item.Badge;
 import com.musicat.data.entity.item.Theme;
 import com.musicat.data.entity.notice.Notice;
-import com.sun.istack.NotNull;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,7 +12,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -23,7 +21,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name="user")
+@Table(name = "user")
 public class User {
 
     @Id
@@ -66,22 +64,18 @@ public class User {
     private List<Notice> userNoticeList = new ArrayList<>();
 
 
-
     @ManyToMany
     @JoinTable(
             name = "user_authority",
             joinColumns = {@JoinColumn(name = "user_seq", referencedColumnName = "user_seq")},
-            inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
+            inverseJoinColumns = {
+                    @JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
     private Set<Authority> userAuthority;
-
 
 
     @Column(name = "user_warn_count")
     private int userWarnCount;
 
-
-    @Column(name = "user_unread_message")
-    private int userUnreadMessage;
 
     /*
     아이템 3종
@@ -133,19 +127,17 @@ public class User {
      */
     @PrePersist
     public void prePersist() {
-        if(userEmail == null) {
+        if (userEmail == null) {
             this.userEmail = "";
         }
         this.userCreatedAt = LocalDateTime.now();
         this.userMoney = 0;
         this.userWarnCount = 0;
-        this.userUnreadMessage = 0;
         this.userIsDarkmode = false;
         this.userIsChattingBan = false;
         this.userIsBan = false;
         this.userIsUser = false;
     }
-
 
 
 }
