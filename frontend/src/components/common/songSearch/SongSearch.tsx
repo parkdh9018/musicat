@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import style from "./SongSearch.module.css";
-import { getSongSearch } from "@/connect/axios/queryHooks/music";
+import {
+  getSongSearch,
+  getYoutubeSearch,
+} from "@/connect/axios/queryHooks/music";
 import { v4 as uuidv4 } from "uuid";
 import { Song } from "@/types/home";
 
@@ -70,9 +73,23 @@ export const SongSearch = ({ setRequestSong, width }: SongSearchProps) => {
     // 타입스크립트가 버튼의 값을 string으로 요구해서 변환 과정 필요
     const value = e.currentTarget.value;
     const selectedSong = JSON.parse(value);
-    setSearch(`${selectedSong.musicTitle}_${selectedSong.musicArtist}`);
-    setRequestSong(selectedSong);
-    setIsFocused(false);
+
+    // 유튜브 검색결과 확인
+    const result = await getYoutubeSearch(
+      selectedSong.musicTitle,
+      selectedSong.musicArtist
+    );
+    if (result.data.length > 0) {
+      setSearch(`${selectedSong.musicTitle}_${selectedSong.musicArtist}`);
+      setRequestSong({
+        ...selectedSong,
+        musicLength: result.data.musicLength,
+        videoId: result.data.videoId,
+      });
+      setIsFocused(false);
+    } else {
+      alert("재생할 수 없는 곡입니다. 다른곡을 선택해주세요.");
+    }
   };
 
   // 스포티파이 검색 결과 목록
