@@ -4,7 +4,7 @@ import { atom, Resetter, useResetRecoilState } from "recoil";
 export const userInfoState = atom({
   key: "userInfo",
   default: {
-    userSeq: 0,
+    userSeq: 4,
     userRole: "",
     userProfile: "",
     userNick: "",

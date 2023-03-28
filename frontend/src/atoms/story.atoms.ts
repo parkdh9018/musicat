@@ -1,4 +1,4 @@
-import { StoryContent, StoryRequest } from "@/types/home";
+import { Song, StoryContent, StoryRequest } from "@/types/home";
 import { atom, selector, useRecoilCallback } from "recoil";
 import { userInfoState } from "./user.atom";
 
@@ -8,9 +8,18 @@ export const storyTitleState = atom<string>({
   default: "",
 });
 
-export const songTitleState = atom<string>({
+export const storySongState = atom<Song>({
   key: "songTitle",
-  default: "",
+  default: {
+    userSeq: 0,
+    isMusicPlayed: false,
+    musicTitle: "",
+    musicArtist: "",
+    musicLength: null,
+    musicImage: "" as unknown as ImageData,
+    musicSeq: 0,
+    musicCreatedAt: "" as unknown as Date,
+  },
 });
 
 export const storyContentState = atom<StoryContent[]>({
@@ -24,16 +33,13 @@ export const allStorySelector = selector({
     const storyTitle = get(storyTitleState);
     const storyContent = get(storyContentState);
     const user = get(userInfoState);
-    // TODO : 일단 고정값, 나중에 수정 필요
-    // const storyMusicName = get(songTitleState);
+    const storySong = get(storySongState);
 
     return {
       userSeq: user.userSeq,
       storyTitle,
       storyContent,
-      // TODO : 일단 고정값, 나중에 수정 필요
-      storyMusicArtist: "NewJeans",
-      storyMusicTitle: "Ditto",
+      storySong,
     }
   },
 });
