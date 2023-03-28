@@ -29,6 +29,7 @@ export function loginUser(setUserInfo: SetterOrUpdater<UserInfo>) {
     const result = JSON.parse(payload.toString());
 
     console.log(result);
+    console.log(result.userRole.split("/").length);
 
     setUserInfo({
       userSeq: result.sub,
