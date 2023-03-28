@@ -33,8 +33,7 @@ export const MypageNav = ({
             }
             onClick={() => {
               if (data === "로그아웃") {
-                logoutUser(clear);
-                navigate("/");
+                logoutUser(clear, navigate);
               } else {
                 navigate(urls[i]);
               }
