@@ -22,4 +22,6 @@ public class StoryRequestDto {
 
     private String storyMusicArtist;
 
+    private String storyMusicCover;
+
 }

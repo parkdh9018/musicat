@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 // Todo : 사연 Valid 검사 false일 경우 readed 처리 해줘야 한다. -> 이미 신청한 사연이 있는지 검증하기 위해서
 @Service
 @RequiredArgsConstructor
@@ -32,7 +33,7 @@ public class StoryService {
     private final ConstantUtil constantUtil;
 
     // Service 정의
-    private final SpotifyApiService spotifyApiService;
+//    private final SpotifyApiService spotifyApiService;
     private final YoutubeApiService youtubeApiService;
     private final KafkaProducerService kafkaProducerService;
 
@@ -48,53 +49,23 @@ public class StoryService {
     @Transactional
     public void insertStory(StoryRequestDto storyRequestDto) {
 
-        Story story = null;
+        // a. 유튜브 검색 -> 동영상 ID, 음악길이 조회
+        YoutubeSearchResultDto youtubeSearchResultDto = youtubeApiService.findVideo(
+                storyRequestDto.getStoryMusicTitle(),
+                storyRequestDto.getStoryMusicArtist());
+        logger.debug("유튜브 검색 결과 : {}", youtubeSearchResultDto);
 
-        // 1. Spotify, Youtube API를 사용해서 DB에 반영하기
-        String spotifyQuery =
-                storyRequestDto.getStoryMusicTitle() + " " + storyRequestDto.getStoryMusicArtist();
-        try {
-            List<SpotifySearchResultDto> spotifySearchResultDtos = spotifyApiService.searchSpotifyMusicList(
-                    spotifyQuery);
-            // Todo : spotify 검색 결과가 유효한지 체크하는 로직 재정의 필요
-            logger.debug("검색 결과 사이즈 : {}", spotifySearchResultDtos.size());
-            if (spotifySearchResultDtos.size() > 0) {
-                // a. 스포티파이 검색 결과 -> 커버 이미지 -> DB
-                for (SpotifySearchResultDto data : spotifySearchResultDtos) {
-                    logger.debug("스포티파이 검색 결과 : {}, {}", data.getMusicTitle(),
-                            data.getMusicImage());
-                }
-
-                SpotifySearchResultDto spotifyResult = spotifySearchResultDtos.get(0);
-
-                // b. 유튜브 검색 -> 동영상 ID -> DB
-                YoutubeSearchResultDto youtubeSearchResultDto = youtubeApiService.findVideo(
-                        storyRequestDto.getStoryMusicTitle(),
-                        storyRequestDto.getStoryMusicArtist());
-                logger.debug("유튜브 검색 결과 : {}", youtubeSearchResultDto);
-
-                if (youtubeSearchResultDto == null) {
-                    logger.debug("유튜브 검색 결과가 없습니다.");
-                    throw new RuntimeException("유튜브 검색 결과가 없습니다.");
-                }
-
-                // c. 스포티파이 + 유튜브 검색 성공시 -> DB
-                story = storyRepository.save(
-                        storyBuilderUtil.buildStoryEntity(storyRequestDto));
-                story.setStoryMusicCover(spotifyResult.getMusicImage());
-                story.setStoryMusicYoutubeId(youtubeSearchResultDto.getVideoId());
-                story.setStoryMusicLength(youtubeSearchResultDto.getMusicLength());
-
-            } else {
-                logger.debug("스포티파이 검색 결과가 없습니다.");
-                throw new RuntimeException("스포티파이 검색 결과가 없습니다.");
-            }
-        } catch (Exception e) {
-            logger.debug("서버 예외 발생");
-            throw new RuntimeException("서버 예외 발생");
+        if (youtubeSearchResultDto == null) {
+            logger.debug("유튜브 검색 결과가 없습니다.");
+            throw new RuntimeException("유튜브 검색 결과가 없습니다.");
         }
 
-
+        // b. 유튜브 검색 성공시 -> DB
+        Story story = storyRepository.save(
+                storyBuilderUtil.buildStoryEntity(storyRequestDto));
+        story.setStoryMusicCover(storyRequestDto.getStoryMusicCover());
+        story.setStoryMusicYoutubeId(youtubeSearchResultDto.getVideoId());
+        story.setStoryMusicLength(youtubeSearchResultDto.getMusicLength());
 
         // 2. 사연 데이터, 신청곡 를 카프카로 전송 -> 파이썬 서버에서 valid 체크 후 DB 반영, 인트로 음성 파일 생성, Reaction 음성 파일 생성, Outro 음성 파일 생성
         try {
@@ -136,7 +107,9 @@ public class StoryService {
         Optional<Story> optionalStory = storyRepository.findByUserSeqAndStoryReadedFalseOrStoryReadedNull(
                 userSeq);
 
-        if (optionalStory.isPresent()) throw new EntityExistsException("중복 사연이 존재합니다.");
+        if (optionalStory.isPresent()) {
+            throw new EntityExistsException("중복 사연이 존재합니다.");
+        }
 
     }
 
@@ -156,6 +129,7 @@ public class StoryService {
 
     /**
      * 사연 삭제
+     *
      * @param storySeq
      */
     @Transactional

@@ -10,6 +10,8 @@ import com.musicat.service.StoryService;
 
 import com.musicat.service.YoutubeApiService;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -79,6 +81,9 @@ public class StoryController {
             @RequestBody
             Map<String, Object> map) {
 
+        logger.debug("요청으로 넘어온 신청곡 정보 : {}, 데이터 타입 : {}", map.get("storySong"), map.get("storySong").getClass().getName());
+        HashMap<String, String> storySongMap = (HashMap<String, String>) map.get("storySong");
+
         logger.debug("요청으로 넘어온 값 : {}", map.get("storyContent"));
         logger.debug("요청으로 넘어온 값 타입 확인 : {}", map.get("storyContent").getClass().getName());
         Gson gson = new Gson();
@@ -95,15 +100,16 @@ public class StoryController {
                 .userSeq(longUserSeq)
                 .storyTitle((String) map.get("storyTitle"))
                 .storyContent(jsonStoryContent)
-                .storyMusicTitle((String) map.get("storyMusicTitle"))
-                .storyMusicArtist((String) map.get("storyMusicArtist"))
+                .storyMusicTitle(storySongMap.get("musicTitle"))
+                .storyMusicArtist(storySongMap.get("musicArtist"))
+                .storyMusicCover(storySongMap.get("musicImage"))
                 .build();
 
-        // 이미 신청한 사연이 있음
+//         이미 신청한 사연이 있음
         storyService.isUniqueStory(longUserSeq);
 
 
-        // 사연 등록 비즈니스로직 수행
+//         사연 등록 비즈니스로직 수행
         storyService.insertStory(storyRequestDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
