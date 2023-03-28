@@ -1,13 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import style from "./SongRequest.module.css";
 import { SongList } from "./songList/SongList";
-import {
-  getSongSearch,
-  postSongRequest,
-  Song,
-} from "@/connect/axios/queryHooks/music";
+import { postSongRequest } from "@/connect/axios/queryHooks/music";
 import { SongSearch } from "@/components/common/songSearch/SongSearch";
-
+import { Song } from "@/types/home";
 export const SongRequest = () => {
   const [isFocused, setIsFocused] = useState(false);
   const [requestSong, setRequestSong] = useState<Song>();
@@ -53,7 +49,7 @@ export const SongRequest = () => {
     <>
       <div className={style.songRequest} onFocus={onFocus}>
         <div className={style.songSearch}>
-          <SongSearch setRequestSong={setRequestSong} width={80}/>
+          <SongSearch setRequestSong={setRequestSong} width={80} />
           <button className={style.requestBtn} onClick={onClickReq}>
             20Chur
           </button>
