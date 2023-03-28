@@ -67,11 +67,12 @@ public class TokenProvider implements InitializingBean {
 
         // 토큰 유효 시간
         Date validity = new Date(now + this.tokenValidityInMilliseconds);
+        String editNickname = userNickname + "#" + userSeq.toString();
 
         return Jwts.builder()
                 .setSubject(userSeq.toString())
                 .claim(AUTHORITIES_KEY, authorities) // 권한 정보
-                .claim("userNickname", userNickname)
+                .claim("userNickname", editNickname)
                 .claim("userProfileImage", userProfileImage)
                 .claim("userIsChattingBan", userIsChattingBan)
                 .claim("userIsBan", userIsBan)
@@ -89,10 +90,12 @@ public class TokenProvider implements InitializingBean {
         long now = (new Date()).getTime();
         Date validity = new Date(now + this.tokenValidityInMilliseconds);
 
+        String editNickname = user.getUserNickname() + "#" + String.valueOf(user.getUserSeq());
+
         return Jwts.builder()
                 .setSubject(String.valueOf(user.getUserSeq()))
                 .claim(AUTHORITIES_KEY, authorities) // 권한 정보
-                .claim("userNickname", user.getUserNickname())
+                .claim("userNickname", editNickname)
                 .claim("userProfileImage", user.getUserProfileImage())
                 .claim("userIsChattingBan", user.isUserIsChattingBan())
                 .claim("userIsBan", user.isUserIsBan())
@@ -167,6 +170,7 @@ public class TokenProvider implements InitializingBean {
 
 
         // System.out.println(claims.get(AUTHORITIES_KEY, String.class));
+        System.out.println(claims.get("userNickname", String.class));
 
 
 
