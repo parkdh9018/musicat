@@ -38,8 +38,7 @@ export function storyHook(userSeq: number) {
       } else if (payload.storySong.musicTitle == "") {
         useCustomToast("error", "신청곡을 확인해주세요");
       } else {
-        console.log(payload);
-        // await $.put("/story", payload);
+        await $.post("/story", payload);
         return true;
       }
 

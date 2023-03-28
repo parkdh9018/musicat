@@ -16,6 +16,7 @@ import { userInfoState } from "@/atoms/user.atom";
 import { useEffect, useState } from "react";
 import { storyHook } from "@/connect/axios/queryHooks/story";
 import { useCustomToast } from "@/customHooks/useCustomToast";
+import { LoadingSpinner } from "@/pages/common/loadingSpinner/LoadingSpinner";
 
 export const Story = () => {
   const disable: React.CSSProperties = {
@@ -42,14 +43,13 @@ export const Story = () => {
   const allStory = useRecoilValue(allStorySelector);
 
   const requestStoryEvent = () => {
-    console.log(allStory)
-    // mutate(allStory);
+    mutate(allStory);
   };
 
   return (
     <>
       <div className={style.story}>
-        {isLoading ? "나 로딩중" : "로딩안함"}
+        {/* {isLoading ? "나 로딩중" : "로딩안함"} */}
         <div className={style.group}>
           <span className={style.content_label}>제목</span>
           <Input
@@ -59,8 +59,10 @@ export const Story = () => {
           />
         </div>
         <div className={style.group}>
-          <span className={style.content_label}>신청곡</span>
-          <SongSearch width={40} setRequestSong={setSong} />
+          <span className={style.content_label} style={{ marginRight: "20px" }}>
+            신청곡
+          </span>
+          <SongSearch width={85} setRequestSong={setSong} />
         </div>
         <div className={style.group}>
           <span className={style.content_label}>내용</span>
@@ -73,11 +75,15 @@ export const Story = () => {
         </div>
 
         <div>
-          <Button
-            content="등록하기"
-            style={button ? {} : disable}
-            onClick={requestStoryEvent}
-          />
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            <Button
+              content="등록하기"
+              style={button ? {} : disable}
+              onClick={requestStoryEvent}
+            />
+          )}
         </div>
       </div>
     </>

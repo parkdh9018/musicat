@@ -33,7 +33,7 @@ export const SongList = () => {
         <span className={style.userSongSpan}>
           {song.musicTitle} - {song.musicArtist}
         </span>
-      ) : song.isMusicPlayed ? (
+      ) : song.musicIsPlayed ? (
         <span className={style.playingSongSpan}>
           {song.musicTitle} - {song.musicArtist}
         </span>
