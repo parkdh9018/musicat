@@ -28,6 +28,8 @@ export function loginUser(setUserInfo: SetterOrUpdater<UserInfo>) {
     const payload = Buffer.from(base64Payload, "base64");
     const result = JSON.parse(payload.toString());
 
+    console.log(result);
+
     setUserInfo({
       userSeq: result.sub,
       userRole:

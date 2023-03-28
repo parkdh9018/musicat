@@ -1,7 +1,7 @@
 import { userInfoState } from "@/atoms/user.atom";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { OnairSign } from "./onairSign/onairSign";
 import { Popover } from "./popover/Popover";
 import {
@@ -15,17 +15,9 @@ export const Header = () => {
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const { data: userUnreadMsgNum, isLoading: unreadMsgLoading } =
     getUserUnreadMsgNum();
-  const { isLoading: userConfigLoading } = getUserConfig();
 
-  // 나중에 다시 확인
-  document.addEventListener("visibilitychange", function () {
-    if (document.visibilityState === "visible") {
-      console.log("감지를 했다!!!!");
-      loginUser(setUserInfo);
-    } else {
-      console.log("focous 벗어남");
-    }
-  });
+  //헤더가 아니라 어디선가 받아야 하나?
+  const { isLoading: userConfigLoading } = getUserConfig();
 
   useEffect(() => {
     loginUser(setUserInfo);

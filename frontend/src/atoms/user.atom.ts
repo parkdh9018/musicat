@@ -1,6 +1,6 @@
 import { $ } from "@/connect/axios/setting";
 import { NavigateFunction } from "react-router-dom";
-import { atom, Resetter, useResetRecoilState } from "recoil";
+import { atom, Resetter } from "recoil";
 
 export const userInfoState = atom({
   key: "userInfo",
@@ -20,18 +20,3 @@ export function logoutUser(func: Resetter, navigate: NavigateFunction) {
   });
   console.log("요청 보냈다!!!");
 }
-
-// 나중에 리엑트 쿼리로 대체
-export const userthemeState = atom({
-  key: "userthemeState",
-  default: {
-    darkMode: false,
-    type1: 1,
-    type2: 1,
-    type3: 1,
-  },
-});
-
-// 안 읽은 메세지
-// 츄르의 개수
-// => 리엑트 쿼리로 읽자
