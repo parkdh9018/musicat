@@ -33,8 +33,6 @@ public class StoryService {
     private final ConstantUtil constantUtil;
 
     // Service 정의
-//    private final SpotifyApiService spotifyApiService;
-    private final YoutubeApiService youtubeApiService;
     private final KafkaProducerService kafkaProducerService;
 
     // Repository 정의
@@ -49,36 +47,18 @@ public class StoryService {
     @Transactional
     public void insertStory(StoryRequestDto storyRequestDto) {
 
-        // a. 유튜브 검색 -> 동영상 ID, 음악길이 조회
-        YoutubeSearchResultDto youtubeSearchResultDto = youtubeApiService.findVideo(
-                storyRequestDto.getStoryMusicTitle(),
-                storyRequestDto.getStoryMusicArtist());
-        logger.debug("유튜브 검색 결과 : {}", youtubeSearchResultDto);
-
-        if (youtubeSearchResultDto == null) {
-            logger.debug("유튜브 검색 결과가 없습니다.");
-            throw new RuntimeException("유튜브 검색 결과가 없습니다.");
-        }
-
-        // b. 유튜브 검색 성공시 -> DB
         Story story = storyRepository.save(
                 storyBuilderUtil.buildStoryEntity(storyRequestDto));
-        story.setStoryMusicCover(storyRequestDto.getStoryMusicCover());
-        story.setStoryMusicYoutubeId(youtubeSearchResultDto.getVideoId());
-        story.setStoryMusicLength(youtubeSearchResultDto.getMusicLength());
 
-        // 2. 사연 데이터, 신청곡 를 카프카로 전송 -> 파이썬 서버에서 valid 체크 후 DB 반영, 인트로 음성 파일 생성, Reaction 음성 파일 생성, Outro 음성 파일 생성
+        // 사연 데이터, 신청곡 를 카프카로 전송 -> 파이썬 서버에서 valid 체크 후 DB 반영, 인트로 음성 파일 생성, Reaction 음성 파일 생성, Outro 음성 파일 생성
         try {
             // Todo : Topic과 보낼 데이터 재정의 필요
-            // storySeq, storyContent
-            // storyMusicTitle, storyMusicContent
             kafkaProducerService.send("verifyStory", story.getStoryContent());
             kafkaProducerService.send("musicRequest", story.getStoryMusicTitle());
         } catch (JsonProcessingException e) {
             System.err.println(e.getMessage());
             throw new RuntimeException("카프카 에러");
         }
-
     }
 
 //    /**

@@ -24,4 +24,8 @@ public class StoryRequestDto {
 
     private String storyMusicCover;
 
+    private String videoId;
+
+    private long musicLength;
+
 }

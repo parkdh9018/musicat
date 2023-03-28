@@ -20,6 +20,9 @@ public class StoryBuilderUtil {
                 .storyContent(storyRequestDto.getStoryContent())
                 .storyMusicTitle(storyRequestDto.getStoryMusicTitle())
                 .storyMusicArtist(storyRequestDto.getStoryMusicArtist())
+                .storyMusicCover(storyRequestDto.getStoryMusicCover())
+                .storyMusicYoutubeId(storyRequestDto.getVideoId())
+                .storyMusicLength(storyRequestDto.getMusicLength())
                 .build();
     }
 

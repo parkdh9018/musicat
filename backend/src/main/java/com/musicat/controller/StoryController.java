@@ -38,38 +38,6 @@ public class StoryController {
     // Service 정의
     private final StoryService storyService;
 
-
-    // 테스트1
-    private final YoutubeApiService youtubeApiService;
-    private final SpotifyApiService spotifyApiService;
-
-    @GetMapping("/test/youtube")
-    public ResponseEntity<?> testYoutube() {
-        YoutubeSearchResultDto youtubeSearchResultDto = youtubeApiService.findVideo("디토", "뉴진스");
-
-        String videoId = youtubeSearchResultDto.getVideoId();
-        long musicLength = youtubeSearchResultDto.getMusicLength();
-
-        logger.debug("videoId : {}, musicLength : {}", videoId, musicLength);
-
-        return ResponseEntity.ok(videoId);
-    }
-
-
-    // 테스트2
-    @GetMapping("/test/spotify")
-    public ResponseEntity<?> testSpotify() throws IOException {
-        List<SpotifySearchResultDto> searchSpotifyMusicList = spotifyApiService.searchSpotifyMusicList(
-                "디토");
-
-        for (SpotifySearchResultDto spotifySearchResultDto : searchSpotifyMusicList) {
-            logger.debug("Spotify Music Title : {}", spotifySearchResultDto.getMusicTitle());
-        }
-
-        return ResponseEntity.ok().build();
-    }
-
-
     /**
      * 사연 신청
      *
@@ -81,20 +49,19 @@ public class StoryController {
             @RequestBody
             Map<String, Object> map) {
 
-        logger.debug("요청으로 넘어온 신청곡 정보 : {}, 데이터 타입 : {}", map.get("storySong"), map.get("storySong").getClass().getName());
+        // spotify 검색 결과
         HashMap<String, String> storySongMap = (HashMap<String, String>) map.get("storySong");
+        // youtube 검색 결과
+        HashMap<String, Object> youtubeResultMap = (HashMap<String, Object>) map.get("youtubeResult");
 
-        logger.debug("요청으로 넘어온 값 : {}", map.get("storyContent"));
-        logger.debug("요청으로 넘어온 값 타입 확인 : {}", map.get("storyContent").getClass().getName());
         Gson gson = new Gson();
+        // Object -> Json 타입 변환
         String jsonStoryContent = gson.toJson(map.get("storyContent"));
-        logger.debug("변환 후 : {}", jsonStoryContent);
-        logger.debug("변환 후 타입 : {}", jsonStoryContent.getClass().getName());
 
-        Object objUserSeq = map.get("userSeq");
-        logger.debug("objUserSeq : {}", objUserSeq);
-        long longUserSeq = Long.valueOf(String.valueOf(objUserSeq));
-        logger.debug("longUserSeq : {}", longUserSeq);
+        // Todo : JWT에서 userSeq 꺼내는 로직으로 변경해야함
+        long longUserSeq = Long.parseLong(String.valueOf(map.get("userSeq")));
+        long musicLength = Long.parseLong(String.valueOf(youtubeResultMap.get("musicLength")));
+
 
         StoryRequestDto storyRequestDto = StoryRequestDto.builder()
                 .userSeq(longUserSeq)
@@ -103,13 +70,14 @@ public class StoryController {
                 .storyMusicTitle(storySongMap.get("musicTitle"))
                 .storyMusicArtist(storySongMap.get("musicArtist"))
                 .storyMusicCover(storySongMap.get("musicImage"))
+                .videoId((String) youtubeResultMap.get("videoId"))
+                .musicLength(musicLength)
                 .build();
 
-//         이미 신청한 사연이 있음
+        // 이미 신청한 사연이 있는지 검증
         storyService.isUniqueStory(longUserSeq);
 
-
-//         사연 등록 비즈니스로직 수행
+        // 사연 등록 호출
         storyService.insertStory(storyRequestDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
