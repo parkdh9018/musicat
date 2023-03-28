@@ -4,6 +4,7 @@ package com.musicat.service.user;
 import com.musicat.data.dto.user.*;
 import com.musicat.data.entity.user.MoneyLog;
 import com.musicat.data.entity.user.User;
+import com.musicat.data.repository.AlertRepository;
 import com.musicat.data.repository.AuthorityRepository;
 import com.musicat.data.repository.MoneyLogRepository;
 import com.musicat.data.repository.UserRepository;
@@ -36,6 +37,7 @@ public class UserService {
     private final AuthorityRepository authorityRepository;
     private final UserBuilderUtil userBuilderUtil;
     private final MoneyLogRepository moneyLogRepository;
+    private final AlertRepository alertRepository;
     private final TokenProvider tokenProvider;
     private final ConstantUtil constantUtil;
 
@@ -71,12 +73,9 @@ public class UserService {
     public UserUnreadMessageDto getUserUnreadMessage(String token) {
         UserInfoJwtDto userInfo = tokenProvider.getUserInfo(token);
 
-        // user 정보 획득
-        User user = userRepository
-                .findById(userInfo.getUserSeq())
-                .orElseThrow(() -> new RuntimeException());
+        long userUnreadMessage = alertRepository.countByUserSeqAndAlertIsReadFalse(userInfo.getUserSeq());
 
-        return userBuilderUtil.userToUserUnreadMessageDto(user);
+        return userBuilderUtil.userToUserUnreadMessageDto(userUnreadMessage);
     }
 
     // 회원 설정 조회 (다크모드 + 아이템 3종)

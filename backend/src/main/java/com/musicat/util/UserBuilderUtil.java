@@ -35,9 +35,9 @@ public class UserBuilderUtil {
     /*
     user -> userMoneyDto
      */
-    public UserUnreadMessageDto userToUserUnreadMessageDto(User user) {
+    public UserUnreadMessageDto userToUserUnreadMessageDto(long userUnreadMessage) {
         return UserUnreadMessageDto.builder()
-                .userUnreadMessage(user.getUserUnreadMessage())
+                .userUnreadMessage(userUnreadMessage)
                 .build();
     }
 
