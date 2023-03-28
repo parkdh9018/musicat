@@ -3,8 +3,8 @@ import { v4 as uuidv4 } from "uuid";
 import style from "./SongList.module.css";
 import { Modal } from "@/components/common/modal/Modal";
 import { SongDetailModal } from "./songDetailModal/SongDetailModal";
-import { getSongList, Song } from "@/connect/axios/queryHooks/music";
-import { $ } from "@/connect/axios/setting";
+import { getSongList } from "@/connect/axios/queryHooks/music";
+import { Song } from "@/types/home";
 
 export const SongList = () => {
   const { data: songs } = getSongList();
