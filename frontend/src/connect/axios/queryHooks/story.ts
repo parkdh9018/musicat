@@ -44,9 +44,9 @@ export function isAlreadyReqeustStory(userSeq: number, setButton:React.Dispatch<
     } else {
         $.get(`/story/unique/${userSeq}`).then((data) => {
             // console.log(data)
-            setButton(false);
         }).catch((e:AxiosError) => {
             useCustomToast("error", e.response?.data as string);
+            setButton(false);
         })
     }
 }
