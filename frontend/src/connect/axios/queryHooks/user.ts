@@ -28,15 +28,12 @@ export function loginUser(setUserInfo: SetterOrUpdater<UserInfo>) {
     const payload = Buffer.from(base64Payload, "base64");
     const result = JSON.parse(payload.toString());
 
-    console.log(result);
-    console.log(result.userRole.split("/").length);
-
     setUserInfo({
       userSeq: result.sub,
       userRole:
         result.userRole.split("/").length === 1
           ? result.userRole
-          : "ROLE_ADIMIN",
+          : "ROLE_ADMIN",
       userProfile: result.userProfileImage,
       userNick: result.userNickname,
     });
