@@ -1,5 +1,5 @@
 import style from "./SongDetailModal.module.css";
-import { Song } from "@/connect/axios/queryHooks/music";
+import { Song } from "@/types/home";
 import { $ } from "@/connect/axios/setting";
 
 interface SongDetailModalProps {
