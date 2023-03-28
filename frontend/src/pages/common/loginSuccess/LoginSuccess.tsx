@@ -10,7 +10,11 @@ export const LoginSuccess = () => {
   console.log("토큰 세팅 시작");
   localStorage.setItem("token", token);
   console.log("세팅 완료");
-  window.close();
+
+  if (window.opener) {
+    window.opener.location.reload();
+    window.close();
+  }
 
   return (
     <div style={{ width: "100%", height: "100%" }}>
