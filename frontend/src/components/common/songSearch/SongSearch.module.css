@@ -22,6 +22,10 @@
   border-radius: 40px;
 }
 
+.inputText:focus {
+  outline: 2px solid var(--font-color);
+}
+
 .input_text::-moz-placeholder {
   font-size: 1rem;
   color: var(--fade-font-color);
@@ -57,7 +61,7 @@
 
 /* Links inside the dropdown */
 .dropdown-content a {
-  color: black;
+  color: var(--fade-font-color);
   padding: 12px 16px;
   text-decoration: none;
   display: block;

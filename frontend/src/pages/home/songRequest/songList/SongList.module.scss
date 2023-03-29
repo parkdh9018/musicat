@@ -3,7 +3,6 @@
 .songList {
   display: flex;
   justify-content: space-between;
-
   align-items: flex-start;
   padding-top: 2%;
 }
@@ -12,28 +11,26 @@
   background: none;
   border: none;
   align-items: center;
-  color: white;
+  color: var(--font-color);
 }
 
 .songBtn {
   background: none;
   border: none;
   align-items: center;
-  color: white;
+  color: var(--font-color);
 }
 
 .userSongSpan {
   background: none;
   border: none;
   align-items: center;
-  // color: var(--font-color);
-  color: pink;
+  color: var(--red-color);
 }
 
 .playingSongSpan {
   background: none;
   border: none;
   align-items: center;
-  // color: var(--font-color);
-  color: blue;
+  color: var(--blue-color);
 }

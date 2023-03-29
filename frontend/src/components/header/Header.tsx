@@ -37,7 +37,7 @@ export const Header = () => {
       <div className={style.innerHeader}>
         <div className={style.innerContent} style={{ justifyContent: "start" }}>
           <Link to={"/"}>
-            <img className={style.logo_img} src="/img/logo.png" alt="로고" />
+            <img className={style.logo_img} src="/img/newlogo.png" alt="로고" />
           </Link>
         </div>
         <div className={style.innerContent}>

@@ -1,14 +1,19 @@
 .songRequest {
   padding: 3%;
   min-height: 360px;
+  color: var(--font-color);
 }
 
 .songSearch {
   display: flex;
 }
 
-.songRequestList {
-  color: white;
+.hr {
+  border: 0.5px solid var(--font-color);
+}
+
+.songRequestTxt {
+  color: var(--font-color);
   font-size: 1.3em;
   font-weight: bold;
 }

@@ -5,14 +5,17 @@ import { Modal } from "@/components/common/modal/Modal";
 import { SongDetailModal } from "./songDetailModal/SongDetailModal";
 import { getSongList } from "@/connect/axios/queryHooks/music";
 import { Song } from "@/types/home";
+import { useRecoilValue } from "recoil";
+import { userInfoState } from "@/atoms/user.atom";
 
 export const SongList = () => {
   const { data: songs } = getSongList();
+  const playingMuisicSeq = 1; // 소켓 연결 하고 값 다시 설정하기
   const [selectedSong, setSelectedSong] = useState<Song | null>(null);
-
-  const userSeq = 1;
+  const userInfo = useRecoilValue(userInfoState);
 
   console.log(songs);
+  console.log(userInfo);
 
   const [isSongDetailModalOpen, setIsSongDetailModalOpen] = useState(false);
 
@@ -29,12 +32,12 @@ export const SongList = () => {
 
   const songList: JSX.Element[] = songs.map((song) => (
     <div className={style.songList} key={uuidv4()}>
-      {song.userSeq === userSeq ? (
-        <span className={style.userSongSpan}>
+      {song.musicSeq === playingMuisicSeq ? (
+        <span className={style.playingSongSpan}>
           {song.musicTitle} - {song.musicArtist}
         </span>
-      ) : song.musicIsPlayed ? (
-        <span className={style.playingSongSpan}>
+      ) : song.userSeq == userInfo.userSeq ? (
+        <span className={style.userSongSpan}>
           {song.musicTitle} - {song.musicArtist}
         </span>
       ) : (
