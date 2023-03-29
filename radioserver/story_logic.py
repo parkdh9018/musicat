@@ -39,6 +39,9 @@ async def process_verify_remain_story_data(data):
     user_nickname = database.find_user_nickname(data["user_seq"])
     music_title = data["story_music_title"]
     music_artist = data["story_music_artist"]
+    print(user_nickname)
+    print(music_title)
+    print(music_artist)
     story_cleaned = await my_util.parse_story_content(json.loads(story_content))
     if len(story_cleaned) > 500:
         database.verify_story(story_seq, 0, 1)
