@@ -1,8 +1,10 @@
 import mariadb
+import json
 from shared_env import mariadb_config
 
 def connect_db():
-    conn = mariadb.connect(**mariadb_config)
+    config = json.loads(mariadb_config)
+    conn = mariadb.connect(**config)
     return conn
 
 # 안 읽은 사연 찾기
