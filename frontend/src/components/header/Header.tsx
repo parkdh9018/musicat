@@ -21,6 +21,7 @@ export const Header = () => {
 
   useEffect(() => {
     loginUser(setUserInfo);
+    document.documentElement.setAttribute("color-theme", "dark");
   }, []);
 
   useEffect(() => {
