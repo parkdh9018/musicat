@@ -17,20 +17,10 @@ export const Home = () => {
   return (
     <>
       <Header />
-      <div
-        style={{
-          backgroundImage: "url(/img/pagebackground/theme1.png)",
-          width: "100%",
-        }}
-      >
+      <div>
         <Broadcast />
       </div>
-      <div
-        style={{
-          backgroundImage: "url(/img/pagebackground/theme1.png)",
-          width: "100%",
-        }}
-      >
+      <div>
         <div className={style.home}>
           <div className={style.leftTab}>
             <TapeNav />

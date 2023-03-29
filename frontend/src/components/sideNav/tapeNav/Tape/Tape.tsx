@@ -6,8 +6,8 @@ export const Tape = () => {
   let an: anime.AnimeInstance;
 
   const textWidth = 200;
-  const textContent = "뉴진스 - ditto"
-  const BackGroundImage_src = "/img/tape/background_img_test.png"
+  const textContent = "뉴진스 - ditto";
+  const BackGroundImage_src = "/img/tape/background_img_test.png";
 
   useEffect(() => {
     an = anime({
@@ -24,7 +24,7 @@ export const Tape = () => {
       duration: 6000,
       round: 1, // round the text to integer values
       easing: "linear",
-      loop: true
+      loop: true,
     });
   }, []);
 
@@ -42,11 +42,20 @@ export const Tape = () => {
         <div className={style.songName}>
           <div className={style.text}>{textContent}</div>
         </div>
-        <img className={style.tapeImg + " " + style.fixedRatio} src="/img/tape/tape.png" />
-        <img className={style.gearImg + " " + style.left} src="/img/tape/gear.png"/>
-        <img className={style.gearImg + " " + style.right} src="/img/tape/gear.png"/>
-        <img className={style.fixedRatio} src={BackGroundImage_src}/>
-      </div>     
+        <img
+          className={style.tapeImg + " " + style.fixedRatio}
+          src="/img/tape/tape.png"
+        />
+        <img
+          className={style.gearImg + " " + style.left}
+          src="/img/tape/gear.png"
+        />
+        <img
+          className={style.gearImg + " " + style.right}
+          src="/img/tape/gear.png"
+        />
+        <img className={style.fixedRatio} src={BackGroundImage_src} />
+      </div>
       {/* <button onClick={pauseEvent}>pause</button>
       <button onClick={playEvent}>play</button> */}
     </>

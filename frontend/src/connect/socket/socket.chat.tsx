@@ -5,6 +5,7 @@ interface ChatUserInfo {
   userNick: string;
 }
 
+// 채팅 전송하기
 export function submit(
   stompClient: Stomp.Client,
   userInfo: ChatUserInfo,

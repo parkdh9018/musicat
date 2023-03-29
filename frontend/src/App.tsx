@@ -8,7 +8,10 @@ function App() {
   const element = useRoutes(router);
 
   return (
-    <div className="App">
+    <div
+      className="App"
+      style={{ backgroundImage: `url("/img/pagebackground/theme1.png")` }}
+    >
       {element}
       <ToastContainer />
     </div>
