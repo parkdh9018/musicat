@@ -8,7 +8,7 @@ from my_util import create_mp3_url
 
 
 async def process_music_data(data):
-    music_seq = data["music_seq"]
+    music_seq = int(data["music_seq"])
     print(f'[Music] : GPT 응답 생성중 (musicSeq = {music_seq})')
     user_nickname = database.find_user_nickname(data["user_seq"])
     artist = data["music_artist"]
