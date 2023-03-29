@@ -66,7 +66,7 @@ def find_user_nickname(user_seq):
     conn = connect_db()
     cursor = conn.cursor()
     try:
-        cursor.execute("SELECT user_nickname FROM user WHERE user_seq = ?", (user_seq))
+        cursor.execute("SELECT user_nickname FROM user WHERE user_seq = ?", (user_seq,))
         result = cursor.fetchone()
         if result:
             return result[0]
