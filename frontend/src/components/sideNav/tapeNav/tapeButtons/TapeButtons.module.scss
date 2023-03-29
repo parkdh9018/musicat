@@ -13,11 +13,12 @@
   );
   color: #ffffff;
   height: 70px;
-  width: 80%;
+  width: 90%;
   cursor: pointer;
 }
 
 .clicked {
+  color: #313131;
   display: flex;
   flex-grow: 1;
   font-size: 1em;
@@ -30,6 +31,10 @@
   background-color: #a7a5a8;
 }
 
+.clicked:visited {
+  color: #313131;
+}
+
 .unclicked {
   display: flex;
   flex-grow: 1;
@@ -38,7 +43,11 @@
   align-items: center;
   border: 1px solid #4f5050;
   border-radius: 5%;
-  color: #5f6062;
+  color: #313131;
+}
+
+.unclicked:visited {
+  color: #313131;
 }
 
 .play {
