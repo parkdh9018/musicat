@@ -1,6 +1,7 @@
 .songRequest {
   padding: 3%;
   min-height: 360px;
+  color: var(--font-color);
 }
 
 .songSearch {
@@ -8,7 +9,7 @@
 }
 
 .songRequestTxt {
-  color: white;
+  color: var(--font-color);
   font-size: 1.3em;
   font-weight: bold;
 }
