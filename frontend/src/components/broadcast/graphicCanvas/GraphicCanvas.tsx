@@ -9,6 +9,7 @@ import {
   SpotLight,
 } from "@react-three/drei";
 import { Whirligig } from "./Whirligig";
+import { Cat } from "./Cat";
 
 function Box(props: JSX.IntrinsicElements["mesh"]) {
   // This reference will give us direct access to the THREE.Mesh object
@@ -39,6 +40,7 @@ export const GraphicCanvas = () => {
       <Canvas>
         <ambientLight intensity={0.5} />
         <Whirligig position={[0,-30,-100]} scale={1}/>
+        <Cat/>
         <OrthographicCamera />
         <OrbitControls />
       </Canvas>
