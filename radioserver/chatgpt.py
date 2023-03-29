@@ -11,7 +11,7 @@ def story_reaction_gpt(param):
             {"role": "system", "content": "You are a Korean radio host. Read the story and respond appropriately. Mandatory : within 200 characters, finalize your answer, Skip the process of calling the user by name and skip saying greetings"},
             {"role": "user", "content": f'reaction to this. {param}'}
         ],
-        temperature=0.5
+        temperature=0.35
     )
     return (result.choices[0].message.content.strip())
 
@@ -41,7 +41,7 @@ def music_intro_gpt(artist, title, release_date):
             {"role": "assistant", "content": '이번 곡은 2016년에 발매된 Artist의 Title입니다. 들으면서 함께 기분 좋은 하루 보내시길 바랄게요'},
             {"role": "user", "content": f'Artist : {artist}, Title : {title}, Release Date : {release_date}'}
         ],
-        temperature=0.5
+        temperature=0.3
     )
     return (result.choices[0].message.content.strip())
 
@@ -58,7 +58,7 @@ def music_outro_gpt(artist, title, user):
             {"role": "assistant", "content": '좋은 노래 잘 들었습니다. User님 포인트 보내 드릴테니까, 노래 자주 신청하시면 좋겠습니다.'},
             {"role": "user", "content": f'Artist : {artist}, Title : {title}, User : {user}'}
         ],
-        temperature=0.5
+        temperature=0.3
     )
     return (result.choices[0].message.content.strip())
 
