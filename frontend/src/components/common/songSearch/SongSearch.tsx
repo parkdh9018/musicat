@@ -36,6 +36,7 @@ export const SongSearch = ({ setRequestSong, width }: SongSearchProps) => {
     //   setNoResults(false);
     // }
     setSearch(e.target.value);
+    setNoResults(false);
   };
 
   // 입력 값 스포티파이에서 검색
@@ -73,18 +74,22 @@ export const SongSearch = ({ setRequestSong, width }: SongSearchProps) => {
     // 타입스크립트가 버튼의 값을 string으로 요구해서 변환 과정 필요
     const value = e.currentTarget.value;
     const selectedSong = JSON.parse(value);
+    setSearch(`${selectedSong.musicTitle}_${selectedSong.musicArtist}`);
 
     // 유튜브 검색결과 확인
     const result = await getYoutubeSearch(
       selectedSong.musicTitle,
       selectedSong.musicArtist
     );
-    if (result.data.length > 0) {
-      setSearch(`${selectedSong.musicTitle}_${selectedSong.musicArtist}`);
+
+    if (result.status === 200) {
+      console.log(result.status);
+      console.log(result);
+
       setRequestSong({
         ...selectedSong,
         musicLength: result.data.musicLength,
-        videoId: result.data.videoId,
+        musicYoutubeId: result.data.musicYoutubeId,
       });
       setIsFocused(false);
     } else {
