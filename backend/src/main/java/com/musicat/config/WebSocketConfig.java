@@ -23,7 +23,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws")
-                .setAllowedOrigins("http://127.0.0.1:5173") // 프론트엔드 주소를 허용하도록 설정
+                .setAllowedOriginPatterns("*") // 프론트엔드 주소를 허용하도록 설정
                 .addInterceptors(new HttpSessionIdHandshakeInterceptor())
                 .withSockJS();
     }
