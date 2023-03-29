@@ -8,6 +8,31 @@ import os
 import my_util
 
 async def process_verify_story_data(data):
+    story_seq = int(data["storySeq"])
+    print(f'[Story] : 사연 검증, GPT 응답 생성중 (storySeq = {story_seq})')
+    story_content = data["storyContent"]
+    user_nickname = database.find_user_nickname(data["userSeq"])
+    music_title = data["storyMusicTitle"]
+    music_artist = data["storyMusicArtist"]
+    story_cleaned = await my_util.parse_story_content(json.loads(story_content))
+    if len(story_cleaned) > 500:
+        database.verify_story(story_seq, 0, 1)
+        print(f'[Story] : GPT 응답 생성 실패 - 사연 길이 초과 (storySeq = {story_seq})')
+        return
+    validate_result = chatgpt.validate_story_gpt(story_cleaned)
+    print(validate_result)
+    if 'True' in validate_result or 'true' in validate_result:
+        story_reaction = chatgpt.story_reaction_gpt(story_cleaned)
+        music_introduce = user_nickname + "님의 신청곡은" + music_artist + "의 " + music_title + "입니다."
+        story_outro = chatgpt.music_outro_gpt(music_artist, music_title, user_nickname)
+        database.update_story(story_seq, story_reaction + music_introduce, story_outro)
+        database.verify_story(story_seq, 1, 0)
+        print(f'[Story] : GPT 응답 생성 완료 (storySeq = {story_seq})')
+    else:
+        database.verify_story(story_seq, 0, 1)
+        print(f'[Story] : GPT 응답 생성 실패 - 사연 적합도 낮음 (storySeq = {story_seq})')
+
+async def process_verify_remain_story_data(data):
     story_seq = int(data["story_seq"])
     print(f'[Story] : 사연 검증, GPT 응답 생성중 (storySeq = {story_seq})')
     story_content = data["story_content"]

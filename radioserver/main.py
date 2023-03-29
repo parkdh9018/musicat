@@ -19,10 +19,10 @@ async def set_remain_gpt_reaction():
     remain_music = database.find_null_intro_outro_music()
     if remain_story is not None:
         for story in remain_story:
-            await story_logic.process_verify_story_data(story)
+            await story_logic.process_verify_remain_story_data(story)
     if remain_music is not None:
         for music in remain_music:
-            await music_logic.process_music_data(music)
+            await music_logic.process_remain_music_data(music)
 
 
 @app.on_event("startup")
