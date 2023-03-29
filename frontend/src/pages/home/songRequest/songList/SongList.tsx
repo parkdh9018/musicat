@@ -36,7 +36,7 @@ export const SongList = () => {
         <span className={style.playingSongSpan}>
           {song.musicTitle} - {song.musicArtist}
         </span>
-      ) : song.userSeq === userInfo.userSeq ? (
+      ) : song.userSeq == userInfo.userSeq ? (
         <span className={style.userSongSpan}>
           {song.musicTitle} - {song.musicArtist}
         </span>
