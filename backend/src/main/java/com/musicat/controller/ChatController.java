@@ -23,15 +23,15 @@ public class ChatController {
     private final PerspectiveService perspectiveService;
 
     @MessageMapping("/chat")
-    public void send(MessageDto message, @Header("simpSessionId") String sessionId) { // 프론트로부터 데이터가 넘어옴 -> 브로드캐스트로 전송
+    public void send(MessageDto message /**@Header("simpSessionId") String sessionId**/) { // 프론트로부터 데이터가 넘어옴 -> 브로드캐스트로 전송
 
         boolean filterResult = perspectiveService.filterText(message.getContent());
 
-        logger.debug("채팅 전송!!!! : {}, 받는사람 : {}, 비속어 필터 결과 : {}, 세션 : {}", message, message.getReceiver(), filterResult, sessionId);
+        logger.debug("채팅 전송!!!! : {}, 받는사람 : {}, 비속어 필터 결과 : {}, 세션 : {}", message, message.getReceiver(), filterResult);
 
         if (!filterResult) message.setContent("[클린 채팅]을 사용해 주세요 :)");
-
-        message.setSender(sessionId);
+//
+//        message.setSender(sessionId);
 
         template.convertAndSend("/topic/messages", message); // 전체 전송
 
