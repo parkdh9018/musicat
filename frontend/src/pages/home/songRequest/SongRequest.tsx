@@ -47,7 +47,7 @@ export const SongRequest = () => {
           <SongSearch setRequestSong={setRequestSong} width={90} />
           <Button content="20Chur" onClick={onClickReq} />
         </div>
-        <hr />
+        <hr className={style.hr} />
         <div className={style.songRequestTxt}>신청곡 목록</div>
         <SongList />
       </div>
