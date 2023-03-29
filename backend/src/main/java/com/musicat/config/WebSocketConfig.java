@@ -24,7 +24,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws")
                 .setAllowedOriginPatterns("*") // 프론트엔드 주소를 허용하도록 설정
-                .addInterceptors(new HttpSessionIdHandshakeInterceptor())
+//                .addInterceptors(new HttpSessionIdHandshakeInterceptor())
                 .withSockJS();
     }
 
