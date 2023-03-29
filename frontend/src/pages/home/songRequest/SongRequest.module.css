@@ -8,6 +8,10 @@
   display: flex;
 }
 
+.hr {
+  color: var(--font-color);
+}
+
 .songRequestTxt {
   color: var(--font-color);
   font-size: 1.3em;
