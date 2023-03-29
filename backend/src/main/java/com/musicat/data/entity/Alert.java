@@ -40,4 +40,11 @@ public class Alert {
     @Column(name = "alert_is_read")
     private boolean alertIsRead;
 
+
+    @PrePersist
+    public void prePersist() {
+        this.alertCreatedAt = LocalDateTime.now();
+    }
+
+
 }
