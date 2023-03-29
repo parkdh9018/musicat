@@ -27,6 +27,8 @@ export const Chat = () => {
   };
 
   useEffect(() => {
+    if (!userInfo) return;
+
     stompClient.connect({}, () => {
       console.log("websocket connect");
 
@@ -75,13 +77,19 @@ export const Chat = () => {
           input={message}
           setInput={setMessage}
           style={{ width: "80%" }}
-          onKeyDown={() => submit(stompClient, userInfo, setMessage, message)}
+          onKeyDown={() =>
+            userInfo
+              ? submit(stompClient, userInfo, setMessage, message)
+              : undefined
+          }
         />
         <Button
           content="전 송"
           style={{ marginLeft: "10px" }}
           onClick={() => {
-            submit(stompClient, userInfo, setMessage, message);
+            userInfo
+              ? submit(stompClient, userInfo, setMessage, message)
+              : undefined;
           }}
         />
       </div>
