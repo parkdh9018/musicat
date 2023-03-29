@@ -6,6 +6,7 @@ import com.musicat.service.PerspectiveService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
@@ -22,11 +23,11 @@ public class ChatController {
     private final PerspectiveService perspectiveService;
 
     @MessageMapping("/chat")
-    public void send(MessageDto message) { // 프론트로부터 데이터가 넘어옴 -> 브로드캐스트로 전송
+    public void send(MessageDto message, @Header("simpSessionId") String sessionId) { // 프론트로부터 데이터가 넘어옴 -> 브로드캐스트로 전송
 
         boolean filterResult = perspectiveService.filterText(message.getContent());
 
-        logger.debug("채팅 전송!!!! : {}, 받는사람 : {}, 비속어 필터 결과 : {}", message, message.getReceiver(), filterResult);
+        logger.debug("채팅 전송!!!! : {}, 받는사람 : {}, 비속어 필터 결과 : {}, 세션 : {}", message, message.getReceiver(), filterResult, sessionId);
 
         if (!filterResult) message.setContent("[클린 채팅]을 사용해 주세요 :)");
 

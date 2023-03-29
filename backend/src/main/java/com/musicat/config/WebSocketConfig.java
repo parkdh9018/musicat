@@ -1,5 +1,6 @@
 package com.musicat.config;
 
+import com.musicat.interceptor.HttpSessionIdHandshakeInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -16,13 +17,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void configureMessageBroker(MessageBrokerRegistry config) {
         config.enableSimpleBroker("/topic");
         config.setApplicationDestinationPrefixes("/app");
-        //config.setUserDestinationPrefix("/user"); // 특정 유저에게 메시지 전송
+//        config.setUserDestinationPrefix("/user"); // 특정 유저에게 메시지 전송
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws")
                 .setAllowedOrigins("http://127.0.0.1:5500") // 프론트엔드 주소를 허용하도록 설정
+                .addInterceptors(new HttpSessionIdHandshakeInterceptor())
                 .withSockJS();
     }
 
