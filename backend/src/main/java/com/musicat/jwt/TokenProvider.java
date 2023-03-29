@@ -15,6 +15,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -110,7 +111,11 @@ public class TokenProvider implements InitializingBean {
     2. 클레임에서 사용자 정보 및 권한 정보 추출
     3. 사용자 정보와 권한 정보를 이용해 Authentication 객체를 생성
      */
-    public Authentication getAuthentication(String token) {
+    /*
+
+    기존 코드
+
+        public Authentication getAuthentication(String token) {
 
         // JWT 파싱
         Jws<Claims> parsedJwt = Jwts.parserBuilder()
@@ -135,6 +140,35 @@ public class TokenProvider implements InitializingBean {
 
         return authentication;
     }
+
+     */
+
+    public Authentication getAuthentication(String token) {
+        // 토큰 복호화
+        Jws<Claims> parsedJwt = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token);
+
+        Claims claims = parsedJwt.getBody();
+
+        if (claims.get(AUTHORITIES_KEY) == null) {
+            throw new RuntimeException("권한 정보가 없는 토큰입니다.");
+        }
+
+        // 클레임에서 권한 정보 가져오기
+        Collection<? extends GrantedAuthority> authorities =
+                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split("/"))
+//                Arrays.stream(new String[]{claims.get(AUTHORITIES_KEY).toString()})
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList());
+
+        // UserDetails 객체를 만들어서 Authentication 리턴
+        UserDetails principal = new org.springframework.security.core.userdetails.User(claims.getSubject(), "", authorities);
+
+        return new UsernamePasswordAuthenticationToken(principal, "", authorities);
+    }
+
 
 
     /*

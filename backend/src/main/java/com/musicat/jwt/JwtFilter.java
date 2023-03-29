@@ -27,7 +27,8 @@ JWT 필터
 public class JwtFilter extends GenericFilterBean {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
-    public static final String AUTHORIZATION_HEADER = "Authorization";
+    // public static final String AUTHORIZATION_HEADER = "Authorization";
+    public static final String AUTHORIZATION_HEADER = "token";
     private TokenProvider tokenProvider;
     public JwtFilter(TokenProvider tokenProvider) {
         this.tokenProvider = tokenProvider;
@@ -63,8 +64,16 @@ public class JwtFilter extends GenericFilterBean {
     private String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
 
+        /*
+        기존 설정
+
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
+        }
+        */
+
+        if (StringUtils.hasText(bearerToken)) {
+            return bearerToken;
         }
 
         return null;
