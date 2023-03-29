@@ -3,10 +3,11 @@ import json
 import story_logic
 import chat_logic
 import music_logic
+import radio_progress
 
 kafka_servers = ["host.docker.internal:9092", "host.docker.internal:9093", "host.docker.internal:9094"]
 
-async def consume_finish_state(topic: str, process_finish_state_data):
+async def consume_finish_state(topic: str):
     consumer = AIOKafkaConsumer(
         topic,
         bootstrap_servers=kafka_servers,
@@ -16,7 +17,7 @@ async def consume_finish_state(topic: str, process_finish_state_data):
     try:
         async for msg in consumer:
             print(msg.value)
-            await process_finish_state_data()
+            await radio_progress.radio_progress()
     finally:
         await consumer.stop()
 
