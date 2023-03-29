@@ -8,6 +8,7 @@ import com.google.api.services.youtube.model.VideoListResponse;
 import com.musicat.data.dto.YoutubeSearchResultDto;
 import com.musicat.util.ConvertTime;
 import java.util.Arrays;
+import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -40,24 +41,22 @@ public class YoutubeApiService {
         YoutubeSearchResultDto result = new YoutubeSearchResultDto();
 
         for (SearchResult searchResult : searchResults) {
-            String videoId = searchResult.getId().getVideoId();
+            String musicYoutubeId = searchResult.getId().getVideoId();
             VideoListResponse videoResponse = youtubeApi.videos().list(Arrays.asList("id","statistics","contentDetails"))
-                    .setId(Arrays.asList(videoId))
+                    .setId(Arrays.asList(musicYoutubeId))
                     .execute();
 
             Video video = videoResponse.getItems().get(0);
             BigInteger viewCount = video.getStatistics().getViewCount();
             if (viewCount.compareTo(maxViews) > 0 && viewCount.compareTo(BigInteger.valueOf(100000)) > 0) {
                 maxViews = viewCount;
-                result.setVideoId(videoId);
+                result.setMusicYoutubeId(musicYoutubeId);
                 result.setMusicLength(convertTime.convertDurationToMillis(video.getContentDetails().getDuration()));
             }
         }
         return result;
-    } catch (IOException e) {
-        // Handle the exception as per your requirements
-        e.printStackTrace();
-        return null;
+    } catch (Exception e) {
+        throw new EntityNotFoundException("youtube Video Not Found");
     }
 }
 }

@@ -21,7 +21,7 @@ public class StoryBuilderUtil {
                 .storyMusicTitle(storyRequestDto.getStoryMusicTitle())
                 .storyMusicArtist(storyRequestDto.getStoryMusicArtist())
                 .storyMusicCover(storyRequestDto.getStoryMusicCover())
-                .storyMusicYoutubeId(storyRequestDto.getVideoId())
+                .storyMusicYoutubeId(storyRequestDto.getMusicYoutubeId())
                 .storyMusicLength(storyRequestDto.getMusicLength())
                 .build();
     }

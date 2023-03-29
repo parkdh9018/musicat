@@ -68,7 +68,7 @@ public class StoryController {
                 .storyMusicTitle(storySongMap.get("musicTitle"))
                 .storyMusicArtist(storySongMap.get("musicArtist"))
                 .storyMusicCover(storySongMap.get("musicImage"))
-                .videoId(storySongMap.get("videoId"))
+                .musicYoutubeId(storySongMap.get("musicYoutubeId"))
                 .musicLength(musicLength)
                 .build();
 
