@@ -31,6 +31,8 @@ public class ChatController {
 
         if (!filterResult) message.setContent("[클린 채팅]을 사용해 주세요 :)");
 
+        message.setSender(sessionId);
+
         template.convertAndSend("/topic/messages", message); // 전체 전송
 
 
