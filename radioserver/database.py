@@ -43,7 +43,7 @@ def find_null_intro_outro_music():
         conn.close()
 
 # intro와 outro가 없는 모든 story 찾기
-def find_null_intro_outro_music():
+def find_null_intro_outro_story():
     conn = connect_db()
     cursor = conn.cursor()
     try:
