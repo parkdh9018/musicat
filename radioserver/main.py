@@ -14,7 +14,7 @@ import music_logic
 app = FastAPI()
 
 async def set_remain_gpt_reaction():
-    print("** 서버가 꺼져있을 때 추가된 데이터에 작업 **")
+    print("*** 서버가 꺼져있을 때 추가된 데이터에 작업 ***")
     remain_story = database.find_null_intro_outro_story()
     remain_music = database.find_null_intro_outro_music()
     if remain_story is not None:

@@ -30,7 +30,12 @@ def find_null_intro_outro_music():
     try:
         cursor.execute("SELECT * FROM music WHERE music_intro IS NULL OR music_outro IS NULL")
         results = cursor.fetchall()
-        return results
+        # Get column names
+        column_names = [column[0] for column in cursor.description]
+
+        # Convert list of tuples to a list of dictionaries
+        list_of_dicts = [dict(zip(column_names, row)) for row in results]
+        return list_of_dicts
     except mariadb.Error as e:
         print(f"Error: {e}")
     finally:
@@ -38,13 +43,18 @@ def find_null_intro_outro_music():
         conn.close()
 
 # intro와 outro가 없는 모든 story 찾기
-def find_null_intro_outro_story():
+def find_null_intro_outro_music():
     conn = connect_db()
     cursor = conn.cursor()
     try:
         cursor.execute("SELECT * FROM story WHERE story_reaction IS NULL OR story_outro IS NULL")
         results = cursor.fetchall()
-        return results
+        # Get column names
+        column_names = [column[0] for column in cursor.description]
+
+        # Convert list of tuples to a list of dictionaries
+        list_of_dicts = [dict(zip(column_names, row)) for row in results]
+        return list_of_dicts
     except mariadb.Error as e:
         print(f"Error: {e}")
     finally:
