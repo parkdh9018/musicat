@@ -11,9 +11,13 @@ export const chatListState = atom<ReactElement[]>({
 export function changeChatList(prevChatArr: ReactElement[], newChat: string) {
   // 여기서 newChat에 어떤 CSS를 입히고 badge를 붙인 체팅을 만들지 결정한다.
 
-  let list = [...prevChatArr, <p key={uuidv4()}>{newChat}</p>];
+  const list = [...prevChatArr, <p key={uuidv4()}>{newChat}</p>];
   if (list.length > 30) {
-    list = list.splice(0, 31);
+    const newList = [];
+    for (let i = 1; i < list.length; i++) {
+      newList.push(list[i]);
+    }
+    return newList;
   }
   return list;
 }
