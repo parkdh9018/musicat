@@ -11,6 +11,7 @@ import com.musicat.data.repository.UserRepository;
 import com.musicat.data.repository.item.BackgroundRepository;
 import com.musicat.data.repository.item.BadgeRepository;
 import com.musicat.data.repository.item.ThemeRepository;
+import com.musicat.service.user.UserService;
 import com.musicat.util.ConstantUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,7 @@ import java.util.Set;
 public class CustomUserOAuth2Service extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
+    private final UserService userService;
     private final BackgroundRepository backgroundRepository;
     private final BadgeRepository badgeRepository;
     private final ThemeRepository themeRepository;
@@ -95,6 +97,9 @@ public class CustomUserOAuth2Service extends DefaultOAuth2UserService {
         logger.info("성공");
         logger.info("user , {}", user);
         logger.info("oAuth2User , {}", oAuth2User.getAttributes());
+
+        // 로그인 성공 한 후 출석 체크 츄르 확인
+        userService.attend(user.getUserSeq());
 
         return new PrincipalDetails(user, oAuth2User.getAttributes());
     }

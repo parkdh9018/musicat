@@ -4,10 +4,8 @@ package com.musicat.service.user;
 import com.musicat.data.dto.user.*;
 import com.musicat.data.entity.user.MoneyLog;
 import com.musicat.data.entity.user.User;
-import com.musicat.data.repository.AlertRepository;
-import com.musicat.data.repository.AuthorityRepository;
-import com.musicat.data.repository.MoneyLogRepository;
-import com.musicat.data.repository.UserRepository;
+import com.musicat.data.entity.user.UserAttendance;
+import com.musicat.data.repository.*;
 import com.musicat.jwt.TokenProvider;
 import com.musicat.util.ConstantUtil;
 import com.musicat.util.UserBuilderUtil;
@@ -18,7 +16,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserAttendanceRepository userAttendanceRepository;
     private final AuthorityRepository authorityRepository;
     private final UserBuilderUtil userBuilderUtil;
     private final MoneyLogRepository moneyLogRepository;
@@ -145,6 +146,26 @@ public class UserService {
         return userBuilderUtil.moneyLogToUserMoneyLogDto(moneyLog);
     }
 
+    // 회원 출석 츄르 지급
+    public User attend(Long userSeq) {
+        User user = userRepository.findById(userSeq).orElseThrow();
+        LocalDate today = LocalDate.now();
+        Optional<UserAttendance> existingAttendance = userAttendanceRepository.findByUserAndDate(user, today);
+
+        // 출석이 처음이라면 재화를 주고 출석 내용 저장
+        if (!existingAttendance.isPresent()) {
+            UserAttendance userAttendance = UserAttendance.builder()
+                    .user(user)
+                    .date(today)
+                    .build();
+
+            // 100 츄르 지급
+            user.setUserMoney(user.getUserMoney() + constantUtil.TODAY_MONEY);
+            userAttendanceRepository.save(userAttendance);
+        }
+
+        return user;
+    }
 
 
 

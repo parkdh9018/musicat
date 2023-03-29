@@ -5,6 +5,8 @@ import com.musicat.Oauth.CustomUserOAuth2Service;
 import com.musicat.handler.OAuth2AuthenticationSuccessHandler;
 import com.musicat.jwt.JwtAccessDeniedHandler;
 import com.musicat.jwt.JwtAuthenticationEntryPoint;
+import com.musicat.jwt.JwtSecurityConfig;
+import com.musicat.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 public class SecurityConfig {
 
 
+    private final TokenProvider tokenProvider;
     private final CorsFilter corsFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
@@ -115,6 +118,10 @@ public class SecurityConfig {
                  * "/api/login" -> /api/login 으로 시작하는 모든 요청
                  * "/api/user/**" -> /api/user 으로 시작하고 그 뒤에 어떤 문자열이든 올 수 있는 모든 요청
                  *
+                 * 실험해본 결과 /** 을 해야 모든 요청을 막는다....
+                 *
+                 * .antMatchers의 경로에 없으면 인증을 요구하는 페이지로 리다이렉트
+                 *
                  *  역할 별로 접근 제한 설정
                  * .permitAll() -> 모든 요청 허용
                  * .hasRole(String role) -> 특정 역할을 가진 사용자만 접근
@@ -129,8 +136,17 @@ public class SecurityConfig {
 //                .antMatchers("/api/user/**").permitAll()
 //                .antMatchers("/oauth2/**").permitAll()
 //                .antMatchers("/login**").permitAll()
-//
-//                .antMatchers("/admin/").hasAuthority("ROLE_ADMIN")
+
+//                 .antMatchers("/user/**").hasAuthority("ROLE_USER")
+//                 .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+
+                // 모든 경로에 대한 접근 설정
+//                 .anyRequest().permitAll()
+
+
+                // jwt filter를 적용
+//                .and()
+//                .apply(new JwtSecurityConfig(tokenProvider))
 
 
                 // oauth2 를 이용한 소셜 로그인

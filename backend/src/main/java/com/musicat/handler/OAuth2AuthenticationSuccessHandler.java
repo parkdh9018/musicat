@@ -1,6 +1,7 @@
 package com.musicat.handler;
 
 import com.musicat.jwt.TokenProvider;
+import com.musicat.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -27,6 +28,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     @Autowired
     TokenProvider tokenProvider;
 
+    @Autowired
+    UserService userService;
+
     // 인증이 성공한 경우 호출
     // 인증된 사용자를 대상 URL로 리다이렉트
     @Override
@@ -39,6 +43,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);
             return;
         }
+
+        
+
 
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
