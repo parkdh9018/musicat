@@ -1,23 +1,28 @@
 import asyncio
 import kafka_handler
-from fastapi import FastAPI, BackgroundTasks, File, HTTPException
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
-from collections import deque
-from typing import List
-from shared_state import current_state, chat_readable, radio_health
-import json
+from shared_state import radio_health
+from radio_progress import reset_radio
+import os
+import database
+import opening_logic
 import story_logic
 import music_logic
-import empty_logic
-import os
 
 
 app = FastAPI()
 
-queue = deque(['story', 'chat', 'chat', 'chat', 'music', 'chat', 'chat', 'chat', 'music', 'chat', 'chat', 'chat', 'music'])
-
 async def set_remain_gpt_reaction():
-    print("서버가 꺼져있을 때 추가된 데이터에 작업 (API 비용 떄문에 구현 아직 안함)")
+    print("** 서버가 꺼져있을 때 추가된 데이터에 작업 **")
+    remain_story = database.find_null_intro_outro_story()
+    remain_music = database.find_null_intro_outro_music()
+    if remain_story is not None:
+        for story in remain_story:
+            await story_logic.process_verify_story_data(story)
+    if remain_music is not None:
+        for music in remain_music:
+            await music_logic.process_music_data(music)
 
 
 @app.on_event("startup")
@@ -36,6 +41,7 @@ def read_root():
 @app.get("/switch")
 def switch_radio():
     if radio_health.get_state() is False:
+        reset_radio()
         radio_health.set_state(True)
         return {"health" : "True"}
     else:

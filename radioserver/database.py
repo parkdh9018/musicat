@@ -12,7 +12,7 @@ def find_story():
     conn = connect_db()
     cursor = conn.cursor()
     try:
-        cursor.execute("SELECT * FROM music WHERE story_is_valid = 1 AND story_is_read = 0 ORDER BY story_created_at LIMIT 1")
+        cursor.execute("SELECT * FROM music WHERE story_valid = 1 AND story_readed = 0 ORDER BY story_created_at LIMIT 1")
         story = cursor.fetchone()
     except mariadb.Error as e:
         print(f"Error: {e}")
@@ -29,6 +29,20 @@ def find_null_intro_outro_music():
     cursor = conn.cursor()
     try:
         cursor.execute("SELECT * FROM music WHERE music_intro IS NULL OR music_outro IS NULL")
+        results = cursor.fetchall()
+        return results
+    except mariadb.Error as e:
+        print(f"Error: {e}")
+    finally:
+        cursor.close()
+        conn.close()
+
+# intro와 outro가 없는 모든 story 찾기
+def find_null_intro_outro_story():
+    conn = connect_db()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("SELECT * FROM story WHERE story_reaction IS NULL OR story_outro IS NULL")
         results = cursor.fetchall()
         return results
     except mariadb.Error as e:
@@ -81,6 +95,7 @@ def update_intro_outro(music_seq, music_intro, music_outro):
         cursor.close()
         conn.close()
 
+# story의 intro와 outro 추가하기
 def update_story(story_seq, story_reaction, story_outro):
     conn = connect_db()
     cursor = conn.cursor()
@@ -94,11 +109,11 @@ def update_story(story_seq, story_reaction, story_outro):
         conn.close()
 
 # 사연 검증하기
-def verify_story(story_seq, is_valid):
+def verify_story(story_seq, is_valid, is_readed):
     conn = connect_db()
     cursor = conn.cursor()
     try:
-        cursor.execute("UPDATE music SET story_is_valid = ? WHERE story_seq = ?", (is_valid, story_seq))
+        cursor.execute("UPDATE music SET story_valid = ? and story_readed WHERE story_seq = ?", (is_valid, is_readed, story_seq))
         conn.commit()
     except mariadb.Error as e:
         print(f"Error: {e}")
@@ -112,7 +127,7 @@ def find_song_request():
     conn = connect_db()
     cursor = conn.cursor()
     try:
-        cursor.execute("SELECT * FROM music WHERE music_is_played = 0 ORDER BY music_created_at LIMIT 1")
+        cursor.execute("SELECT * FROM music WHERE music_played = 0 ORDER BY music_created_at LIMIT 1")
         song_request = cursor.fetchone()
     except mariadb.Error as e:
         print(f"Error: {e}")

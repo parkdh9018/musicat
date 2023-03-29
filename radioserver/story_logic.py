@@ -8,49 +8,45 @@ import os
 import my_util
 
 async def process_verify_story_data(data):
-    print("사연 검증 및 GPT 응답 생성중")
     story_seq = data["story_seq"]
+    print(f'[Story] : 사연 검증, GPT 응답 생성중 (storySeq = {story_seq})')
     story_content = data["story_content"]
     user_nickname = database.find_user_nickname(data["user_seq"])
     music_title = data["story_music_title"]
     music_artist = data["story_music_artist"]
     story_cleaned = my_util.parse_story_content(json.loads(story_content))
-    if len(story_cleaned) > 300:
-        database.verify_story(story_seq, 0)
+    if len(story_cleaned) > 500:
+        database.verify_story(story_seq, 0, 1)
+        print(f'[Story] : GPT 응답 생성 실패 - 사연 길이 초과 (storySeq = {story_seq})')
         return
     validate_result = chatgpt.validate_story_gpt(story_cleaned)
 
     if 'True' in validate_result or 'true' in validate_result:
         story_reaction = chatgpt.story_reaction_gpt(story_cleaned)
-        print(story_reaction)
         music_introduce = user_nickname + "님의 신청곡은" + music_artist + "의 " + music_title + "입니다."
         story_outro = chatgpt.music_outro_gpt(music_artist, music_title, user_nickname)
-        print(music_introduce)
         database.update_story(story_seq, story_reaction + music_introduce, story_outro)
-        database.verify_story(story_seq, 1)
+        database.verify_story(story_seq, 1, 0)
+        print(f'[Story] : GPT 응답 생성 완료 (storySeq = {story_seq})')
     else:
-        database.verify_story(story_seq, 0)
+        database.verify_story(story_seq, 0, 1)
+        print(f'[Story] : GPT 응답 생성 실패 - 사연 적합도 낮음 (storySeq = {story_seq})')
 
 async def process_story_state():
     story = database.find_story()
     if not story:
         return None
-    # user_nickname = database.find_user_nickname(story["user_seq"])
+    
+    user_nickname = database.find_user_nickname(story["user_seq"])
 
-    # story_content = story["story_content"]
-    # story_content_list = json.loads(story_content)
+    story_content = story["story_content"]
+    story_content_list = json.loads(story_content)
 
-    # story_reaction = story["story_reaction"]
-    # story_outro = story["story_outro"]
+    story_opening = "이번 사연은 " + user_nickname + " 님이 보내주신 사연입니다."
+    story_reaction = story["story_reaction"]
+    story_outro = story["story_outro"]
 
     tts_path = "./tts/story/"
-
-    # Sample data
-    user_nickname = "라면부엉"
-    story_opening = "이번 사연은 " + user_nickname + " 님이 보내주신 사연입니다."
-    story_content = '[{"speaker":"noyj","content":"첫 텍스트"}, {"speaker":"ngoeun","content":"두 번째 텍스트"}]'
-    story_reaction = "라고 보내주셨습니다. 이건 리액션이에요"
-    story_outro = "이건 아웃트로에요"
 
     # 파일명 지정
     story_opening_filename = os.path.join(tts_path, "story_opening.mp3")
@@ -62,7 +58,7 @@ async def process_story_state():
     await tts.generate_tts_clova(story_reaction, story_reaction_filename, "nihyun")
     await tts.generate_tts_clova(story_outro, story_outro_filename, "nihyun")
 
-    # Sto
+    # Story TTS 생성
     story_tts_list = []
     story_content_list = json.loads(story_content)
     for i in range(len(story_content_list)):
@@ -84,13 +80,17 @@ async def process_story_state():
     intro_length = len(AudioSegment.from_file(merged_intro_tts_filename))
     outro_length = len(AudioSegment.from_file(story_outro_filename))
 
+    intro_url = await my_util.create_mp3_url("story", "intro.mp3")
+    outro_url = await my_util.create_mp3_url("story", "outro.mp3")
+
     playlist = [
-        {"type": "mp3", "path": merged_intro_tts_filename, "length": intro_length},
-        {"type": "youtube", "path": "hello", "length": 190000},
-        {"type": "mp3", "path": story_outro_filename, "length": outro_length}
+        {"type": "mp3", "path": intro_url, "length": intro_length},
+        {"type": "youtube", "path": story["storyMusicYoutubeId"], "length": story["storyMusicLength"]},
+        {"type": "mp3", "path": outro_url, "length": outro_length}
     ]
     data = {
         "state": "story",
+        "object": story,
         "playlist": playlist
     }
     os.remove(story_opening_filename)
@@ -99,9 +99,6 @@ async def process_story_state():
     for story_tts_path in story_tts_list:
         os.remove(story_tts_path)
     return data
-
-
-
 
 async def merge_audio(files, term=2000):
     merged = None

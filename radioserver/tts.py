@@ -6,7 +6,7 @@ import urllib.parse
 import aiohttp
 from shared_env import client_id, client_secret
 
-async def generate_tts_clova(text, name, speaker):
+async def generate_tts_clova(text, path, speaker):
     val = {
         "speaker": speaker,
         "volume": "0",
@@ -25,9 +25,9 @@ async def generate_tts_clova(text, name, speaker):
         async with session.post(url, headers=headers, data=val) as response:
             rescode = response.status
             if rescode == 200:
-                print(f"{name}.mp3 저장")
+                print(f"{path}.mp3 저장")
                 response_body = await response.read()
-                with open(name, 'wb') as f:
+                with open(path, 'wb') as f:
                     f.write(response_body)
             else:
                 print(f"Error Code: {rescode}")
