@@ -123,7 +123,7 @@ def verify_story(story_seq, is_valid, is_readed):
     conn = connect_db()
     cursor = conn.cursor()
     try:
-        cursor.execute("UPDATE music SET story_valid = ? and story_readed = ? WHERE story_seq = ?", (is_valid, is_readed, story_seq))
+        cursor.execute("UPDATE music SET story_valid = ?, story_readed = ? WHERE story_seq = ?", (is_valid, is_readed, story_seq))
         conn.commit()
     except mariadb.Error as e:
         print(f"Error: {e}")
