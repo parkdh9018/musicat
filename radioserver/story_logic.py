@@ -14,7 +14,7 @@ async def process_verify_story_data(data):
     user_nickname = database.find_user_nickname(data["user_seq"])
     music_title = data["story_music_title"]
     music_artist = data["story_music_artist"]
-    story_cleaned = my_util.parse_story_content(json.loads(story_content))
+    story_cleaned = await my_util.parse_story_content(json.loads(story_content))
     if len(story_cleaned) > 500:
         database.verify_story(story_seq, 0, 1)
         print(f'[Story] : GPT 응답 생성 실패 - 사연 길이 초과 (storySeq = {story_seq})')
