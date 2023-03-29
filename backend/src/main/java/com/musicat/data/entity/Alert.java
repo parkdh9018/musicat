@@ -29,7 +29,7 @@ public class Alert {
     @Column(name = "alert_title")
     private String alertTitle;
 
-    @Column(name = "alertContent")
+    @Column(name = "alert_content")
     private String alertContent;
 
     @Column(name = "alert_created_at")
@@ -39,5 +39,12 @@ public class Alert {
 
     @Column(name = "alert_is_read")
     private boolean alertIsRead;
+
+
+    @PrePersist
+    public void prePersist() {
+        this.alertCreatedAt = LocalDateTime.now();
+    }
+
 
 }

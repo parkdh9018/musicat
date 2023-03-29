@@ -7,6 +7,7 @@ import com.musicat.data.entity.user.User;
 import com.musicat.data.entity.user.UserAttendance;
 import com.musicat.data.repository.*;
 import com.musicat.jwt.TokenProvider;
+import com.musicat.service.AlertService;
 import com.musicat.util.ConstantUtil;
 import com.musicat.util.UserBuilderUtil;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserAttendanceRepository userAttendanceRepository;
     private final AuthorityRepository authorityRepository;
+    private final AlertService alertService;
     private final UserBuilderUtil userBuilderUtil;
     private final MoneyLogRepository moneyLogRepository;
     private final AlertRepository alertRepository;
@@ -162,6 +164,9 @@ public class UserService {
             // 100 츄르 지급
             user.setUserMoney(user.getUserMoney() + constantUtil.TODAY_MONEY);
             userAttendanceRepository.save(userAttendance);
+
+            // 알림 저장
+            alertService.insertAlertByAlertType(user.getUserSeq(), "today");
         }
 
         return user;

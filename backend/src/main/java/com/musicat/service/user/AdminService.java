@@ -8,6 +8,7 @@ import com.musicat.data.entity.notice.Notice;
 import com.musicat.data.entity.user.User;
 import com.musicat.data.repository.NoticeRepository;
 import com.musicat.data.repository.UserRepository;
+import com.musicat.service.AlertService;
 import com.musicat.util.ConstantUtil;
 import com.musicat.util.NoticeBuilderUtil;
 import com.musicat.util.UserBuilderUtil;
@@ -31,6 +32,7 @@ public class AdminService {
     private final UserRepository userRepository;
     private final UserBuilderUtil userBuilderUtil;
     private final NoticeRepository noticeRepository;
+    private final AlertService alertService;
     private final NoticeBuilderUtil noticeBuilderUtil;
 
 
@@ -54,6 +56,9 @@ public class AdminService {
         for (Long userSeq : userSeqList) {
             User user = userRepository.findById(userSeq).orElseThrow();
             user.setUserIsChattingBan(true);
+
+            // 채팅 금지 알림
+            alertService.insertAlertByAlertType(userSeq, "chattingBan");
         }
     }
 
@@ -62,6 +67,9 @@ public class AdminService {
         for (Long userSeq : userSeqList) {
             User user = userRepository.findById(userSeq).orElseThrow();
             user.setUserIsChattingBan(false);
+
+            // 채팅 금지 해재 알림
+            alertService.insertAlertByAlertType(userSeq, "notChattingBan");
         }
     }
 
@@ -73,6 +81,9 @@ public class AdminService {
                 user.setUserIsChattingBan(true);
             }
             user.setUserIsBan(true);
+
+            // 활동 금지 알림
+            alertService.insertAlertByAlertType(userSeq, "ban");
         }
     }
 
@@ -81,6 +92,8 @@ public class AdminService {
         for (Long userSeq : userSeqList) {
             User user = userRepository.findById(userSeq).orElseThrow();
             user.setUserIsBan(false);
+
+            alertService.insertAlertByAlertType(userSeq, "notBan");
         }
     }
 
