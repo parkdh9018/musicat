@@ -1,16 +1,45 @@
 .chat_component {
-  min-height: 350px;
-  padding: 40px 3% 0;
+  padding: 10px 3% 1%;
 
-  p {
-    margin-top: 8px;
-    margin-bottom: 8px;
+  .users {
+    font-size: 1.5rem;
+    color: var(--font-color);
+    margin-bottom: 5px;
+    box-shadow: 0px 15px 10px -10px rgba(0, 0, 0, 0.6);
+
+    .user_num {
+      font-size: 1rem;
+      display: inline-block;
+      margin-left: 10px;
+      position: relative;
+      top: -5px;
+    }
   }
 
   .chat_list {
     overflow: auto;
     height: 225px;
     color: var(--font-color);
+
+    p {
+      margin-top: 8px;
+      margin-bottom: 8px;
+    }
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      background-color: var(--font-color);
+    }
+    &::-webkit-scrollbar-button {
+      width: 0;
+      height: 4%;
+    }
   }
 
   .hr {
