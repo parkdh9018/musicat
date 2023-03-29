@@ -9,8 +9,8 @@ import { useTokenData } from "@/customHooks/useTokenData";
 import { submit } from "@/connect/socket/socket.chat";
 
 export const Chat = () => {
-  // const sockJS = new SockJS("https://musicat.kr/api/ws");
-  const sockJS = new SockJS("http://70.12.246.161:9999/ws");
+  const sockJS = new SockJS("https://musicat.kr/api/ws");
+  // const sockJS = new SockJS("http://70.12.246.161:9999/ws");
   const stompClient = Stomp.over(sockJS);
 
   // 채팅 메세지, 출력될 리스트, 나의 정보
