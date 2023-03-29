@@ -11,6 +11,7 @@ def story_reaction_gpt(param):
             {"role": "system", "content": "You are a Korean radio host. Read the story and respond appropriately. Mandatory : within 200 characters, finalize your answer, Skip the process of calling the user by name and skip saying greetings"},
             {"role": "user", "content": f'reaction to this. {param}'}
         ],
+        temperature=0.5
     )
     return (result.choices[0].message.content.strip())
 
@@ -23,6 +24,7 @@ def chat_reaction_gpt(user, message):
 	        {"role" : "Assistant", "content" : "라면부엉님이 DJ님 취미가 뭐에요? 라고 해주셨네요. 저는 음악 감상이 참 좋아요."},
 	        {"role" : "user", "content" : f'User : {user}, Message : {message}'}
         ],
+        temperature=0.5
     )
     return (result.choices[0].message.content.strip())
 
@@ -39,6 +41,7 @@ def music_intro_gpt(artist, title, release_date):
             {"role": "assistant", "content": '이번 곡은 2016년에 발매된 Artist의 Title입니다. 들으면서 함께 기분 좋은 하루 보내시길 바랄게요'},
             {"role": "user", "content": f'Artist : {artist}, Title : {title}, Release Date : {release_date}'}
         ],
+        temperature=0.5
     )
     return (result.choices[0].message.content.strip())
 
@@ -55,6 +58,7 @@ def music_outro_gpt(artist, title, user):
             {"role": "assistant", "content": '좋은 노래 잘 들었습니다. User님 포인트 보내 드릴테니까, 노래 자주 신청하시면 좋겠습니다.'},
             {"role": "user", "content": f'Artist : {artist}, Title : {title}, User : {user}'}
         ],
+        temperature=0.5
     )
     return (result.choices[0].message.content.strip())
 
@@ -64,7 +68,8 @@ def validate_story_gpt(param):
         messages=[
             {"role": "system", "content": "You are a machine that can only say True or False. Returns false if the radio story contains one of the following. {curses, aggressive speech, sexual shame} Returns true if it contains any of the following. {Joy, sadness, tiredness, need support, need encouragement, need empathy, be happy} Answer in less than 5 letters "},
             {"role": "user", "content": f'classify this story : "{param}"'}
-        ]
+        ],
+        temperature=0.1
     )
     return (result.choices[0].message.content.strip())
 
@@ -74,7 +79,8 @@ def validate_chat_gpt(param):
         messages=[
             {"role": "system", "content": "You are a machine that can only say True or False. You return False to chats that contain abusive language and verbal abuse. If not, returns True. Answer in less than 5 letters"},
             {"role": "user", "content": f'If it is a chat that a Korean radio host can answer, it is true. classify this chat : "{param}"'}
-        ]
+        ],
+        temperature=0.1
     )
     return (result.choices[0].message.content.strip())
 
@@ -87,5 +93,6 @@ def empty_story_gpt():
             {"role": "user", "content": '직장 동료들이 저를 신기해 하더라고요. 두 시간 방송하고 나면 진도 빠지고 축 쳐질 법도 한데, 여전히 너무 신나 있대요. 퇴근길에 광대 승천과 콧노래는 기본이잖아요? 저만 그런가요? 어쩌면 라디오하는 내내 여러분이 채워주신 좋은 기운 덕분인지도 모르겠네요. 여러분의 라디오 진행자 뮤직캣입니다.'},
             {"role": "user", "content": '아이가 어떤 잘못을 했을 때 스스로 반성할 수 있도록 일정 시간 혼자만의 장소에 두는 것. 이걸 생각하는 의자, 혹은 타임아웃 훈육법 이라고 한대요. 우리도 보이지 않는 생각하는 의자에 찾아가서 앉게 될 때 종종 있어요. 혼자 자책하기도 하고, 후회하기도 하고요. 거기서 하염없이 앉아있기만 하면 나아지는 게 없어요. 어느 정도까지만 아프고 힘든 다음에는 툭툭 털고 일어날 수 있게 나를 위한 타임아웃이 필요할 겁니다. 저는 여러분의 라디오 진행자 뮤직캣입니다.'}
         ],
+        temperature=0.5
     )
     return (result.choices[0].message.content.strip())
