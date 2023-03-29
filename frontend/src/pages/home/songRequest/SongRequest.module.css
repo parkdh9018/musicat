@@ -9,7 +9,7 @@
 }
 
 .hr {
-  color: var(--font-color);
+  border: var(--font-color);
 }
 
 .songRequestTxt {
