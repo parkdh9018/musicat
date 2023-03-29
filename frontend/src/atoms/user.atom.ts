@@ -5,7 +5,7 @@ import { atom, Resetter } from "recoil";
 export const userInfoState = atom({
   key: "userInfo",
   default: {
-    userSeq: "",
+    userSeq: 0,
     userRole: "",
     userProfile: "",
     userNick: "",
