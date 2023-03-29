@@ -7,7 +7,7 @@ def connect_db():
     conn = mariadb.connect(**config)
     return conn
 
-# 안 읽은 사연 찾기
+# 안 읽은 사연 찾기.
 def find_story():
     conn = connect_db()
     cursor = conn.cursor()
