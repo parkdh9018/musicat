@@ -133,7 +133,7 @@ public class User {
         this.userCreatedAt = LocalDateTime.now();
         this.userMoney = 0;
         this.userWarnCount = 0;
-        this.userIsDarkmode = false;
+        this.userIsDarkmode = true;
         this.userIsChattingBan = false;
         this.userIsBan = false;
         this.userIsUser = false;

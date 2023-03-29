@@ -62,31 +62,79 @@ public class SecurityConfig {
                 // 설정된 로그인 URL로 오는 요청을 감시하며, 유저인증을 처리합니다. 인증 실패 시, AuthenticationFailureHandler를 실행합니다.
                 .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
 
-                // exception handling 할 때 우리가 만든 클래스를 추가
+
+                /**
+                 * 예외 처리를 구성하는 부분
+                 * exception handling 할 때 사용자가 만든 클래스를 추가
+                 */
 //                .exceptionHandling()
+                /** 인증되지 않은 사용자가 보호된 엔드포인트에 액세스하려 할 때 적절할 응답을 반환 */
 //                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                /** 인증된 사용자가 권한이 없는 엔드포인트에 엑세스하려 할 때 적절한 응답을 반환 */
 //                .accessDeniedHandler(jwtAccessDeniedHandler)
 
 
-                // 세션을 사용하지 않기 때문에 STATELESS로 설정
-                //.and()
+
+                /**
+                 * 세션 관리를 구성하는 부분
+                 */
+//                .and()
 //                .sessionManagement()
+
+                /**
+                 * 세션 정책을 설정
+                 * SessionCreationPolicy.STATELESS :
+                 * Spring Security 에게 세션을 생성하거나 사용하지 않도록 지시
+                 * 서버는 클라이언트의 인증 상태를 세션을 통해 추적하지 않음
+                 * 클라이언트는 매 요청마다 인증 정보를 포함해야함
+                 * 일반적으로 이런 경우 JWT 같은 토큰 기반 인증 방식이 사용
+                 *
+                 * 상태를 유지하지 않는(stateless) 서비스나 확장성 있는 애플리케이션에 유용한 전략
+                 */
 //                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
-                // HtppServletRequest을 사용하는 요청들에 대해 접근 제한 설정
+
+
+                /**
+                 * HTTP 요청에 대한 접근 제한을 설정하는 부분
+                 * Spring Security를 사용하여 특정 URL 패턴에 대한 접근을 허용하거나 제한 할 수 있음
+                 */
 //                .and()
+                /** .authorizeHttpRequests() 호출하여 HTTP 요청에 대한 접근 제한 설정 시작  */
 //                .authorizeHttpRequests()
-//                // Preflight 요청은 허용한다는 의미
+
+                /**
+                 * CORS에 사용되는 Preflight 요청을 모두 허용
+                 * Preflight 요청은 본 요청 전에 클라이언트가 서버에 보내는 요청으로,
+                 * 실제 요청이 서버에 의해 허용되는지 확인하는 목적
+                 */
 //                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-//
+
+                /**
+                 * .antMatchers 패턴에 권한 설정
+                 * "/api/login" -> /api/login 으로 시작하는 모든 요청
+                 * "/api/user/**" -> /api/user 으로 시작하고 그 뒤에 어떤 문자열이든 올 수 있는 모든 요청
+                 *
+                 *  역할 별로 접근 제한 설정
+                 * .permitAll() -> 모든 요청 허용
+                 * .hasRole(String role) -> 특정 역할을 가진 사용자만 접근
+                 * .hasAnyRole(String role1, String role2) -> 여러 역할 중 하나를 가진 사용자에게만 접근을 허용하도록 제한
+                 *
+                 * hasRole 과 hasAuthority 의 차이점
+                 * hasRole 역할 기반, hasAuthority 권한 기반
+                 * hasRole 은 ROLE_ 접두사가 추가된다 -> hasRole("ADMIN") 은 ROLE_ADMIN 이 된다.
+                 * hasAuthority 는 접두사가 자동으로 추가되지 않는다 -> hasAuthority("ROLE_ADMIN")
+                 */
 //                .antMatchers("/api/login").permitAll()
 //                .antMatchers("/api/user/**").permitAll()
-//                .antMatchers("/tag/**").permitAll()
 //                .antMatchers("/oauth2/**").permitAll()
 //                .antMatchers("/login**").permitAll()
+//
+//                .antMatchers("/admin/").hasAuthority("ROLE_ADMIN")
+
 
                 // oauth2 를 이용한 소셜 로그인
-                // .and()
+//                .and()
                 .oauth2Login()
                 .userInfoEndpoint()
                 .userService(CustomUserOAuth2Service)
