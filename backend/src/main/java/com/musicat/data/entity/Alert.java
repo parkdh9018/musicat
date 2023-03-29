@@ -29,7 +29,7 @@ public class Alert {
     @Column(name = "alert_title")
     private String alertTitle;
 
-    @Column(name = "alertContent")
+    @Column(name = "alert_content")
     private String alertContent;
 
     @Column(name = "alert_created_at")

@@ -30,4 +30,15 @@ public class AlertBuildUtil {
                 .build();
     }
 
+    /**
+     * 다른 로직에 따른 알림 생성
+     */
+    public Alert alertBuild(long userSeq, String title, String content) {
+        return Alert.builder()
+                .userSeq(userSeq)
+                .alertTitle(title)
+                .alertContent(content)
+                .build();
+    }
+
 }

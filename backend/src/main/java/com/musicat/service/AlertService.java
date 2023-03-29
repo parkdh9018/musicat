@@ -51,7 +51,6 @@ public class AlertService {
                 .build();
 
         alertRepository.save(alert);
-
     }
 
     /**
@@ -65,7 +64,6 @@ public class AlertService {
         Alert alert = alertRepository.findById(alertSeq)
                 .orElseThrow(EntityNotFoundException::new);
         alertRepository.delete(alert);
-
     }
 
     /**
@@ -154,7 +152,67 @@ public class AlertService {
         for (Alert alert : alertList) {
             alert.setAlertIsRead(true);
         }
+    }
+
+
+    /**
+     * 다른 서비스 활동에 따른 알림 저장
+     * 1. 출석 츄르 지급
+     * 2. 채팅 금지
+     * 3. 채팅 금지 해제
+     * 4. 활동 금지
+     * 5. 활동 금지 해재
+     * 6. 신청곡 재생
+     * 7. 사연 당첨
+     */
+
+    // 출석 츄르 지급 알림
+    public void insertAlertByAlertType(long userSeq, String alertType) {
+
+        String title = "";
+        String content = "";
+
+        // 1. 출석 츄르 지급
+        if (alertType.equals("today")) {
+            title = constantUtil.ALERT_TODAY_TITLE;
+            content = constantUtil.ALERT_TODAY_CONTENT;
+        }
+        // 2. 채팅 금지
+        else if (alertType.equals("chattingBan")) {
+            title = constantUtil.ALERT_CHATTING_BAN_TITLE;
+            content = constantUtil.ALERT_CHATTING_BAN_CONTENT;
+        }
+        // 3. 채팅 금지 해재
+        else if (alertType.equals("notChattingBan")) {
+            title = constantUtil.ALERT_NOT_CHATTING_BAN_TITLE;
+            content = constantUtil.ALERT_NOT_CHATTING_BAN_CONTENT;
+        }
+        // 4. 활동 금지
+        else if (alertType.equals("ban")) {
+            title = constantUtil.ALERT_BAN_TITLE;
+            content = constantUtil.ALERT_BAN_CONTENT;
+        }
+        // 5. 활동 금지 해재
+        else if (alertType.equals("notBan")) {
+            title = constantUtil.ALERT_NOT_BAN_TITLE;
+            content = constantUtil.ALERT_NOT_BAN_CONTENT;
+        }
+        // 6. 신청곡 재생
+        else if (alertType.equals("music")) {
+            title = constantUtil.ALERT_MUSIC_TITLE;
+            content = constantUtil.ALERT_MUSIC_CONTENT;
+        }
+        // 7. 사연 당첨
+        else if (alertType.equals("story")) {
+            title = constantUtil.ALERT_STORY_TITLE;
+            content = constantUtil.ALERT_STORY_CONTENT;
+        }
+
+        // type에 따른 alert 저장
+        Alert alert = alertBuildUtil.alertBuild(userSeq, title, content);
+        alertRepository.save(alert);
 
     }
+
 
 }
