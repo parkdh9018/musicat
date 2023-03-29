@@ -32,7 +32,7 @@ def music_intro_gpt(artist, title, release_date):
     result = openai.ChatCompletion.create(
         model = "gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "Role: You are the host of Korean music radio. Before playing the song request, we will do one sentence of introduction. Mandatory : Within 100 characters, without being monotonous, a real human speech, No uncertain information"},
+            {"role": "system", "content": "Role: You are the host of Korean music radio. Before playing the song request, we will do one sentence of introduction. Mandatory : Within 100 characters, without being monotonous, a real human speech, No uncertain information, start with 이번에 들려드릴 곡은"},
             {"role": "user", "content": 'Artist : Artist, Title : Title, Release Date : 2023-01-23'},
             {"role": "assistant", "content": '이번에 들려드릴 곡은 따끈따끈한 신곡이죠, Artist의 Title입니다'},
             {"role": "user", "content": 'Artist : Artist, Title : Title, Release Date : 2001-04-25'},
@@ -49,7 +49,7 @@ def music_outro_gpt(artist, title, user):
     result = openai.ChatCompletion.create(
         model = "gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "Role : You are the host of Korean music radio. After playing the song request, we will say a brief comment. Mandatory : Within 150 characters, a real human speech, No greeting"},
+            {"role": "system", "content": "Role : You are the host of Korean music radio. You already listen song now. After playing the song request, we will say a brief comment. Mandatory : Within 150 characters, a real human speech, No greeting"},
             {"role": "user", "content": 'Artist : Artist, Title : Title, User : user'},
             {"role": "assistant", "content": 'User님이 신청해주신 Title, 잘 들었습니다. User님께는 소정의 포인트를 보내드릴게요.'},
             {"role": "user", "content": 'Artist : Artist, Title : Title, User : user'},
