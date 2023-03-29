@@ -21,7 +21,7 @@ export const SongRequest = () => {
     if (requestSong) {
       // console.log("음악 신청 api 호출!!");
       const req = { ...requestSong, userSeq: 4 }; // 리코일 유저 만들어지면 유저 시퀀스 가져와서 적용하기
-      // console.log(requestSong);
+      // console.log(req);
       const result = await postSongRequest(req);
       // setSearch("");
 
