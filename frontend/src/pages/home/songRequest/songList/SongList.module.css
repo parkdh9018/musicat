@@ -9,26 +9,26 @@
   background: none;
   border: none;
   align-items: center;
-  color: white;
+  color: var(--font-color);
 }
 
 .songBtn {
   background: none;
   border: none;
   align-items: center;
-  color: white;
+  color: var(--font-color);
 }
 
 .userSongSpan {
   background: none;
   border: none;
   align-items: center;
-  color: pink;
+  color: var(--red-color);
 }
 
 .playingSongSpan {
   background: none;
   border: none;
   align-items: center;
-  color: blue;
+  color: var(--blue-color);
 }/*# sourceMappingURL=SongList.module.css.map */
