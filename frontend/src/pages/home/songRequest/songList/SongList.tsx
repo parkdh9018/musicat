@@ -15,6 +15,7 @@ export const SongList = () => {
   const userInfo = useRecoilValue(userInfoState);
 
   console.log(songs);
+  console.log(userInfo);
 
   const [isSongDetailModalOpen, setIsSongDetailModalOpen] = useState(false);
 
