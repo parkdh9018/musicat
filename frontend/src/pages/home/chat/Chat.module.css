@@ -1,1 +1,19 @@
-/*# sourceMappingURL=Chat.module.css.map */
+.chat_component {
+  min-height: 350px;
+  padding: 40px 3% 0;
+}
+.chat_component p {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+.chat_component .chat_list {
+  overflow: auto;
+  height: 225px;
+  color: var(--font-color);
+}
+.chat_component .hr {
+  margin: 15px 0;
+}
+.chat_component .input_area {
+  text-align: center;
+}/*# sourceMappingURL=Chat.module.css.map */
