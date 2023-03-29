@@ -15,6 +15,6 @@ import lombok.ToString;
 @ToString
 public class YoutubeSearchResultDto {
 
-  private String videoId;
+  private String musicYoutubeId;
   private long musicLength;
 }

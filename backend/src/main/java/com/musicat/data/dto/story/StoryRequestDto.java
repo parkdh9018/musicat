@@ -24,7 +24,7 @@ public class StoryRequestDto {
 
     private String storyMusicCover;
 
-    private String videoId;
+    private String musicYoutubeId;
 
     private long musicLength;
 
