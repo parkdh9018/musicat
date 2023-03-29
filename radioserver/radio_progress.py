@@ -7,14 +7,14 @@ queue = deque(['story', 'chat', 'chat', 'chat', 'music', 'chat', 'chat', 'chat',
 
 
 async def radio_progress():
-    print(radio_health.get_state())
-    if (radio_health.get_state()):
+    global queue
+    if radio_health.get_state() is True:
         current_state.set_state(queue.popleft())
         print(f'current state is : {current_state.get_state()}')
 
         queue.append(current_state.get_state())
 
-        if (current_state.get_state() == 'story'):
+        if current_state.get_state() == 'story':
             radio_state = await story_logic.process_story_state()
             if (radio_state != None):
                 await kafka_handler.send_state("radioState", radio_state)
@@ -33,4 +33,6 @@ async def radio_progress():
                 radio_state = await empty_logic.process_empty_music_state()
                 await kafka_handler.send_state("radioState", radio_state)
 
-
+async def reset_radio():
+    global queue
+    queue = deque(['story', 'chat', 'chat', 'chat', 'music', 'chat', 'chat', 'chat', 'music', 'chat', 'chat', 'chat', 'music'])
