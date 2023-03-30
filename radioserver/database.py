@@ -12,7 +12,7 @@ def find_story():
     conn = connect_db()
     cursor = conn.cursor()
     try:
-        cursor.execute("SELECT * FROM music WHERE story_valid = TRUE AND story_readed = FALSE ORDER BY story_created_at LIMIT 1")
+        cursor.execute("SELECT * FROM story WHERE story_valid = TRUE AND story_readed = FALSE ORDER BY story_created_at LIMIT 1")
         story = cursor.fetchone()
         if story:
             column_names = [desc[0] for desc in cursor.description]
