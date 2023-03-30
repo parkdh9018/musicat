@@ -7,24 +7,28 @@ import com.musicat.data.entity.item.Badge;
 import com.musicat.service.KafkaProducerService;
 import com.musicat.service.PerspectiveService;
 import com.musicat.service.RadioService;
+import com.musicat.service.WebSocketUserCounter;
 import com.musicat.service.user.UserService;
 import com.musicat.util.ConstantUtil;
 import com.musicat.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequiredArgsConstructor
 public class ChatController {
 
     private static final String TYPE = "CHAT";
-    private static final String OPERATION = "CHAT";
+    private static final String OPERATION_CHAT = "CHAT";
+//    private static final String OPERATION_COUNT = "COUNT";
     private static final String KAFKA_TOPIC = "chat";
 
     // logger 정의
@@ -42,6 +46,9 @@ public class ChatController {
     private final KafkaProducerService kafkaProducerService;
     private final RadioService radioService;
 
+    // Session 접속 사용자 체크 클래스
+    private final WebSocketUserCounter userCounter;
+
     // Todo : CHAT 상태일 경우만 kafka로 데이터 전송
     @MessageMapping("/chat")
     public void send(MessageDto messageDto,
@@ -49,6 +56,10 @@ public class ChatController {
 
         String currentState = radioService.getCurrentState();
         logger.debug("현재 상태 : {}", currentState);
+
+
+//        int totalSessionCnt = userCounter.getCount();
+        logger.debug("접속자 수는 둑ㄷ구구둑둑두굳구구 : {}", userCounter.getCount());
 
         long userSeq = messageDto.getSenderSeq();
         // 필터링 결과
@@ -66,7 +77,7 @@ public class ChatController {
             messageDto.setBan(true);
             messageDto.setContent("채팅 금지 상태입니다.");
 
-            socketBaseDto = SocketBaseDto.<MessageDto>builder().type(TYPE).operation(OPERATION)
+            socketBaseDto = SocketBaseDto.<MessageDto>builder().type(TYPE).operation(OPERATION_CHAT)
                     .data(messageDto).build();
             // 특정 유저에게만 데이터 전송
             template.convertAndSendToUser(sessionId, "/queue", socketBaseDto,
@@ -83,25 +94,34 @@ public class ChatController {
             messageDto.setBadgeSeq(badge.getBadgeSeq());
 
             // 채팅 상태일 때만 Kafka로 데이터 전송
-//            if (currentState.equals(constantUtil.CHAT_STATE)) {
-//                MessageKafkaDto messageKafkaDto = MessageKafkaDto.builder()
-//                        .userSeq(userSeq)
-//                        .content(messageDto.getContent())
-//                        .build();
-//
-//                try {
-//                    kafkaProducerService.send(KAFKA_TOPIC, messageKafkaDto);
-//                } catch (Exception e) {
-//                    throw new RuntimeException("카프카 관련 에러");
-//                }
-//            }
+            if (currentState.equals(constantUtil.CHAT_STATE)) {
+                logger.debug("채팅 상태임 !!!!!!");
+                MessageKafkaDto messageKafkaDto = MessageKafkaDto.builder()
+                        .userSeq(userSeq)
+                        .content(messageDto.getContent())
+                        .build();
+
+                try {
+                    kafkaProducerService.send(KAFKA_TOPIC, messageKafkaDto);
+                } catch (Exception e) {
+                    throw new RuntimeException("카프카 관련 에러");
+                }
+            }
 
         }
 
-        socketBaseDto = SocketBaseDto.<MessageDto>builder().type(TYPE).operation(OPERATION)
+        socketBaseDto = SocketBaseDto.<MessageDto>builder().type(TYPE).operation(OPERATION_CHAT)
                 .data(messageDto).build();
 
 
         template.convertAndSend("/topic", socketBaseDto); // 전체 전송
+    }
+
+    @GetMapping("/chat/count")
+    @ResponseBody
+    public ResponseEntity<Integer> getConnectionCount() {
+
+        return ResponseEntity.ok(userCounter.getCount());
+
     }
 }
