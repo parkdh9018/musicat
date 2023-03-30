@@ -1,5 +1,6 @@
 from aiokafka import AIOKafkaConsumer, AIOKafkaProducer
 import json
+import datetime
 import story_logic
 import chat_logic
 import music_logic
@@ -69,10 +70,16 @@ async def consume_music(topic: str):
     finally:
         await consumer.stop()
 
+class DateTimeEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime):
+            return obj.isoformat()
+        return super(DateTimeEncoder, self).default(obj)
+
 async def send_state(topic: str, message):
     producer = AIOKafkaProducer(
         bootstrap_servers=kafka_servers,
-        value_serializer=lambda m: json.dumps(m).encode("utf-8")
+        value_serializer=lambda m: json.dumps(m, cls=DateTimeEncoder).encode("utf-8")
     )
     await producer.start()
     try:
