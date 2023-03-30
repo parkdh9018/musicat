@@ -61,18 +61,18 @@ public class ChatController {
                 sessionId);
 
         // Ban 검사
-//        if (userService.isBan(messageDto.getSenderSeq())) {
-//            logger.debug("해당 유저는 Ban 상태임 !!");
-//            messageDto.setBan(true);
-//            messageDto.setContent("채팅 금지 상태입니다.");
-//
-//            socketBaseDto = SocketBaseDto.<MessageDto>builder().type(TYPE).operation(OPERATION)
-//                    .data(messageDto).build();
-//            // 특정 유저에게만 데이터 전송
-//            template.convertAndSendToUser(sessionId, "/queue", socketBaseDto,
-//                    SessionUtil.createHeaders(sessionId));
-//            return;
-//        }
+        if (userService.isBan(messageDto.getSenderSeq())) {
+            logger.debug("해당 유저는 Ban 상태임 !!");
+            messageDto.setBan(true);
+            messageDto.setContent("채팅 금지 상태입니다.");
+
+            socketBaseDto = SocketBaseDto.<MessageDto>builder().type(TYPE).operation(OPERATION)
+                    .data(messageDto).build();
+            // 특정 유저에게만 데이터 전송
+            template.convertAndSendToUser(sessionId, "/queue", socketBaseDto,
+                    SessionUtil.createHeaders(sessionId));
+            return;
+        }
 
         if (!filterResult) { // 더티 채팅 // Todo : userSeq 로 사용자 검색 후 -> DB에 경고 횟수 증가 시키기. 경고 수가 3초과하면 Ban 해버리기
             messageDto.setContent(messageDto.getSender() + " 님 [클린 채팅]을 사용해 주세요 :)");
@@ -100,10 +100,6 @@ public class ChatController {
 
         socketBaseDto = SocketBaseDto.<MessageDto>builder().type(TYPE).operation(OPERATION)
                 .data(messageDto).build();
-
-
-
-
 
 
         template.convertAndSend("/topic", socketBaseDto); // 전체 전송
