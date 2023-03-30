@@ -32,6 +32,8 @@ public class MusicService {
 
     // Service 정의
     private final SpotifyApiService spotifyApiService;
+
+    private final SpotifyApiServiceV2 spotifyApiServiceV2;
     private final YoutubeApiService youtubeApiService;
     private final KafkaProducerService kafkaProducerService;
 
@@ -131,11 +133,7 @@ public class MusicService {
      * @throws Exception
      */
     public List<SpotifySearchResultDto> searchMusic(String querystring)  {
-        try {
-            return spotifyApiService.searchSpotifyMusicList(querystring);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return spotifyApiServiceV2.searchSpotifyMusicList(querystring);
     }
 
     public YoutubeSearchResultDto searchMusicByYoutube(String musicTitle, String musicArtist) {
