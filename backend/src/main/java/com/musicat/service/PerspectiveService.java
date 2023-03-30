@@ -17,6 +17,7 @@ public class PerspectiveService {
     @Value("${perspective.api-key}")
     private String API_KEY;
     private String ENDPOINT;
+    private static final String PREFIX_TEXT = "content: ";
     private static final double FILTER_SCORE = 0.5;
 
     @PostConstruct
@@ -27,7 +28,9 @@ public class PerspectiveService {
     public boolean filterText(String text) {
         try {
             long beforeTime = System.currentTimeMillis();
-            String requestBody = "{\"comment\": {\"text\":\"" + text + "\"}, \"requestedAttributes\": {\"TOXICITY\":{}}}";
+            // bad word filter API 내부적으로 숫자타입을 못받는 문제점 존재. ex) 1텍스트 -> 400 에러 발생함
+            // 헤결하기 위해서 text 앞부분에 String 타입 내용 강제적으로 추가
+            String requestBody = "{\"comment\": {\"text\":\"" + PREFIX_TEXT + text + "\"}, \"requestedAttributes\": {\"TOXICITY\":{}}}";
             String response = sendRequest(requestBody, ENDPOINT);
 
             JSONObject jsonResponse = new JSONObject(response);

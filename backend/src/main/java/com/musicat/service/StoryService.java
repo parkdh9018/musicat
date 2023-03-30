@@ -53,6 +53,9 @@ public class StoryService {
         // 사연 데이터, 신청곡 를 카프카로 전송 -> 파이썬 서버에서 valid 체크 후 DB 반영, 인트로 음성 파일 생성, Reaction 음성 파일 생성, Outro 음성 파일 생성
         try {
             // Todo : Topic과 보낼 데이터 재정의 필요
+            /**
+             * 사연 Seq, 사연 제목, 사연 내용, 사연
+             */
             kafkaProducerService.send("verifyStory", story.getStoryContent());
             kafkaProducerService.send("musicRequest", story.getStoryMusicTitle());
         } catch (JsonProcessingException e) {

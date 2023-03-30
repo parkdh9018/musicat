@@ -7,12 +7,14 @@ import lombok.ToString;
 @ToString
 public class MessageDto {
 
-    private String sender;
+    private long senderSeq; //userSeq
 
-    private String receiver;
+    private String sender; // 보낸사람
 
-    private String content;
+    private long badgeSeq; // 1 2 3 / 욕설일 때: 0
 
+    private String content; // 텍스트 내용
 
+    private boolean isBan; // Ban 여부
 }
 

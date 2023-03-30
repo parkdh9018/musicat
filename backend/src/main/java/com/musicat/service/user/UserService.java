@@ -2,6 +2,7 @@ package com.musicat.service.user;
 
 
 import com.musicat.data.dto.user.*;
+import com.musicat.data.entity.item.Badge;
 import com.musicat.data.entity.user.MoneyLog;
 import com.musicat.data.entity.user.User;
 import com.musicat.data.entity.user.UserAttendance;
@@ -10,6 +11,7 @@ import com.musicat.jwt.TokenProvider;
 import com.musicat.service.AlertService;
 import com.musicat.util.ConstantUtil;
 import com.musicat.util.UserBuilderUtil;
+import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.security.core.Authentication;
@@ -172,7 +174,24 @@ public class UserService {
         return user;
     }
 
+    /**
+     * Ban 조회
+     * @param userSeq
+     * @return
+     */
+    public boolean isBan(long userSeq) {
+        User user = userRepository.findById(userSeq)
+                .orElseThrow(() -> new EntityNotFoundException("회원 정보가 존재하지 않습니다."));
 
+        return user.isUserIsBan();
+    }
+
+    public Badge getBage(long userSeq) {
+        User user = userRepository.findById(userSeq)
+                .orElseThrow(() -> new EntityNotFoundException("회원 정보가 존재하지 않습니다."));
+
+        return user.getBadge();
+    }
 
 
 }
