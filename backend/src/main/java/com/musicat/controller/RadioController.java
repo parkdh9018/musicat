@@ -28,8 +28,8 @@ public class RadioController {
   public void subscribeToRadio(@Header("simpSessionId") String sessionId) {
     CurrentSoundDto currentSound = radioService.getCurrentSound();
     SocketBaseDto<CurrentSoundDto> socketBaseDto = SocketBaseDto.<CurrentSoundDto>builder()
-        .type("radio")
-        .operation(radioService.getCurrentState())
+        .type("RADIO")
+        .operation(radioService.getCurrentState().toUpperCase())
         .data(currentSound)
         .build();
     simpMessagingTemplate.convertAndSendToUser(sessionId, "/queue", socketBaseDto, SessionUtil.createHeaders(sessionId));
