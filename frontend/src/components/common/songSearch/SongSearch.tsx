@@ -42,6 +42,7 @@ export const SongSearch = ({ setRequestSong, width }: SongSearchProps) => {
   // 입력 값 스포티파이에서 검색
   const searchSpotify = async () => {
     const SearchResult = await getSongSearch(search);
+    console.log(SearchResult);
     // 검색 결과가 있는 경우 드랍다운에 들어갈 데이터 설정
     if (SearchResult.data.length > 0) {
       setSearchResults(SearchResult.data);
@@ -65,7 +66,7 @@ export const SongSearch = ({ setRequestSong, width }: SongSearchProps) => {
     }
     // 검색어 입력이 1초이상 없는 경우에만 스포티파이 검색 실행
     if (timeoutId) clearTimeout(timeoutId);
-    setTimeoutId(setTimeout(() => searchSpotify(), 1000));
+    setTimeoutId(setTimeout(() => searchSpotify(), 230));
   };
 
   // 스포티파이 검색 결과중에 신청할 곡을 선택했을 때
@@ -99,16 +100,25 @@ export const SongSearch = ({ setRequestSong, width }: SongSearchProps) => {
 
   // 스포티파이 검색 결과 목록
   const songSearchedList: JSX.Element[] = searchResults.map((searchResult) => (
-    <span key={uuidv4()}>
+    <>
       <button
+        key={uuidv4()}
         className={style.searchReasult}
         onClick={onClickSelectSong}
         value={JSON.stringify(searchResult)}
       >
-        {searchResult.musicTitle}_{searchResult.musicArtist}
+        <img
+          src={searchResult.musicImage}
+          alt="사진"
+          className={style.songImg}
+        />
+        <span>
+          <div className={style.songText}>{searchResult.musicTitle}</div>
+          <div className={style.songText}>{searchResult.musicArtist}</div>
+        </span>
       </button>
-      <hr />
-    </span>
+      <hr className={style.hr} />
+    </>
   ));
 
   return (
