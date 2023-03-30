@@ -4,6 +4,8 @@ import story_logic
 import chat_logic
 import music_logic
 import radio_progress
+from shared_state import radio_health
+import test_logic
 
 kafka_servers = ["host.docker.internal:9092", "host.docker.internal:9093", "host.docker.internal:9094"]
 
@@ -17,7 +19,10 @@ async def consume_finish_state(topic: str):
     try:
         async for msg in consumer:
             print(msg.value)
-            await radio_progress.radio_progress()
+            if radio_health.get_state() is True:
+                await radio_progress.radio_progress()
+            else:
+                await test_logic.radio_progress_test()
     finally:
         await consumer.stop()
 

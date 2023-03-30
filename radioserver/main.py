@@ -9,6 +9,7 @@ import database
 import opening_logic
 import story_logic
 import music_logic
+import test_logic
 
 
 app = FastAPI()
