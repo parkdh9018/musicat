@@ -7,6 +7,7 @@ interface SongDetailModalProps {
 }
 
 export const SongDetailModal = ({ song }: SongDetailModalProps) => {
+  console.log(song);
   if (song === null) {
     return null;
   }
