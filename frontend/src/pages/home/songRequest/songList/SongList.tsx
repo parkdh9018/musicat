@@ -34,14 +34,17 @@ export const SongList = () => {
     <div className={style.songList} key={uuidv4()}>
       {song.musicSeq === playingMuisicSeq ? (
         <span className={style.playingSongSpan}>
+          <img src={song.musicImage} alt="사진" className={style.songImg} />
           {song.musicTitle} - {song.musicArtist}
         </span>
       ) : song.userSeq == userInfo.userSeq ? (
         <span className={style.userSongSpan}>
+          <img src={song.musicImage} alt="사진" className={style.songImg} />
           {song.musicTitle} - {song.musicArtist}
         </span>
       ) : (
         <span className={style.songSpan}>
+          <img src={song.musicImage} alt="사진" className={style.songImg} />
           {song.musicTitle} - {song.musicArtist}
         </span>
       )}
