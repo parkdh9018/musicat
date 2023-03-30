@@ -63,7 +63,6 @@ async def process_music_state():
     ]
     data = {
         "state": "music",
-        "object": music,
         "playlist": playlist
     }
     return data

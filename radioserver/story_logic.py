@@ -120,7 +120,6 @@ async def process_story_state():
     ]
     data = {
         "state": "story",
-        "object": story,
         "playlist": playlist
     }
     os.remove(story_opening_filename)

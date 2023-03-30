@@ -89,7 +89,6 @@ async def process_story_state_test():
     ]
     data = {
         "state": "story",
-        "object": story,
         "playlist": playlist
     }
     os.remove(story_opening_filename)
@@ -118,7 +117,6 @@ async def no_story_data_test():
     ]
     data = {
         "state": "story",
-        "story_seq": 1,
         "playlist": playlist
     }
     return data
@@ -179,7 +177,6 @@ async def process_music_state_test():
     ]
     data = {
         "state": "music",
-        "object": music,
         "playlist": playlist
     }
     return data
@@ -203,7 +200,6 @@ async def no_music_data_test():
     ]
     data = {
         "state": "music",
-        "music_seq": 1,
         "playlist": playlist
     }
     return data
