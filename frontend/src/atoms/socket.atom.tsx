@@ -3,6 +3,7 @@ import { atom, selector, SetRecoilState, useRecoilCallback } from "recoil";
 import { v4 as uuidv4 } from "uuid";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
+import { Chat, chatListState } from "./chat.atom";
 
 interface BaseResponse {
   type: string;
@@ -57,9 +58,10 @@ export const sendData = async (api: string, data: object) => {
 
 
 // 데이터 분류
-const dataClassification = (set: any, res: BaseResponse) => {
+const dataClassification = (set: any, res: BaseResponse):void => {
   switch (res.type) {
     case "CHAT":
+
       console.log("나는 챗")
       set(chatListState,(prev:Chat[]) => [...prev, res.data])
       break;
@@ -71,34 +73,3 @@ const dataClassification = (set: any, res: BaseResponse) => {
       break;
   }
 };
-
-
-
-//////////////////////////////////////////////////////////////////
-interface Chat {
-  senderSeq: number;
-  sender: string;
-  badgeSeq: number;
-  content: string;
-  ban: boolean;
-}
-
-// 채팅 List
-export const chatListState = atom<Chat[]>({
-  key: "socketState",
-  default: [],
-});
-
-// export function changeChatList(prevChatArr: ReactElement[], newChat: string) {
-//   // 여기서 newChat에 어떤 CSS를 입히고 badge를 붙인 체팅을 만들지 결정한다.
-
-//   const list = [...prevChatArr, <p key={uuidv4()}>{newChat}</p>];
-//   if (list.length > 30) {
-//     const newList = [];
-//     for (let i = 1; i < list.length; i++) {
-//       newList.push(list[i]);
-//     }
-//     return newList;
-//   }
-//   return list;
-// }
