@@ -72,7 +72,6 @@ public class SpotifyApiServiceV2 {
         SearchResponse.class,
         query);
 
-    System.out.println(responseEntity);
     List<SpotifySearchResultDto> results = new ArrayList<>();
     for (Track track : responseEntity.getBody().getTracks().getItems()) {
       String imageUrl = null;
