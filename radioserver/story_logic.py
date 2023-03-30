@@ -11,8 +11,7 @@ async def process_verify_story_data(data):
     story_seq = int(data["storySeq"])
     print(f'[Story] : 사연 검증, GPT 응답 생성중 (storySeq = {story_seq})')
     story_content = data["storyContent"]
-    # user_nickname = database.find_user_nickname(data["userSeq"])
-    user_nickname = "제발좀"
+    user_nickname = database.find_user_nickname(data["userSeq"])
     music_title = data["storyMusicTitle"]
     music_artist = data["storyMusicArtist"]
     story_cleaned = await my_util.parse_story_content(json.loads(story_content))
@@ -37,8 +36,7 @@ async def process_verify_remain_story_data(data):
     story_seq = int(data["story_seq"])
     print(f'[Story] : 사연 검증, GPT 응답 생성중 (storySeq = {story_seq})')
     story_content = data["story_content"]
-    # user_nickname = database.find_user_nickname(data["user_seq"])
-    user_nickname = "제발좀"
+    user_nickname = database.find_user_nickname(data["user_seq"])
     music_title = data["story_music_title"]
     music_artist = data["story_music_artist"]
     print(user_nickname)
@@ -67,8 +65,7 @@ async def process_story_state():
     if not story:
         return None
     
-    # user_nickname = database.find_user_nickname(story["user_seq"])
-    user_nickname = "제발좀"
+    user_nickname = database.find_user_nickname(story["user_seq"])
     story_content = story["story_content"]
     story_content_list = json.loads(story_content)
 
