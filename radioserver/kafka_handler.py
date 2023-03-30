@@ -1,6 +1,6 @@
 from aiokafka import AIOKafkaConsumer, AIOKafkaProducer
 import json
-import datetime
+from datetime import datetime
 import story_logic
 import chat_logic
 import music_logic
@@ -72,7 +72,7 @@ async def consume_music(topic: str):
 
 class DateTimeEncoder(json.JSONEncoder):
     def default(self, obj):
-        if isinstance(obj, datetime):
+        if isinstance(obj, datetime.datetime):
             return obj.isoformat()
         return super(DateTimeEncoder, self).default(obj)
 
