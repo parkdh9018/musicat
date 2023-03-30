@@ -16,8 +16,8 @@ export const GraphicCanvas = () => {
   return (
       <Canvas>
         <ambientLight intensity={0.5} />
-        {/* <Whirligig position={[0,-30,-100]} scale={1}/> */}
-        <Cat scale={3} position={[0,-3,0]}/>
+        <Whirligig position={[0,-30,-100]} scale={1}/>
+        {/* <Cat scale={3} position={[0,-3,0]}/> */}
         <OrthographicCamera />
         <OrbitControls />
       </Canvas>
