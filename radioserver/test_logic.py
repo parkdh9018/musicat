@@ -152,7 +152,7 @@ async def process_remain_music_data_test(data):
 async def process_music_state_test():
     music = database.find_oldest_unplayed_music()
     if not music:
-        return no_music_data_test()
+        return await no_music_data_test()
     
     music_intro = music["music_intro"]
     music_outro = music["music_outro"]
