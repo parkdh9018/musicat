@@ -186,8 +186,8 @@ async def process_music_state_test():
 async def no_music_data_test():
     intro = "인트로입니다 이번 노래는 데이터베이스에 데이터가 없어 임의로 생성된 노래입니다"
     outro = "인트로입니다 이번 노래는 데이터베이스에 데이터가 없어 임의로 생성된 노래입니다"
-    generate_tts_test(intro, "./tts/music/intro.mp3")
-    generate_tts_test(outro, "./tts/music/outro.mp3")
+    await generate_tts_test(intro, "./tts/music/intro.mp3")
+    await generate_tts_test(outro, "./tts/music/outro.mp3")
     
     intro_length = len(AudioSegment.from_file("./tts/music/intro.mp3"))
     outro_length = len(AudioSegment.from_file("./tts/music/outro.mp3"))
