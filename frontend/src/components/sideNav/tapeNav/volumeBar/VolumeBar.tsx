@@ -1,6 +1,5 @@
 import { useState } from "react";
 import style from "./VolumeBar.module.css";
-import ReactPlayer from "react-player";
 
 export const VolumeBar = () => {
   const [volume, setVolume] = useState(0.5);
@@ -9,19 +8,8 @@ export const VolumeBar = () => {
   // 그냥 파일 넘겨주는거 받아서 리스트에 넣어서 사용하면 될듯
   // 유튜브는 embed로 ==> <audio> 소스로 이용 방법 고민해보기
 
-  const videoId = "JEJGD9mIYQQ";
-
   return (
     <div className={style.volumeBar}>
-      <ReactPlayer
-        url={`https://www.youtube.com/embed/${videoId}`}
-        controls
-        playing={true}
-        volume={volume}
-        width="1px"
-        height="1px"
-      />
-      ;
       <input
         type="range"
         min={0}
