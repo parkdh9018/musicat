@@ -29,9 +29,16 @@ public class KakaoUserInfo implements OAuth2UserInfo  {
         return "kakao";
     }
 
+
+    // 이메일이 없을 경우 추가
     @Override
     public String getEmail() {
-        return attributesAccount.get("email").toString();
+        if(attributesAccount.containsKey("email")) {
+            return attributesAccount.get("email").toString();
+        }
+        else {
+            return "";
+        }
     }
 
     @Override
