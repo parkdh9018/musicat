@@ -58,7 +58,7 @@ async def process_music_state():
 
     playlist = [
         {"type": "mp3", "path": intro_url, "length": intro_length},
-        {"type": "youtube", "path": music["music_youtube_id"], "length": music["music_youtube_length"]},
+        {"type": "youtube", "path": music["music_youtube_id"], "length": music["music_length"]},
         {"type": "mp3", "path": outro_url, "length": outro_length}
     ]
     data = {
