@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.musicat.data.dto.SpotifySearchResultDto;
 import com.musicat.data.dto.YoutubeSearchResultDto;
 import com.musicat.data.dto.story.StoryInfoDto;
+import com.musicat.data.dto.story.StoryKafkaDto;
 import com.musicat.data.dto.story.StoryRequestDto;
 import com.musicat.data.entity.Story;
 import com.musicat.data.repository.StoryRepository;
@@ -52,12 +53,20 @@ public class StoryService {
 
         // 사연 데이터, 신청곡 를 카프카로 전송 -> 파이썬 서버에서 valid 체크 후 DB 반영, 인트로 음성 파일 생성, Reaction 음성 파일 생성, Outro 음성 파일 생성
         try {
-            // Todo : Topic과 보낼 데이터 재정의 필요
             /**
-             * 사연 Seq, 사연 제목, 사연 내용, 사연
+             * 사연 Seq, 사용자Seq, 사연 제목, 사연 내용
              */
-            kafkaProducerService.send("verifyStory", story.getStoryContent());
-            kafkaProducerService.send("musicRequest", story.getStoryMusicTitle());
+            StoryKafkaDto storyKafkaDto = StoryKafkaDto.builder()
+                    .storySeq(story.getStorySeq())
+                    .userSeq(story.getUserSeq())
+                    .storyTitle(story.getStoryTitle())
+                    .storyContent(story.getStoryContent())
+                    .storyMusicTitle(storyRequestDto.getStoryTitle())
+                    .storyMusicArtist(storyRequestDto.getStoryMusicArtist())
+                    .build();
+
+            kafkaProducerService.send("verifyStory", storyKafkaDto);
+
         } catch (JsonProcessingException e) {
             System.err.println(e.getMessage());
             throw new RuntimeException("카프카 에러");
