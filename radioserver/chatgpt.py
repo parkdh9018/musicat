@@ -6,7 +6,7 @@ openai.api_key = openai_api_key
 
 def story_reaction_gpt(param):
     result = openai.ChatCompletion.create(
-        model = "gpt-3.5-turbo-0301",
+        model = "gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": "You are a Korean radio host. Read the story and respond appropriately. Mandatory : within 200 characters, finalize your answer, Skip the process of calling the user by name and skip saying greetings"},
             {"role": "user", "content": f'reaction to this. {param}'}
@@ -17,7 +17,7 @@ def story_reaction_gpt(param):
 
 def chat_reaction_gpt(user, message):
     result = openai.ChatCompletion.create(
-        model = "gpt-3.5-turbo-0301",
+        model = "gpt-3.5-turbo",
         messages = [
 	        {"role" : "system", "content" : "Role : Respond appropriately to chat as a streamer. Mandatory : within 100 characters, no emoji"},
 	        {"role" : "user", "content" : "User : 라면부엉, Message : DJ님 취미가 뭐에요?"},
@@ -30,7 +30,7 @@ def chat_reaction_gpt(user, message):
 
 def music_intro_gpt(artist, title, release_date):
     result = openai.ChatCompletion.create(
-        model = "gpt-3.5-turbo-0301",
+        model = "gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": "Role: You are the host of Korean music radio. Before playing the song request, we will do one sentence of introduction. Mandatory : Within 100 characters, without being monotonous, a real human speech, No uncertain information, start with 이번에 들려드릴 곡은"},
             {"role": "user", "content": 'Artist : Artist, Title : Title, Release Date : 2023-01-23'},
@@ -47,7 +47,7 @@ def music_intro_gpt(artist, title, release_date):
 
 def music_outro_gpt(artist, title, user):
     result = openai.ChatCompletion.create(
-        model = "gpt-3.5-turbo-0301",
+        model = "gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": "Role : You are the host of Korean music radio. You already listen song now. After playing the song request, we will say a brief comment. Mandatory : Within 150 characters, a real human speech, No greeting"},
             {"role": "user", "content": 'Artist : Artist, Title : Title, User : user'},
@@ -64,7 +64,7 @@ def music_outro_gpt(artist, title, user):
 
 def validate_story_gpt(param):
     result = openai.ChatCompletion.create(
-        model = "gpt-3.5-turbo-0301",
+        model = "gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": "You are a machine that can only say True or False. Returns false if the radio story contains one of the following. {curses, aggressive speech, sexual shame} Returns true if it contains any of the following. {Joy, sadness, tiredness, need support, need encouragement, need empathy, be happy} Answer in less than 5 letters "},
             {"role": "user", "content": f'classify this story : "{param}"'}
@@ -75,7 +75,7 @@ def validate_story_gpt(param):
 
 def validate_chat_gpt(param):
     result = openai.ChatCompletion.create(
-        model = "gpt-3.5-turbo-0301",
+        model = "gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": "You are a machine that can only say True or False. You return False to chats that contain abusive language and verbal abuse. If not, returns True. Answer in less than 5 letters"},
             {"role": "user", "content": f'If it is a chat that a Korean radio host can answer, it is true. classify this chat : "{param}"'}
@@ -86,7 +86,7 @@ def validate_chat_gpt(param):
 
 def empty_story_gpt():
     result = openai.ChatCompletion.create(
-        model = "gpt-3.5-turbo-0301",
+        model = "gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": "Role: You are a Korean radio host. Some examples are given by user. You have to write a radio presentation like the example. Create a different topic than the example. Mandatory: Write in Korean, without greeting, between 100 and 300 characters, in colloquial form, and use a proper mix of 다 and 요 as the ending words, Situation: Radio in progress. "},
             {"role": "user", "content": '영화 마션에서 화성에 홀로 남겨진 주인공 맷 데이먼이 이런 명대사를 남깁니다. 문제가 생기면 해결하고, 그 다음에도 문제가 생기면 또 해결하면 될 뿐이야. 그게 전부고, 그러다보면 살아서 돌아가게 돼 네, 평소에 우린 영화처럼 생존에 위협을 받는 상황도 아닌데 너무 많은 걸 미리 고민하면서 살죠. 혹시 아직까지도 머릿속에 잔 걱정이 한가득이라면요, 맷 데이먼처럼 문제가 생기면 해결하면 된다는 마인드를 가져보는건 어떨까요? 여러분의 라디오 진행자 뮤직캣입니다.'},

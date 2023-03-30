@@ -9,4 +9,4 @@ async def parse_story_content(contents):
     return parsed_story
 
 async def create_mp3_url(state:str, filename:str):
-    return f"{fastapi_url}/{state}/{filename}"
+    return f"{fastapi_url}/tts/{state}/{filename}"
