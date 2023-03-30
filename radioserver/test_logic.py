@@ -36,7 +36,8 @@ async def process_story_state_test():
     story = database.find_story()
     if not story:
         return await no_story_data_test()
-    user_nickname = database.find_user_nickname(story["user_seq"])
+    # user_nickname = database.find_user_nickname(story["user_seq"])
+    user_nickname = "제발요"
 
     story_content = story["story_content"]
     story_content_list = json.loads(story_content)
