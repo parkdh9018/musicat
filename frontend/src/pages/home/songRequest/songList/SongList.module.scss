@@ -8,10 +8,13 @@
 }
 
 .songSpan {
+  display: flex;
+  align-items: center;
   background: none;
   border: none;
   align-items: center;
   color: var(--font-color);
+  flex-grow: 1;
 }
 
 .songBtn {
@@ -33,4 +36,9 @@
   border: none;
   align-items: center;
   color: var(--blue-color);
+}
+
+.songImg {
+  width: 40px;
+  margin-right: 3%;
 }
