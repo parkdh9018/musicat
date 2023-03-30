@@ -5,33 +5,22 @@ import style from "./Chat.module.css";
 import { useTokenData } from "@/customHooks/useTokenData";
 import { submit } from "@/connect/socket/socket.chat";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { changeChatList, chatListState, receivedData, sendData, socketConnection, socketConnectionState } from "@/atoms/socket.atom";
+import { chatListState, sendData, socketConnection } from "@/atoms/socket.atom";
 import SocketManager from "@/connect/socket/socket";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUsers } from "@fortawesome/free-solid-svg-icons";
+import { v4 as uuidv4 } from "uuid";
+import { useCustomToast } from "@/customHooks/useCustomToast";
 
 export const Chat = () => {
   // 싱글톤 웹소켓 객채를 소환
   // const socketManager = SocketManager.getInstance();
   // const stompClient = socketManager.connect();
 
-  // const [connected, setConnected] = useRecoilState(socketConnectionState); 
-  // const connectOrDisconnect = useRecoilState(socketConnection)[1];
-  const data = useRecoilValue(receivedData);
-
   const socket = socketConnection();
-
-  useEffect(() => {
-    if(data) {
-      console.log("받음 : ", data)
-    }
-  },[data]);
-
   useEffect(() => {
     socket();
-  },[])
-
-
+  }, []);
 
   const userInfo = useTokenData();
 
@@ -46,6 +35,34 @@ export const Chat = () => {
       messageBoxRef.current.scrollTop = messageBoxRef.current.scrollHeight;
     }
   };
+
+  // 채팅창을 맨 아래로 유지시킴
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatList]);
+
+  const clickSubmit = () => {
+
+    if (!userInfo?.userNick) {
+      useCustomToast("error", "로그인 해라");
+      return;
+    } 
+
+    sendData("/app/chat", {
+      senderSeq: userInfo?.userSeq,
+      sender: userInfo?.userNick,
+      content: message,
+      badgeSeq: 1,
+      isBan: false,
+    });
+
+    setMessage("");
+  };
+
+  // useEffect(() => {
+  //   if(chatList.length > 0)
+  //     console.log(chatList)
+  // },[chatList])
 
   // useEffect(() => {
   //   if (!userInfo) return;
@@ -79,11 +96,6 @@ export const Chat = () => {
   //   });
   // }, []);
 
-  // 채팅창을 맨 아래로 유지시킴
-  useEffect(() => {
-    scrollToBottom();
-  }, [chatList]);
-
   return (
     <div className={style.chat_component}>
       <div className={style.users}>
@@ -91,9 +103,11 @@ export const Chat = () => {
         <div className={style.user_num}>20</div>
       </div>
       <div className={style.chat_list} ref={messageBoxRef}>
-        {chatList.map((content) => {
-          return content;
-        })}
+        {chatList.map((v) => (
+          <p key={uuidv4()}>
+            {v.sender} : {v.content}
+          </p>
+        ))}
       </div>
       <hr className={style.hr} />
       <div className={style.input_area}>
@@ -101,27 +115,12 @@ export const Chat = () => {
           input={message}
           setInput={setMessage}
           style={{ width: "80%" }}
-          onKeyDown={() => {}
-            // userInfo && stompClient
-            //   ? submit(stompClient, userInfo, setMessage, message)
-            //   : undefined
-          }
+          onKeyDown={clickSubmit}
         />
         <Button
           content="전 송"
           style={{ marginLeft: "10px" }}
-          onClick={() => {
-            sendData({api: "/app/chat", data : { 
-              senderSeq:2,
-              sender: "paff",
-              content: "안녕"
-            
-            }})
-
-            // userInfo && stompClient
-            //   ? submit(stompClient, userInfo, setMessage, message)
-            //   : undefined;
-          }}
+          onClick={clickSubmit}
         />
       </div>
     </div>
