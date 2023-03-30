@@ -12,7 +12,7 @@ def find_story():
     conn = connect_db()
     cursor = conn.cursor()
     try:
-        cursor.execute("SELECT * FROM music WHERE story_valid = 1 AND story_readed = 0 ORDER BY story_created_at LIMIT 1")
+        cursor.execute("SELECT * FROM music WHERE story_valid = TRUE AND story_readed = FALSE ORDER BY story_created_at LIMIT 1")
         story = cursor.fetchone()
         if story:
             column_names = [desc[0] for desc in cursor.description]
@@ -143,7 +143,7 @@ def find_song_request():
     conn = connect_db()
     cursor = conn.cursor()
     try:
-        cursor.execute("SELECT * FROM music WHERE music_played = 0 ORDER BY music_created_at LIMIT 1")
+        cursor.execute("SELECT * FROM music WHERE music_played = FALSE ORDER BY music_created_at LIMIT 1")
         song_request = cursor.fetchone()
         if song_request:
             column_names = [desc[0] for desc in cursor.description]
