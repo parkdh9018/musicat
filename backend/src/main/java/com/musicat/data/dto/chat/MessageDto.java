@@ -1,4 +1,4 @@
-package com.musicat.data.dto;
+package com.musicat.data.dto.chat;
 
 import lombok.Data;
 import lombok.ToString;

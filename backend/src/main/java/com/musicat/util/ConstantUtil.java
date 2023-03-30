@@ -86,6 +86,11 @@ public class ConstantUtil {
     public final String ALERT_STORY_TITLE = "사연 당첨";
     public final String ALERT_STORY_CONTENT = "신청하신 사연이 당첨되었습니다!";
 
-
+    /**
+     * 상태
+     */
+    public final String STORY_STATE = "story";
+    public final String MUSIC_STATE = "music";
+    public final String CHAT_STATE = "chat";
 
 }
