@@ -85,12 +85,11 @@ public class CustomUserOAuth2Service extends DefaultOAuth2UserService {
 
 
 
-
             user = User.builder()
                     .userId(oAuth2UserInfo.getProviderId())
                     .userNickname(oAuth2UserInfo.getNickname())
                     .userProfileImage(oAuth2UserInfo.getProfileImage())
-                    .userEmail(oAuth2UserInfo.getEmail() != null ? oAuth2UserInfo.getEmail() : "") // 이메일이 없을 경우를 추가한 로직
+                    .userEmail(oAuth2UserInfo.getEmail()) // 이메일이 없을 경우를 추가한 로직
                     .userAuthority(Collections.singleton(authority)) // 꼭 DB에 ROLE_USER를 먼저 넣기
                     .background(background)
                     .badge(badge)
