@@ -1,7 +1,7 @@
 .popover {
   position: absolute;
   width: 140px;
-  top: 50px;
+  top: 20px;
   left: -100px;
   z-index: 2;
 }
