@@ -30,6 +30,7 @@ public class RadioService {
   private long length = 0L;
   private long startTime = System.currentTimeMillis();
   private long count = 0L;
+  private long logCount = 0L;
 
   private final KafkaProducerService kafkaProducerService;
 
@@ -97,7 +98,8 @@ public class RadioService {
    */
   @Scheduled(fixedRate = 1000)
   public void checkAndPlayNextItem() {
-    if (count % 5 == 0) {
+    logCount++;
+    if (logCount % 5 == 0) {
       logger.debug("현재 라디오의 상태 : {} | 재생중인 음원 타입 : {} | 재생중인 음원 : {} | 경과 시간 : {} | 음원 길이 : {}",
           currentState, type, path, System.currentTimeMillis() - startTime, length);
     }
