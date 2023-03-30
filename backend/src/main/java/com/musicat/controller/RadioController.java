@@ -1,6 +1,7 @@
 package com.musicat.controller;
 
 import com.musicat.data.dto.CurrentSoundDto;
+import com.musicat.data.dto.SocketBaseDto;
 import com.musicat.service.RadioService;
 import com.musicat.service.StoryService;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +19,14 @@ public class RadioController {
   private final RadioService radioService;
 
   @SubscribeMapping("/topic/music")
-  public CurrentSoundDto subscribeToRadio() {
+  public SocketBaseDto<CurrentSoundDto> subscribeToRadio() {
     CurrentSoundDto currentSound = radioService.getCurrentSound();
     logger.debug("라디오 소켓 연결됨. 현재 재생중인 음원 정보 : {}", currentSound);
-    return currentSound;
+    SocketBaseDto<CurrentSoundDto> socketBaseDto = SocketBaseDto.<CurrentSoundDto>builder()
+        .type("radio")
+        .operation(radioService.getCurrentState())
+        .data(currentSound)
+        .build();
+    return socketBaseDto;
   }
 }

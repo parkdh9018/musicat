@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.musicat.data.dto.CurrentSoundDto;
 import com.musicat.data.dto.PlaylistDto;
+import com.musicat.data.dto.SocketBaseDto;
 import java.util.LinkedList;
 import java.util.Queue;
 import lombok.RequiredArgsConstructor;
@@ -38,8 +39,8 @@ public class RadioService {
   private static final Logger logger = LoggerFactory.getLogger(RadioService.class);
 
   /**
-   * kafka로부터 현재 라디오 상태와 재생할 음원들의 정보를 불러옵니다.
-   * 받아온 데이터는 파싱하고 저장합니다.
+   * kafka로부터 현재 라디오 상태와 재생할 음원들의 정보를 불러옵니다. 받아온 데이터는 파싱하고 저장합니다.
+   *
    * @param message
    */
   @KafkaListener(topics = "radioState", groupId = "local")
@@ -65,6 +66,7 @@ public class RadioService {
 
   /**
    * kafka로부터 받아온 메세지를 파싱하여 라디오 상태에 저장합니다.
+   *
    * @param message
    */
   private void parseJsonMessageAndSetState(String message) {
@@ -92,12 +94,14 @@ public class RadioService {
   }
 
   /**
-   * 1초마다 라디오 상태를 갱신하는 로직입니다.
-   * idle상태가 지속되면 강제로 finishState에 메세지를 보냅니다.
+   * 1초마다 라디오 상태를 갱신하는 로직입니다. idle 상태가 지속되면 강제로 finishState에 메세지를 보냅니다.
    */
   @Scheduled(fixedRate = 1000)
   public void checkAndPlayNextItem() {
-    logger.debug("현재 라디오의 상태 : {} | 재생중인 음원 타입 : {} | 재생중인 음원 : {} | 경과 시간 : {} | 음원 길이 : {}", currentState, type, path, System.currentTimeMillis() - startTime, length);
+    if (count % 5 == 0) {
+      logger.debug("현재 라디오의 상태 : {} | 재생중인 음원 타입 : {} | 재생중인 음원 : {} | 경과 시간 : {} | 음원 길이 : {}",
+          currentState, type, path, System.currentTimeMillis() - startTime, length);
+    }
     if (currentState.equals("idle")) {
       idleTimer();
     } else {
@@ -113,12 +117,18 @@ public class RadioService {
     if (checkSoundChange()) {
       CurrentSoundDto currentSound = getCurrentSound();
       currentSound.setPlayedTime(0L);
-      simpMessagingTemplate.convertAndSend("/topic/sound", currentSound);
+      SocketBaseDto<CurrentSoundDto> socketBaseDto = SocketBaseDto.<CurrentSoundDto>builder()
+          .type("radio")
+          .operation(currentState)
+          .data(currentSound)
+          .build();
+      simpMessagingTemplate.convertAndSend("/topic/sound", socketBaseDto);
     }
   }
 
   /**
    * 음원이 바뀌어야하는지 확인하는 로직입니다.
+   *
    * @return
    */
   public boolean checkSoundChange() {
@@ -144,8 +154,7 @@ public class RadioService {
   }
 
   /**
-   * idle 상태가 얼마나 지속되었는지 체크하는 로직입니다.
-   * 30초 이상 idle 상태가 지속된다면 라디오 서버에 강제로 finishState 이벤트를 보냅니다.
+   * idle 상태가 얼마나 지속되었는지 체크하는 로직입니다. 30초 이상 idle 상태가 지속된다면 라디오 서버에 강제로 finishState 이벤트를 보냅니다.
    */
   public void idleTimer() {
     if (count == 30) {
@@ -163,6 +172,7 @@ public class RadioService {
 
   /**
    * 현재 재생해야 하는 Sound를 반환하는 로직입니다.
+   *
    * @return
    */
   public CurrentSoundDto getCurrentSound() {
@@ -179,6 +189,7 @@ public class RadioService {
 
   /**
    * 현재 상태를 반환하는 로직입니다.
+   *
    * @return
    */
   public String getCurrentState() {
