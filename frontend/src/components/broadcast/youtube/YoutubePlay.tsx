@@ -1,7 +1,11 @@
 import ReactPlayer from "react-player";
+import { volumeState } from "@/atoms/song.atom";
+import { useRecoilValue } from "recoil";
 
 export const YoutubePlay = () => {
-  const videoId = "JEJGD9mIYQQ";
+  const volume = useRecoilValue(volumeState);
+  const videoId = "A1tZgPAcpjE";
+
   return (
     <div>
       YoutubePlay
@@ -9,7 +13,7 @@ export const YoutubePlay = () => {
         url={`https://www.youtube.com/embed/${videoId}`}
         controls
         playing={true}
-        // volume={volume} 리코일로 받아오기
+        volume={volume}
         width="1px"
         height="1px"
       />
