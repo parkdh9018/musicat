@@ -14,14 +14,16 @@ def find_story():
     try:
         cursor.execute("SELECT * FROM music WHERE story_valid = 1 AND story_readed = 0 ORDER BY story_created_at LIMIT 1")
         story = cursor.fetchone()
+        if story:
+            column_names = [desc[0] for desc in cursor.description]
+            return dict(zip(column_names, story))
+        else:
+            return None
     except mariadb.Error as e:
         print(f"Error: {e}")
-        story = None
     finally:
         cursor.close()
         conn.close()
-
-    return story
 
 # intro와 outro가 없는 모든 music 찾기
 def find_null_intro_outro_music():
@@ -85,7 +87,11 @@ def find_oldest_unplayed_music():
     try:
         cursor.execute("SELECT * FROM music WHERE music_played = false AND music_intro IS NOT NULL AND music_outro IS NOT NULL ORDER BY music_seq LIMIT 1")
         result = cursor.fetchone()
-        return result
+        if result:
+            column_names = [desc[0] for desc in cursor.description]
+            return dict(zip(column_names, result))
+        else:
+            return None
     except mariadb.Error as e:
         print(f"Error: {e}")
     finally:
@@ -139,14 +145,16 @@ def find_song_request():
     try:
         cursor.execute("SELECT * FROM music WHERE music_played = 0 ORDER BY music_created_at LIMIT 1")
         song_request = cursor.fetchone()
+        if song_request:
+            column_names = [desc[0] for desc in cursor.description]
+            return dict(zip(column_names, song_request))
+        else:
+            return None
     except mariadb.Error as e:
         print(f"Error: {e}")
-        song_request = None
     finally:
         cursor.close()
         conn.close()
-
-    return song_request
 
 # 기본곡 찾아오기
 def find_basic_song():
@@ -155,11 +163,13 @@ def find_basic_song():
     try:
         cursor.execute("SELECT * FROM my_music ORDER BY music_played_at LIMIT 1")
         basic_song = cursor.fetchone()
+        if basic_song:
+            column_names = [desc[0] for desc in cursor.description]
+            return dict(zip(column_names, basic_song))
+        else:
+            return None
     except mariadb.Error as e:
         print(f"Error: {e}")
-        basic_song = None
     finally:
         cursor.close()
         conn.close()
-
-    return basic_song
