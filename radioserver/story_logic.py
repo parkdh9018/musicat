@@ -17,7 +17,7 @@ async def process_verify_story_data(data):
     music_artist = data["storyMusicArtist"]
     story_cleaned = await my_util.parse_story_content(json.loads(story_content))
     if len(story_cleaned) > 500:
-        database.verify_story(story_seq, False, True)
+        database.verify_story(story_seq, 0, 1)
         print(f'[Story] : GPT 응답 생성 실패 - 사연 길이 초과 (storySeq = {story_seq})')
         return
     validate_result = chatgpt.validate_story_gpt(story_cleaned)
@@ -27,10 +27,10 @@ async def process_verify_story_data(data):
         music_introduce = user_nickname + "님의 신청곡은" + music_artist + "의 " + music_title + "입니다."
         story_outro = chatgpt.music_outro_gpt(music_artist, music_title, user_nickname)
         database.update_story(story_seq, story_reaction + music_introduce, story_outro)
-        database.verify_story(story_seq, True, False)
+        database.verify_story(story_seq, 1, 0)
         print(f'[Story] : GPT 응답 생성 완료 (storySeq = {story_seq})')
     else:
-        database.verify_story(story_seq, False, True)
+        database.verify_story(story_seq, 0, 1)
         print(f'[Story] : GPT 응답 생성 실패 - 사연 적합도 낮음 (storySeq = {story_seq})')
 
 async def process_verify_remain_story_data(data):
@@ -46,7 +46,7 @@ async def process_verify_remain_story_data(data):
     print(music_artist)
     story_cleaned = await my_util.parse_story_content(json.loads(story_content))
     if len(story_cleaned) > 500:
-        database.verify_story(story_seq, False, True)
+        database.verify_story(story_seq, 0, 1)
         print(f'[Story] : GPT 응답 생성 실패 - 사연 길이 초과 (storySeq = {story_seq})')
         return
     validate_result = chatgpt.validate_story_gpt(story_cleaned)
@@ -56,10 +56,10 @@ async def process_verify_remain_story_data(data):
         music_introduce = user_nickname + "님의 신청곡은" + music_artist + "의 " + music_title + "입니다."
         story_outro = chatgpt.music_outro_gpt(music_artist, music_title, user_nickname)
         database.update_story(story_seq, story_reaction + music_introduce, story_outro)
-        database.verify_story(story_seq, True, False)
+        database.verify_story(story_seq, 1, 0)
         print(f'[Story] : GPT 응답 생성 완료 (storySeq = {story_seq})')
     else:
-        database.verify_story(story_seq, False, True)
+        database.verify_story(story_seq, 0, 1)
         print(f'[Story] : GPT 응답 생성 실패 - 사연 적합도 낮음 (storySeq = {story_seq})')
 
 async def process_story_state():
