@@ -220,7 +220,7 @@ async def process_music_state_test():
     outro_length = len(AudioSegment.from_file(music_outro_filename))
 
     intro_url = await my_util.create_mp3_url("music", "intro.mp3")
-    outro_url = await my_util.create_mp3_url("music", "outro_mp3")
+    outro_url = await my_util.create_mp3_url("music", "outro.mp3")
 
     playlist = [
         {"type": "mp3", "path": intro_url, "length": intro_length},
