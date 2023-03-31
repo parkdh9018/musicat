@@ -20,19 +20,19 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name="background")
+@Table(name = "background")
 public class Background {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "background_seq")
-    private long backgroundSeq;
-    @Column(name = "background_name")
-    private String backgroundName;
-    @Column(name = "bacoground_cost")
-    private int backgroundCost;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "background_seq")
+  private long backgroundSeq;
+  @Column(name = "background_name")
+  private String backgroundName;
+  @Column(name = "bacoground_cost")
+  private int backgroundCost;
 
-    @OneToMany(mappedBy = "background", cascade = CascadeType.ALL)
-    private List<User> userList = new ArrayList<>();
+  @OneToMany(mappedBy = "background", cascade = CascadeType.ALL)
+  private List<User> userList = new ArrayList<>();
 
 }

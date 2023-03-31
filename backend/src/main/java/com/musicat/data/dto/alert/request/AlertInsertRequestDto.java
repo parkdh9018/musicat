@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AlertInsertRequestDto {
 
-    private long userSeq;
+  private long userSeq;
 
-    private String alertTitle;
+  private String alertTitle;
 
-    private String alertContent;
+  private String alertContent;
 }

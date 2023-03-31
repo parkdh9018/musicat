@@ -25,16 +25,16 @@ import java.util.List;
 @Table(name = "badge")
 public class Badge {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "badge_seq")
-    private long badgeSeq;
-    @Column(name = "badge_name")
-    private String badgeName;
-    @Column(name = "badge_cost")
-    private int badgeCost;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "badge_seq")
+  private long badgeSeq;
+  @Column(name = "badge_name")
+  private String badgeName;
+  @Column(name = "badge_cost")
+  private int badgeCost;
 
-    @OneToMany(mappedBy = "badge", cascade = CascadeType.ALL)
-    private List<User> userList = new ArrayList<>();
+  @OneToMany(mappedBy = "badge", cascade = CascadeType.ALL)
+  private List<User> userList = new ArrayList<>();
 
 }

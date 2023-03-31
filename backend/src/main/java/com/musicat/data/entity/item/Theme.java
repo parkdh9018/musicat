@@ -19,18 +19,18 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name="theme")
+@Table(name = "theme")
 public class Theme {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "theme_seq")
-    private long themeSeq;
-    @Column(name = "theme_name")
-    private String themeName;
-    @Column(name = "theme_cost")
-    private int themeCost;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "theme_seq")
+  private long themeSeq;
+  @Column(name = "theme_name")
+  private String themeName;
+  @Column(name = "theme_cost")
+  private int themeCost;
 
-    @OneToMany(mappedBy = "theme", cascade = CascadeType.ALL)
-    private List<User> userList = new ArrayList<>();
+  @OneToMany(mappedBy = "theme", cascade = CascadeType.ALL)
+  private List<User> userList = new ArrayList<>();
 }

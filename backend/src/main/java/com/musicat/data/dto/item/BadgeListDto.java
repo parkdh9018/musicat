@@ -9,7 +9,8 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class BadgeListDto {
-    private long badgeSeq;
-    private String badgeName;
-    private int badgeCost;
+
+  private long badgeSeq;
+  private String badgeName;
+  private int badgeCost;
 }

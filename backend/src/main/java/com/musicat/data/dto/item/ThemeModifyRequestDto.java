@@ -10,6 +10,6 @@ import lombok.*;
 @Builder
 public class ThemeModifyRequestDto {
 
-    private long themeSeq;
+  private long themeSeq;
 
 }

@@ -7,7 +7,7 @@ import lombok.Data;
 @Builder
 public class MessageKafkaDto {
 
-    private long userSeq; // 사용자
+  private long userSeq; // 사용자
 
-    private String content; // 텍스트 내용
+  private String content; // 텍스트 내용
 }

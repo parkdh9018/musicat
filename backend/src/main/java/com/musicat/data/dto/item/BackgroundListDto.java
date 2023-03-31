@@ -9,7 +9,8 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class BackgroundListDto {
-    private long backgroundSeq;
-    private String backgroundName;
-    private int backgroundCost;
+
+  private long backgroundSeq;
+  private String backgroundName;
+  private int backgroundCost;
 }

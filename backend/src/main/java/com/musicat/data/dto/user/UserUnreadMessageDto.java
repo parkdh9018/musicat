@@ -9,5 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class UserUnreadMessageDto {
-    private long userUnreadMessage;
+
+  private long userUnreadMessage;
 }
