@@ -106,7 +106,7 @@ async def process_story_state_test():
 
     playlist = [
         {"type": "mp3", "path": intro_url, "length": intro_length},
-        {"type": "youtube", "path": story["story_music_youtube_id"], "length": story["story_music_length"]},
+        {"type": "youtube", "path": f'https://www.youtube.com/embed/{story["music_youtube_id"]}', "length": story["story_music_length"]},
         {"type": "mp3", "path": outro_url, "length": outro_length}
     ]
     data = {
@@ -140,7 +140,7 @@ async def no_story_data_test():
 
     playlist = [
         {"type": "mp3", "path": intro_url, "length": intro_length},
-        {"type": "youtube", "path": "A1tZgPAcpjE", "length": "202000"},
+        {"type": "youtube", "path": "https://www.youtube.com/embed/A1tZgPAcpjE", "length": "202000"},
         {"type": "mp3", "path": outro_url, "length": outro_length}
     ]
     data = {
@@ -221,7 +221,7 @@ async def process_music_state_test():
 
     playlist = [
         {"type": "mp3", "path": intro_url, "length": intro_length},
-        {"type": "youtube", "path": music["music_youtube_id"], "length": music["music_length"]},
+        {"type": "youtube", "path": f'https://www.youtube.com/embed/{music["music_youtube_id"]}', "length": music["music_length"]},
         {"type": "mp3", "path": outro_url, "length": outro_length}
     ]
     data = {
@@ -251,7 +251,7 @@ async def no_music_data_test():
 
     playlist = [
         {"type": "mp3", "path": intro_url, "length": intro_length},
-        {"type": "youtube", "path": "A1tZgPAcpjE", "length": "202000"},
+        {"type": "youtube", "path": "https://www.youtube.com/embed/A1tZgPAcpjE", "length": "202000"},
         {"type": "mp3", "path": outro_url, "length": outro_length}
     ]
     data = {
@@ -278,8 +278,7 @@ async def radio_progress_test():
         radio_state = await process_story_state_test()
         await kafka_handler.send_state("radioState", radio_state)
     elif current_state.get_state() == 'chat':
-        # chat_readable.set_state(True)
-        print("chat now")
+        print("일단 ㅇㅋ")
     elif current_state.get_state() == 'music':
         radio_state = await process_music_state_test()
         await kafka_handler.send_state("radioState", radio_state)

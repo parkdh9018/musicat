@@ -24,7 +24,6 @@ async def consume_finish_state(topic: str):
     await consumer.start()
     try:
         async for msg in consumer:
-            print(msg.value)
             if radio_health.get_state() is True:
                 await radio_progress.radio_progress()
             else:
@@ -43,7 +42,6 @@ async def consume_verify_story(topic: str):
     await consumer.start()
     try:
         async for msg in consumer:
-            print(msg.value)
             await logic_story.process_verify_story_data(msg.value)
     finally:
         await consumer.stop()
@@ -59,7 +57,6 @@ async def consume_chat(topic: str):
     await consumer.start()
     try:
         async for msg in consumer:
-            print(msg.value)
             await logic_chat.process_chat_data(msg.value)
     finally:
         await consumer.stop()
@@ -75,7 +72,6 @@ async def consume_music(topic: str):
     await consumer.start()
     try:
         async for msg in consumer:
-            print(msg.value)
             await logic_music.process_music_data(msg.value)
     finally:
         await consumer.stop()

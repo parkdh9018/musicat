@@ -1,5 +1,7 @@
 import logging
 
+##############################################
+
 def setup_logger(name: str = "uvicorn"):
     logger = logging.getLogger(name)
     
@@ -12,3 +14,5 @@ def setup_logger(name: str = "uvicorn"):
     handler.setFormatter(formatter)
     logger.addHandler(handler)
     return logger.getChild("my_logger")
+
+##############################################
