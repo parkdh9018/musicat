@@ -109,7 +109,7 @@ async def process_story_state_test():
 
     playlist = [
         {"type": "mp3", "path": intro_url, "length": intro_length},
-        {"type": "youtube", "path": f'https://www.youtube.com/embed/{story["story_music_youtube_id"]}', "length": story["story_music_length"]},
+        {"type": "youtube", "path": f'https://www.youtube.com/embed/{story["story_music_youtube_id"]}', "length": 20000},
         {"type": "mp3", "path": outro_url, "length": outro_length}
     ]
     data = {
@@ -143,7 +143,7 @@ async def no_story_data_test():
 
     playlist = [
         {"type": "mp3", "path": intro_url, "length": intro_length},
-        {"type": "youtube", "path": "https://www.youtube.com/embed/A1tZgPAcpjE", "length": "20000"},
+        {"type": "youtube", "path": "https://www.youtube.com/embed/A1tZgPAcpjE", "length": 20000},
         {"type": "mp3", "path": outro_url, "length": outro_length}
     ]
     data = {
@@ -224,7 +224,7 @@ async def process_music_state_test():
 
     playlist = [
         {"type": "mp3", "path": intro_url, "length": intro_length},
-        {"type": "youtube", "path": f'https://www.youtube.com/embed/{music["music_youtube_id"]}', "length": music["music_length"]},
+        {"type": "youtube", "path": f'https://www.youtube.com/embed/{music["music_youtube_id"]}', "length": 20000},
         {"type": "mp3", "path": outro_url, "length": outro_length}
     ]
     data = {
@@ -254,7 +254,7 @@ async def no_music_data_test():
 
     playlist = [
         {"type": "mp3", "path": intro_url, "length": intro_length},
-        {"type": "youtube", "path": "https://www.youtube.com/embed/A1tZgPAcpjE", "length": "20000"},
+        {"type": "youtube", "path": "https://www.youtube.com/embed/A1tZgPAcpjE", "length": 20000},
         {"type": "mp3", "path": outro_url, "length": outro_length}
     ]
     data = {
@@ -305,6 +305,8 @@ async def process_chat_data(data):
                 chat_reaction = user_nickname + "님 " + chat_cleaned + "이라고 해주셨어요."
                 chat_reaction = chat_reaction + api_chatgpt.chat_reaction_gpt(chat_cleaned)
                 chat_tts_filename = f"chat{count}.mp3"
+
+                logger.info(chat_reaction)
                 count = count + 1
                 os.path.join(tts_path, chat_tts_filename)
                 generate_tts_test(chat_reaction, chat_tts_filename)
