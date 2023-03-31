@@ -306,14 +306,13 @@ async def process_chat_data(data):
             if 'True' in validate_result or 'true' in validate_result:
                 user_nickname = database.find_user_nickname(int(data["userSeq"]))
                 chat_reaction = api_chatgpt.chat_reaction_gpt(user_nickname, chat_cleaned)
-                chat_tts_filename = f"chat{count}.mp3"
-                tts_path = "./tts/chat"
                 logger.info(chat_reaction)
+                current_count = count
                 count = count + 1
-                tts_filepath = os.path.join(tts_path, chat_tts_filename)
-                await generate_tts_test(chat_reaction, chat_tts_filename)
-                mp3path = await my_util.create_mp3_url("chat", tts_filepath)
-                chat_length = len(AudioSegment.from_file(tts_filepath))
+                tts_path = f'./tts/chat/{current_count}.mp3'
+                await generate_tts_test(chat_reaction, tts_path)
+                mp3path = await my_util.create_mp3_url("chat", f'{current_count}.mp3')
+                chat_length = len(AudioSegment.from_file(tts_path))
                 playlist = [
                     {"type": "mp3", "path" : mp3path, "length" : chat_length}
                     ]
