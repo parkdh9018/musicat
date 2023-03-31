@@ -307,15 +307,15 @@ async def process_chat_data(data):
                 user_nickname = database.find_user_nickname(int(data["userSeq"]))
                 chat_reaction = api_chatgpt.chat_reaction_gpt(user_nickname, chat_cleaned)
                 chat_tts_filename = f"chat{count}.mp3"
-
+                tts_path = "./tts/chat"
                 logger.info(chat_reaction)
                 count = count + 1
                 os.path.join(tts_path, chat_tts_filename)
                 generate_tts_test(chat_reaction, chat_tts_filename)
-                tts_path = await my_util.create_mp3_url("chat", chat_tts_filename)
+                mp3path = await my_util.create_mp3_url("chat", chat_tts_filename)
                 chat_length = len(AudioSegment.from_file(chat_tts_filename))
                 playlist = [
-                    {"type": "mp3", "path" : tts_path, "length" : chat_length}
+                    {"type": "mp3", "path" : mp3path, "length" : chat_length}
                     ]
                 radio_state = {
                     "state": "chat",
