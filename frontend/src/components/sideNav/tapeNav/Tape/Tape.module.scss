@@ -1,6 +1,10 @@
+
 .tape {
+
   position: relative;
   top: 40px;
+  // src: url("asset/font/tapeFont.ttf") format("truetype");
+  // font-weight: normal;
   // aspect-ratio: 376 / 239;
   // width: 376px;
   // height: 239px;
@@ -8,7 +12,8 @@
 }
 
 .fixedRatio {
-  width: 100%; /* 원하는 너비 설정 */
+  // width: 100%; /* 원하는 너비 설정 */
+  aspect-ratio: 376 / 239;
   border-radius: 10px;
   height: auto; /* 높이는 자동으로 설정됨 */
 }
@@ -48,7 +53,7 @@
 
 .text {
   white-space: nowrap;
-  font-size: 24px;
+  font-size: 22px;
 }
 
 @media screen and (max-width: 768px) {
