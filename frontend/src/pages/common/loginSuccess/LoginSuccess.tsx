@@ -8,7 +8,7 @@ export const LoginSuccess = () => {
   console.log("성공적으로 들어옴");
   console.log(token);
   console.log("토큰 세팅 시작");
-  sessionStorage.setItem("token", token);
+  window.opener.sessionStorage.setItem("token", token);
   console.log("세팅 완료");
 
   if (window.opener) {
