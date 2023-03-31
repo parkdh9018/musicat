@@ -1,37 +1,43 @@
 from collections import deque
 from shared_state import current_state
 import kafka_handler
-import music_logic, empty_logic, story_logic
+import logic_music, logic_story
+from my_logger import setup_logger
 
-queue = deque(['story', 'chat', 'chat', 'chat', 'music', 'chat', 'chat', 'chat', 'music', 'chat', 'chat', 'chat', 'music'])
+logger = setup_logger()
 
+queue = deque(['story', 'chat', 'music', 'chat', 'music', 'chat', 'music'])
+
+##############################################
 
 async def radio_progress():
+    """
+    라디오 진행 함수
+    """
     global queue
-    current_state.set_state(queue.popleft())
-    print(f'current state is : {current_state.get_state()}')
 
+    current_state.set_state(queue.popleft())
+    logger.info(f'[Radio] : 현재 라디오 상태 : {current_state.get_state()}')
     queue.append(current_state.get_state())
 
+
     if current_state.get_state() == 'story':
-        radio_state = await story_logic.process_story_state()
-        if (radio_state != None):
-            await kafka_handler.send_state("radioState", radio_state)
-        else:
-            # radio_state = await empty_logic.process_empty_story_state()
-            radio_state = await empty_logic.process_empty_music_state()
-            await kafka_handler.send_state("radioState", radio_state)
+        radio_state = await logic_story.process_story_state()
     elif current_state.get_state() == 'chat':
-        # chat_readable.set_state(True)
         print("chat now")
     elif current_state.get_state() == 'music':
-        radio_state = await music_logic.process_music_state()
-        if (radio_state != None):
-            await kafka_handler.send_state("radioState", radio_state)
-        else:
-            radio_state = await empty_logic.process_empty_music_state()
-            await kafka_handler.send_state("radioState", radio_state)
+        radio_state = await logic_music.process_music_state()
+
+    await kafka_handler.send_state("radioState", radio_state)
+
+##############################################
 
 async def reset_radio():
+    """
+    라디오 상태 초기화 함수
+    """
     global queue
-    queue = deque(['story', 'chat', 'chat', 'chat', 'music', 'chat', 'chat', 'chat', 'music', 'chat', 'chat', 'chat', 'music'])
+    queue = deque(['story', 'chat', 'music', 'chat', 'music', 'chat', 'music'])
+    logger.info('[Radio] : 라디오 상태 초기화 완료')
+
+##############################################

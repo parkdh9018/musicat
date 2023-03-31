@@ -1,5 +1,7 @@
-import tts
+import api_naver_tts
 from datetime import datetime
+
+##############################################
 
 async def create_opening():
     now = datetime.now()
@@ -19,3 +21,4 @@ async def create_opening():
 
     message = f"{month}월 {day}일 {weekday_ko[weekday]}, 여러분의 친구 Musicat입니다."
     
+##############################################

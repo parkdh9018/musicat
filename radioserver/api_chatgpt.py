@@ -1,10 +1,15 @@
 import openai
 from shared_env import openai_api_key
 
-# Initialize OpenAI API
+# OpenAI API 키 (.env를 통해 설정)
 openai.api_key = openai_api_key
 
-def story_reaction_gpt(param):
+##############################################
+
+def story_reaction_gpt(param : str):
+    """
+    사연에 대한 리액션을 생성합니다
+    """
     result = openai.ChatCompletion.create(
         model = "gpt-3.5-turbo",
         messages=[
@@ -15,7 +20,12 @@ def story_reaction_gpt(param):
     )
     return (result.choices[0].message.content.strip())
 
-def chat_reaction_gpt(user, message):
+##############################################
+
+def chat_reaction_gpt(user : str, message : str):
+    """
+    채팅에 대한 리액션을 생성합니다
+    """
     result = openai.ChatCompletion.create(
         model = "gpt-3.5-turbo",
         messages = [
@@ -28,7 +38,12 @@ def chat_reaction_gpt(user, message):
     )
     return (result.choices[0].message.content.strip())
 
-def music_intro_gpt(artist, title, release_date):
+##############################################
+
+def music_intro_gpt(artist : str, title : str, release_date : str):
+    """
+    노래의 소개를 생성합니다
+    """
     result = openai.ChatCompletion.create(
         model = "gpt-3.5-turbo",
         messages=[
@@ -45,7 +60,12 @@ def music_intro_gpt(artist, title, release_date):
     )
     return (result.choices[0].message.content.strip())
 
+##############################################
+
 def music_outro_gpt(artist, title, user):
+    """
+    노래의 감상을 생성합니다
+    """
     result = openai.ChatCompletion.create(
         model = "gpt-3.5-turbo",
         messages=[
@@ -62,7 +82,12 @@ def music_outro_gpt(artist, title, user):
     )
     return (result.choices[0].message.content.strip())
 
+##############################################
+
 def validate_story_gpt(param):
+    """
+    사연을 검증해 True 또는 False를 반환합니다
+    """
     result = openai.ChatCompletion.create(
         model = "gpt-3.5-turbo",
         messages=[
@@ -73,7 +98,12 @@ def validate_story_gpt(param):
     )
     return (result.choices[0].message.content.strip())
 
+##############################################
+
 def validate_chat_gpt(param):
+    """
+    채팅을 검증합니다
+    """
     result = openai.ChatCompletion.create(
         model = "gpt-3.5-turbo",
         messages=[
@@ -84,7 +114,12 @@ def validate_chat_gpt(param):
     )
     return (result.choices[0].message.content.strip())
 
-def empty_story_gpt():
+##############################################
+
+def opening_story_gpt():
+    """
+    오프닝 멘트를 생성합니다
+    """
     result = openai.ChatCompletion.create(
         model = "gpt-3.5-turbo",
         messages=[
@@ -96,3 +131,5 @@ def empty_story_gpt():
         temperature=0.5
     )
     return (result.choices[0].message.content.strip())
+
+##############################################

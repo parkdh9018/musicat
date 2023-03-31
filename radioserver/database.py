@@ -7,8 +7,12 @@ def connect_db():
     conn = mariadb.connect(**config)
     return conn
 
-# 안 읽은 사연 찾기
+##############################################
+
 def find_story():
+    """
+    읽어야 할 가장 오래된 사연을 찾습니다
+    """
     conn = connect_db()
     cursor = conn.cursor()
     try:
@@ -25,8 +29,12 @@ def find_story():
         cursor.close()
         conn.close()
 
-# intro와 outro가 없는 모든 music 찾기
+##############################################
+
 def find_null_intro_outro_music():
+    """
+    아직 GPT 응답이 생성되지 않은 모든 음악을 찾습니다
+    """
     conn = connect_db()
     cursor = conn.cursor()
     try:
@@ -44,8 +52,12 @@ def find_null_intro_outro_music():
         cursor.close()
         conn.close()
 
-# intro와 outro가 없는 모든 story 찾기
+##############################################
+
 def find_null_intro_outro_story():
+    """
+    아직 GPT 응답이 생성되지 않은 모든 사연을 찾습니다
+    """
     conn = connect_db()
     cursor = conn.cursor()
     try:
@@ -63,8 +75,12 @@ def find_null_intro_outro_story():
         cursor.close()
         conn.close()
 
-# userSeq로 사용자 닉네임 찾기
-def find_user_nickname(user_seq):
+##############################################
+
+def find_user_nickname(user_seq : int):
+    """
+    user_seq를 이용해 사용자 닉네임을 찾습니다
+    """
     conn = connect_db()
     cursor = conn.cursor()
     try:
@@ -80,8 +96,12 @@ def find_user_nickname(user_seq):
         cursor.close()
         conn.close()
 
-# db에서 가장 큐에 늦게 들어온 노래 불러오기
+##############################################
+
 def find_oldest_unplayed_music():
+    """
+    재생해야할 가장 오래된 노래를 찾습니다
+    """
     conn = connect_db()
     cursor = conn.cursor()
     try:
@@ -98,8 +118,12 @@ def find_oldest_unplayed_music():
         cursor.close()
         conn.close()
 
-# music의 intro와 outro 추가하기
-def update_intro_outro(music_seq, music_intro, music_outro):
+##############################################
+
+def update_intro_outro(music_seq : int, music_intro : str, music_outro : str):
+    """
+    노래에 GPT 응답을 저장합니다
+    """
     conn = connect_db()
     cursor = conn.cursor()
     try:
@@ -111,8 +135,12 @@ def update_intro_outro(music_seq, music_intro, music_outro):
         cursor.close()
         conn.close()
 
-# story의 intro와 outro 추가하기
+##############################################
+
 def update_story(story_seq, story_reaction, story_outro):
+    """
+    사연에 GPT 응답을 저장합니다
+    """
     conn = connect_db()
     cursor = conn.cursor()
     try:
@@ -124,8 +152,12 @@ def update_story(story_seq, story_reaction, story_outro):
         cursor.close()
         conn.close()
 
-# 사연 검증하기
-def verify_story(story_seq, is_valid, is_readed):
+##############################################
+
+def verify_story(story_seq : int, is_valid, is_readed):
+    """
+    사연에 검증 결과를 저장합니다
+    """
     conn = connect_db()
     cursor = conn.cursor()
     try:
@@ -137,27 +169,34 @@ def verify_story(story_seq, is_valid, is_readed):
         cursor.close()
         conn.close()
 
+##############################################
 
-# 신청곡 찾아오기
-def find_song_request():
-    conn = connect_db()
-    cursor = conn.cursor()
-    try:
-        cursor.execute("SELECT * FROM music WHERE music_played = FALSE ORDER BY music_created_at LIMIT 1")
-        song_request = cursor.fetchone()
-        if song_request:
-            column_names = [desc[0] for desc in cursor.description]
-            return dict(zip(column_names, song_request))
-        else:
-            return None
-    except mariadb.Error as e:
-        print(f"Error: {e}")
-    finally:
-        cursor.close()
-        conn.close()
+# # 신청곡 찾아오기
+# def find_song_request():
+#     """
+#     """
+#     conn = connect_db()
+#     cursor = conn.cursor()
+#     try:
+#         cursor.execute("SELECT * FROM music WHERE music_played = FALSE ORDER BY music_created_at LIMIT 1")
+#         song_request = cursor.fetchone()
+#         if song_request:
+#             column_names = [desc[0] for desc in cursor.description]
+#             return dict(zip(column_names, song_request))
+#         else:
+#             return None
+#     except mariadb.Error as e:
+#         print(f"Error: {e}")
+#     finally:
+#         cursor.close()
+#         conn.close()
 
-# 기본곡 찾아오기
+##############################################
+
 def find_basic_song():
+    """
+    데이터베이스에 저장된 기본 곡을 불러옵니다 (아직 DB 없음)
+    """
     conn = connect_db()
     cursor = conn.cursor()
     try:
@@ -173,3 +212,5 @@ def find_basic_song():
     finally:
         cursor.close()
         conn.close()
+
+##############################################
