@@ -36,12 +36,16 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class ItemService {
 
+  // Repository
   private final UserRepository userRepository;
   private final MoneyLogRepository moneyLogRepository;
-  private final MoneyLogBuilderUtil moneyLogBuilderUtil;
   private final BackgroundRepository backgroundRepository;
   private final BadgeRepository badgeRepository;
   private final ThemeRepository themeRepository;
+
+  // Util
+  private final MoneyLogBuilderUtil moneyLogBuilderUtil;
+
   private final ItemBuilderUtil itemBuilderUtil;
   private final TokenProvider tokenProvider;
 
