@@ -162,7 +162,7 @@ public class RadioService {
         try {
           kafkaProducerService.send("finishState", "chat");
           clearState();
-          chatCount = 180;
+          chatCount = 20;
         } catch (JsonProcessingException e) {
           throw new RuntimeException(e);
         }
@@ -218,7 +218,7 @@ public class RadioService {
    */
   public void radioProcess() {
     count = 5;
-    chatCount = 180;
+    chatCount = 20;
     if (checkSoundChange()) {
       CurrentSoundDto currentSound = getCurrentSound();
       currentSound.setPlayedTime(0L);
