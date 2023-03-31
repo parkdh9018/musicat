@@ -1,6 +1,7 @@
 import { useRecoilCallback } from "recoil";
 import { Chat, chatListState } from "./chat.atom";
 import SocketManager from "@/connect/socket/socket";
+import { broadcastOperationState } from "./broadcast.atom";
 
 interface BaseResponse {
   type: string;
@@ -56,6 +57,7 @@ const dataClassification = (set: any, res: BaseResponse): void => {
       break;
     case "RADIO":
       console.log("나는 라디오");
+      set(broadcastOperationState, res.operation.toUpperCase());
       console.log(res.data);
       break;
     default:
