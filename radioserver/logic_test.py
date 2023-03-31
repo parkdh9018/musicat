@@ -297,7 +297,7 @@ async def radio_progress_test():
 
 async def process_chat_data(data):
     global count
-    if current_state.get_state() == "chat" and chat_readable == True:
+    if current_state.get_state() == "chat" and chat_readable.get_state() == True:
         logger.info(f'채팅 넘어옴{data}')
         chat_cleaned = re.sub(r"[^가-힣A-Za-z0-9\s]+", " ", data["content"])
         if len(chat_cleaned) > 7 and len(chat_cleaned) < 100:
