@@ -79,7 +79,7 @@ public class RadioService {
       JsonNode jsonNode = objectMapper.readTree(message);
       if (jsonNode.has("state")) {
         JsonNode currentStateNode = jsonNode.get("state");
-        String tempState = currentStateNode.asText()
+        String tempState = currentStateNode.asText();
         if (!tempState.equals(currentState))
           playlist.clear();
         currentState = tempState;
