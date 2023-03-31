@@ -297,9 +297,11 @@ async def radio_progress_test():
 async def process_chat_data(data):
     global count
     if current_state.get_state() == "chat" and chat_readable == True:
+        logger.info(f'채팅 넘어옴{data}')
         chat_cleaned = re.sub(r"[^가-힣A-Za-z0-9\s]+", " ", data["content"])
         if len(chat_cleaned) > 7 and len(chat_cleaned) < 100:
             validate_result = api_chatgpt.validate_chat_gpt(chat_cleaned)
+            logger.info(f'채팅 validate 확인 {validate_result}')
             if 'True' in validate_result or 'true' in validate_result:
                 user_nickname = database.find_user_nickname(int(data["user_seq"]))
                 chat_reaction = user_nickname + "님 " + chat_cleaned + "이라고 해주셨어요."
