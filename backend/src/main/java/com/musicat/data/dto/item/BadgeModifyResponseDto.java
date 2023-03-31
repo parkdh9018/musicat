@@ -10,6 +10,6 @@ import lombok.*;
 @Builder
 public class BadgeModifyResponseDto {
 
-    private String result;
+  private String result;
 
 }

@@ -10,6 +10,6 @@ import lombok.*;
 @Builder
 public class ThemeModifyResponseDto {
 
-    private String result;
+  private String result;
 
 }

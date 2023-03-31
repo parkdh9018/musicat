@@ -26,32 +26,34 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException exception) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
-    }
+  @ExceptionHandler(IllegalArgumentException.class)
+  public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException exception) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+  }
 
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<String> handleEntityNotFoundException(EntityNotFoundException exception) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
-    }
+  @ExceptionHandler(EntityNotFoundException.class)
+  public ResponseEntity<String> handleEntityNotFoundException(EntityNotFoundException exception) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+  }
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<String> handleAllExceptions(RuntimeException exception) {
-        // 적절한 HTTP 상태 코드와 함께 에러 메시지를 반환합니다.
-        // 여기에서는 INTERNAL_SERVER_ERROR(500)를 사용하였지만, 상황에 따라 적절한 상태 코드를 선택하세요.
-        // RunTimeException도 Exception 에 포함되므로 여기서 처리된다.
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Fail " + exception.getMessage());
-    }
+  @ExceptionHandler(RuntimeException.class)
+  public ResponseEntity<String> handleAllExceptions(RuntimeException exception) {
+    // 적절한 HTTP 상태 코드와 함께 에러 메시지를 반환합니다.
+    // 여기에서는 INTERNAL_SERVER_ERROR(500)를 사용하였지만, 상황에 따라 적절한 상태 코드를 선택하세요.
+    // RunTimeException도 Exception 에 포함되므로 여기서 처리된다.
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .body("Fail " + exception.getMessage());
+  }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<String> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("요청 바디의 데이터가 올바르지 않습니다.");
-    }
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<String> handleMethodArgumentNotValidException(
+      MethodArgumentNotValidException e) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("요청 바디의 데이터가 올바르지 않습니다.");
+  }
 
-    @ExceptionHandler(EntityExistsException.class)
-    public ResponseEntity<String> handleEntityExistsException(EntityExistsException exception) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
-    }
+  @ExceptionHandler(EntityExistsException.class)
+  public ResponseEntity<String> handleEntityExistsException(EntityExistsException exception) {
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
+  }
 
 }

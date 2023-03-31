@@ -10,21 +10,21 @@ import org.springframework.web.socket.server.support.HttpSessionHandshakeInterce
 
 public class HttpSessionIdHandshakeInterceptor extends HttpSessionHandshakeInterceptor {
 
-    @Override
-    public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response,
-            WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
-        if (request instanceof ServletServerHttpRequest) {
-            ServletServerHttpRequest servletRequest = (ServletServerHttpRequest) request;
-            HttpSession session = servletRequest.getServletRequest().getSession();
-            attributes.put("sessionId", session.getId());
-        }
-        return super.beforeHandshake(request, response, wsHandler, attributes);
+  @Override
+  public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response,
+      WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
+    if (request instanceof ServletServerHttpRequest) {
+      ServletServerHttpRequest servletRequest = (ServletServerHttpRequest) request;
+      HttpSession session = servletRequest.getServletRequest().getSession();
+      attributes.put("sessionId", session.getId());
     }
+    return super.beforeHandshake(request, response, wsHandler, attributes);
+  }
 
-    @Override
-    public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response,
-            WebSocketHandler wsHandler, Exception ex) {
-        super.afterHandshake(request, response, wsHandler, ex);
-    }
+  @Override
+  public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response,
+      WebSocketHandler wsHandler, Exception ex) {
+    super.afterHandshake(request, response, wsHandler, ex);
+  }
 }
 

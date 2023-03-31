@@ -14,9 +14,9 @@ import lombok.Setter;
 @Builder
 public class NoticeModifyDto {
 
-    private long noticeSeq;
+  private long noticeSeq;
 
-    private String noticeTitle;
+  private String noticeTitle;
 
-    private String noticeContent;
+  private String noticeContent;
 }

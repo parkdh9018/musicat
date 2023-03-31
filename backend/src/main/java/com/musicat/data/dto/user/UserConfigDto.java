@@ -10,13 +10,10 @@ import lombok.*;
 @Builder
 public class UserConfigDto {
 
-    private boolean userIsDarkmode;
-    private long backgroundSeq;
-    private long badgeSeq;
-    private long themeSeq;
-
-
-
+  private boolean userIsDarkmode;
+  private long backgroundSeq;
+  private long badgeSeq;
+  private long themeSeq;
 
 
 }

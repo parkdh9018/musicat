@@ -1,6 +1,5 @@
 package com.musicat.data.dto.story;
 
-import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,27 +16,27 @@ public class StoryInfoDto { // 사연 정보 Dto
 //
 //    private long userSeq;
 
-    private String storyCreatedAt;
+  private String storyCreatedAt;
 
-    private boolean storyReaded;
+  private boolean storyReaded;
 
-    private Boolean storyValid;
+  private Boolean storyValid;
 
-    private String storyTitle;
+  private String storyTitle;
 
 //    private String storyContent;
 
-    private String storyMusicTitle;
+  private String storyMusicTitle;
 
-    private String storyMusicArtist;
+  private String storyMusicArtist;
 
-    private String storyMusicCover;
+  private String storyMusicCover;
 
-    private long storyMusicLength;
+  private long storyMusicLength;
 
-    private String storyMusicYoutubeId;
+  private String storyMusicYoutubeId;
 
-    private String storyReaction;
+  private String storyReaction;
 
-    private String storyOutro;
+  private String storyOutro;
 }

@@ -25,45 +25,44 @@ OAuth2 인증 성공 핸들러
 @Component
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    @Autowired
-    TokenProvider tokenProvider;
+  @Autowired
+  TokenProvider tokenProvider;
 
-    @Autowired
-    UserService userService;
+  @Autowired
+  UserService userService;
 
-    // 인증이 성공한 경우 호출
-    // 인증된 사용자를 대상 URL로 리다이렉트
-    @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+  // 인증이 성공한 경우 호출
+  // 인증된 사용자를 대상 URL로 리다이렉트
+  @Override
+  public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+      Authentication authentication) throws IOException {
 
-        // redirect 할 url을 지정해준다
-        String targetUrl = determineTargetUrl(request, response, authentication);
+    // redirect 할 url을 지정해준다
+    String targetUrl = determineTargetUrl(request, response, authentication);
 
-        if (response.isCommitted()) {
-            logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);
-            return;
-        }
-
-        
-
-
-        getRedirectStrategy().sendRedirect(request, response, targetUrl);
+    if (response.isCommitted()) {
+      logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);
+      return;
     }
 
-    // 인증된 사용자를 리다이렉트할 대상 URL을 결정
-    protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+    getRedirectStrategy().sendRedirect(request, response, targetUrl);
+  }
 
-        // String targetUrl = "/except/login-success?";
-        String targetUrl = "/except/login-success?";
+  // 인증된 사용자를 리다이렉트할 대상 URL을 결정
+  protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response,
+      Authentication authentication) {
 
-        // 인증 정보를 기반으로 JWT 토큰 생성
-        String token = tokenProvider.createToken(authentication);
+    // String targetUrl = "/except/login-success?";
+    String targetUrl = "/except/login-success?";
 
-        // URL 쿼리 파라미터로 token 추가
-        return UriComponentsBuilder.fromUriString(targetUrl)
-                .queryParam("token", token)
-                .build().toUriString();
-    }
+    // 인증 정보를 기반으로 JWT 토큰 생성
+    String token = tokenProvider.createToken(authentication);
+
+    // URL 쿼리 파라미터로 token 추가
+    return UriComponentsBuilder.fromUriString(targetUrl)
+        .queryParam("token", token)
+        .build().toUriString();
+  }
 
 }
 

@@ -10,6 +10,6 @@ import lombok.*;
 @Builder
 public class UserModifyRequestDto {
 
-    private String userNickname;
+  private String userNickname;
 
 }

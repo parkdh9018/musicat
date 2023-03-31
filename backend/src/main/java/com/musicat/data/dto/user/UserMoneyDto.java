@@ -9,5 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class UserMoneyDto {
-    private long userMoney;
+
+  private long userMoney;
 }

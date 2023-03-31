@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 public class ThemeListDto {
 
-    private long themeSeq;
-    private String themeName;
-    private int themeCost;
+  private long themeSeq;
+  private String themeName;
+  private int themeCost;
 }

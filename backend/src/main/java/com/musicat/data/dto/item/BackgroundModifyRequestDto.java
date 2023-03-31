@@ -10,6 +10,6 @@ import lombok.*;
 @Builder
 public class BackgroundModifyRequestDto {
 
-    private long backgroundSeq;
+  private long backgroundSeq;
 
 }

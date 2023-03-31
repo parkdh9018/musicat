@@ -5,11 +5,11 @@ package com.musicat.data.dto.user;
 회원 상세 조회 Dto
  */
 
-import com.musicat.data.entity.user.Authority;
-import lombok.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -18,7 +18,7 @@ import java.util.List;
 @Builder
 public class UserDetailDto {
 
-    private String userEmail;
-    private String userCreatedAt;
+  private String userEmail;
+  private String userCreatedAt;
 
 }

@@ -7,16 +7,16 @@ import lombok.Data;
 @Builder
 public class StoryKafkaDto {
 
-    private long storySeq;
+  private long storySeq;
 
-    private long userSeq;
+  private long userSeq;
 
-    private String storyTitle;
+  private String storyTitle;
 
-    private String storyContent;
+  private String storyContent;
 
-    private String storyMusicTitle;
+  private String storyMusicTitle;
 
-    private String storyMusicArtist;
+  private String storyMusicArtist;
 
 }

@@ -12,20 +12,21 @@ ToeknProvider, JWTFilter를 SecurityConfig 적용할 때 사용하기 위해 필
 SecurityConfigurerAdapter를 extends해서 TokenProvider을 주입받아 JWTFilter을 통해 security 로직에 필터 등록
 
  */
-public class JwtSecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
+public class JwtSecurityConfig extends
+    SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 
-    private TokenProvider tokenProvider;
+  private TokenProvider tokenProvider;
 
-    public JwtSecurityConfig(TokenProvider tokenProvider) {
-        this.tokenProvider = tokenProvider;
-    }
+  public JwtSecurityConfig(TokenProvider tokenProvider) {
+    this.tokenProvider = tokenProvider;
+  }
 
-    @Override
-    public void configure(HttpSecurity http) {
-        http.addFilterBefore(
-                new JwtFilter(tokenProvider),
-                UsernamePasswordAuthenticationFilter.class
-        );
-    }
+  @Override
+  public void configure(HttpSecurity http) {
+    http.addFilterBefore(
+        new JwtFilter(tokenProvider),
+        UsernamePasswordAuthenticationFilter.class
+    );
+  }
 
 }

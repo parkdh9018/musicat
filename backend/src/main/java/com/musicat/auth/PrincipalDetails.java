@@ -3,15 +3,16 @@ package com.musicat.auth;
 
 import com.musicat.data.entity.user.Authority;
 import com.musicat.data.entity.user.User;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import javax.transaction.Transactional;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
-import java.util.*;
 
 
 /*
@@ -40,48 +41,49 @@ JWT와 함께 Spring Security를 사용하려면 다음과 같은 설정을 적�
  */
 
 
-
 @Data
 public class PrincipalDetails implements OAuth2User {
 
-    private User user;
-    private Map<String, Object> attributes;
-    private String provider;
+  private User user;
+  private Map<String, Object> attributes;
+  private String provider;
 
-    public PrincipalDetails(User user) {
-        this.user = user;
+  public PrincipalDetails(User user) {
+    this.user = user;
+  }
+
+  public PrincipalDetails(User user, Map<String, Object> attributes) {
+    this.user = user;
+    this.attributes = attributes;
+  }
+
+  /**
+   * 유저의 권한을 리턴하는 메소드
+   *
+   * @return
+   */
+  @Override
+  @Transactional
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    List<GrantedAuthority> listRole = new ArrayList<>();
+
+    Set<Authority> userAuthority = user.getUserAuthority();
+    for (Authority auth : userAuthority) {
+      listRole.add(new SimpleGrantedAuthority(auth.getAuthorityName()));
     }
 
-    public PrincipalDetails(User user, Map<String, Object> attributes) {
-        this.user = user;
-        this.attributes = attributes;
-    }
+    // listRole.add(new SimpleGrantedAuthority("ROLE_USER"));
+    return listRole;
+  }
 
+  @Override
+  public Map<String, Object> getAttributes() {
+    return attributes;
+  }
 
-    // 해당 user의 권한을 리턴하는 메소드
-    @Override
-    @Transactional
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> listRole = new ArrayList<>();
-
-        Set<Authority> userAuthority = user.getUserAuthority();
-        for (Authority auth : userAuthority) {
-            listRole.add(new SimpleGrantedAuthority(auth.getAuthorityName()));
-        }
-
-        // listRole.add(new SimpleGrantedAuthority("ROLE_USER"));
-        return listRole;
-    }
-
-
-    @Override
-    public Map<String, Object> getAttributes() {
-        return attributes;
-    }
-
-    // 카카오 로그인만 하므로 이 메소드에 유저의 고유식별자를 넘겨줘야한다.
-    @Override
-    public String getName() {
-        return user.getUserId();
-    }
+  // 카카오 로그인만 하므로 이 메소드에 유저의 고유식별자를 넘겨줘야한다.
+  @Override
+  public String getName() {
+    return user.getUserId();
+  }
 }

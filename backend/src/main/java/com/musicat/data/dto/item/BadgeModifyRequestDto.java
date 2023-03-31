@@ -9,6 +9,6 @@ import lombok.*;
 @Builder
 public class BadgeModifyRequestDto {
 
-    private long badgeSeq;
+  private long badgeSeq;
 
 }

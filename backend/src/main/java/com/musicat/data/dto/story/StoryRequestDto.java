@@ -12,20 +12,20 @@ import lombok.NoArgsConstructor;
 @Builder
 public class StoryRequestDto {
 
-    private long userSeq;
+  private long userSeq;
 
-    private String storyTitle;
+  private String storyTitle;
 
-    private String storyContent;
+  private String storyContent;
 
-    private String storyMusicTitle;
+  private String storyMusicTitle;
 
-    private String storyMusicArtist;
+  private String storyMusicArtist;
 
-    private String storyMusicCover;
+  private String storyMusicCover;
 
-    private String musicYoutubeId;
+  private String musicYoutubeId;
 
-    private long musicLength;
+  private long musicLength;
 
 }
