@@ -109,7 +109,7 @@ async def process_story_state_test():
 
     playlist = [
         {"type": "mp3", "path": intro_url, "length": intro_length},
-        {"type": "youtube", "path": f'https://www.youtube.com/embed/{story["music_youtube_id"]}', "length": story["story_music_length"]},
+        {"type": "youtube", "path": f'https://www.youtube.com/embed/{story["story_music_youtube_id"]}', "length": story["story_music_length"]},
         {"type": "mp3", "path": outro_url, "length": outro_length}
     ]
     data = {
