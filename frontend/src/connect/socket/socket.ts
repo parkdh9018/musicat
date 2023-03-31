@@ -1,6 +1,8 @@
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 
+const URL = "https://musicat.kr/api/ws";
+
 // 소켓 객체 => 싱글톤 패턴
 class SocketManager {
   private static instance: SocketManager;
@@ -17,7 +19,7 @@ class SocketManager {
 
   connect(): Stomp.Client {
     if (!this.stompClient) {
-      const socket = new SockJS("https://musicat.kr/api/ws");
+      const socket = new SockJS(URL);
       this.stompClient = Stomp.over(socket);
     }
     return this.stompClient;

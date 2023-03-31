@@ -1,6 +1,8 @@
 import { Buffer } from "buffer";
 
-export function useTokenData() {
+export function useTokenData():
+  | { userSeq: number; userNick: string }
+  | undefined {
   const token = localStorage.getItem("token");
   if (!token) return undefined;
   const base64Payload = token.split(".")[1];
