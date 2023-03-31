@@ -37,7 +37,6 @@ export const Chat = () => {
   // 채팅창을 맨 아래로 유지시킴
   useEffect(() => {
     scrollToBottom();
-    console.log(chatList);
   }, [chatList]);
 
   const clickSubmit = () => {

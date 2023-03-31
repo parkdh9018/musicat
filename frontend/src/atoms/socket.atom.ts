@@ -1,11 +1,12 @@
 import { useRecoilCallback } from "recoil";
 import { changeChatList, Chat, chatListState } from "./chat.atom";
 import SocketManager from "@/connect/socket/socket";
+import { Music, musicState } from "./song.atom";
 
 interface BaseResponse {
   type: string;
   operation: string;
-  data: object;
+  data: Music;
 }
 
 const socketManager = SocketManager.getInstance();
@@ -53,11 +54,13 @@ const dataClassification = (set: any, res: BaseResponse): void => {
   switch (res.type) {
     case "CHAT":
       console.log("나는 챗");
+      console.log(res);
       set(chatListState, (prev: Chat[]) => changeChatList(prev, res.data));
       break;
     case "RADIO":
       console.log("나는 라디오");
-      console.log(res.data);
+      console.log(res);
+      set(musicState, () => res.data);
       break;
     default:
       break;

@@ -26,9 +26,7 @@ interface NoticeAlertDetail extends AlertDetail, NoticeDetail {}
 export function getAlertList(pageNum: number, search: string | null) {
   async function fetchAlertList(): Promise<PagableResponse<Alert>> {
     const { data } = await $.get(
-      `/alert/1?page=${pageNum ? pageNum - 1 : ""}&query=${
-        search ? search : ""
-      }`
+      `/alert?page=${pageNum ? pageNum - 1 : ""}&query=${search ? search : ""}`
     );
     return data;
   }

@@ -3,7 +3,7 @@ import { LoadingSpinner } from "@/pages/common/loadingSpinner/LoadingSpinner";
 import { useRecoilValue } from "recoil";
 import style from "./Broadcast.module.css";
 import { GraphicCanvas } from "./graphicCanvas/GraphicCanvas";
-import { YoutubePlay } from "./youtube/YoutubePlay";
+import { RadioPlayer } from "./radioPlayer/RadioPlayer";
 
 export const Broadcast = () => {
   const nowMainPage = useRecoilValue(nowMainPageState);
@@ -16,7 +16,7 @@ export const Broadcast = () => {
     >
       <GraphicCanvas />
 
-      <YoutubePlay />
+      <RadioPlayer />
       {/* <div className={nowMainPage ? style.none : style.mybackground} /> */}
       {/* <LoadingSpinner /> */}
     </div>
