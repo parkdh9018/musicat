@@ -1,8 +1,11 @@
 import { Buffer } from "buffer";
 
-export function useTokenData():
-  | { userSeq: number; userNick: string }
-  | undefined {
+export interface UserTokenData {
+  userSeq: number;
+  userNick: string;
+}
+
+export function useTokenData(): UserTokenData | undefined {
   const token = localStorage.getItem("token");
   if (!token) return undefined;
   const base64Payload = token.split(".")[1];

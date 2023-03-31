@@ -19,9 +19,12 @@
   height: 225px;
   color: var(--font-color);
 }
-.chat_component .chat_list p {
-  margin-top: 8px;
-  margin-bottom: 8px;
+.chat_component .chat_list div {
+  margin-top: 2px;
+}
+.chat_component .chat_list span {
+  display: inline-block;
+  margin-top: 2px;
 }
 .chat_component .chat_list::-webkit-scrollbar {
   width: 6px;

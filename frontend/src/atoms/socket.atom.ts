@@ -1,5 +1,5 @@
 import { useRecoilCallback } from "recoil";
-import { Chat, chatListState } from "./chat.atom";
+import { changeChatList, Chat, chatListState } from "./chat.atom";
 import SocketManager from "@/connect/socket/socket";
 
 interface BaseResponse {
@@ -25,6 +25,7 @@ export const socketConnection = () => {
           stompClient.subscribe("/topic", (message) => {
             dataClassification(set, JSON.parse(message.body));
           });
+
           stompClient.subscribe("/user/queue", (message) => {
             dataClassification(set, JSON.parse(message.body));
           });
@@ -52,7 +53,7 @@ const dataClassification = (set: any, res: BaseResponse): void => {
   switch (res.type) {
     case "CHAT":
       console.log("나는 챗");
-      set(chatListState, (prev: Chat[]) => [...prev, res.data]);
+      set(chatListState, (prev: Chat[]) => changeChatList(prev, res.data));
       break;
     case "RADIO":
       console.log("나는 라디오");
