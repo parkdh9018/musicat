@@ -311,7 +311,7 @@ async def process_chat_data(data):
                 logger.info(chat_reaction)
                 count = count + 1
                 tts_filepath = os.path.join(tts_path, chat_tts_filename)
-                generate_tts_test(chat_reaction, chat_tts_filename)
+                await generate_tts_test(chat_reaction, chat_tts_filename)
                 mp3path = await my_util.create_mp3_url("chat", tts_filepath)
                 chat_length = len(AudioSegment.from_file(tts_filepath))
                 playlist = [
