@@ -9,7 +9,7 @@ import os
 async def process_chat_data(data):
     if (current_state.get_state() == "chat" and chat_readable.get_state() == True):
         chat_cleaned = re.sub(r"[^가-힣A-Za-z0-9\s]+", " ", data["content"])
-        if (len(chat_cleaned) > 7 and len(chat_cleaned < 100)):
+        if (len(chat_cleaned) > 7 and len(chat_cleaned) < 100):
             validate_result = api_chatgpt.validate_chat_gpt(chat_cleaned)
             if 'True' in validate_result or 'true' in validate_result:
                 chat_readable.set_state(False)
