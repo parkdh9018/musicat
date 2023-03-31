@@ -264,7 +264,7 @@ async def no_music_data_test():
     return data
 
 # queue = deque(['story', 'chat', 'music', 'chat', 'music', 'chat', 'music'])
-queue = deque(['chat', 'chat'])
+queue = deque(['chat', "music"])
 
 ##############################################
 
