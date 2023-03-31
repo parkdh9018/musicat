@@ -3,7 +3,7 @@ import { Input } from "@/components/common/input/Input";
 import { useEffect, useRef, useState } from "react";
 import { useTokenData } from "@/customHooks/useTokenData";
 import { useRecoilState } from "recoil";
-import { sendData, socketConnection } from "@/atoms/socket.atom";
+import { sendData } from "@/atoms/socket.atom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUsers } from "@fortawesome/free-solid-svg-icons";
 import { useCustomToast } from "@/customHooks/useCustomToast";
@@ -13,14 +13,12 @@ import style from "./Chat.module.css";
 import { useChatMake } from "@/customHooks/useChatMake";
 
 export const Chat = () => {
-  const socket = socketConnection();
   const userInfo = useTokenData();
 
   // 채팅 메세지, 출력될 리스트, 나의 정보
   const [message, setMessage] = useState<string>("");
   const [chatList] = useRecoilState(chatListState);
   const { data: chatPeople } = getPeopleCnt();
-
   const messageBoxRef = useRef<HTMLDivElement>(null);
 
   /** 스크롤을 맨 밑으로 고정 */
@@ -30,14 +28,9 @@ export const Chat = () => {
     }
   };
 
-  useEffect(() => {
-    socket();
-  }, []);
-
   // 채팅창을 맨 아래로 유지시킴
   useEffect(() => {
     scrollToBottom();
-    console.log(chatList);
   }, [chatList]);
 
   const clickSubmit = () => {

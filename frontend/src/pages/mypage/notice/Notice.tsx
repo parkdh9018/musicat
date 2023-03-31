@@ -26,6 +26,7 @@ export const Notice = () => {
   const setNowSideNav = useSetRecoilState(nowSideNavState);
   const { data: notice } = getTop3Notice();
   const { data: alertList } = getAlertList(Number(page), search);
+  const { mutate: readAll } = patchReadAllAlerts(search, Number(page));
 
   /** 사이드 Nav 초기화 */
   useEffect(() => {
@@ -53,9 +54,7 @@ export const Notice = () => {
         <Button
           content="모두읽음"
           onClick={() => {
-            patchReadAllAlerts(1);
-            // 나중에 고치자
-            window.location.reload();
+            readAll();
           }}
           style={{ marginTop: "10px" }}
         />
