@@ -71,10 +71,11 @@ async def consume_chat(topic: str):
     )
     await consumer.start()
     try:
-        if radio_health.get_state() is True:
-            await logic_chat.process_chat_data()
-        else:
-            await logic_test.process_chat_data()
+        async for msg in consumer:
+            if radio_health.get_state() is True:
+                await logic_chat.process_chat_data(msg.value)
+            else:
+                await logic_test.process_chat_data(msg.value)
     finally:
         await consumer.stop()
 
