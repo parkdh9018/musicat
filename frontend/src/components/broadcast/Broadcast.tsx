@@ -1,12 +1,20 @@
-import { nowMainPageState } from "@/atoms/common.atom";
-import { LoadingSpinner } from "@/pages/common/loadingSpinner/LoadingSpinner";
 import { useRecoilValue } from "recoil";
-import style from "./Broadcast.module.css";
 import { GraphicCanvas } from "./graphicCanvas/GraphicCanvas";
-import { YoutubePlay } from "./youtube/YoutubePlay";
+import { RadioPlayer } from "./radioPlayer/RadioPlayer";
+import { socketConnection } from "@/atoms/socket.atom";
+import { nowMainPageState } from "@/atoms/common.atom";
+import { useEffect } from "react";
+import { playNowState } from "@/atoms/song.atom";
+import style from "./Broadcast.module.css";
 
 export const Broadcast = () => {
   const nowMainPage = useRecoilValue(nowMainPageState);
+  const playNow = useRecoilValue(playNowState);
+  const socket = socketConnection();
+
+  useEffect(() => {
+    if (playNow) socket();
+  }, [playNow]);
 
   return (
     <div
@@ -15,10 +23,7 @@ export const Broadcast = () => {
       }
     >
       <GraphicCanvas />
-
-      <YoutubePlay />
-      {/* <div className={nowMainPage ? style.none : style.mybackground} /> */}
-      {/* <LoadingSpinner /> */}
+      <RadioPlayer />
     </div>
   );
 };

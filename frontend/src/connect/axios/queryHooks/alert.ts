@@ -1,17 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { PagableResponse } from "@/types/mypage";
 import { $ } from "../setting";
 import { NoticeDetail } from "./notice";
 
 interface Alert {
   alertSeq: number;
-  // 이거 필요없음
-  userSeq: number;
-
   alertTitle: string;
-  // 이거 필요없음
-  alertContent: string;
-
   alertCreatedAt: string;
   alertIsRead: boolean;
 }
@@ -26,9 +20,7 @@ interface NoticeAlertDetail extends AlertDetail, NoticeDetail {}
 export function getAlertList(pageNum: number, search: string | null) {
   async function fetchAlertList(): Promise<PagableResponse<Alert>> {
     const { data } = await $.get(
-      `/alert/1?page=${pageNum ? pageNum - 1 : ""}&query=${
-        search ? search : ""
-      }`
+      `/alert?page=${pageNum ? pageNum - 1 : ""}&query=${search ? search : ""}`
     );
     return data;
   }
@@ -49,54 +41,46 @@ export function getAlertDetail(url: string) {
   return { data, isLoading };
 }
 
-// 알람을 모두 읽었다는  api 요청
-export function patchReadAllAlerts(userSeq: number) {
-  $.patch(`/alert/unread/${userSeq}`, { alertIsRead: true });
-}
-
-/** 
-// 알람을 읽었다고 optimistic update
-export function temp(pageNum: any, alertSeq: any) {
+// 알람을 모두 읽었다고 optimistic updates
+export function patchReadAllAlerts(search: string, pageNum: number) {
   const queryClient = useQueryClient();
 
-  async function fetchAlert() {
-    const { data } = await $.patch(`/alert`, {
-      alertSeq: alertSeq,
-      alertRead: true,
-    });
-    return data;
-  }
-  const { mutate: readAlert } = useMutation(fetchAlert, {
-    onMutate: async () => {
-      await queryClient.cancelQueries(["AlertListUser", pageNum]);
+  const { mutate } = useMutation(
+    async () => await $.patch(`/alert/unread`, { alertIsRead: true }),
+    {
+      onMutate: async () => {
+        await queryClient.cancelQueries(["AlertListUser" + search, pageNum]);
 
-      const oldData: Alert[] | undefined = queryClient.getQueryData([
-        "AlertListUser",
-        pageNum,
-      ]);
+        const oldData: Alert[] | undefined = queryClient.getQueryData([
+          "AlertListUser" + search,
+          pageNum,
+        ]);
 
-      queryClient.setQueryData(["AlertListUser", pageNum], (oldData: any) => {
-        const newData = [...oldData];
+        queryClient.setQueryData(
+          ["AlertListUser" + search, pageNum],
+          (oldData: any) => {
+            const newData = { ...oldData };
 
-        newData.forEach((content) => {
-          if (content.alertSeq === alertSeq) {
-            content.alertIsRead = true;
-            return;
+            newData.content.forEach((el: Alert) => {
+              el.alertIsRead = true;
+            });
+
+            return newData;
           }
-        });
+        );
+        return { oldData };
+      },
+      onError: (_error, _variables, context) => {
+        queryClient.setQueryData(
+          ["AlertListUser" + search, pageNum],
+          context?.oldData
+        );
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries(["AlertListUser" + search, pageNum]);
+      },
+    }
+  );
 
-        return newData;
-      });
-      return { oldData };
-    },
-    onError: (_error, _variables, context) => {
-      queryClient.setQueryData(["AlertListUser", pageNum], context?.oldData);
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries(["AlertListUser", pageNum]);
-    },
-  });
-
-  return readAlert;
+  return { mutate };
 }
- */

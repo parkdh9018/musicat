@@ -49,6 +49,16 @@
   background-color: rgba(223, 1, 1, 0.6);
 }
 
+.play_clicked {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #4f5050;
+  border-radius: 5%;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.8), rgba(223, 1, 1, 0.3) 30%), linear-gradient(180deg, rgba(0, 0, 0, 0.8), rgba(223, 1, 1, 0.3) 30%), linear-gradient(270deg, rgba(0, 0, 0, 0.8), rgba(223, 1, 1, 0.3) 30%);
+}
+
 .stop {
   display: flex;
   flex-grow: 1;
@@ -57,4 +67,15 @@
   border: 1px solid #4f5050;
   border-radius: 5%;
   background-color: rgba(0, 0, 0, 0.4);
+}
+
+.stop_clicked {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #4f5050;
+  border-radius: 5%;
+  background-color: rgba(0, 0, 0, 0.4);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.15) 30%), linear-gradient(180deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.15) 30%), linear-gradient(270deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.15) 30%);
 }/*# sourceMappingURL=TapeButtons.module.css.map */
