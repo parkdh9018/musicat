@@ -6,7 +6,7 @@ import logic_chat
 import logic_music
 import logic_test
 import radio_progress
-from shared_state import radio_health
+from shared_state import radio_health, chat_readable
 from my_logger import setup_logger
 
 logger = setup_logger()
@@ -28,6 +28,19 @@ async def consume_finish_state(topic: str):
                 await radio_progress.radio_progress()
             else:
                 await logic_test.radio_progress_test()
+    finally:
+        await consumer.stop()
+
+async def consume_finish_chat(topic: str):
+    consumer = AIOKafkaConsumer(
+        topic,
+        bootstrap_servers=kafka_servers,
+        value_deserializer=lambda m: json.loads(m.decode("utf-8"))
+    )
+    await consumer.start()
+    try:
+        async for msg in consumer:
+            chat_readable.set_state(False)
     finally:
         await consumer.stop()
 

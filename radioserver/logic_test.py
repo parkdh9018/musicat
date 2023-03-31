@@ -8,6 +8,9 @@ from collections import deque
 from shared_state import current_state
 import kafka_handler
 from my_logger import setup_logger
+import api_chatgpt
+import re
+from shared_state import chat_readable
 
 logger = setup_logger()
 
@@ -140,7 +143,7 @@ async def no_story_data_test():
 
     playlist = [
         {"type": "mp3", "path": intro_url, "length": intro_length},
-        {"type": "youtube", "path": "https://www.youtube.com/embed/A1tZgPAcpjE", "length": "202000"},
+        {"type": "youtube", "path": "https://www.youtube.com/embed/A1tZgPAcpjE", "length": "20000"},
         {"type": "mp3", "path": outro_url, "length": outro_length}
     ]
     data = {
@@ -251,7 +254,7 @@ async def no_music_data_test():
 
     playlist = [
         {"type": "mp3", "path": intro_url, "length": intro_length},
-        {"type": "youtube", "path": "https://www.youtube.com/embed/A1tZgPAcpjE", "length": "202000"},
+        {"type": "youtube", "path": "https://www.youtube.com/embed/A1tZgPAcpjE", "length": "20000"},
         {"type": "mp3", "path": outro_url, "length": outro_length}
     ]
     data = {
@@ -264,11 +267,14 @@ queue = deque(['story', 'chat', 'music', 'chat', 'music', 'chat', 'music'])
 
 ##############################################
 
+count = 1
+
 async def radio_progress_test():
     """
     테스트용 라디오 루틴
     """
     global queue
+    global count
     current_state.set_state(queue.popleft())
     logger.info(f'[Test] : 현재 상태 : {current_state.get_state()}')
 
@@ -278,9 +284,39 @@ async def radio_progress_test():
         radio_state = await process_story_state_test()
         await kafka_handler.send_state("radioState", radio_state)
     elif current_state.get_state() == 'chat':
-        print("일단 ㅇㅋ")
+        radio_state = {"state" : "chat"}
+        count = 1
+        chat_readable.set_state(True)
+        await kafka_handler.send_state("radioState", radio_state)
     elif current_state.get_state() == 'music':
         radio_state = await process_music_state_test()
         await kafka_handler.send_state("radioState", radio_state)
+
+##############################################
+
+async def process_chat_data(data):
+    global count
+    if current_state.get_state() == "chat" and chat_readable == True:
+        chat_cleaned = re.sub(r"[^가-힣A-Za-z0-9\s]+", " ", data["content"])
+        if len(chat_cleaned) > 7 and len(chat_cleaned) < 100:
+            validate_result = api_chatgpt.validate_chat_gpt(chat_cleaned)
+            if 'True' in validate_result or 'true' in validate_result:
+                user_nickname = database.find_user_nickname(int(data["user_seq"]))
+                chat_reaction = user_nickname + "님 " + chat_cleaned + "이라고 해주셨어요."
+                chat_reaction = chat_reaction + api_chatgpt.chat_reaction_gpt(chat_cleaned)
+                chat_tts_filename = f"chat{count}.mp3"
+                count = count + 1
+                os.path.join(tts_path, chat_tts_filename)
+                generate_tts_test(chat_reaction, chat_tts_filename)
+                tts_path = await my_util.create_mp3_url("chat", chat_tts_filename)
+                chat_length = len(AudioSegment.from_file(chat_tts_filename))
+                playlist = [
+                    {"type": "mp3", "path" : tts_path, "length" : chat_length}
+                    ]
+                radio_state = {
+                    "state": "chat",
+                    "playlist": playlist
+                }
+                await kafka_handler.send_state("radioState", radio_state)
 
 ##############################################
