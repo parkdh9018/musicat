@@ -37,6 +37,7 @@ async def startup_event():
     asyncio.create_task(kafka_handler.consume_verify_story("verifyStory"))
     asyncio.create_task(kafka_handler.consume_chat("chat"))
     asyncio.create_task(kafka_handler.consume_music("musicRequest"))
+    asyncio.create_task(kafka_handler.consume_finish_chat("finishChat"))
 
 ##############################################
 
