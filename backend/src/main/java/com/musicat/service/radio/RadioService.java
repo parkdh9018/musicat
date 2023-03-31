@@ -39,6 +39,8 @@ public class RadioService {
 
   private static final Logger logger = LoggerFactory.getLogger(RadioService.class);
 
+
+
   /**
    * kafka로부터 현재 라디오 상태와 재생할 음원들의 정보를 불러옵니다. 받아온 데이터는 파싱하고 저장합니다.
    *
@@ -52,6 +54,7 @@ public class RadioService {
       parseJsonMessageAndSetState(message);
     }
   }
+
 
   /**
    * Springboot App의 라디오 상태를 지우는 함수.
@@ -76,7 +79,10 @@ public class RadioService {
       JsonNode jsonNode = objectMapper.readTree(message);
       if (jsonNode.has("state")) {
         JsonNode currentStateNode = jsonNode.get("state");
-        currentState = currentStateNode.asText();
+        String tempState = currentStateNode.asText()
+        if (!tempState.equals(currentState))
+          playlist.clear();
+        currentState = tempState;
       }
       if (jsonNode.has("playlist")) {
         JsonNode playlistNode = jsonNode.get("playlist");
