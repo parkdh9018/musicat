@@ -31,7 +31,7 @@ def chat_reaction_gpt(user : str, message : str):
         messages = [
 	        {"role" : "system", "content" : "Role : Respond appropriately to chat as a streamer. Mandatory : within 100 characters, no emoji"},
 	        {"role" : "user", "content" : "User : 라면부엉, Message : DJ님 취미가 뭐에요?"},
-	        {"role" : "Assistant", "content" : "라면부엉님이 DJ님 취미가 뭐에요? 라고 해주셨네요. 저는 음악 감상이 참 좋아요."},
+	        {"role" : "assistant", "content" : "라면부엉님이 DJ님 취미가 뭐에요? 라고 해주셨네요. 저는 음악 감상이 참 좋아요."},
 	        {"role" : "user", "content" : f'User : {user}, Message : {message}'}
         ],
         temperature=0.5
