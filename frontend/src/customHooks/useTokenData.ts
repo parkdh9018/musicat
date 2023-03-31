@@ -6,7 +6,7 @@ export interface UserTokenData {
 }
 
 export function useTokenData(): UserTokenData | undefined {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   if (!token) return undefined;
   const base64Payload = token.split(".")[1];
   const payload = Buffer.from(base64Payload, "base64");

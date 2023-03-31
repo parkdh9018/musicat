@@ -46,7 +46,7 @@ export const Myinfo = () => {
     },
     {
       onSuccess: (data) => {
-        localStorage.setItem("token", data.token);
+        sessionStorage.setItem("token", data.token);
         loginUser(setUserInfo);
         setInput("");
         useCustomToast("success", "닉네임 변경 성공!");
