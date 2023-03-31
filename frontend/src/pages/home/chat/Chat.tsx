@@ -13,7 +13,6 @@ import { v4 as uuidv4 } from "uuid";
 import { useCustomToast } from "@/customHooks/useCustomToast";
 import { chatListState } from "@/atoms/chat.atom";
 import { getPeopleCnt } from "@/connect/axios/queryHooks/chat";
-import anime from "animejs";
 
 export const Chat = () => {
   // 싱글톤 웹소켓 객채를 소환
@@ -31,10 +30,9 @@ export const Chat = () => {
   const [message, setMessage] = useState<string>("");
   const [chatList, setChatList] = useRecoilState(chatListState);
   const [peopleCnt, setPeopleCnt] = useState(0);
-  
+
   const messageBoxRef = useRef<HTMLDivElement>(null);
   const cntRef = useRef<HTMLDivElement>(null);
-
 
   /** 스크롤을 맨 밑으로 고정 */
   const scrollToBottom = () => {
@@ -50,34 +48,30 @@ export const Chat = () => {
 
   // 주기적으로 사용자 숫자 불러옴
 
-
-
-
   useEffect(() => {
-    getPeopleCnt.then(({data}) => {
-      setPeopleCnt(data)
-    })
+    getPeopleCnt.then(({ data }) => {
+      setPeopleCnt(data);
+    });
     const interval = setInterval(() => {
-      getPeopleCnt.then(({data}) => {
-        setPeopleCnt(data)
-      })
+      getPeopleCnt.then(({ data }) => {
+        setPeopleCnt(data);
+      });
     }, 5000); // 5초 간격으로 실행
 
     return () => {
-      clearInterval(interval)
-    }
+      clearInterval(interval);
+    };
   }, []);
 
   const clickSubmit = () => {
-
-    if (!userInfo?.userNick) {
-      useCustomToast("error", "로그인이 필요합니다");
+    if (!userInfo) {
+      useCustomToast("error", "로그인이 필요한 서비스 입니다");
       return;
-    } 
+    }
 
     sendData("/app/chat", {
-      senderSeq: userInfo?.userSeq,
-      sender: userInfo?.userNick,
+      senderSeq: userInfo.userSeq,
+      sender: userInfo.userNick,
       content: message,
       badgeSeq: 1,
       isBan: false,
@@ -127,7 +121,9 @@ export const Chat = () => {
     <div className={style.chat_component}>
       <div className={style.users}>
         <FontAwesomeIcon icon={faUsers} />
-        <div className={style.user_num} ref={cntRef}>{peopleCnt}</div>
+        <div className={style.user_num} ref={cntRef}>
+          {peopleCnt}
+        </div>
       </div>
       <div className={style.chat_list} ref={messageBoxRef}>
         {chatList.map((v) => (
