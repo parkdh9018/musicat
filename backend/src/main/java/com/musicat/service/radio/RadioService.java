@@ -49,11 +49,7 @@ public class RadioService {
     if (message != null) {
       logger.debug("수신한 라디오 상태 데이터 : {} ", message);
       acknowledgment.acknowledge();
-      if (!currentState.equals("chat")) {
-        parseJsonMessageAndSetState(message);
-      } else {
-
-      }
+      parseJsonMessageAndSetState(message);
     }
   }
 
@@ -125,7 +121,7 @@ public class RadioService {
       logger.debug("서버에서 상태를 받아올 수 없습니다. 서버에 요청을 보냅니다.");
       try {
         count = 5;
-        chatCount = 180;
+        chatCount = 50;
         kafkaProducerService.send("finishState", "idle");
       } catch (JsonProcessingException e) {
         throw new RuntimeException(e);
@@ -136,9 +132,10 @@ public class RadioService {
   }
 
   public void chatProcess() {
-
+    logger.debug("채팅 프로세스 들어옴");
     if (checkChatChange()) {
       CurrentSoundDto currentSound = getCurrentSound();
+      logger.debug(currentSound.toString());
       currentSound.setPlayedTime(0L);
       SocketBaseDto<CurrentSoundDto> socketBaseDto = SocketBaseDto.<CurrentSoundDto>builder()
           .type("RADIO")
@@ -150,7 +147,7 @@ public class RadioService {
     if (chatCount > 0) {
       --chatCount;
     } else if (chatCount == 0) {
-      logger.debug("채팅 수신을 멈춥니다. 서버에 요청을 보냅니다.");
+      logger.debug("채팅 응답 생성을 멈춥니다. 서버에 요청을 보냅니다.");
       try {
         kafkaProducerService.send("finishChat", "finish");
         --chatCount;
@@ -162,7 +159,7 @@ public class RadioService {
         try {
           kafkaProducerService.send("finishState", "chat");
           clearState();
-          chatCount = 20;
+          chatCount = 50;
         } catch (JsonProcessingException e) {
           throw new RuntimeException(e);
         }
@@ -218,7 +215,7 @@ public class RadioService {
    */
   public void radioProcess() {
     count = 5;
-    chatCount = 20;
+    chatCount = 50;
     if (checkSoundChange()) {
       CurrentSoundDto currentSound = getCurrentSound();
       currentSound.setPlayedTime(0L);
