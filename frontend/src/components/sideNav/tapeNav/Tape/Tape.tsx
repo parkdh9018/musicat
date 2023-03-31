@@ -1,27 +1,29 @@
 import anime from "animejs";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import style from "./Tape.module.css";
 
 export const Tape = () => {
   let an: anime.AnimeInstance;
 
-  const textWidth = 200;
-  const textContent = "뉴진스 - ditto";
+  const textContent = "뉴진스 - ditto ffff";
   const BackGroundImage_src = "/img/tape/background_img_test.png";
 
   useEffect(() => {
+
+    const width = textContent.length * 11;
+
     an = anime({
       targets: `.${style.gearImg}`,
       rotate: "361",
       easing: "linear",
       loop: true,
-      duration: 3000,
+      duration: 5000,
     });
 
     anime({
       targets: `.${style.text}`,
-      translateX: textWidth,
-      duration: 6000,
+      translateX: -width,
+      duration: 4000,
       round: 1, // round the text to integer values
       easing: "linear",
       loop: true,
@@ -38,9 +40,9 @@ export const Tape = () => {
 
   return (
     <>
-      <div className={style.tape}>
+      <div className={style.tape} >
         <div className={style.songName}>
-          <div className={style.text}>{textContent}</div>
+          <div className={style.text} style={{fontFamily: "TapeFont"}} >{textContent}</div>
         </div>
         <img
           className={style.tapeImg + " " + style.fixedRatio}
