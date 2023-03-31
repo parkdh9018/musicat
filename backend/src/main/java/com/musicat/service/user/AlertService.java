@@ -4,8 +4,10 @@ import com.musicat.data.dto.alert.request.AlertAllModifyRequestDto;
 import com.musicat.data.dto.alert.response.AlertDetailResponseDto;
 import com.musicat.data.dto.alert.request.AlertInsertRequestDto;
 import com.musicat.data.dto.alert.response.AlertListResponseDto;
+import com.musicat.data.dto.user.UserInfoJwtDto;
 import com.musicat.data.entity.user.Alert;
 import com.musicat.data.repository.user.AlertRepository;
+import com.musicat.jwt.TokenProvider;
 import com.musicat.util.builder.AlertBuilderUtil;
 import com.musicat.util.ConstantUtil;
 import java.util.List;
@@ -23,6 +25,9 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class AlertService {
+
+  // token provider
+  private final TokenProvider tokenProvider;
 
   // repository 정의
   private final AlertRepository alertRepository;
@@ -67,20 +72,21 @@ public class AlertService {
   /**
    * 알림 전체 조회 (userSeq 기준)
    *
-   * @param userSeq
+   * @param token
    * @return List<Alert>
    * @throws Exception
    */
-  public Page<AlertListResponseDto> getAlertList(long userSeq, String query, int page) {
+  public Page<AlertListResponseDto> getAlertList(String token, String query, int page) {
+    UserInfoJwtDto userInfo = tokenProvider.getUserInfo(token);
 
     PageRequest pageable = PageRequest.of(page, constantUtil.ALERT_PAGE_SIZE);
     // Page 타입으로 리턴
     Page<Alert> alertListPage = null;
     if (query.equals("")) { // 아무것도 입력하지 않은 경우
-      alertListPage = alertRepository.findAllByUserSeq(userSeq, pageable);
+      alertListPage = alertRepository.findAllByUserSeq(userInfo.getUserSeq(), pageable);
     } else { // 무언가 입력한 경우
       alertListPage = alertRepository.findAllByUserSeqAndAlertTitleContainingOrAlertContentContaining(
-          userSeq, query, query, pageable);
+          userInfo.getUserSeq(), query, query, pageable);
     }
 
     List<AlertListResponseDto> alertListDtos = alertListPage.getContent().stream()
@@ -165,37 +171,37 @@ public class AlertService {
     String content = "";
 
     // 1. 출석 츄르 지급
-    if (alertType.equals("today")) {
+    if (alertType.equals(constantUtil.ALERT_TODAY_TYPE)) {
       title = constantUtil.ALERT_TODAY_TITLE;
       content = constantUtil.ALERT_TODAY_CONTENT;
     }
     // 2. 채팅 금지
-    else if (alertType.equals("chattingBan")) {
+    else if (alertType.equals(constantUtil.ALERT_CHATTING_BAN_TYPE)) {
       title = constantUtil.ALERT_CHATTING_BAN_TITLE;
       content = constantUtil.ALERT_CHATTING_BAN_CONTENT;
     }
     // 3. 채팅 금지 해재
-    else if (alertType.equals("notChattingBan")) {
+    else if (alertType.equals(constantUtil.ALERT_NOT_CHATTING_BAN_TYPE)) {
       title = constantUtil.ALERT_NOT_CHATTING_BAN_TITLE;
       content = constantUtil.ALERT_NOT_CHATTING_BAN_CONTENT;
     }
     // 4. 활동 금지
-    else if (alertType.equals("ban")) {
+    else if (alertType.equals(constantUtil.ALERT_BAN_TYPE)) {
       title = constantUtil.ALERT_BAN_TITLE;
       content = constantUtil.ALERT_BAN_CONTENT;
     }
     // 5. 활동 금지 해재
-    else if (alertType.equals("notBan")) {
+    else if (alertType.equals(constantUtil.ALERT_NOT_BAN_TYPE)) {
       title = constantUtil.ALERT_NOT_BAN_TITLE;
       content = constantUtil.ALERT_NOT_BAN_CONTENT;
     }
     // 6. 신청곡 재생
-    else if (alertType.equals("music")) {
+    else if (alertType.equals(constantUtil.ALERT_MUSIC_TYPE)) {
       title = constantUtil.ALERT_MUSIC_TITLE;
       content = constantUtil.ALERT_MUSIC_CONTENT;
     }
     // 7. 사연 당첨
-    else if (alertType.equals("story")) {
+    else if (alertType.equals(constantUtil.ALERT_STORY_TYPE)) {
       title = constantUtil.ALERT_STORY_TITLE;
       content = constantUtil.ALERT_STORY_CONTENT;
     }

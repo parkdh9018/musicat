@@ -229,7 +229,7 @@ public class UserService {
       userAttendanceRepository.save(userAttendance);
 
       // 알림 저장
-      alertService.insertAlertByAlertType(user.getUserSeq(), "today");
+      alertService.insertAlertByAlertType(user.getUserSeq(), constantUtil.ALERT_TODAY_TYPE);
     }
 
     return user;
