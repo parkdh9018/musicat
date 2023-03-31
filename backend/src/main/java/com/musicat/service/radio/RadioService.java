@@ -49,11 +49,7 @@ public class RadioService {
     if (message != null) {
       logger.debug("수신한 라디오 상태 데이터 : {} ", message);
       acknowledgment.acknowledge();
-      if (!currentState.equals("chat")) {
-        parseJsonMessageAndSetState(message);
-      } else {
-
-      }
+      parseJsonMessageAndSetState(message);
     }
   }
 
