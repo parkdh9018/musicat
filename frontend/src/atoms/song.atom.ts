@@ -19,7 +19,7 @@ export const musicState = atom<Music>({
     type: "",
     path: "",
     startTime: 0,
-    playedTime: 0,
+    playedTime: -10,
     length: 0,
   },
 });
