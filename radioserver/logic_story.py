@@ -1,69 +1,97 @@
 import database
-import tts
-import chatgpt
+import api_naver_tts
+import api_chatgpt
 from pydub import AudioSegment
 import json
 import asyncio
 import os
 import my_util
+from my_logger import setup_logger
+
+logger = setup_logger()
+
+##############################################
 
 async def process_verify_story_data(data):
+    """
+    kafka로 넘어온 사연 정보를 이용해 사연을 검증하고, 검증에 통과하면 GPT 응답을 생성합니다.
+    """
     story_seq = int(data["storySeq"])
-    print(f'[Story] : 사연 검증, GPT 응답 생성중 (storySeq = {story_seq})')
-    story_content = data["storyContent"]
+    logger.info(f'[Story] : 사연 검증, GPT 응답 생성중 (storySeq = {story_seq})')
     user_nickname = database.find_user_nickname(data["userSeq"])
+    story_content = data["storyContent"]
     music_title = data["storyMusicTitle"]
     music_artist = data["storyMusicArtist"]
     story_cleaned = await my_util.parse_story_content(json.loads(story_content))
+
     if len(story_cleaned) > 500:
         database.verify_story(story_seq, 0, 1)
-        print(f'[Story] : GPT 응답 생성 실패 - 사연 길이 초과 (storySeq = {story_seq})')
+        logger.info(f'[Story] : GPT 응답 생성 실패 - 사연 길이 초과 (storySeq = {story_seq})')
         return
-    validate_result = chatgpt.validate_story_gpt(story_cleaned)
-    print(validate_result)
+    
+    validate_result = api_chatgpt.validate_story_gpt(story_cleaned)
+
     if 'True' in validate_result or 'true' in validate_result:
-        story_reaction = chatgpt.story_reaction_gpt(story_cleaned)
         music_introduce = user_nickname + "님의 신청곡은" + music_artist + "의 " + music_title + "입니다."
-        story_outro = chatgpt.music_outro_gpt(music_artist, music_title, user_nickname)
-        database.update_story(story_seq, story_reaction + music_introduce, story_outro)
+        story_reaction = api_chatgpt.story_reaction_gpt(story_cleaned)
+        story_outro = api_chatgpt.music_outro_gpt(music_artist, music_title, user_nickname)
+        story_intro = f'{story_reaction}. {music_introduce}'
+
+        database.update_story(story_seq, story_intro, story_outro)
         database.verify_story(story_seq, 1, 0)
-        print(f'[Story] : GPT 응답 생성 완료 (storySeq = {story_seq})')
+
+        logger.info(f'[Story] : GPT 응답 생성 완료 (storySeq = {story_seq})')
     else:
         database.verify_story(story_seq, 0, 1)
-        print(f'[Story] : GPT 응답 생성 실패 - 사연 적합도 낮음 (storySeq = {story_seq})')
+
+        logger.info(f'[Story] : GPT 응답 생성 실패 - 사연 적합도 낮음 (storySeq = {story_seq})')
+
+##############################################
 
 async def process_verify_remain_story_data(data):
+    """
+    database에서 찾아온 사연 정보를 이용해 사연을 검증하고, 검증에 통과하면 GPT 응답을 생성합니다.
+    """
     story_seq = int(data["story_seq"])
-    print(f'[Story] : 사연 검증, GPT 응답 생성중 (storySeq = {story_seq})')
-    story_content = data["story_content"]
+    logger.info(f'[Story] : 사연 검증, GPT 응답 생성중 (storySeq = {story_seq})')
     user_nickname = database.find_user_nickname(data["user_seq"])
+    story_content = data["story_content"]
     music_title = data["story_music_title"]
     music_artist = data["story_music_artist"]
-    print(user_nickname)
-    print(music_title)
-    print(music_artist)
+
     story_cleaned = await my_util.parse_story_content(json.loads(story_content))
     if len(story_cleaned) > 500:
         database.verify_story(story_seq, 0, 1)
-        print(f'[Story] : GPT 응답 생성 실패 - 사연 길이 초과 (storySeq = {story_seq})')
+        logger.info(f'[Story] : GPT 응답 생성 실패 - 사연 길이 초과 (storySeq = {story_seq})')
         return
-    validate_result = chatgpt.validate_story_gpt(story_cleaned)
-    print(validate_result)
+    
+    validate_result = api_chatgpt.validate_story_gpt(story_cleaned)
+
     if 'True' in validate_result or 'true' in validate_result:
-        story_reaction = chatgpt.story_reaction_gpt(story_cleaned)
         music_introduce = user_nickname + "님의 신청곡은" + music_artist + "의 " + music_title + "입니다."
-        story_outro = chatgpt.music_outro_gpt(music_artist, music_title, user_nickname)
-        database.update_story(story_seq, story_reaction + music_introduce, story_outro)
+        story_reaction = api_chatgpt.story_reaction_gpt(story_cleaned)
+        story_outro = api_chatgpt.music_outro_gpt(music_artist, music_title, user_nickname)
+        story_intro = f'{story_reaction}. {music_introduce}'
+
+        database.update_story(story_seq, story_intro, story_outro)
         database.verify_story(story_seq, 1, 0)
-        print(f'[Story] : GPT 응답 생성 완료 (storySeq = {story_seq})')
+
+        logger.info(f'[Story] : GPT 응답 생성 완료 (storySeq = {story_seq})')
     else:
         database.verify_story(story_seq, 0, 1)
-        print(f'[Story] : GPT 응답 생성 실패 - 사연 적합도 낮음 (storySeq = {story_seq})')
+
+        logger.info(f'[Story] : GPT 응답 생성 실패 - 사연 적합도 낮음 (storySeq = {story_seq})')
+
+##############################################
 
 async def process_story_state():
+    """
+    사연의 intro와 outro에 대한 음성 파일을 생성하고 상태 정보를 반환합니다
+    """
     story = database.find_story()
     if not story:
         return None
+    logger.info(f'[Story Process] 사연 상태를 생성합니다 {story["story_seq"]}')
     
     user_nickname = database.find_user_nickname(story["user_seq"])
     story_content = story["story_content"]
@@ -81,21 +109,22 @@ async def process_story_state():
     story_outro_filename = os.path.join(tts_path, "outro.mp3")
 
     # TTS 생성
-    await tts.generate_tts_clova(story_opening, story_opening_filename, "nihyun")
-    await tts.generate_tts_clova(story_reaction, story_reaction_filename, "nihyun")
-    await tts.generate_tts_clova(story_outro, story_outro_filename, "nihyun")
+    await api_naver_tts.generate_tts_clova(story_opening, story_opening_filename, "nihyun")
+    await api_naver_tts.generate_tts_clova(story_reaction, story_reaction_filename, "nihyun")
+    await api_naver_tts.generate_tts_clova(story_outro, story_outro_filename, "nihyun")
 
-    # Story TTS 생성
+    # Story TTS 생성 후 Merge
     story_tts_list = []
     story_content_list = json.loads(story_content)
     for i in range(len(story_content_list)):
         current_text = story_content_list[i]
-        await tts.generate_tts_clova(current_text['content'], os.path.join(tts_path, f"{i}.mp3"), current_text['speaker'])
+        await api_naver_tts.generate_tts_clova(current_text['content'], os.path.join(tts_path, f"{i}.mp3"), current_text['speaker'])
         story_tts_list.append(os.path.join(tts_path, f'{i}.mp3'))
     merged_story_tts = await merge_audio(story_tts_list, 500)
     merged_story_tts_filename = os.path.join(tts_path, 'merged_story.mp3')
     merged_story_tts.export(merged_story_tts_filename, format='mp3')
 
+    # 생성된 음성파일 merge
     intro_tts_list = []
     intro_tts_list.append(story_opening_filename)
     intro_tts_list.append(merged_story_tts_filename)
@@ -126,7 +155,12 @@ async def process_story_state():
         os.remove(story_tts_path)
     return data
 
+##############################################
+
 async def merge_audio(files, term=2000):
+    """
+    오디오를 합성합니다
+    """
     merged = None
     for file in files:
         if merged is None:
@@ -135,3 +169,5 @@ async def merge_audio(files, term=2000):
             merged += AudioSegment.silent(duration=term)
             merged += AudioSegment.from_file(file)
     return merged
+
+##############################################

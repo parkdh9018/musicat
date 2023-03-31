@@ -1,12 +1,17 @@
 # from gtts import gTTS
-import os
-import sys
-import urllib.request
 import urllib.parse
 import aiohttp
 from shared_env import client_id, client_secret
+from my_logger import setup_logger
 
-async def generate_tts_clova(text, path, speaker):
+logger = setup_logger()
+
+##############################################
+
+async def generate_tts_clova(text : str, path : str, speaker : str):
+    """
+    네이버 클로바 TTS API를 사용해 TTS를 생성합니다
+    """
     val = {
         "speaker": speaker,
         "volume": "0",
@@ -25,10 +30,12 @@ async def generate_tts_clova(text, path, speaker):
         async with session.post(url, headers=headers, data=val) as response:
             rescode = response.status
             if rescode == 200:
-                print(f"{path}.mp3 저장")
+                logger.info(f"[Naver Clova TTS]{path}.mp3 저장")
                 response_body = await response.read()
                 with open(path, 'wb') as f:
                     f.write(response_body)
             else:
-                print(f"Error Code: {rescode}")
-                print(await response.text())
+                logger.info(f"[Naver Clova TTS] Error Code: {rescode}")
+                logger.info(await response.text())
+
+##############################################
