@@ -13,17 +13,17 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class YoutubeApiConfig {
 
-    @Value("${youtube.client.api-key}")
-    private String apiKey;
+  @Value("${youtube.client.api-key}")
+  private String apiKey;
 
-    @Bean
-    public YouTube youtubeApi() throws GeneralSecurityException, IOException {
-        YouTube.Builder builder = new YouTube.Builder(
-                GoogleNetHttpTransport.newTrustedTransport(),
-                GsonFactory.getDefaultInstance(),
-                null);
-        builder.setApplicationName("musicat");
-        builder.setYouTubeRequestInitializer(new YouTubeRequestInitializer(apiKey));
-        return builder.build();
-    }
+  @Bean
+  public YouTube youtubeApi() throws GeneralSecurityException, IOException {
+    YouTube.Builder builder = new YouTube.Builder(
+        GoogleNetHttpTransport.newTrustedTransport(),
+        GsonFactory.getDefaultInstance(),
+        null);
+    builder.setApplicationName("musicat");
+    builder.setYouTubeRequestInitializer(new YouTubeRequestInitializer(apiKey));
+    return builder.build();
+  }
 }
