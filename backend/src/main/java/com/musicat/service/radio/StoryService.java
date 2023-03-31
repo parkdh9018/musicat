@@ -8,6 +8,7 @@ import com.musicat.data.entity.radio.Story;
 import com.musicat.data.repository.radio.StoryRepository;
 import com.musicat.service.kafka.KafkaProducerService;
 import com.musicat.util.ConstantUtil;
+import com.musicat.util.RegexUtil;
 import com.musicat.util.builder.StoryBuilderUtil;
 import java.util.Optional;
 import javax.persistence.EntityExistsException;
@@ -37,6 +38,9 @@ public class StoryService {
   // Repository 정의
   private final StoryRepository storyRepository;
 
+  // Util 정의
+  private final RegexUtil regexUtil;
+
 
   /**
    * 사연 신청
@@ -55,6 +59,14 @@ public class StoryService {
        * 사연 Seq, 사용자Seq, 사연 제목, 사연 내용
        */
       StoryKafkaDto storyKafkaDto = storyBuilderUtil.buildStoryKafkaDto(story);
+
+
+      logger.debug("사연 신청곡 [BEFORE]. 제목 : {}, 가수 : {}", storyKafkaDto.getStoryMusicTitle(), storyKafkaDto.getStoryMusicArtist());
+
+      storyKafkaDto.setStoryMusicTitle(regexUtil.removeTextAfterSpecialChar(storyKafkaDto.getStoryMusicTitle()));
+      storyKafkaDto.setStoryMusicArtist(regexUtil.removeTextAfterSpecialChar(storyKafkaDto.getStoryMusicArtist()));
+
+      logger.debug("사연 신청곡 [AFTER]. 제목 : {}, 가수 : {}", storyKafkaDto.getStoryMusicTitle(), storyKafkaDto.getStoryMusicArtist());
 
       kafkaProducerService.send("verifyStory", storyKafkaDto);
 
@@ -107,5 +119,5 @@ public class StoryService {
 
     storyRepository.delete(story); // 사연 삭제
   }
-  
+
 }

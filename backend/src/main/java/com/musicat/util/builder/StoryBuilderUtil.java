@@ -56,7 +56,7 @@ public class StoryBuilderUtil {
         .userSeq(story.getUserSeq())
         .storyTitle(story.getStoryTitle())
         .storyContent(story.getStoryContent())
-        .storyMusicTitle(story.getStoryTitle())
+        .storyMusicTitle(story.getStoryMusicTitle())
         .storyMusicArtist(story.getStoryMusicArtist())
         .build();
   }
