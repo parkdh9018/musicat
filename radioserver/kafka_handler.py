@@ -31,6 +31,8 @@ async def consume_finish_state(topic: str):
     finally:
         await consumer.stop()
 
+##############################################
+
 async def consume_finish_chat(topic: str):
     consumer = AIOKafkaConsumer(
         topic,
@@ -69,8 +71,10 @@ async def consume_chat(topic: str):
     )
     await consumer.start()
     try:
-        async for msg in consumer:
-            await logic_chat.process_chat_data(msg.value)
+        if radio_health.get_state() is True:
+            await logic_chat.process_chat_data()
+        else:
+            await logic_test.process_chat_data()
     finally:
         await consumer.stop()
 
