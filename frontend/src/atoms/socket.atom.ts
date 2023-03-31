@@ -1,7 +1,7 @@
-import { useRecoilCallback } from "recoil";
+import { useRecoilCallback, useRecoilValue } from "recoil";
 import { changeChatList, Chat, chatListState } from "./chat.atom";
 import SocketManager from "@/connect/socket/socket";
-import { Music, musicState } from "./song.atom";
+import { Music, musicState, playNowState } from "./song.atom";
 
 interface BaseResponse {
   type: string;
@@ -10,7 +10,7 @@ interface BaseResponse {
 }
 
 const socketManager = SocketManager.getInstance();
-const stompClient = socketManager.connect();
+let stompClient = socketManager.connect();
 
 // 소켓 연결
 export const socketConnection = () => {
@@ -21,8 +21,11 @@ export const socketConnection = () => {
         stompClient.debug = () => {
           return null;
         };
+        stompClient = socketManager.connect();
 
         stompClient.connect({}, () => {
+          console.log("연결 시작");
+
           stompClient.subscribe("/topic", (message) => {
             dataClassification(set, JSON.parse(message.body));
           });
@@ -63,6 +66,7 @@ const dataClassification = (set: any, res: BaseResponse): void => {
       set(musicState, () => res.data);
       break;
     default:
+      undefined;
       break;
   }
 };

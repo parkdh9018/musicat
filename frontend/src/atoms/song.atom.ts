@@ -23,3 +23,8 @@ export const musicState = atom<Music>({
     length: 0,
   },
 });
+
+export const playNowState = atom({
+  key: "playNow",
+  default: true,
+});

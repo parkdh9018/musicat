@@ -9,7 +9,16 @@ export function getPeopleCnt() {
       const { data } = await $.get("/chat/count");
       return data;
     },
-    { refetchInterval: 5000 }
+    {
+      initialData(): number | null {
+        const data = async (): Promise<number> => {
+          const { data } = await $.get("/chat/count");
+          return data;
+        };
+        return Number(data) || null;
+      },
+      refetchInterval: 5000,
+    }
   );
 
   return { data, isLoading };
