@@ -21,9 +21,12 @@
     height: 225px;
     color: var(--font-color);
 
-    p {
-      margin-top: 8px;
-      margin-bottom: 8px;
+    div {
+      margin-top: 2px;
+    }
+    span {
+      display: inline-block;
+      margin-top: 2px;
     }
 
     &::-webkit-scrollbar {
