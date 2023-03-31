@@ -136,22 +136,26 @@ public class AlertService {
   /**
    * 안읽은 알림 개수 조회
    *
-   * @param userSeq
+   * @param token
    * @return
    */
-  public long getAlertCountByAlertIsReadFalse(long userSeq) {
-    return alertRepository.countByUserSeqAndAlertIsReadFalse(userSeq);
+  public long getAlertCountByAlertIsReadFalse(String token) {
+    UserInfoJwtDto userInfo = tokenProvider.getUserInfo(token);
+    return alertRepository.countByUserSeqAndAlertIsReadFalse(userInfo.getUserSeq());
   }
 
   /**
    * 안읽은 알림 전체 읽음 처리
    *
-   * @param userSeq
+   * @param token
    * @param alertAllModifyRequestDto
    */
   @Transactional
-  public void modifyAllAlert(long userSeq, AlertAllModifyRequestDto alertAllModifyRequestDto) {
-    List<Alert> alertList = alertRepository.findAllByUserSeq(userSeq)
+  public void modifyAllAlert(String token, AlertAllModifyRequestDto alertAllModifyRequestDto) {
+
+    UserInfoJwtDto userInfo = tokenProvider.getUserInfo(token);
+
+    List<Alert> alertList = alertRepository.findAllByUserSeq(userInfo.getUserSeq())
         .orElseThrow(() -> new EntityNotFoundException("조회 결과가 없습니다."));
 
     for (Alert alert : alertList) {

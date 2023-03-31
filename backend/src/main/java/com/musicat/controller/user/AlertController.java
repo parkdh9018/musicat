@@ -94,29 +94,29 @@ public class AlertController {
 //                .body(alertService.getAlertListByCondition(condition, userSeq, query));
 //    }
 
-  /**
-   * 안읽은 알림 개수 조회
-   *
-   * @param userSeq
-   * @return
-   */
-  @GetMapping("/unread/{userSeq}")
-  public ResponseEntity<?> getAlertCountByAlertIsReadFalse(@PathVariable long userSeq) {
-    return ResponseEntity.ok().body(alertService.getAlertCountByAlertIsReadFalse(userSeq));
-  }
+//  /**
+//   * 안읽은 알림 개수 조회
+//   *
+//   * @param token
+//   * @return
+//   */
+//  @GetMapping("/unread")
+//  public ResponseEntity<?> getAlertCountByAlertIsReadFalse(@RequestHeader("token") String token) {
+//    return ResponseEntity.ok().body(alertService.getAlertCountByAlertIsReadFalse(token));
+//  }
 
   /**
    * 안읽은 알림 전체 읽음 처리
    *
-   * @param userSeq
+   * @param token
    * @param alertAllModifyRequestDto
    * @return
    */
-  @PatchMapping("/unread/{userSeq}")
-  public ResponseEntity<?> modifyAllAlert(@PathVariable long userSeq, @RequestBody
+  @PatchMapping("/unread")
+  public ResponseEntity<?> modifyAllAlert(@RequestHeader("token") String token, @RequestBody
   AlertAllModifyRequestDto alertAllModifyRequestDto) {
 
-    alertService.modifyAllAlert(userSeq, alertAllModifyRequestDto);
+    alertService.modifyAllAlert(token, alertAllModifyRequestDto);
     return ResponseEntity.ok().build();
   }
 
