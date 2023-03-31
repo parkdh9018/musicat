@@ -1,0 +1,44 @@
+.inventory_modal {
+  width: 60vw;
+  height: 60vh;
+}
+.inventory_modal .item_flex {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.inventory_modal .item_flex .img_box {
+  display: inline-block;
+  margin-left: 8px;
+  margin-right: 8px;
+}
+.inventory_modal .item_flex .img_box .img {
+  display: inline-block;
+  width: 100%;
+  margin: 10px 0;
+  border-radius: 20px;
+  border: 3px solid rgba(0, 0, 0, 0);
+  box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+.inventory_modal .item_flex .img_box .img:hover {
+  border: 3px solid var(--blue-color);
+}
+.inventory_modal .item_flex .img_box .badge {
+  height: 30px;
+  width: 30px;
+  margin-top: 15vh;
+  border: 1px solid white;
+  cursor: pointer;
+}
+.inventory_modal .item_flex .img_box .selected {
+  border: 3px solid var(--blue-color);
+}
+.inventory_modal .cal_box {
+  margin-top: 30px;
+  text-align: center;
+  border-bottom: 30px solid rgba(0, 0, 0, 0);
+}
+.inventory_modal .cal_box .red {
+  color: var(--red-color);
+}/*# sourceMappingURL=InventoryModal.module.css.map */

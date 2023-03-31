@@ -1,3 +1,14 @@
+# Logs
+dist-ssr
+*.local
+
+# Editor directories and files
+.idea
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
 # Created by https://www.toptal.com/developers/gitignore/api/node,react,visualstudio,windows,macos,linux
 # Edit at https://www.toptal.com/developers/gitignore?templates=node,react,visualstudio,windows,macos,linux
 

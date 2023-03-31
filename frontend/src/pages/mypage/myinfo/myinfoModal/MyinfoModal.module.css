@@ -1,0 +1,17 @@
+.myinfoModal {
+  padding: 2% 30px;
+  width: 450px;
+}
+.myinfoModal p {
+  color: var(--fade-font-color);
+}
+.myinfoModal span {
+  margin-left: 30px;
+  color: var(--font-color);
+}
+.myinfoModal .green {
+  color: var(--green-color);
+}
+.myinfoModal .red {
+  color: var(--red-color);
+}/*# sourceMappingURL=MyinfoModal.module.css.map */

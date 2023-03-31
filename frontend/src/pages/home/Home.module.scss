@@ -1,0 +1,27 @@
+@use "../../_var.scss";
+
+.home {
+  max-width: var.$최대넓이;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-grow: 1;
+
+  .leftTab {
+    flex-grow: 1;
+    padding: 0% 1% 1% 1%;
+  }
+
+  .rightTab {
+    width: 67%;
+    min-height: calc(60vh - 60px);
+    padding: 1% 1% 1% 0%;
+
+    .content {
+      width: 100%;
+      min-height: 100%;
+      background-color: var(--background-color);
+    }
+  }
+}
