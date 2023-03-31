@@ -26,12 +26,17 @@ import java.util.Optional;
 public class AdminService {
 
 
-  private final ConstantUtil constantUtil;
+  // Repository
   private final UserRepository userRepository;
-  private final UserBuilderUtil userBuilderUtil;
   private final NoticeRepository noticeRepository;
   private final AlertService alertService;
+
+  // Util
+  private final UserBuilderUtil userBuilderUtil;
   private final NoticeBuilderUtil noticeBuilderUtil;
+  private final ConstantUtil constantUtil;
+
+
 
 
   /**
@@ -72,7 +77,7 @@ public class AdminService {
       user.setUserIsChattingBan(true);
 
       // 채팅 금지 알림
-      alertService.insertAlertByAlertType(userSeq, "chattingBan");
+      alertService.insertAlertByAlertType(userSeq, constantUtil.ALERT_CHATTING_BAN_TYPE);
     }
   }
 
@@ -87,7 +92,7 @@ public class AdminService {
       user.setUserIsChattingBan(false);
 
       // 채팅 금지 해재 알림
-      alertService.insertAlertByAlertType(userSeq, "notChattingBan");
+      alertService.insertAlertByAlertType(userSeq, constantUtil.ALERT_NOT_CHATTING_BAN_TYPE);
     }
   }
 
@@ -105,7 +110,7 @@ public class AdminService {
       user.setUserIsBan(true);
 
       // 활동 금지 알림
-      alertService.insertAlertByAlertType(userSeq, "ban");
+      alertService.insertAlertByAlertType(userSeq, constantUtil.ALERT_BAN_TYPE);
     }
   }
 
@@ -119,7 +124,7 @@ public class AdminService {
       User user = userRepository.findById(userSeq).orElseThrow();
       user.setUserIsBan(false);
 
-      alertService.insertAlertByAlertType(userSeq, "notBan");
+      alertService.insertAlertByAlertType(userSeq, constantUtil.ALERT_NOT_BAN_TYPE);
     }
   }
 
@@ -133,9 +138,6 @@ public class AdminService {
     User user = userRepository.findById(noticeWriteDto.getUserSeq())
         .orElseThrow(() -> new RuntimeException());
     Notice notice = noticeBuilderUtil.noticeWriteDtoToNotice(noticeWriteDto, user);
-
-    System.out.println(notice.toString());
-
     noticeRepository.save(notice);
   }
 

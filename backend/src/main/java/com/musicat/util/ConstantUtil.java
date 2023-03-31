@@ -60,30 +60,37 @@ public class ConstantUtil {
    */
 
   // 하루 최초 출석 시 츄르 지급 멘트
+  public final String ALERT_TODAY_TYPE = "today";
   public final String ALERT_TODAY_TITLE = "출석 츄르 지급";
   public final String ALERT_TODAY_CONTENT = "오늘 최초 출석하셔서 츄르를 지급합니다!";
 
   // 채팅 금지
+  public final String ALERT_CHATTING_BAN_TYPE = "chattingBan";
   public final String ALERT_CHATTING_BAN_TITLE = "채팅 금지";
   public final String ALERT_CHATTING_BAN_CONTENT = "올바르지 않는 말을 하셔서 채팅 금지 조치를 했습니다.";
 
   // 채팅 금지 해제
+  public final String ALERT_NOT_CHATTING_BAN_TYPE = "notChattingBan";
   public final String ALERT_NOT_CHATTING_BAN_TITLE = "채팅 금지 해제";
   public final String ALERT_NOT_CHATTING_BAN_CONTENT = "올바른 채팅 활동을 하시길 바랍니다!";
 
   // 활동 금지
+  public final String ALERT_BAN_TYPE = "ban";
   public final String ALERT_BAN_TITLE = "활동 금지";
   public final String ALERT_BAN_CONTENT = "올바르지 않는 행동으로 활동 금지 조치를 했습니다.";
 
   // 활동 금지 해제
+  public final String ALERT_NOT_BAN_TYPE = "notBan";
   public final String ALERT_NOT_BAN_TITLE = "활동 금지 해재";
   public final String ALERT_NOT_BAN_CONTENT = "올바른 활동을 하시길 바랍니다!";
 
   // 신청곡 재생 알림
+  public final String ALERT_MUSIC_TYPE = "music";
   public final String ALERT_MUSIC_TITLE = "신청곡 재생";
   public final String ALERT_MUSIC_CONTENT = "신청하실 노래가 재생되었습니다";
 
   // 사연 당첨 알림
+  public final String ALERT_STORY_TYPE = "story";
   public final String ALERT_STORY_TITLE = "사연 당첨";
   public final String ALERT_STORY_CONTENT = "신청하신 사연이 당첨되었습니다!";
 
