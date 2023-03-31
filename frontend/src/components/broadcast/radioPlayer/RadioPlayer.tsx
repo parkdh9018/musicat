@@ -16,8 +16,11 @@ export const RadioPlayer = () => {
         url={music.path}
         controls
         onProgress={(state) => {
-          if (state.playedSeconds < music.playedTime / 1000) {
-            playerRef.current?.seekTo(music.playedTime / 1000, "seconds");
+          if (state.playedSeconds < Math.floor(music.playedTime / 1000)) {
+            playerRef.current?.seekTo(
+              Math.floor(music.playedTime / 1000),
+              "seconds"
+            );
             playerRef.current?.getInternalPlayer().play();
           }
         }}

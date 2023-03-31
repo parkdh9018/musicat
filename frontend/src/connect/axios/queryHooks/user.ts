@@ -22,7 +22,7 @@ interface UserInfo {
 
 // 로그인
 export function loginUser(setUserInfo: SetterOrUpdater<UserInfo>) {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   if (token) {
     const base64Payload = token.split(".")[1];
     const payload = Buffer.from(base64Payload, "base64");

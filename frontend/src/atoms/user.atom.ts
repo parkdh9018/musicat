@@ -13,7 +13,7 @@ export const userInfoState = atom({
 });
 
 export function logoutUser(func: Resetter, navigate: NavigateFunction) {
-  localStorage.clear();
+  sessionStorage.clear();
   $.post("/logout", {}).then(() => {
     func();
     navigate("/");
