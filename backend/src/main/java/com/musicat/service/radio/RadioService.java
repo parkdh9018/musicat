@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -26,12 +27,12 @@ public class RadioService {
   private String currentState = "idle";
   private Queue<PlaylistDto> playlist = new LinkedList<PlaylistDto>();
   private String type = "none";
-  private String path = "none";
+  private String path = "";
   private long length = 0L;
   private long startTime = System.currentTimeMillis();
   private long count = 0L;
+  private long chatCount = 0L;
   private long logCount = 0L;
-
   private final KafkaProducerService kafkaProducerService;
 
   private final SimpMessagingTemplate simpMessagingTemplate;
@@ -44,11 +45,15 @@ public class RadioService {
    * @param message
    */
   @KafkaListener(topics = "radioState", groupId = "local")
-  public void getRadioState(String message) {
+  public void getRadioState(String message, Acknowledgment acknowledgment) {
     if (message != null) {
       logger.debug("수신한 라디오 상태 데이터 : {} ", message);
-      clearState();
-      parseJsonMessageAndSetState(message);
+      acknowledgment.acknowledge();
+      if (!currentState.equals("chat")) {
+        parseJsonMessageAndSetState(message);
+      } else {
+
+      }
     }
   }
 
@@ -58,7 +63,7 @@ public class RadioService {
   private void clearState() {
     currentState = "idle";
     type = "none";
-    path = "none";
+    path = "";
     startTime = System.currentTimeMillis();
     length = 0L;
     playlist.clear();
@@ -105,27 +110,81 @@ public class RadioService {
     }
     if (currentState.equals("idle")) {
       idleTimer();
+    } else if (currentState.equals("chat")) {
+      chatProcess();
     } else {
       radioProcess();
     }
   }
 
   /**
-   * 라디오 진행 로직입니다. 현재 재생중인 음원의 길이를 초과하면 음원을 다음 음원으로 바꿉니다.
+   * idle 상태가 얼마나 지속되었는지 체크하는 로직입니다. 30초 이상 idle 상태가 지속된다면 라디오 서버에 강제로 finishState 이벤트를 보냅니다.
    */
-  public void radioProcess() {
-    count = 0;
-    if (checkSoundChange()) {
+  public void idleTimer() {
+    if (count == 0) {
+      logger.debug("서버에서 상태를 받아올 수 없습니다. 서버에 요청을 보냅니다.");
+      try {
+        count = 5;
+        chatCount = 180;
+        kafkaProducerService.send("finishState", "idle");
+      } catch (JsonProcessingException e) {
+        throw new RuntimeException(e);
+      }
+    } else {
+      --count;
+    }
+  }
+
+  public void chatProcess() {
+
+    if (checkChatChange()) {
       CurrentSoundDto currentSound = getCurrentSound();
       currentSound.setPlayedTime(0L);
       SocketBaseDto<CurrentSoundDto> socketBaseDto = SocketBaseDto.<CurrentSoundDto>builder()
-          .type("radio")
+          .type("RADIO")
           .operation(currentState)
           .data(currentSound)
           .build();
       simpMessagingTemplate.convertAndSend("/topic", socketBaseDto);
     }
+    if (chatCount > 0) {
+      --chatCount;
+    } else if (chatCount == 0) {
+      logger.debug("채팅 수신을 멈춥니다. 서버에 요청을 보냅니다.");
+      try {
+        kafkaProducerService.send("finishChat", "finish");
+        --chatCount;
+      } catch (JsonProcessingException e) {
+        throw new RuntimeException(e);
+      }
+    } else {
+      if (playlist.isEmpty()) {
+        try {
+          kafkaProducerService.send("finishState", "chat");
+          clearState();
+          chatCount = 180;
+        } catch (JsonProcessingException e) {
+          throw new RuntimeException(e);
+        }
+      }
+    }
   }
+
+  public boolean checkChatChange() {
+    long currentTime = System.currentTimeMillis();
+    if (currentTime - startTime > length) {
+      if (!playlist.isEmpty()) {
+        PlaylistDto sound = playlist.poll();
+        type = sound.getType();
+        path = sound.getPath();
+        length = sound.getLength();
+        startTime = currentTime;
+        return true;
+      }
+    }
+    return false;
+  }
+
 
   /**
    * 음원이 바뀌어야하는지 확인하는 로직입니다.
@@ -143,8 +202,8 @@ public class RadioService {
         startTime = currentTime;
       } else {
         try {
-          kafkaProducerService.send("finishState", currentState);
           clearState();
+          kafkaProducerService.send("finishState", currentState);
         } catch (JsonProcessingException e) {
           throw new RuntimeException(e);
         }
@@ -155,19 +214,20 @@ public class RadioService {
   }
 
   /**
-   * idle 상태가 얼마나 지속되었는지 체크하는 로직입니다. 30초 이상 idle 상태가 지속된다면 라디오 서버에 강제로 finishState 이벤트를 보냅니다.
+   * 라디오 진행 로직입니다. 현재 재생중인 음원의 길이를 초과하면 음원을 다음 음원으로 바꿉니다.
    */
-  public void idleTimer() {
-    if (count == 30) {
-      logger.debug("서버에서 상태를 받아올 수 없습니다. 서버에 요청을 보냅니다.");
-      try {
-        kafkaProducerService.send("finishState", "idle");
-      } catch (JsonProcessingException e) {
-        throw new RuntimeException(e);
-      }
-      count = 0;
-    } else {
-      count++;
+  public void radioProcess() {
+    count = 5;
+    chatCount = 180;
+    if (checkSoundChange()) {
+      CurrentSoundDto currentSound = getCurrentSound();
+      currentSound.setPlayedTime(0L);
+      SocketBaseDto<CurrentSoundDto> socketBaseDto = SocketBaseDto.<CurrentSoundDto>builder()
+          .type("RADIO")
+          .operation(currentState)
+          .data(currentSound)
+          .build();
+      simpMessagingTemplate.convertAndSend("/topic", socketBaseDto);
     }
   }
 
@@ -196,6 +256,4 @@ public class RadioService {
   public String getCurrentState() {
     return currentState;
   }
-
-
 }
