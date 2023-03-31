@@ -305,8 +305,7 @@ async def process_chat_data(data):
             logger.info(f'채팅 validate 확인 {validate_result}')
             if 'True' in validate_result or 'true' in validate_result:
                 user_nickname = database.find_user_nickname(int(data["userSeq"]))
-                chat_reaction = user_nickname + "님 " + chat_cleaned + "이라고 해주셨어요."
-                chat_reaction = chat_reaction + api_chatgpt.chat_reaction_gpt(chat_cleaned)
+                chat_reaction = chat_reaction + api_chatgpt.chat_reaction_gpt(user_nickname, chat_cleaned)
                 chat_tts_filename = f"chat{count}.mp3"
 
                 logger.info(chat_reaction)
