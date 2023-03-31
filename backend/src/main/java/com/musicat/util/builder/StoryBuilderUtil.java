@@ -1,6 +1,7 @@
 package com.musicat.util.builder;
 
 import com.musicat.data.dto.story.StoryInfoDto;
+import com.musicat.data.dto.story.StoryKafkaDto;
 import com.musicat.data.dto.story.StoryRequestDto;
 import com.musicat.data.entity.radio.Story;
 import com.musicat.util.ConstantUtil;
@@ -45,6 +46,18 @@ public class StoryBuilderUtil {
         .storyMusicYoutubeId(story.getStoryMusicYoutubeId())
         .storyReaction(story.getStoryReaction())
         .storyOutro(story.getStoryOutro())
+        .build();
+  }
+
+  // Story -> StoryKafkaDto
+  public StoryKafkaDto buildStoryKafkaDto(Story story) {
+    return StoryKafkaDto.builder()
+        .storySeq(story.getStorySeq())
+        .userSeq(story.getUserSeq())
+        .storyTitle(story.getStoryTitle())
+        .storyContent(story.getStoryContent())
+        .storyMusicTitle(story.getStoryTitle())
+        .storyMusicArtist(story.getStoryMusicArtist())
         .build();
   }
 

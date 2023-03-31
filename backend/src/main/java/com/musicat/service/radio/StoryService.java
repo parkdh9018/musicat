@@ -54,14 +54,7 @@ public class StoryService {
       /**
        * 사연 Seq, 사용자Seq, 사연 제목, 사연 내용
        */
-      StoryKafkaDto storyKafkaDto = StoryKafkaDto.builder()
-          .storySeq(story.getStorySeq())
-          .userSeq(story.getUserSeq())
-          .storyTitle(story.getStoryTitle())
-          .storyContent(story.getStoryContent())
-          .storyMusicTitle(storyRequestDto.getStoryTitle())
-          .storyMusicArtist(storyRequestDto.getStoryMusicArtist())
-          .build();
+      StoryKafkaDto storyKafkaDto = storyBuilderUtil.buildStoryKafkaDto(story);
 
       kafkaProducerService.send("verifyStory", storyKafkaDto);
 
@@ -70,22 +63,6 @@ public class StoryService {
       throw new RuntimeException("카프카 에러");
     }
   }
-
-//    /**
-//     * 사연 1개 조회 (읽어야 하는 사연)
-//     */
-//    public Object getTopStoryInfo() throws Exception {
-//
-//        Optional<Story> optionalStory = storyRepository.findTop1ByStoryReadedFalseAndStoryValidTrueOrderByStoryCreatedAt();
-//
-//        if (optionalStory.isPresent()) { // 사연이 존재함
-//            Story story = optionalStory.get();
-//
-//            return storyBuilderUtil.buildStoryInfoDto(story);
-//        } else { // 사연이 존재하지 않음
-//            return null;
-//        }
-//    }
 
   /**
    * 사연 중복 검사
@@ -130,6 +107,5 @@ public class StoryService {
 
     storyRepository.delete(story); // 사연 삭제
   }
-
-
+  
 }
