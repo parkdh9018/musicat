@@ -264,7 +264,7 @@ public class RadioService {
     }
     SocketBaseDto<CurrentSoundDto> socketBaseDto = SocketBaseDto.<CurrentSoundDto>builder()
         .type("RADIO")
-        .operation(currentState)
+        .operation(currentState.toUpperCase())
         .data(currentSound)
         .build();
     simpMessagingTemplate.convertAndSend("/topic", socketBaseDto);
