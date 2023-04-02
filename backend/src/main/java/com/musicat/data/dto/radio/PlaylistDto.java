@@ -17,4 +17,7 @@ public class PlaylistDto {
   private String type;
   private String path;
   private long length;
+  private String title;
+  private String artist;
+  private String image;
 }

@@ -19,4 +19,7 @@ public class CurrentSoundDto {
   private long startTime;
   private long playedTime;
   private long length;
+  private String title;
+  private String artist;
+  private String image;
 }
