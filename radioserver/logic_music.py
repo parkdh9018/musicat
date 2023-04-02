@@ -71,8 +71,10 @@ async def process_music_state():
     music_intro_filename = os.path.join(tts_path, "intro.mp3")
     music_outro_filename = os.path.join(tts_path, "outro.mp3")
 
-    await api_naver_tts.generate_tts_clova(music_intro, music_intro_filename, "ngoeun")
-    await api_naver_tts.generate_tts_clova(music_outro, music_outro_filename, "ngoeun")
+    # await api_naver_tts.generate_tts_clova(music_intro, music_intro_filename, "ngoeun")
+    # await api_naver_tts.generate_tts_clova(music_outro, music_outro_filename, "ngoeun")
+    await api_naver_tts.generate_tts_test(music_intro, music_intro_filename)
+    await api_naver_tts.generate_tts_test(music_outro, music_outro_filename)
 
     intro_length = len(AudioSegment.from_file(music_intro_filename))
     outro_length = len(AudioSegment.from_file(music_outro_filename))
@@ -82,11 +84,13 @@ async def process_music_state():
 
     playlist = [
         {"type": "mp3", "path": intro_url, "length": intro_length},
-        {"type": "youtube", "path": music["music_youtube_id"], "length": music["music_length"]},
+        {"type": "youtube", "path": music["music_youtube_id"], "length": music["music_length"],
+         "artist" : music["music_artist"], "title" : music["music_title"], "image" : music["music_image"]},
         {"type": "mp3", "path": outro_url, "length": outro_length}
     ]
     data = {
         "state": "music",
+        "seq": music["music_seq"],
         "playlist": playlist
     }
     return data

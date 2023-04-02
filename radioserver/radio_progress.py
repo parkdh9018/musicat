@@ -1,5 +1,6 @@
 from collections import deque
-from shared_state import current_state
+from logic_chat import user_check
+from shared_state import current_state, chat_readable
 import kafka_handler
 import logic_music, logic_story
 from my_logger import setup_logger
@@ -24,7 +25,9 @@ async def radio_progress():
     if current_state.get_state() == 'story':
         radio_state = await logic_story.process_story_state()
     elif current_state.get_state() == 'chat':
-        print("chat now")
+        radio_state = {"state" : "chat"}
+        user_check.clear()
+        chat_readable.set_state(True)
     elif current_state.get_state() == 'music':
         radio_state = await logic_music.process_music_state()
 

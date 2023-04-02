@@ -109,16 +109,21 @@ async def process_story_state():
     story_outro_filename = os.path.join(tts_path, "outro.mp3")
 
     # TTS 생성
-    await api_naver_tts.generate_tts_clova(story_opening, story_opening_filename, "nihyun")
-    await api_naver_tts.generate_tts_clova(story_reaction, story_reaction_filename, "nihyun")
-    await api_naver_tts.generate_tts_clova(story_outro, story_outro_filename, "nihyun")
+    # await api_naver_tts.generate_tts_clova(story_opening, story_opening_filename, "nihyun")
+    # await api_naver_tts.generate_tts_clova(story_reaction, story_reaction_filename, "nihyun")
+    # await api_naver_tts.generate_tts_clova(story_outro, story_outro_filename, "nihyun")
+
+    await api_naver_tts.generate_tts_test(story_opening, story_opening_filename)
+    await api_naver_tts.generate_tts_test(story_reaction, story_reaction_filename)
+    await api_naver_tts.generate_tts_test(story_outro, story_outro_filename)
 
     # Story TTS 생성 후 Merge
     story_tts_list = []
     story_content_list = json.loads(story_content)
     for i in range(len(story_content_list)):
         current_text = story_content_list[i]
-        await api_naver_tts.generate_tts_clova(current_text['content'], os.path.join(tts_path, f"{i}.mp3"), current_text['speaker'])
+        # await api_naver_tts.generate_tts_clova(current_text['content'], os.path.join(tts_path, f"{i}.mp3"), current_text['speaker'])
+        await api_naver_tts.generate_tts_test(current_text['content'], os.path.join(tts_path, f"{i}.mp3"))
         story_tts_list.append(os.path.join(tts_path, f'{i}.mp3'))
     merged_story_tts = await merge_audio(story_tts_list, 500)
     merged_story_tts_filename = os.path.join(tts_path, 'merged_story.mp3')
@@ -141,11 +146,13 @@ async def process_story_state():
 
     playlist = [
         {"type": "mp3", "path": intro_url, "length": intro_length},
-        {"type": "youtube", "path": story["storyMusicYoutubeId"], "length": story["storyMusicLength"]},
+        {"type": "youtube", "path": story["storyMusicYoutubeId"], "length": story["storyMusicLength"],
+         "artist" : story["story_music_artist"], "title" : story["story_music_title"], "image" : story["story_music_cover"]},
         {"type": "mp3", "path": outro_url, "length": outro_length}
     ]
     data = {
         "state": "story",
+        "seq": story["story_seq"],
         "playlist": playlist
     }
     os.remove(story_opening_filename)

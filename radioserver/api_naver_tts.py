@@ -1,4 +1,5 @@
-# from gtts import gTTS
+from gtts import gTTS
+
 import urllib.parse
 import aiohttp
 from shared_env import client_id, client_secret
@@ -37,5 +38,14 @@ async def generate_tts_clova(text : str, path : str, speaker : str):
             else:
                 logger.info(f"[Naver Clova TTS] Error Code: {rescode}")
                 logger.info(await response.text())
+
+##############################################
+
+async def generate_tts_test(text, path):
+    """
+    gTTS를 이용해 음성 파일을 생성합니다
+    """
+    tts = gTTS(text=text, lang='ko')
+    tts.save(path)
 
 ##############################################
