@@ -15,7 +15,8 @@ interface propsType extends GroupProps {
 }
 
 export const ExtraCat = ({ position, ...props }: propsType) => {
-  const [index, setIndex] = useState(0);
+
+
   const speed = 0.2; // 움직임 속도를 조절하세요.
   const startPosition = new THREE.Vector3(
     position.x,
@@ -70,14 +71,14 @@ export const ExtraCat = ({ position, ...props }: propsType) => {
     }
 
     setTimeout(() => {
-        if(ref.current) {
-            ref.current.position.copy(startPosition);
-            ref.current.visible = true;
-            playSequentialAnimations();
-        }
+      if (ref.current) {
+        ref.current.position.copy(startPosition);
+        ref.current.visible = true;
+        playSequentialAnimations();
+      }
     }, 4000);
-
   }, []);
+
 
   // useEffect(() => {
   //   actions["Anim_Chibi@Idle02"]?.reset().fadeIn(0.5).play();

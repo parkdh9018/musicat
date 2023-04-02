@@ -5,6 +5,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 import { ANI_NAME } from "./ani_name";
 import * as THREE from "three";
+import { useRecoilValue } from "recoil";
+import { broadcastOperationState } from "@/atoms/broadcast.atom";
 
 interface ExtendedGLTF extends GLTF {
   nodes: any;
@@ -15,7 +17,9 @@ interface propsType extends GroupProps {
 }
 
 export const Cat = ({position, ...props}: propsType) => {
-  const [index, setIndex] = useState(0);
+
+  const operation = useRecoilValue(broadcastOperationState);
+
   const speed = 0.2; // 움직임 속도를 조절하세요.
   const startPosition = new THREE.Vector3(position.x, position.y + 10, position.z); // 시작 위치를 설정하세요.
   const targetPosition = position // 목표 위치를 설정하세요.
@@ -43,7 +47,8 @@ export const Cat = ({position, ...props}: propsType) => {
     }
   };
 
-  useFrame(() => {
+  useFrame(({camera}) => {
+    // console.log(camera.position)
     if (ref.current) {
       // 객체의 위치와 목표 위치 사이의 거리를 계산합니다.
       const distance = ref.current.position.distanceTo(targetPosition);
@@ -67,6 +72,26 @@ export const Cat = ({position, ...props}: propsType) => {
     }
     playSequentialAnimations();
   }, []);
+
+  
+  useEffect(() => {
+
+    // console.log("operation : ", operation)
+
+    actions["Anim_Chibi@Idle"]?.fadeOut(0.5);
+    actions["Anim_Chibi@Yes"]?.fadeOut(0.5);
+    actions["Anim_Chibi@Idle03"]?.fadeOut(0.5);
+    actions["Anim_Chibi@Cute1"]?.fadeOut(0.5);
+
+
+    if(operation === "CHAT") {
+      actions["Anim_Chibi@Yes"]?.reset().fadeIn(0.5).play();
+    } else if (operation === "MUSIC") {
+      actions["Anim_Chibi@Idle03"]?.reset().fadeIn(0.5).play();
+    } else if (operation === "IDLE") {
+      actions["Anim_Chibi@Cute1"]?.reset().fadeIn(0.5).play();
+    }
+  },[operation])
 
   // useEffect(() => {
   //   actions["Anim_Chibi@Idle02"]?.reset().fadeIn(0.5).play();
