@@ -24,21 +24,31 @@ export const Cat = (props: propsType) => {
     return acc;
   }, []);
 
+  
   const { actions, names, ref } = useAnimations(animations);
 
   useEffect(() => {
-    actions[names[index]]?.reset().fadeIn(0.5).play();
+    actions["Anim_Chibi@Idle02"]?.reset().fadeIn(0.5).play();
     return () => {
       actions[names[index]]?.fadeOut(0.5);
     };
   }, [index, actions, names]);
 
   const characterClick = () => {
-    setIndex((prev) => (prev + 1) % names.length);
+    // console.log("click")
+    // setIndex((prev) => (prev + 1) % names.length);
   };
 
+  const characterPointerEnter = () => {
+    actions["Anim_Chibi@Hi"]?.reset().fadeIn(0.5).play();
+  }
+
+  const characterPointerLeave = () => {
+    actions["Anim_Chibi@Hi"]?.fadeOut(0.5);
+  }
+
   return (
-    <group {...props} onClick={characterClick} ref={ref as any}>
+    <group {...props} onClick={characterClick} onPointerEnter={characterPointerEnter} onPointerLeave={characterPointerLeave} ref={ref as any}>
       <primitive object={scene} />
     </group>
   );
