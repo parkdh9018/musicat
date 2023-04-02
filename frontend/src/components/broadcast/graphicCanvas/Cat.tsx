@@ -40,15 +40,6 @@ export const Cat = ({position, ...props}: propsType) => {
       jumpAction?.reset().setLoop(THREE.LoopRepeat, 1).play();
       jumpAction?.crossFadeTo(idleAction as THREE.AnimationAction, 0.5, false);
       idleAction?.play(); // Set the idle action to repeat infinitely
-      // mixer.addEventListener("finished", onJumpAnimationFinished);
-  
-      // function onJumpAnimationFinished(event: any) {
-      //   if (event.action === jumpAction) {
-      //     mixer.removeEventListener("finished", onJumpAnimationFinished);
-      //     jumpAction?.crossFadeTo(idleAction as THREE.AnimationAction, 0.5, false);
-      //     idleAction?.play(); // Set the idle action to repeat infinitely
-      //   }
-      // }
     }
   };
 
