@@ -24,18 +24,20 @@ import org.springframework.stereotype.Service;
 public class RadioService {
 
   private String currentState = "idle";
+  private long seq = 0L;
   private Queue<PlaylistDto> playlist = new LinkedList<PlaylistDto>();
   private String type = "none";
   private String path = "";
   private long length = 0L;
+  private String title = "";
+  private String artist = "";
+  private String image = "";
   private long startTime = System.currentTimeMillis();
   private long idleTimer = 0L;
   private long chatTimer = 0L;
   private long logTimer = 0L;
   private final KafkaProducerService kafkaProducerService;
-
   private final SimpMessagingTemplate simpMessagingTemplate;
-
   private static final Logger logger = LoggerFactory.getLogger(RadioService.class);
   private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -60,8 +62,12 @@ public class RadioService {
    */
   private void resetState() {
     currentState = "idle";
+    seq = 0L;
     type = "none";
     path = "";
+    title = "";
+    artist = "";
+    image = "";
     startTime = System.currentTimeMillis();
     length = 0L;
     playlist.clear();
@@ -103,6 +109,14 @@ public class RadioService {
     }
   }
 
+  private void updateSeq(JsonNode jsonNode) {
+    seq = 0L;
+    if (jsonNode.has("seq")) {
+      JsonNode currentSeqNode = jsonNode.get("seq");
+      seq = currentSeqNode.asLong();
+    }
+  }
+
   /**
    * 받아온 radioState에서 playlist가 존재하는지 확인하고 업데이트
    *
@@ -115,7 +129,22 @@ public class RadioService {
         String type = itemNode.get("type").asText();
         String path = itemNode.get("path").asText();
         long length = itemNode.get("length").asLong() + 3000L;
-        playlist.add(new PlaylistDto(type, path, length));
+        String title = "";
+        String artist = "";
+        String image = "";
+        if (itemNode.has("title")) {
+          title = itemNode.get("title").asText();
+          artist = itemNode.get("artist").asText();
+          image = itemNode.get("image").asText();
+        }
+        playlist.add(PlaylistDto.builder()
+            .type(type)
+            .path(path)
+            .length(length)
+            .title(title)
+            .artist(artist)
+            .image(image)
+            .build());
       }
     }
   }
@@ -211,8 +240,8 @@ public class RadioService {
   }
 
   /**
-   * 라디오 진행 로직입니다. 현재 재생중인 음원의 길이를 초과하면 음원을 다음 음원으로 바꿉니다.
-   * 만약 playlist가 비어있다면 다음 상태를 요청하는 메세지를 fastAPI로 보냅니다.
+   * 라디오 진행 로직입니다. 현재 재생중인 음원의 길이를 초과하면 음원을 다음 음원으로 바꿉니다. 만약 playlist가 비어있다면 다음 상태를 요청하는 메세지를
+   * fastAPI로 보냅니다.
    */
   public void radioProcess() {
     resetTimer();
@@ -254,6 +283,9 @@ public class RadioService {
         .startTime(startTime)
         .playedTime(currentTime - startTime)
         .length(length)
+        .title(title)
+        .artist(artist)
+        .image(image)
         .build();
     return currentSound;
   }
