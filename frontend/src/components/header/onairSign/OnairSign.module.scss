@@ -77,3 +77,33 @@
     text-shadow: inherit;
   }
 }
+
+@media screen and (max-width: 1200px) {
+  .onairSign {
+    height: 90px;
+
+    .box {
+      width: 150px;
+      height: 55px;
+    }
+
+    .logo b {
+      font-size: 25px;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .onairSign {
+    height: 75px;
+
+    .box {
+      width: 110px;
+      height: 45px;
+    }
+
+    .logo b {
+      font-size: 18px;
+    }
+  }
+}

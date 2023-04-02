@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useRecoilValue, useResetRecoilState } from "recoil";
 import style from "./Popover.module.css";
 
-export const Popover = () => {
+export const Popover = ({ isPopoverOn }: { isPopoverOn: boolean }) => {
   const userInfo = useRecoilValue(userInfoState);
   const navigate = useNavigate();
   const clear = useResetRecoilState(userInfoState);
@@ -50,7 +50,9 @@ export const Popover = () => {
     </>
   );
   return (
-    <div className={style.popover}>
+    <div
+      className={isPopoverOn ? style.popover : style.popover + " " + style.off}
+    >
       <div className={style.triangle}></div>
       <div className={style.content}>
         {userInfo.userRole === "ROLE_ADMIN" ? adminComponent : userComponent}

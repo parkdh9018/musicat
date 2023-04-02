@@ -1,8 +1,7 @@
 .header {
   background-color: rgb(26, 26, 26);
 }
-
-.innerHeader {
+.header .innerHeader {
   height: 65px;
   max-width: 1200px;
   margin-left: auto;
@@ -11,51 +10,54 @@
   align-items: center;
   justify-content: space-between;
 }
-.innerHeader .innerContent {
+.header .innerHeader .innerContent {
   width: 30%;
   margin-top: 3px;
   display: flex;
   justify-content: center;
 }
-.innerHeader .logo_img {
+.header .innerHeader .logo_img {
   width: 130px;
   margin-left: 20px;
   margin-top: 3px;
   transition: 0.1s;
 }
-.innerHeader .logo_img:hover {
+.header .innerHeader .logo_img:hover {
   width: 133px;
   box-shadow: 1px 1px 0 1px rgba(0, 0, 0, 0.1);
 }
-.innerHeader .user_info {
+.header .innerHeader .user_info {
   display: flex;
   align-items: center;
   margin-right: 20px;
   cursor: pointer;
 }
-.innerHeader .user_info .nickname {
+.header .innerHeader .user_info .nickname {
   color: var(--fade-font-color);
   transition: 0.2s;
 }
-.innerHeader .user_info .nickname_other {
+.header .innerHeader .user_info .nickname_other {
   color: var(--font-color);
   transition: 0.2s;
 }
-.innerHeader .user_info:hover .popover_state {
-  visibility: visible;
-  opacity: 100;
+.header .innerHeader .user_info .login_sent {
+  color: var(--font-color);
+  transition: 0.2s;
 }
-.innerHeader .user_info:hover .nickname_other {
+.header .innerHeader .user_info:hover .popover_state {
+  opacity: 1;
+  z-index: 2;
+}
+.header .innerHeader .user_info:hover .nickname_other {
   color: var(--fade-font-color);
 }
-.innerHeader .user_info:hover .nickname {
+.header .innerHeader .user_info:hover .nickname {
   color: var(--font-color);
 }
-
-.profile_div {
+.header .profile_div {
   position: relative;
 }
-.profile_div img {
+.header .profile_div img {
   width: 42px;
   height: 42px;
   border-radius: 100%;
@@ -65,7 +67,7 @@
   -o-object-fit: cover;
      object-fit: cover;
 }
-.profile_div .badge {
+.header .profile_div .badge {
   position: absolute;
   border: 1px solid white;
   width: 18px;
@@ -81,15 +83,63 @@
   color: var(--font-color);
   font-size: 0.7rem;
 }
-
-.sign_content {
+.header .sign_content {
   display: flex;
   justify-content: center;
 }
-
-.popover_state {
-  visibility: hidden;
+.header .popover_state {
   opacity: 0;
   position: relative;
-  transition: 0.25s;
+  transition: 0.4s;
+  z-index: -1;
+}
+
+@media screen and (max-width: 1200px) {
+  .header {
+    font-size: 0.9rem;
+  }
+}
+@media screen and (max-width: 768px) {
+  .header {
+    height: 60px;
+  }
+  .header .innerHeader .logo_img {
+    width: 92px;
+    margin-left: 12px;
+    margin-top: 0px;
+    transition: 0.1s;
+  }
+  .header .innerHeader .logo_img:hover {
+    width: 92px;
+  }
+  .header .user_info .nickname {
+    display: none;
+  }
+  .header .user_info .nickname_other {
+    display: none;
+  }
+  .header .user_info:hover .popover_state {
+    opacity: 1;
+    z-index: 2;
+  }
+  .header .user_info .profile_div {
+    position: relative;
+  }
+  .header .user_info .profile_div img {
+    width: 40px;
+    height: 40px;
+    margin-left: 12px;
+  }
+  .header .user_info .profile_div .badge {
+    width: 16px;
+    height: 16px;
+    padding: 8px;
+    top: -5px;
+    right: -5px;
+    font-size: 0.5rem;
+  }
+  .header .user_info .popover_state {
+    opacity: 100;
+    z-index: 1;
+  }
 }/*# sourceMappingURL=Header.module.css.map */

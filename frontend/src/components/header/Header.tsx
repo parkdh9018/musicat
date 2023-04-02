@@ -1,5 +1,5 @@
 import { userInfoState } from "@/atoms/user.atom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { OnairSign } from "./onairSign/onairSign";
@@ -15,6 +15,7 @@ export const Header = () => {
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const { data: userUnreadMsgNum, isLoading: unreadMsgLoading } =
     getUserUnreadMsgNum();
+  const [isPopoverOn, setIsPopoverOn] = useState(false);
 
   //헤더가 아니라 어디선가 받아야 하나?
   const { data: checkDarkMode, isLoading } = getUserConfig();
@@ -47,7 +48,7 @@ export const Header = () => {
           {!userInfo.userRole ? (
             <div className={style.user_info}>
               <span
-                className={style.nickname_other}
+                className={style.login_sent}
                 onClick={() => {
                   window.open(
                     "https://musicat.kr/api/oauth2/authorization/kakao",
@@ -64,10 +65,14 @@ export const Header = () => {
               <span className={style.nickname}>{userInfo.userNick}</span>
               <span className={style.nickname_other}>님 환영합니다</span>
               <div className={style.popover_state}>
-                <Popover />
+                <Popover isPopoverOn={isPopoverOn} />
               </div>
               <div className={style.profile_div}>
-                <img src={userInfo.userProfile} alt="프로필 이미지" />
+                <img
+                  src={userInfo.userProfile}
+                  alt="프로필 이미지"
+                  onClick={() => setIsPopoverOn(!isPopoverOn)}
+                />
                 {userUnreadMsgNum?.data.userUnreadMessage ? (
                   <div className={style.badge}>
                     {userUnreadMsgNum?.data.userUnreadMessage}
