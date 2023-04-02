@@ -35,7 +35,7 @@ async def radio_progress():
 
 ##############################################
 
-async def reset_radio():
+def reset_radio():
     """
     라디오 상태 초기화 함수
     """
