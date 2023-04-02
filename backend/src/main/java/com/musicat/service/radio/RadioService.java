@@ -2,7 +2,6 @@ package com.musicat.service.radio;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.musicat.data.dto.radio.CurrentSoundDto;
@@ -30,15 +29,15 @@ public class RadioService {
   private String path = "";
   private long length = 0L;
   private long startTime = System.currentTimeMillis();
-  private long count = 0L;
-  private long chatCount = 0L;
-  private long logCount = 0L;
+  private long idleTimer = 0L;
+  private long chatTimer = 0L;
+  private long logTimer = 0L;
   private final KafkaProducerService kafkaProducerService;
 
   private final SimpMessagingTemplate simpMessagingTemplate;
 
   private static final Logger logger = LoggerFactory.getLogger(RadioService.class);
-
+  private final ObjectMapper objectMapper = new ObjectMapper();
 
 
   /**
@@ -46,7 +45,7 @@ public class RadioService {
    *
    * @param message
    */
-  @KafkaListener(topics = "radioState", groupId = "local")
+  @KafkaListener(topics = "radioState")
   public void getRadioState(String message, Acknowledgment acknowledgment) {
     if (message != null) {
       logger.debug("수신한 라디오 상태 데이터 : {} ", message);
@@ -59,7 +58,7 @@ public class RadioService {
   /**
    * Springboot App의 라디오 상태를 지우는 함수.
    */
-  private void clearState() {
+  private void resetState() {
     currentState = "idle";
     type = "none";
     path = "";
@@ -68,35 +67,56 @@ public class RadioService {
     playlist.clear();
   }
 
+  private void resetTimer() {
+    idleTimer = 10;
+    chatTimer = 100;
+  }
+
   /**
    * kafka로부터 받아온 메세지를 파싱하여 라디오 상태에 저장합니다.
    *
    * @param message
    */
   private void parseJsonMessageAndSetState(String message) {
-    ObjectMapper objectMapper = new ObjectMapper();
     try {
       JsonNode jsonNode = objectMapper.readTree(message);
-      if (jsonNode.has("state")) {
-        JsonNode currentStateNode = jsonNode.get("state");
-        String tempState = currentStateNode.asText();
-        if (!tempState.equals(currentState))
-          playlist.clear();
-        currentState = tempState;
-      }
-      if (jsonNode.has("playlist")) {
-        JsonNode playlistNode = jsonNode.get("playlist");
-        for (JsonNode itemNode : playlistNode) {
-          String type = itemNode.get("type").asText();
-          String path = itemNode.get("path").asText();
-          long length = itemNode.get("length").asLong() + 3000L;
-          playlist.add(new PlaylistDto(type, path, length));
-        }
-      }
-    } catch (JsonMappingException e) {
+      updateState(jsonNode);
+      updatePlaylist(jsonNode);
+    } catch (Exception e) {
       throw new RuntimeException(e);
-    } catch (JsonProcessingException e) {
-      throw new RuntimeException(e);
+    }
+  }
+
+  /**
+   * 받아온 radioState에서 state가 존재하는지 확인하고 업데이트
+   *
+   * @param jsonNode
+   */
+  private void updateState(JsonNode jsonNode) {
+    if (jsonNode.has("state")) {
+      JsonNode currentStateNode = jsonNode.get("state");
+      String tempState = currentStateNode.asText();
+      if (!tempState.equals(currentState)) {
+        playlist.clear();
+      }
+      currentState = tempState;
+    }
+  }
+
+  /**
+   * 받아온 radioState에서 playlist가 존재하는지 확인하고 업데이트
+   *
+   * @param jsonNode
+   */
+  private void updatePlaylist(JsonNode jsonNode) {
+    if (jsonNode.has("playlist")) {
+      JsonNode playlistNode = jsonNode.get("playlist");
+      for (JsonNode itemNode : playlistNode) {
+        String type = itemNode.get("type").asText();
+        String path = itemNode.get("path").asText();
+        long length = itemNode.get("length").asLong() + 3000L;
+        playlist.add(new PlaylistDto(type, path, length));
+      }
     }
   }
 
@@ -105,89 +125,72 @@ public class RadioService {
    */
   @Scheduled(fixedRate = 1000)
   public void checkAndPlayNextItem() {
-    logCount++;
-    if (logCount % 5 == 0) {
-      logger.debug("현재 라디오의 상태 : {} | 재생중인 음원 타입 : {} | 재생중인 음원 : {} | 경과 시간 : {} | 음원 길이 : {}",
-          currentState, type, path, System.currentTimeMillis() - startTime, length);
+    logRadioStatus();
+    switch (currentState) {
+      case "idle":
+        idleProcess();
+        break;
+      case "chat":
+        chatProcess();
+        break;
+      default:
+        radioProcess();
     }
-    if (currentState.equals("idle")) {
-      idleTimer();
-    } else if (currentState.equals("chat")) {
-      chatProcess();
-    } else {
-      radioProcess();
+  }
+
+  /**
+   * 라디오의 현재 상태를 로그로 출력하는 함수
+   */
+  private void logRadioStatus() {
+    logTimer++;
+    if (logTimer % 5 == 0) {
+      logger.debug(
+          "라디오 상태: {} | 음원 타입: {} | 음원 경로: {} | 경과 시간: {} | 음원 길이: {} | 현재 큐에 들어있는 음원 수: {}",
+          currentState, type, path, System.currentTimeMillis() - startTime, length,
+          playlist.size());
     }
   }
 
   /**
    * idle 상태가 얼마나 지속되었는지 체크하는 로직입니다. 30초 이상 idle 상태가 지속된다면 라디오 서버에 강제로 finishState 이벤트를 보냅니다.
    */
-  public void idleTimer() {
-    if (count == 0) {
+  public void idleProcess() {
+    if (idleTimer == 0) {
       logger.debug("서버에서 상태를 받아올 수 없습니다. 서버에 요청을 보냅니다.");
       try {
-        count = 5;
-        chatCount = 50;
+        resetTimer();
         kafkaProducerService.send("finishState", "idle");
       } catch (JsonProcessingException e) {
         throw new RuntimeException(e);
       }
     } else {
-      --count;
+      --idleTimer;
     }
   }
 
+  /**
+   * 채팅 관련 프로세스
+   */
   public void chatProcess() {
-    logger.debug("채팅 프로세스 들어옴");
-    if (checkChatChange()) {
-      CurrentSoundDto currentSound = getCurrentSound();
-      logger.debug(currentSound.toString());
-      currentSound.setPlayedTime(0L);
-      SocketBaseDto<CurrentSoundDto> socketBaseDto = SocketBaseDto.<CurrentSoundDto>builder()
-          .type("RADIO")
-          .operation(currentState)
-          .data(currentSound)
-          .build();
-      simpMessagingTemplate.convertAndSend("/topic", socketBaseDto);
+    logger.debug("채팅 상태 들어옴");
+    if (checkSoundChange()) {
+      sendCurrentSound(true);
     }
-    if (chatCount > 0) {
-      --chatCount;
-    } else if (chatCount == 0) {
-      logger.debug("채팅 응답 생성을 멈춥니다. 서버에 요청을 보냅니다.");
-      try {
-        kafkaProducerService.send("finishChat", "finish");
-        --chatCount;
-      } catch (JsonProcessingException e) {
-        throw new RuntimeException(e);
-      }
+    if (chatTimer > 0) {
+      --chatTimer;
+    } else if (chatTimer == 0) {
+      logger.debug("채팅 응답 시간 초과로 채팅 응답 생성을 종료합니다.");
+      sendKafkaMessage("finishChat", "finish");
+      --chatTimer;
     } else {
-      if (playlist.isEmpty()) {
-        try {
-          kafkaProducerService.send("finishState", "chat");
-          clearState();
-          chatCount = 50;
-        } catch (JsonProcessingException e) {
-          throw new RuntimeException(e);
-        }
+      long currentTime = System.currentTimeMillis();
+      if (currentTime - startTime > length && playlist.isEmpty()) {
+        sendKafkaMessage("finishState", "chat");
+        resetState();
+        resetTimer();
       }
     }
   }
-
-  public boolean checkChatChange() {
-    long currentTime = System.currentTimeMillis();
-    if (currentTime - startTime > length) {
-      if (!playlist.isEmpty()) {
-        PlaylistDto sound = playlist.poll();
-        type = sound.getType();
-        path = sound.getPath();
-        length = sound.getLength();
-        startTime = currentTime;
-        return true;
-      }
-    }
-    return false;
-  }
-
 
   /**
    * 음원이 바뀌어야하는지 확인하는 로직입니다.
@@ -196,21 +199,12 @@ public class RadioService {
    */
   public boolean checkSoundChange() {
     long currentTime = System.currentTimeMillis();
-    if (currentTime - startTime > length) {
-      if (!playlist.isEmpty()) {
-        PlaylistDto sound = playlist.poll();
-        type = sound.getType();
-        path = sound.getPath();
-        length = sound.getLength();
-        startTime = currentTime;
-      } else {
-        try {
-          clearState();
-          kafkaProducerService.send("finishState", currentState);
-        } catch (JsonProcessingException e) {
-          throw new RuntimeException(e);
-        }
-      }
+    if (currentTime - startTime > length && !playlist.isEmpty()) {
+      PlaylistDto sound = playlist.poll();
+      type = sound.getType();
+      path = sound.getPath();
+      length = sound.getLength();
+      startTime = currentTime;
       return true;
     }
     return false;
@@ -218,20 +212,33 @@ public class RadioService {
 
   /**
    * 라디오 진행 로직입니다. 현재 재생중인 음원의 길이를 초과하면 음원을 다음 음원으로 바꿉니다.
+   * 만약 playlist가 비어있다면 다음 상태를 요청하는 메세지를 fastAPI로 보냅니다.
    */
   public void radioProcess() {
-    count = 5;
-    chatCount = 50;
+    resetTimer();
     if (checkSoundChange()) {
-      CurrentSoundDto currentSound = getCurrentSound();
-      currentSound.setPlayedTime(0L);
-      SocketBaseDto<CurrentSoundDto> socketBaseDto = SocketBaseDto.<CurrentSoundDto>builder()
-          .type("RADIO")
-          .operation(currentState)
-          .data(currentSound)
-          .build();
-      simpMessagingTemplate.convertAndSend("/topic", socketBaseDto);
+      if (playlist.isEmpty()) {
+        sendKafkaMessage("finishState", currentState);
+        resetState();
+      }
+      sendCurrentSound(true);
     }
+  }
+
+  /**
+   * 현재 재생해야 하는 Sound를 사용자에게 보내는 로직입니다.
+   */
+  private void sendCurrentSound(boolean isChanged) {
+    CurrentSoundDto currentSound = getCurrentSound();
+    if (isChanged) {
+      currentSound.setPlayedTime(0L);
+    }
+    SocketBaseDto<CurrentSoundDto> socketBaseDto = SocketBaseDto.<CurrentSoundDto>builder()
+        .type("RADIO")
+        .operation(currentState)
+        .data(currentSound)
+        .build();
+    simpMessagingTemplate.convertAndSend("/topic", socketBaseDto);
   }
 
   /**
@@ -258,5 +265,19 @@ public class RadioService {
    */
   public String getCurrentState() {
     return currentState;
+  }
+
+  /**
+   * Kafka의 Topic에 Message를 보내는 함수
+   *
+   * @param topic
+   * @param value
+   */
+  private void sendKafkaMessage(String topic, String value) {
+    try {
+      kafkaProducerService.send(topic, value);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 }
