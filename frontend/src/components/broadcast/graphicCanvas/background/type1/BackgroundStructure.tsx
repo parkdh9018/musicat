@@ -41,7 +41,7 @@ export const BackgroundStructure = (props: GroupProps) => {
   })
 
 
-  const { scene, animations } = useGLTF("/broadcast/background/scene_structure.glb") as ExtendedGLTF;
+  const { scene, animations } = useGLTF("/graphic/background/scene_structure.glb") as ExtendedGLTF;
   const { actions, mixer, names, ref } = useAnimations(animations);
 
   return (

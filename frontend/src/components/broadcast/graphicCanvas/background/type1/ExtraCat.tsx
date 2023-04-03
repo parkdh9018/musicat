@@ -25,11 +25,11 @@ export const ExtraCat = ({ position, ...props }: propsType) => {
   ); // 시작 위치를 설정하세요.
   const targetPosition = position; // 목표 위치를 설정하세요.
 
-  const { scene } = useGLTF("/broadcast/cat/Chibi_Cat_05.glb") as ExtendedGLTF;
+  const { scene } = useGLTF("/graphic/cat/Chibi_Cat_05.glb") as ExtendedGLTF;
 
   const animations = ANI_NAME.reduce((acc: any, name) => {
     const { animations } = useGLTF(
-      `broadcast/animation/Anim_Chibi@${name}.glb`
+      `/graphic/animation/Anim_Chibi@${name}.glb`
     ) as ExtendedGLTF;
     acc.push(animations[0]);
     return acc;
