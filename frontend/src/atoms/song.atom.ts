@@ -6,6 +6,9 @@ export interface Music {
   startTime: number;
   playedTime: number;
   length: number;
+  artist : string;
+  title : string;
+  image : string;
 }
 
 export const volumeState = atom({
@@ -21,6 +24,9 @@ export const musicState = atom<Music>({
     startTime: 0,
     playedTime: -10,
     length: 0,
+    artist : "",
+    image : "",
+    title : "",
   },
 });
 

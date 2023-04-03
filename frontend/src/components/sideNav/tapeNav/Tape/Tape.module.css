@@ -1,13 +1,14 @@
-@charset "UTF-8";
 .tape {
+  width: 100%;
   position: relative;
   top: 40px;
 }
 
 .fixedRatio {
-  aspect-ratio: 376/239;
+  width: 100%;
+  aspect-ratio: 376/238;
   border-radius: 10px;
-  height: auto; /* 높이는 자동으로 설정됨 */
+  max-width: 358px;
 }
 
 .gearImg {
@@ -17,12 +18,12 @@
 }
 
 .left {
-  top: 47.28%;
+  top: 45.28%;
   left: 26.9%;
 }
 
 .right {
-  top: 47.28%;
+  top: 45.28%;
   left: 61.2%;
 }
 
