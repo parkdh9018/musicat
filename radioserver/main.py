@@ -81,7 +81,9 @@ async def send_tts(request: Request, path: str, filename: str):
         if range_header:
             range_type, range_values = range_header.split('=')
             if range_type.strip() == 'bytes':
-                start, end = [int(x) for x in range_values.split('-') if x]
+                range_values = range_values.split('-')
+                start = int(range_values[0]) if range_values[0] else None
+                end = int(range_values[1]) if len(range_values) > 1 and range_values[1] else None
 
         file_size = os.path.getsize(filepath)
         response_headers = {
