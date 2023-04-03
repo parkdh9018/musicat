@@ -13,15 +13,11 @@ export const RadioPlayer = () => {
       <ReactPlayer
         url={music.path}
         controls
-        onProgress={(state) => {
-          if (state.playedSeconds < Math.floor(music.playedTime / 1000)) {
-            console.log("검사");
-            console.log(Math.floor(music.playedTime / 1000));
-            playerRef.current?.seekTo(
-              Math.floor(music.playedTime / 1000),
-              "seconds"
-            );
-          }
+        onStart={() => {
+          playerRef.current?.seekTo(
+            Math.floor(music.playedTime / 1000),
+            "seconds"
+          );
         }}
         playing={true}
         volume={volume}
