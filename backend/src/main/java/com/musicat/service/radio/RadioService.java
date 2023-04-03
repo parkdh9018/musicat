@@ -50,9 +50,13 @@ public class RadioService {
   @KafkaListener(topics = "radioState")
   public void getRadioState(String message, Acknowledgment acknowledgment) {
     if (message != null) {
+      String tempState = currentState;
       logger.debug("수신한 라디오 상태 데이터 : {} ", message);
       acknowledgment.acknowledge();
       parseJsonMessageAndSetState(message);
+      if (!tempState.equals(currentState) && currentState.equals("chat")) {
+        simpMessagingTemplate.convertAndSend(getCurrentSound());
+      }
     }
   }
 
@@ -87,6 +91,7 @@ public class RadioService {
     try {
       JsonNode jsonNode = objectMapper.readTree(message);
       updateState(jsonNode);
+      updateSeq(jsonNode);
       updatePlaylist(jsonNode);
     } catch (Exception e) {
       throw new RuntimeException(e);
