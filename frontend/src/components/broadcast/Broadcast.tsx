@@ -23,7 +23,6 @@ export const Broadcast = () => {
       }
     >
       <GraphicCanvas />
-      <RadioPlayer />
     </div>
   );
 };

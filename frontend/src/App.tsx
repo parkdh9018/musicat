@@ -3,6 +3,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import router from "./pages/router";
 import { ToastContainer } from "react-toastify";
+import { RadioPlayer } from "./components/broadcast/radioPlayer/RadioPlayer";
 
 function App() {
   const element = useRoutes(router);
@@ -14,6 +15,7 @@ function App() {
     >
       {element}
       <ToastContainer />
+      <RadioPlayer />
     </div>
   );
 }
