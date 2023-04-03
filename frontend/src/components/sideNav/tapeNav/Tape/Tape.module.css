@@ -1,7 +1,7 @@
 @charset "UTF-8";
 .tape {
   position: relative;
-  top: 40px;
+  top: 30px;
   width: 100%;
   aspect-ratio: 376/239;
 }
@@ -9,7 +9,7 @@
 .fixedRatio {
   aspect-ratio: 376/239;
   width: 100%;
-  max-width: 30vw;
+  max-width: 29vw;
   border-radius: 10px;
   height: auto; /* 높이는 자동으로 설정됨 */
 }
@@ -21,12 +21,12 @@
 }
 
 .left {
-  top: 47.28%;
+  top: 46.28%;
   left: 26.9%;
 }
 
 .right {
-  top: 47.28%;
+  top: 46.28%;
   left: 61.2%;
 }
 
@@ -69,10 +69,10 @@
   }
   .left {
     top: 40.28%;
-    left: 26.9%;
+    left: 28.9%;
   }
   .right {
     top: 40.28%;
-    left: 61.2%;
+    left: 60.2%;
   }
 }/*# sourceMappingURL=Tape.module.css.map */
