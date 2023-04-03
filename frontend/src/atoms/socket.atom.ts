@@ -1,3 +1,4 @@
+import { nowMainPageState } from "@/atoms/common.atom";
 import { useRecoilCallback, useRecoilValue } from "recoil";
 import { changeChatList, Chat, chatListState } from "./chat.atom";
 import SocketManager from "@/connect/socket/socket";

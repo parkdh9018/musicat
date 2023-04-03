@@ -19,8 +19,12 @@ export function postSongRequest(req: Song) {
   return $.post("/music/request", req);
 }
 
-export function getYoutubeSearch(title: string, artist: string) {
+export function getYoutubeSearch(
+  title: string,
+  artist: string,
+  spotifyMusicDuration: number
+) {
   return $.get(
-    `/music/search/youtube/?musicTitle=${title}&musicArtist=${artist}`
+    `/music/search/youtube/?musicTitle=${title}&musicArtist=${artist}&spotifyMusicDuration=${spotifyMusicDuration}`
   );
 }
