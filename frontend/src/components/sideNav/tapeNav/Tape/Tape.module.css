@@ -1,14 +1,17 @@
+@charset "UTF-8";
 .tape {
-  width: 100%;
   position: relative;
   top: 40px;
+  width: 100%;
+  aspect-ratio: 376/239;
 }
 
 .fixedRatio {
+  aspect-ratio: 376/239;
   width: 100%;
-  aspect-ratio: 376/238;
+  max-width: 30vw;
   border-radius: 10px;
-  max-width: 358px;
+  height: auto; /* 높이는 자동으로 설정됨 */
 }
 
 .gearImg {
@@ -18,18 +21,19 @@
 }
 
 .left {
-  top: 45.28%;
+  top: 47.28%;
   left: 26.9%;
 }
 
 .right {
-  top: 45.28%;
+  top: 47.28%;
   left: 61.2%;
 }
 
 .tapeImg {
   position: absolute;
   width: 100%;
+  max-width: 30vw;
   height: auto;
   border-radius: 10px;
 }
@@ -45,11 +49,22 @@
 
 .text {
   white-space: nowrap;
-  font-size: 22px;
+  font-size: 1.5vw;
 }
 
 @media screen and (max-width: 768px) {
   .tape {
     top: 20px;
+  }
+  .fixedRatio {
+    max-width: 90%;
+    margin-left: 5%;
+  }
+  .tapeImg {
+    max-width: 90%;
+    margin-left: 5%;
+  }
+  .text {
+    font-size: 3vw;
   }
 }/*# sourceMappingURL=Tape.module.css.map */
