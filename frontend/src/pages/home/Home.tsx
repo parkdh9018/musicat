@@ -17,7 +17,7 @@ export const Home = () => {
   return (
     <>
       <Header />
-      <div>
+      <div style={{ backgroundColor: "rgb(26,26,26)" }}>
         <Broadcast />
       </div>
       <div>
