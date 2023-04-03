@@ -21,6 +21,13 @@ export const Chat = () => {
   const { data: chatPeople } = getPeopleCnt();
   const messageBoxRef = useRef<HTMLDivElement>(null);
 
+  // 모바일 기기인지 확인해 주는 함수
+  const isMobile = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    );
+  };
+
   /** 스크롤을 맨 밑으로 고정 */
   const scrollToBottom = () => {
     if (messageBoxRef.current) {
@@ -66,8 +73,8 @@ export const Chat = () => {
         <Input
           input={message}
           setInput={setMessage}
-          style={{ width: "80%" }}
           onKeyDown={clickSubmit}
+          style={isMobile() ? { width: "60%" } : { width: "74%" }}
         />
         <Button
           content="전 송"

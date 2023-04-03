@@ -1,0 +1,22 @@
+.about {
+  overflow: auto;
+  height: 350px;
+}
+.about .AboutImg {
+  width: 100%;
+  border-radius: 20px;
+}
+.about::-webkit-scrollbar {
+  width: 6px;
+}
+.about::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+.about::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: gray;
+}
+.about::-webkit-scrollbar-button {
+  width: 0;
+  height: 2%;
+}/*# sourceMappingURL=About.module.css.map */

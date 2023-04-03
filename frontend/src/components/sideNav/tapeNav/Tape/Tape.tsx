@@ -11,18 +11,18 @@ export const Tape = () => {
   // const backGroundImage = "/img/tape/background_img_test.png";
 
   const [textContent, setTextContent] = useState("뉴진스 - ditto ffff");
-  const [backGroundImage, setBackGroundImage] = useState(  "/img/tape/default.png")
+  const [backGroundImage, setBackGroundImage] = useState(
+    "/img/tape/default.png"
+  );
 
   const musicData = useRecoilValue(musicState);
 
   useEffect(() => {
-    console.log(musicData)
-    // setBackGroundImage("/img/tape/init.png")
-  },[musicData])
-  
+    console.log(musicData);
+    setBackGroundImage("/img/tape/Logo.png");
+  }, [musicData]);
 
   useEffect(() => {
-
     const width = textContent.length * 11;
 
     an = anime({
@@ -53,14 +53,13 @@ export const Tape = () => {
 
   return (
     <>
-      <div className={style.tape} >
+      <div className={style.tape}>
         <div className={style.songName}>
-          <div className={style.text} style={{fontFamily: "TapeFont"}} >{textContent}</div>
+          <div className={style.text} style={{ fontFamily: "TapeFont" }}>
+            {textContent}
+          </div>
         </div>
-        <img
-          className={style.tapeImg }
-          src="/img/tape/tape.png"
-        />
+        <img className={style.tapeImg} src="/img/tape/tape.png" />
         <img
           className={style.gearImg + " " + style.left}
           src="/img/tape/gear.png"
@@ -69,7 +68,11 @@ export const Tape = () => {
           className={style.gearImg + " " + style.right}
           src="/img/tape/gear.png"
         />
-        <img className={style.fixedRatio} style={{objectFit: "cover"}} src={backGroundImage} />
+        <img
+          className={style.fixedRatio}
+          style={{ objectFit: "cover" }}
+          src={backGroundImage}
+        />
       </div>
       {/* <button onClick={pauseEvent}>pause</button>
       <button onClick={playEvent}>play</button> */}
