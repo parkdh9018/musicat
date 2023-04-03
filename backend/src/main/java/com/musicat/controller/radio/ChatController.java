@@ -57,7 +57,6 @@ public class ChatController {
     String currentState = radioService.getCurrentState();
     logger.debug("현재 상태 : {}", currentState);
 
-//        int totalSessionCnt = userCounter.getCount();
     logger.debug("접속자 수 : {}", userCounter.getCount());
 
     long userSeq = messageDto.getSenderSeq();
