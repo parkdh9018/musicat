@@ -1,12 +1,25 @@
 import anime from "animejs";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import style from "./Tape.module.css";
+import { useRecoilValue } from "recoil";
+import { musicState } from "@/atoms/song.atom";
 
 export const Tape = () => {
   let an: anime.AnimeInstance;
 
-  const textContent = "뉴진스 - ditto ffff";
-  const BackGroundImage_src = "/img/tape/background_img_test.png";
+  // const textContent = "뉴진스 - ditto ffff";
+  // const backGroundImage = "/img/tape/background_img_test.png";
+
+  const [textContent, setTextContent] = useState("뉴진스 - ditto ffff");
+  const [backGroundImage, setBackGroundImage] = useState(  "/img/tape/default.png")
+
+  const musicData = useRecoilValue(musicState);
+
+  useEffect(() => {
+    console.log(musicData)
+    // setBackGroundImage("/img/tape/init.png")
+  },[musicData])
+  
 
   useEffect(() => {
 
@@ -45,7 +58,7 @@ export const Tape = () => {
           <div className={style.text} style={{fontFamily: "TapeFont"}} >{textContent}</div>
         </div>
         <img
-          className={style.tapeImg + " " + style.fixedRatio}
+          className={style.tapeImg }
           src="/img/tape/tape.png"
         />
         <img
@@ -56,7 +69,7 @@ export const Tape = () => {
           className={style.gearImg + " " + style.right}
           src="/img/tape/gear.png"
         />
-        <img className={style.fixedRatio} src={BackGroundImage_src} />
+        <img className={style.fixedRatio} style={{objectFit: "cover"}} src={backGroundImage} />
       </div>
       {/* <button onClick={pauseEvent}>pause</button>
       <button onClick={playEvent}>play</button> */}
