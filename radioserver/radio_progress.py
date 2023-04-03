@@ -27,7 +27,6 @@ async def radio_progress():
         radio_state = await logic_story.process_story_state()
     elif current_state.get_state() == 'chat':
         radio_state = {"state" : "chat"}
-        count = 1
         user_check.clear()
         chat_readable.set_state(True)
     elif current_state.get_state() == 'music':
