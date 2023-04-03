@@ -11,9 +11,9 @@ interface ExtendedGLTF extends GLTF {
 interface propsType extends GroupProps {}
 
 export const Whirligig = (props: propsType) => {
-  const texture = useTexture("/broadcast/Whirligig.png");
+  const texture = useTexture("/graphic/Whirligig.png");
   const { nodes, animations } = useGLTF(
-    "/broadcast/Whirligig.glb"
+    "/graphic/Whirligig.glb"
   ) as ExtendedGLTF;
 
   const { ref, actions, names } = useAnimations(animations);

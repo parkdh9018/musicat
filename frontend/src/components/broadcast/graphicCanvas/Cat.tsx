@@ -24,11 +24,11 @@ export const Cat = ({position, ...props}: propsType) => {
   const startPosition = new THREE.Vector3(position.x, position.y + 10, position.z); // 시작 위치를 설정하세요.
   const targetPosition = position // 목표 위치를 설정하세요.
 
-  const { scene } = useGLTF("/broadcast/cat/Chibi_Cat_01.glb") as ExtendedGLTF;
+  const { scene } = useGLTF("/graphic/cat/Chibi_Cat_01.glb") as ExtendedGLTF;
 
   const animations = ANI_NAME.reduce((acc: any, name) => {
     const { animations } = useGLTF(
-      `broadcast/animation/Anim_Chibi@${name}.glb`
+      `/graphic/animation/Anim_Chibi@${name}.glb`
     ) as ExtendedGLTF;
     acc.push(animations[0]);
     return acc;
