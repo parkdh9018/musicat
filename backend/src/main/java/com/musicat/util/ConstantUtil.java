@@ -110,4 +110,13 @@ public class ConstantUtil {
   public final String MUSIC_STATE = "music";
   public final String CHAT_STATE = "chat";
 
+  /**
+   * 카프카 Topic
+   */
+  public final String STORY_TOPIC = "verifyStory";
+  public final String MUSIC_TOPIC = "musicRequest";
+  public final String RADIO_STATE_TOPIC = "radioState";
+  public final String CHAT_TOPIC  = "chat";
+  public final String FINISH_CHAT = "finishChat";
+  public final String FINISH_STATE = "finishState";
 }

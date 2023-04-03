@@ -6,12 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface StoryRepository extends JpaRepository<Story, Long> {
 
-  // (유효성 검사에 통과, 읽지 않은) 사연 리스트에서 1개의 사연 가져오기 (신청 순서로 정렬되어있습니다.)
-//    public Optional<Story> findTop1ByStoryReadedFalseAndStoryValidTrueOrderByStoryCreatedAt();
+  // 읽지 않은 사연 조회 (valid 검사 실패하면 Readed = true 되므로. Readed가 null 이거나 false 인 경우 조회)
+  public Optional<Story> findByUserSeqAndStoryReadedFalseOrUserSeqAndStoryReadedNull(long userSeq, long userSeq2);
 
-  // (memberSeq로 조회, 읽지 않은 사연) 사연 리스트에서 1개의 사연 가져오기
-  public Optional<Story> findByUserSeqAndStoryReadedFalseOrStoryReadedNull(long userSeq);
-
-  // 신청 사연 리스트에서 순번 조회
-//    public int countByStorySeqLessThanAndStoryReadedFalseAndStoryValidTrue(long storySeq);
 }
