@@ -42,7 +42,7 @@ export const SongSearch = ({ setRequestSong, width }: SongSearchProps) => {
   // 입력 값 스포티파이에서 검색
   const searchSpotify = async () => {
     const SearchResult = await getSongSearch(search);
-    console.log(SearchResult);
+    // console.log(SearchResult);
     // 검색 결과가 있는 경우 드랍다운에 들어갈 데이터 설정
     if (SearchResult.data.length > 0) {
       setSearchResults(SearchResult.data);
@@ -77,15 +77,17 @@ export const SongSearch = ({ setRequestSong, width }: SongSearchProps) => {
     const selectedSong = JSON.parse(value);
     setSearch(`${selectedSong.musicTitle}_${selectedSong.musicArtist}`);
 
+    // console.log(selectedSong);
     // 유튜브 검색결과 확인
     const result = await getYoutubeSearch(
       selectedSong.musicTitle,
-      selectedSong.musicArtist
+      selectedSong.musicArtist,
+      selectedSong.spotifyMusicDuration
     );
 
     if (result.status === 200) {
-      console.log(result.status);
-      console.log(result);
+      // console.log(result.status);
+      // console.log(result);
 
       setRequestSong({
         ...selectedSong,

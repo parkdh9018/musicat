@@ -28,3 +28,14 @@ export const playNowState = atom({
   key: "playNow",
   default: true,
 });
+
+export const nowPlaying = atom({
+  key: "nowPlaying",
+  default: {
+    audioType: "",
+    audioSource: "",
+    audioStartedAt: 0,
+    audioCurrentTime: 0,
+    musicSeq: 0,
+  },
+});
