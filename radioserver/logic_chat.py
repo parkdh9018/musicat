@@ -32,7 +32,6 @@ async def process_chat_data(data):
                 user_nickname = database.find_user_nickname(user_seq)
                 chat_reaction = api_chatgpt.chat_reaction_gpt(user_nickname, chat_cleaned)
                 logger.info(chat_reaction)
-                logger.info(user_check)
                 current_count = count
                 count = count + 1
                 if count > 100 :
@@ -42,6 +41,7 @@ async def process_chat_data(data):
                 await api_naver_tts.generate_tts_test(chat_reaction, tts_path)
                 mp3path = await my_util.create_mp3_url("chat", f'{current_count}.mp3')
                 user_check.append(user_seq)
+                logger.info(user_check)
                 chat_length = len(AudioSegment.from_file(tts_path))
                 playlist = [
                     {"type": "mp3", "path" : mp3path, "length" : chat_length}
