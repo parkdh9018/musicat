@@ -14,7 +14,10 @@ user_check = []
 
 ##############################################
 
+count = 1
+
 async def process_chat_data(data):
+    global count
     if current_state.get_state() == "chat" and chat_readable.get_state() == True:
         logger.info(f'채팅 넘어옴{data}')
         chat_cleaned = re.sub(r"[^가-힣A-Za-z0-9\s]+", " ", data["content"])
@@ -30,6 +33,8 @@ async def process_chat_data(data):
                 logger.info(chat_reaction)
                 current_count = count
                 count = count + 1
+                if count > 100 :
+                    count = 1
                 tts_path = f'./tts/chat/{current_count}.mp3'
                 # await api_naver_tts.generate_tts_clova(chat_reaction, tts_path, "ngoeun")
                 await api_naver_tts.generate_tts_test(chat_reaction, tts_path)
