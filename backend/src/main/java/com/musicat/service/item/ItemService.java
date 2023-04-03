@@ -22,12 +22,14 @@ import com.musicat.data.repository.item.ThemeRepository;
 import com.musicat.data.repository.user.MoneyLogRepository;
 import com.musicat.data.repository.user.UserRepository;
 import com.musicat.jwt.TokenProvider;
+import com.musicat.util.ConstantUtil;
 import com.musicat.util.builder.ItemBuilderUtil;
 import com.musicat.util.builder.MoneyLogBuilderUtil;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.procedure.spi.ParameterRegistrationImplementor;
 import org.springframework.stereotype.Service;
 
 
@@ -45,14 +47,9 @@ public class ItemService {
 
   // Util
   private final MoneyLogBuilderUtil moneyLogBuilderUtil;
-
   private final ItemBuilderUtil itemBuilderUtil;
   private final TokenProvider tokenProvider;
-
-  private final String backgroundType = "배경 변경";
-  private final String badgeType = "뱃지 변경";
-  private final String themeType = "테마 변경";
-
+  private final ConstantUtil constantUtil;
 
   /**
    * 배경 전체 조회
@@ -119,7 +116,7 @@ public class ItemService {
       // 비용 차감
       user.setUserMoney(user.getUserMoney() - background.getBackgroundCost());
       // 거래 내역 저장
-      MoneyLog moneyLog = moneyLogBuilderUtil.itemBuyMoneyLog(user, backgroundType,
+      MoneyLog moneyLog = moneyLogBuilderUtil.buildMoneyLog(user, constantUtil.MONEYLOG_BACKGROUND_TYPE,
           background.getBackgroundName(), background.getBackgroundCost() * -1);
       moneyLogRepository.save(moneyLog);
       // 회원 배경 변경
@@ -158,13 +155,13 @@ public class ItemService {
       // 비용 차감
       user.setUserMoney(user.getUserMoney() - badge.getBadgeCost());
       // 거래 내역 저장
-      MoneyLog moneyLog = moneyLogBuilderUtil.itemBuyMoneyLog(user, badgeType, badge.getBadgeName(),
+      MoneyLog moneyLog = moneyLogBuilderUtil.buildMoneyLog(user, constantUtil.MONEYLOG_BADGE_TYPE, badge.getBadgeName(),
           badge.getBadgeCost() * -1);
       moneyLogRepository.save(moneyLog);
       // 회원 배경 변경
       user.setBadge(badge);
 
-      result = "선택한 뱃지로 변경되었습니다.";
+      result = "선택하신 뱃지로 변경되었습니다.";
     } else {
       result = "잔액이 부족합니다.";
     }
@@ -199,7 +196,7 @@ public class ItemService {
       // 비용 차감
       user.setUserMoney(user.getUserMoney() - theme.getThemeCost());
       // 거래 내역 저장
-      MoneyLog moneyLog = moneyLogBuilderUtil.itemBuyMoneyLog(user, themeType, theme.getThemeName(),
+      MoneyLog moneyLog = moneyLogBuilderUtil.buildMoneyLog(user, constantUtil.MONEYLOG_THEME_TYPE, theme.getThemeName(),
           theme.getThemeCost() * -1);
       moneyLogRepository.save(moneyLog);
       // 회원 배경 변경

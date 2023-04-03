@@ -12,8 +12,8 @@ public class MoneyLogBuilderUtil {
   /*
   아이템을 구매했을 때의 거래 내역
    */
-  public MoneyLog itemBuyMoneyLog(User user, String moneyLogType, String moneyLogDetail,
-      long moneyLogChange) {
+  public MoneyLog buildMoneyLog(User user, String moneyLogType, String moneyLogDetail,
+                                long moneyLogChange) {
     return MoneyLog.builder()
         .user(user)
         .moneyLogType(moneyLogType)
@@ -21,6 +21,10 @@ public class MoneyLogBuilderUtil {
         .moneyLogChange(moneyLogChange)
         .build();
   }
+
+
+
+
 
 
 }
