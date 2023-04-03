@@ -22,6 +22,8 @@ export const SongList = () => {
       const nowId: string = nowPlaying.path.split("embed/")[1];
       console.log(nowId);
       setPlayingMusicId(nowId);
+    } else {
+      setPlayingMusicId("");
     }
   }, [nowPlaying]);
 
