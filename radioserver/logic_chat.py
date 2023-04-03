@@ -31,6 +31,7 @@ async def process_chat_data(data):
                 user_nickname = database.find_user_nickname(user_seq)
                 chat_reaction = api_chatgpt.chat_reaction_gpt(user_nickname, chat_cleaned)
                 logger.info(chat_reaction)
+                logger.info(user_check)
                 current_count = count
                 count = count + 1
                 if count > 100 :
