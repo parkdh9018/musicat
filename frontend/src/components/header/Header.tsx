@@ -10,6 +10,7 @@ import {
   loginUser,
 } from "@/connect/axios/queryHooks/user";
 import style from "./Header.module.css";
+import { RadioPlayer } from "../broadcast/radioPlayer/RadioPlayer";
 
 export const Header = () => {
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
@@ -65,7 +66,10 @@ export const Header = () => {
               <span className={style.nickname}>{userInfo.userNick}</span>
               <span className={style.nickname_other}>님 환영합니다</span>
               <div className={style.popover_state}>
-                <Popover isPopoverOn={isPopoverOn} />
+                <Popover
+                  isPopoverOn={isPopoverOn}
+                  setIsPopoverOn={setIsPopoverOn}
+                />
               </div>
               <div className={style.profile_div}>
                 <img
