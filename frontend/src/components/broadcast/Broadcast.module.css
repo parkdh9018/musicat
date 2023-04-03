@@ -8,6 +8,13 @@
   background-color: white;
   z-index: 0;
 }
+.broadcast .radioBooth {
+  max-width: 1200px;
+  position: absolute;
+  z-index: 1;
+  height: 40vh;
+  width: 100%;
+}
 
 .mypage {
   position: fixed;
