@@ -23,14 +23,14 @@ public class YoutubeApiService {
 
     private final ConvertTime convertTime;
 
-    public YoutubeSearchResultDto findVideo(String title, String artist) {
+    public YoutubeSearchResultDto findVideo(String title, String artist, long spotifyMusicDuration) {
     String query = title + " " + artist;
     YouTube.Search.List searchRequest;
     try {
         searchRequest = youtubeApi.search().list(Arrays.asList("id","snippet"));
         searchRequest.setQ(query);
         searchRequest.setType(Arrays.asList("video"));
-        searchRequest.setMaxResults(3L);
+        searchRequest.setMaxResults(20L);
         searchRequest.setFields("items(id(videoId),snippet(publishedAt,channelId,title,description))");
 
         SearchListResponse searchResponse = searchRequest.execute();
@@ -46,6 +46,12 @@ public class YoutubeApiService {
                     .execute();
 
             Video video = videoResponse.getItems().get(0);
+
+            // 재생 시간 검증 (+,- 3초)
+            long playTime = convertTime.convertDurationToMillis(video.getContentDetails().getDuration());
+            if (Math.abs(spotifyMusicDuration - playTime) > 5000) continue;
+
+            // 조회수 가장 많은 동영상 1개 리턴
             BigInteger viewCount = video.getStatistics().getViewCount();
             if (viewCount.compareTo(maxViews) > 0 && viewCount.compareTo(BigInteger.valueOf(100000)) > 0) {
                 maxViews = viewCount;

@@ -1,4 +1,4 @@
-package com.musicat.data.dto.music;
+package com.musicat.data.dto.spotify;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,4 +18,5 @@ public class SpotifySearchResultDto {
   private String musicAlbum;
   private String musicImage;
   private String musicReleaseDate;
+  private long spotifyMusicDuration;
 }
