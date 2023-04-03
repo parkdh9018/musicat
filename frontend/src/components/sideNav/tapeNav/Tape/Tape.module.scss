@@ -64,7 +64,7 @@
   }
 
   .fixedRatio {
-    max-width: 90%;
+    max-width: 89%;
     margin-left: 5%;
   }
 
@@ -75,5 +75,15 @@
 
   .text {
     font-size: 3vw;
+  }
+
+  .left {
+    top: 40.28%;
+    left: 26.9%;
+  }
+
+  .right {
+    top: 40.28%;
+    left: 61.2%;
   }
 }

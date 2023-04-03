@@ -30,7 +30,7 @@
   cursor: pointer;
 }
 .myinfo .leftbox .toolbar .circleLeft {
-  right: 53%;
+  right: 58%;
 }
 .myinfo .leftbox .fc {
   color: var(--font-color);
@@ -68,7 +68,7 @@
   margin-left: 10px;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 840px) {
   .myinfo {
     flex-direction: column;
   }
@@ -77,6 +77,7 @@
   }
   .myinfo .leftbox .toolbar {
     width: 16%;
+    max-width: 55px;
   }
   .myinfo .middle_hr {
     writing-mode: horizontal-tb;

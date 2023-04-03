@@ -72,7 +72,7 @@
     font-size: 0.9rem;
   }
 }
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 840px) {
   .side_board {
     display: none;
   }
