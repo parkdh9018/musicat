@@ -24,8 +24,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class NoticeService {
 
-  private final ConstantUtil constantUtil;
+  // Repository
   private final NoticeRepository noticeRepository;
+
+  // Util
+  private final ConstantUtil constantUtil;
   private final NoticeBuilderUtil noticeBuilderUtil;
 
   /**

@@ -56,6 +56,15 @@ public class ConstantUtil {
   public final long TODAY_MONEY = 100;
 
   /**
+   * 재화 내역 MoneyLog
+   */
+  public final String MONEYLOG_TODAY_ATTEND_TYPE = "오늘 최초 출석";
+  public final String MONEYLOG_TODAY_ATTEND_DETAIL = "오늘 최초 출석" + TODAY_MONEY + "츄르 지급!";
+  public final String MONEYLOG_BACKGROUND_TYPE = "배경 변경";
+  public final String MONEYLOG_BADGE_TYPE = "뱃지 변경";
+  public final String MONEYLOG_THEME_TYPE = "테마 변경";
+
+  /**
    * 알림
    */
 

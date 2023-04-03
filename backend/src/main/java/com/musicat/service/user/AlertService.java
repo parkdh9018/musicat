@@ -26,16 +26,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class AlertService {
 
-  // token provider
-  private final TokenProvider tokenProvider;
-
   // repository 정의
   private final AlertRepository alertRepository;
 
   // util 정의
   private final ConstantUtil constantUtil;
   private final AlertBuilderUtil alertBuilderUtil;
-
+  private final TokenProvider tokenProvider;
 
   /**
    * 알림 등록

@@ -21,6 +21,7 @@ import com.musicat.data.repository.user.UserAttendanceRepository;
 import com.musicat.data.repository.user.UserRepository;
 import com.musicat.jwt.TokenProvider;
 import com.musicat.util.ConstantUtil;
+import com.musicat.util.builder.MoneyLogBuilderUtil;
 import com.musicat.util.builder.UserBuilderUtil;
 import java.time.LocalDate;
 import java.util.Optional;
@@ -44,13 +45,19 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class UserService {
 
+  // Repository
   private final UserRepository userRepository;
   private final UserAttendanceRepository userAttendanceRepository;
   private final AuthorityRepository authorityRepository;
-  private final AlertService alertService;
-  private final UserBuilderUtil userBuilderUtil;
   private final MoneyLogRepository moneyLogRepository;
   private final AlertRepository alertRepository;
+
+  // Service
+  private final AlertService alertService;
+  private final UserBuilderUtil userBuilderUtil;
+  private final MoneyLogBuilderUtil moneyLogBuilderUtil;
+  
+  // Util
   private final TokenProvider tokenProvider;
   private final ConstantUtil constantUtil;
 
@@ -230,6 +237,10 @@ public class UserService {
 
       // 알림 저장
       alertService.insertAlertByAlertType(user.getUserSeq(), constantUtil.ALERT_TODAY_TYPE);
+
+      // 재화 내역 저장
+      MoneyLog moneyLog = moneyLogBuilderUtil.buildMoneyLog(user, constantUtil.MONEYLOG_TODAY_ATTEND_TYPE, constantUtil.MONEYLOG_TODAY_ATTEND_DETAIL, constantUtil.TODAY_MONEY);
+      moneyLogRepository.save(moneyLog);
     }
 
     return user;
