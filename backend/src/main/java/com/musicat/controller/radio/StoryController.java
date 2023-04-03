@@ -35,14 +35,14 @@ public class StoryController {
    * 사연 신청
    *
    * @param map
-   * @return
+   * @return 201, 409, 500
    */
   @PostMapping("")
   public ResponseEntity<?> insertStory(/**@RequestBody StoryRequestDto storyRequestDto**/
       @RequestBody
       Map<String, Object> map) {
 
-    // spotify, youtube 검색 결과
+    // spotify + youtube 검색 결과 = storySong
     HashMap<String, String> storySongMap = (HashMap<String, String>) map.get("storySong");
 
     Gson gson = new Gson();
@@ -65,40 +65,29 @@ public class StoryController {
         .build();
 
     // 이미 신청한 사연이 있는지 검증
+    // 이미 존재할 경우 409 Exception 발생
     storyService.isUniqueStory(longUserSeq);
 
-    // 사연 등록 호출
+    // 사연 등록 서비스 호출
     storyService.insertStory(storyRequestDto);
 
+    // 201 HttpStatus Code 리턴
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
-//    /**
-//     * 사연 1개 조회 (읽을 사연) (가장 먼저 신청한 사연 중 1개 조회)
-//     */
-//    @GetMapping("/story")
-//    public ResponseEntity<?> getTopStory() {
-//        try {
-//            Object result = storyService.getTopStoryInfo();
-//
-//            if (result == null) return ResponseEntity.noContent().build(); // 사연 검색 결과 없음
-//
-//            return ResponseEntity.ok(result); // 사연 검색 성공. (검색한 사연 정보 반환)
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-//    }
-
   /**
-   * 사연 중복 검사 (신청 사연 리스트에 memberSeq로 신청한 사연이 있는지 여부 true  : 중복 있음 (사연 신청 불가능) false : 중복 없음 (사연 신청
-   * 가능)
+   * 사연 중복 검사
+   * @param userSeq
+   * @return 200, 409, 500
    */
   @GetMapping("/unique/{userSeq}")
   public ResponseEntity<?> isUniqueStory(@PathVariable long userSeq) {
+    // Todo : 토큰에서 userSeq 가져오는 로직으로 변경해야함
+    // 이미 신청한 사연이 존재할 경우 409 Exception 발생
     storyService.isUniqueStory(userSeq);
-    return ResponseEntity.ok().build();
 
+    // 201 HttpStatus Code 리턴
+    return ResponseEntity.ok().build();
   }
 
   /**
@@ -118,7 +107,7 @@ public class StoryController {
    * 사연 삭제
    *
    * @param storySeq
-   * @return
+   * @return 200, 404, 500
    */
   @DeleteMapping("/{storySeq}")
   public ResponseEntity<Void> deleteStory(@PathVariable long storySeq) {
@@ -126,6 +115,5 @@ public class StoryController {
 
     return ResponseEntity.ok().build();
   }
-
 
 }
