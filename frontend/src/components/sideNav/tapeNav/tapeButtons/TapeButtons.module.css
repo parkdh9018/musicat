@@ -78,4 +78,15 @@
   border-radius: 5%;
   background-color: rgba(0, 0, 0, 0.4);
   background: linear-gradient(90deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.15) 30%), linear-gradient(180deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.15) 30%), linear-gradient(270deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.15) 30%);
+}
+
+@media screen and (max-width: 1200px) {
+  .bg {
+    font-size: 0.7rem;
+  }
+}
+@media screen and (max-width: 768px) {
+  .bg {
+    font-size: 1rem;
+  }
 }/*# sourceMappingURL=TapeButtons.module.css.map */
