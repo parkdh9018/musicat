@@ -1,7 +1,7 @@
 import asyncio
 import kafka_handler
-from fastapi import FastAPI, HTTPException
-from fastapi.responses import FileResponse
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import FileResponse, StreamingResponse
 from shared_state import radio_health
 from radio_progress import reset_radio
 import os
@@ -59,11 +59,44 @@ def switch_radio():
 
 ##############################################
 
+def generate_file_stream(filepath: str, start: int = 0, end: int = None):
+    with open(filepath, 'rb') as file:
+        file.seek(start)
+        chunk_size = 8192
+        while True:
+            if end is not None and file.tell() + chunk_size > end:
+                chunk_size = end - file.tell() + 1
+            data = file.read(chunk_size)
+            if not data:
+                break
+            yield data
+
 @app.get("/tts/{path}/{filename}")
-async def send_tts(path: str, filename: str):
+async def send_tts(request: Request, path: str, filename: str):
     filepath = os.path.join(f"./tts/{path}", filename)
     if os.path.isfile(filepath):
-        return FileResponse(filepath, media_type="audio/mpeg")
+        range_header = request.headers.get('Range')
+        start, end = None, None
+
+        if range_header:
+            range_type, range_values = range_header.split('=')
+            if range_type.strip() == 'bytes':
+                start, end = [int(x) for x in range_values.split('-') if x]
+
+        file_size = os.path.getsize(filepath)
+        response_headers = {
+            'Content-Type': 'audio/mpeg',
+            'Accept-Ranges': 'bytes',
+            'Content-Length': str(file_size)
+        }
+
+        if start is not None:
+            end = end or file_size - 1
+            response_headers['Content-Range'] = f'bytes {start}-{end}/{file_size}'
+            response_headers['Content-Length'] = str(end - start + 1)
+            return StreamingResponse(generate_file_stream(filepath, start, end), status_code=206, headers=response_headers)
+        else:
+            return FileResponse(filepath, media_type="audio/mpeg")
     else:
         raise HTTPException(status_code=404, detail="재생할 파일이 존재하지 않습니다.")
     
