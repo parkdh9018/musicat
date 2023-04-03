@@ -141,8 +141,8 @@ public class MusicService {
      * @param musicArtist
      * @return
      */
-  public YoutubeSearchResultDto searchMusicByYoutube(String musicTitle, String musicArtist) {
-    return youtubeApiService.findVideo(musicTitle, musicArtist);
+  public YoutubeSearchResultDto searchMusicByYoutube(String musicTitle, String musicArtist, long spotifyMusicDuration) {
+    return youtubeApiService.findVideo(musicTitle, musicArtist, spotifyMusicDuration);
   }
 
 
