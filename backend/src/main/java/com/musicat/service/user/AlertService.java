@@ -82,8 +82,8 @@ public class AlertService {
     if (query.equals("")) { // 아무것도 입력하지 않은 경우
       alertListPage = alertRepository.findAllByUserSeq(userInfo.getUserSeq(), pageable);
     } else { // 무언가 입력한 경우
-      alertListPage = alertRepository.findAllByUserSeqAndAlertTitleContainingAndAlertContentContaining(
-          userInfo.getUserSeq(), query, query, pageable);
+      alertListPage = alertRepository.findByUserSeqAndAlertTitleContainingOrUserSeqAndAlertContentContaining(
+          userInfo.getUserSeq(), query, userInfo.getUserSeq(), query, pageable);
     }
 
     List<AlertListResponseDto> alertListDtos = alertListPage.getContent().stream()
