@@ -55,7 +55,7 @@ public class RadioService {
       acknowledgment.acknowledge();
       parseJsonMessageAndSetState(message);
       if (!tempState.equals(currentState) && currentState.equals("chat")) {
-        simpMessagingTemplate.convertAndSend(getCurrentSound());
+        sendCurrentSound(true);
       }
     }
   }
