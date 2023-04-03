@@ -1,6 +1,6 @@
 package com.musicat.service.radio;
 
-import com.musicat.data.dto.music.SpotifySearchResultDto;
+import com.musicat.data.dto.spotify.SpotifySearchResultDto;
 import com.musicat.data.dto.spotify.*;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -93,6 +93,7 @@ public class SpotifyApiService {
           .musicAlbum(track.getAlbum().getName())
           .musicImage(imageUrl)
           .musicReleaseDate(musicReleaseDate)
+          .spotifyMusicDuration(track.getDuration_ms())
           .build();
 
       results.add(spotifySearchResultDto);

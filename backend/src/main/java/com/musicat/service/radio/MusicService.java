@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.musicat.data.dto.music.MusicInfoDto;
 import com.musicat.data.dto.music.MusicRequestResultDto;
 import com.musicat.data.dto.music.MusicRequestDto;
-import com.musicat.data.dto.music.SpotifySearchResultDto;
+import com.musicat.data.dto.spotify.SpotifySearchResultDto;
 import com.musicat.data.dto.music.YoutubeSearchResultDto;
 import com.musicat.data.entity.radio.Music;
 import com.musicat.data.repository.radio.MusicRepository;
