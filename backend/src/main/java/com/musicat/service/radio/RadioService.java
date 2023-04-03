@@ -233,6 +233,9 @@ public class RadioService {
       type = sound.getType();
       path = sound.getPath();
       length = sound.getLength();
+      title = sound.getTitle();
+      artist = sound.getArtist();
+      image = sound.getImage();
       startTime = currentTime;
       return true;
     }
