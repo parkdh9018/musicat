@@ -8,9 +8,10 @@ import re
 import kafka_handler
 import os
 from my_logger import setup_logger
+from collections import defaultdict
 
 logger = setup_logger()
-user_check = []
+user_check = user_check = defaultdict(int)
 
 ##############################################
 
@@ -18,7 +19,7 @@ count = 1
 
 async def clear_user_check():
     global user_check
-    
+
     user_check.clear
 
 async def process_chat_data(data):
