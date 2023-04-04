@@ -177,7 +177,7 @@ public class RadioService {
    */
   private void logRadioStatus() {
     logTimer++;
-    if (logTimer % 5 == 0) {
+    if (logTimer % 1 == 0) {
       logger.debug(
           "라디오 상태: {} | 음원 타입: {} | 음원 경로: {} | 경과 시간: {} | 음원 길이: {} | 현재 큐에 들어있는 음원 수: {}",
           currentState, type, path, System.currentTimeMillis() - startTime, length,
@@ -207,8 +207,8 @@ public class RadioService {
    */
   public void chatProcess() {
     long currentTime = System.currentTimeMillis();
-    logger.debug("채팅 상태 들어옴");
     if (checkSoundChange() && currentTime - startTime < length) {
+      logger.debug("채팅 보냄");
       sendCurrentSound(true);
     }
     if (chatTimer > 0) {
@@ -234,13 +234,6 @@ public class RadioService {
   public boolean checkSoundChange() {
     long currentTime = System.currentTimeMillis();
     if (currentTime - startTime > length) {
-        type = "";
-        path = "";
-        length = 0;
-        title = "";
-        artist = "";
-        image = "";
-        startTime = currentTime;
       if (!playlist.isEmpty()) {
         PlaylistDto sound = playlist.poll();
         type = sound.getType();
