@@ -22,21 +22,42 @@ def story_reaction_gpt(param : str):
 
 ##############################################
 
-def chat_reaction_gpt(user : str, message : str):
+example_chat = [
+    {"role": "user", "content": "User: 라면부엉, Message: DJ님 취미가 뭐에요?"},
+    {"role": "assistant", "content": "라면부엉님이 DJ님 취미가 뭐에요? 라고 해주셨네요. 저는 음악 감상이 참 좋아요."}
+]
+
+past_chats = [
+    {"role": "system", "content": "Role: Respond appropriately to chat as a streamer. Mandatory: within 100 characters, no emoji"}
+] + example_chat
+
+def add_chat_to_history(user: str, message: str, assistant_message: str = None):
+    global past_chats
+    past_chats.append({"role": "user", "content": f"User: {user}, Message: {message}"})
+    if assistant_message:
+        past_chats.append({"role": "assistant", "content": assistant_message})
+
+def chat_reaction_gpt(user: str, message: str):
     """
     채팅에 대한 리액션을 생성합니다
     """
+    global past_chats
+    add_chat_to_history(user, message)
     result = openai.ChatCompletion.create(
-        model = "gpt-3.5-turbo",
-        messages = [
-	        {"role" : "system", "content" : "Role : Respond appropriately to chat as a streamer. Mandatory : within 100 characters, no emoji"},
-	        {"role" : "user", "content" : "User : 라면부엉, Message : DJ님 취미가 뭐에요?"},
-	        {"role" : "assistant", "content" : "라면부엉님이 DJ님 취미가 뭐에요? 라고 해주셨네요. 저는 음악 감상이 참 좋아요."},
-	        {"role" : "user", "content" : f'User : {user}, Message : {message}'}
-        ],
+        model="gpt-3.5-turbo",
+        messages=past_chats[-1000:],
         temperature=0.5
     )
-    return (result.choices[0].message.content.strip())
+    assistant_response = result.choices[0].message.content.strip()
+    add_chat_to_history(user, message, assistant_response)
+    return assistant_response
+
+def reset_past_chats():
+    global past_chats
+    initial_chat = [
+        {"role": "system", "content": "Role: Respond appropriately to chat as a streamer. Mandatory: within 100 characters, no emoji"}
+    ] + example_chat
+    past_chats = initial_chat.copy()
 
 ##############################################
 
