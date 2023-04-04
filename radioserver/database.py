@@ -61,7 +61,7 @@ def find_null_intro_outro_story():
     conn = connect_db()
     cursor = conn.cursor()
     try:
-        cursor.execute("SELECT * FROM story WHERE story_reaction IS NULL OR story_outro IS NULL")
+        cursor.execute("SELECT * FROM story WHERE story_readed = false AND (story_reaction IS NULL OR story_outro IS NULL)")
         results = cursor.fetchall()
         # Get column names
         column_names = [column[0] for column in cursor.description]
