@@ -45,7 +45,8 @@ async def process_chat_data(data):
                 if count > 100 :
                     count = 1
                 tts_path = f'./tts/chat/{current_count}.mp3'
-                await api_naver_tts.generate_tts_test(chat_reaction, tts_path)
+                await api_naver_tts.generate_tts_clova(chat_reaction, tts_path, "nminseo")
+                # await api_naver_tts.generate_tts_test(chat_reaction, tts_path)
                 mp3path = await my_util.create_mp3_url("chat", f'{current_count}.mp3')
                 user_check[user_seq] += 1
                 logger.info(user_check)
