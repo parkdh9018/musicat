@@ -94,7 +94,6 @@ async def process_story_state():
         return None
     logger.info(f'[Story Process] 사연 상태를 생성합니다 {story["story_seq"]}')
     
-    user_nickname = database.find_user_nickname(story["user_seq"])
     story_content = story["story_content"]
     story_content_list = json.loads(story_content)
 
@@ -104,7 +103,6 @@ async def process_story_state():
     tts_path = "./tts/story/"
 
     # 파일명 지정
-    story_opening_filename = os.path.join(tts_path, "story_opening.mp3")
     story_reaction_filename = os.path.join(tts_path, "story_reaction.mp3")
     story_outro_filename = os.path.join(tts_path, "outro.mp3")
 
@@ -113,7 +111,6 @@ async def process_story_state():
     # await api_naver_tts.generate_tts_clova(story_reaction, story_reaction_filename, "nihyun")
     # await api_naver_tts.generate_tts_clova(story_outro, story_outro_filename, "nihyun")
 
-    await api_naver_tts.generate_tts_test(story_opening, story_opening_filename)
     await api_naver_tts.generate_tts_test(story_reaction, story_reaction_filename)
     await api_naver_tts.generate_tts_test(story_outro, story_outro_filename)
 
@@ -131,7 +128,6 @@ async def process_story_state():
 
     # 생성된 음성파일 merge
     intro_tts_list = []
-    intro_tts_list.append(story_opening_filename)
     intro_tts_list.append(merged_story_tts_filename)
     intro_tts_list.append(story_reaction_filename)
     merged_intro_tts = await merge_audio(intro_tts_list, 1000)
