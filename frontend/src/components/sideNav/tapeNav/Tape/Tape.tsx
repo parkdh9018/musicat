@@ -13,8 +13,8 @@ export const Tape = () => {
   const musicData = useRecoilValue(musicState);
 
   useEffect(() => {
-    setBackGroundImage(musicData.image || "/img/tape/background_img_test.png");
-    setTextContent(musicData.artist + " / " + musicData.title);
+    setBackGroundImage(musicData.image || "/img/tape/init.png");
+    setTextContent( musicData.title ? musicData.artist + " / " + musicData.title : " ------ musicat ------ ");
   }, [musicData]);
 
   useEffect(() => {
