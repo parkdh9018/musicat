@@ -1,6 +1,7 @@
 package com.musicat.config;
 
 import com.musicat.interceptor.HttpSessionIdHandshakeInterceptor;
+import com.musicat.interceptor.WebSocketUserCounterInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   private static final Logger logger = LoggerFactory.getLogger(WebSocketConfig.class);
-  //private final WebSocketUserCounterInterceptor userCounterInterceptor;
+  private final WebSocketUserCounterInterceptor userCounterInterceptor;
 
   @Override
   public void configureMessageBroker(MessageBrokerRegistry config) {
@@ -39,8 +40,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   @Override
   public void configureClientInboundChannel(ChannelRegistration registration) {
     logger.debug("채널 인바운드 설정");
-    //registration.interceptors(userCounterInterceptor);
-    registration.interceptors(new HeartbeatInterceptor());
+    registration.interceptors(userCounterInterceptor);
+//    registration.interceptors(new HeartbeatInterceptor());
   }
 
 
