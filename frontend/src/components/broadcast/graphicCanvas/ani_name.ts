@@ -50,4 +50,3 @@ export const ANI_NAME = [
     "Worship",
     "Yes"
   ];
-  
