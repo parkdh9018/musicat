@@ -84,7 +84,7 @@ async def process_music_state():
     outro_url = await create_mp3_url("music", "outro_mp3")
 
     database.update_music_played_status(int(music["music_seq"]))
-    
+
     playlist = [
         {"type": "mp3", "path": intro_url, "length": intro_length},
         {"type": "youtube", "path": f'https://www.youtube.com/embed/{music["music_youtube_id"]}', "length": music["music_length"],
@@ -98,4 +98,4 @@ async def process_music_state():
     }
     return data
 
-##############################################
+###############################################
