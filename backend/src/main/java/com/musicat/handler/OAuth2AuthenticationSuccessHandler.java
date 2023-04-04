@@ -53,7 +53,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
       Authentication authentication) {
 
     // String targetUrl = "/except/login-success?";
-    String targetUrl = "/except/login-success?";
+    String targetUrl = "/login-success?";
 
     // 인증 정보를 기반으로 JWT 토큰 생성
     String token = tokenProvider.createToken(authentication);
