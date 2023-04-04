@@ -81,7 +81,7 @@ async def process_music_state():
     outro_length = len(AudioSegment.from_file(music_outro_filename))
 
     intro_url = await create_mp3_url("music", "intro.mp3")
-    outro_url = await create_mp3_url("music", "outro_mp3")
+    outro_url = await create_mp3_url("music", "outro.mp3")
 
     database.update_music_played_status(int(music["music_seq"]))
 
