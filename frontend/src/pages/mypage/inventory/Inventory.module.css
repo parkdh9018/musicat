@@ -45,4 +45,10 @@
 }
 .inventory .content_div .img2:hover {
   border: 2px solid var(--blue-color);
+}
+
+@media screen and (max-width: 768px) {
+  .inventory {
+    padding: 7%;
+  }
 }/*# sourceMappingURL=Inventory.module.css.map */
