@@ -1,10 +1,21 @@
+import { useNavigate } from "react-router-dom";
 import style from "./Page404.module.css";
 
 export const Page404 = () => {
+  const navigate = useNavigate();
   return (
     <>
       <h1 className={style.no_found}>404</h1>
       <h2 className={style.no_found2}>페이지를 찾을수가 없어요</h2>
+      <button
+        className={
+          style.w_btn + " " + style.w_btn_gra3 + " " + style.w_btn_gra_anim
+        }
+        type="button"
+        onClick={() => navigate("/")}
+      >
+        메인화면!
+      </button>
       <div className={style.the_container}>
         <input type="checkbox" id="toggle" />
         <label htmlFor="toggle"></label>
