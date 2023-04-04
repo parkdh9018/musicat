@@ -13,11 +13,11 @@ export const GraphicCanvas = () => {
 
   return (
     <Canvas camera={cameraPosition as any}> 
-      <ambientLight intensity={0.13} />
-      <Cat scale={0.5}  position={catPosition}/>
-      <Background />
-      <pointLight intensity={0.3} position={lightPosition}/>
-      {/* <OrbitControls/> */}
+      <ambientLight intensity={0.4} />
+      {/* <Cat scale={0.5} position={catPosition}/> */}
+      <Background num={1}/>
+      <pointLight intensity={0.65} position={lightPosition}/>
+      <OrbitControls/>
     </Canvas>
   );
 };
