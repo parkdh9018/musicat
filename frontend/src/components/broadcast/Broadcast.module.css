@@ -24,7 +24,14 @@
   transition: 0.2s;
   position: absolute;
 }
-.broadcast .broad_back .play {
+.broadcast:hover .broad_back {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.broadcast:hover .play, .broadcast:hover .share {
+  visibility: visible;
+}
+
+.play {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -34,15 +41,23 @@
   visibility: hidden;
   cursor: pointer;
 }
-.broadcast .broad_back .play:hover {
+.play:hover {
   color: rgb(255, 83, 83);
   transition: 0.4s;
 }
-.broadcast:hover .broad_back {
-  background-color: rgba(0, 0, 0, 0.4);
+
+.share {
+  position: absolute;
+  top: 3%;
+  right: 1%;
+  font-size: 23px;
+  color: rgb(200, 200, 200);
+  visibility: hidden;
+  cursor: pointer;
 }
-.broadcast:hover .play {
-  visibility: visible;
+.share:hover {
+  color: rgb(130, 130, 255);
+  transition: 0.2s;
 }
 
 .mypage {
@@ -51,6 +66,8 @@
   min-height: 60px;
   width: 30vw;
   height: 15vw;
+  max-width: 460px;
+  min-height: 140px;
   bottom: 0;
   z-index: 1;
   transition: 0.3s;
@@ -67,5 +84,11 @@
     position: fixed;
     min-width: 160px;
     min-height: 80px;
+  }
+  .play {
+    font-size: 30px;
+  }
+  .share {
+    font-size: 18px;
   }
 }/*# sourceMappingURL=Broadcast.module.css.map */
