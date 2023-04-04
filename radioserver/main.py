@@ -1,97 +1,106 @@
 import asyncio
 import kafka_handler
-from fastapi import FastAPI, BackgroundTasks, File, HTTPException
-from fastapi.responses import FileResponse
-from collections import deque
-from typing import List
-from shared_state import current_state, chat_readable, radio_health
-import json
-import story_logic
-import music_logic
-import empty_logic
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import FileResponse, StreamingResponse
+from shared_state import radio_health
+from radio_progress import reset_radio
 import os
-
+import database
+import logic_story
+import logic_music
+from my_logger import setup_logger
 
 app = FastAPI()
 
-queue = deque(['story', 'chat', 'chat', 'chat', 'music', 'chat', 'chat', 'chat', 'music', 'chat', 'chat', 'chat', 'music'])
+logger = setup_logger()
 
-state_transition_allowed = asyncio.Event()
-
-
-async def process_finish_state_data():
-    global state_transition_allowed
-    state_transition_allowed.set()
-
-async def radio_progress_cycle():
-    radio_health.set_state(False)
-    while True:
-        if (radio_health.get_state()):
-            await kafka_handler.send_state("radioState", {'state': 'opening'})
-            break
-    # opening_message = generate_opening_message()
-    # print(opening_message)
-    
-    while True:
-        if (radio_health.get_state()):
-            await state_transition_allowed.wait()
-
-            current_state.set_state(queue.popleft())
-            print(f'Processing: {current_state.get_state()}')
-
-            queue.append(current_state.get_state())
-
-            if current_state.get_state() == 'story':
-                radio_state = await story_logic.process_story_state()
-                if (radio_state != None):
-                    await kafka_handler.send_state("radioState", radio_state)
-                else:
-                    # radio_state = await empty_logic.process_empty_story_state()
-                    radio_state = await empty_logic.process_empty_music_state()
-                    await kafka_handler.send_state("radioState", radio_state)
-            elif current_state.get_state() == 'chat':
-                # chat_readable.set_state(True)
-                print("chat now")
-            elif current_state.get_state() == 'music':
-                radio_state = await music_logic.process_music_state()
-                if (radio_state != None):
-                    await kafka_handler.send_state("radioState", radio_state)
-                else:
-                    radio_state = await empty_logic.process_empty_music_state()
-                    await kafka_handler.send_state("radioState", radio_state)
-
-            state_transition_allowed.clear()
+##############################################
 
 async def set_remain_gpt_reaction():
-    print("서버가 꺼져있을 때 추가된 데이터에 작업 (API 비용 떄문에 구현 아직 안함)")
+    logger.info("[Main] : *** 서버가 꺼져있을 때 추가된 데이터에 작업 ***")
+    remain_story = database.find_null_intro_outro_story()
+    remain_music = database.find_null_intro_outro_music()
+    if remain_story is not None:
+        for story in remain_story:
+            await logic_story.process_verify_remain_story_data(story)
+    if remain_music is not None:
+        for music in remain_music:
+            await logic_music.process_remain_music_data(music)
 
+##############################################
 
 @app.on_event("startup")
 async def startup_event():
+    radio_health.set_state(False)
     asyncio.create_task(set_remain_gpt_reaction())
-    asyncio.create_task(radio_progress_cycle())
-    asyncio.create_task(kafka_handler.consume_finish_state("finishState", process_finish_state_data))
+    asyncio.create_task(kafka_handler.consume_finish_state("finishState"))
     asyncio.create_task(kafka_handler.consume_verify_story("verifyStory"))
     asyncio.create_task(kafka_handler.consume_chat("chat"))
     asyncio.create_task(kafka_handler.consume_music("musicRequest"))
+    asyncio.create_task(kafka_handler.consume_finish_chat("finishChat"))
+
+##############################################
 
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
 
+##############################################
+
 @app.get("/switch")
 def switch_radio():
-    if (radio_health.get_state == False):
+    if radio_health.get_state() is False:
+        reset_radio()
         radio_health.set_state(True)
+        return {"health" : "True"}
     else:
         radio_health.set_state(False)
+        return {"health" : "False"}
+
+##############################################
+
+def generate_file_stream(filepath: str, start: int = 0, end: int = None):
+    with open(filepath, 'rb') as file:
+        file.seek(start)
+        chunk_size = 8192
+        while True:
+            if end is not None and file.tell() + chunk_size > end:
+                chunk_size = end - file.tell() + 1
+            data = file.read(chunk_size)
+            if not data:
+                break
+            yield data
 
 @app.get("/tts/{path}/{filename}")
-async def send_tts(path: str, filename: str):
+async def send_tts(request: Request, path: str, filename: str):
     filepath = os.path.join(f"./tts/{path}", filename)
-    if os.path.isfile(filepath):
-        return FileResponse(filepath, media_type="audio/mpeg")
-    else:
+    if not os.path.isfile(filepath):
         raise HTTPException(status_code=404, detail="재생할 파일이 존재하지 않습니다.")
-    
 
+    range_header = request.headers.get('Range')
+    start, end = None, None
+
+    if range_header:
+        range_type, range_values = range_header.split('=')
+        if range_type.strip() == 'bytes':
+            range_values = range_values.split('-')
+            start = int(range_values[0]) if range_values[0] else None
+            end = int(range_values[1]) if len(range_values) > 1 and range_values[1] else None
+
+    file_size = os.path.getsize(filepath)
+    response_headers = {
+        'Content-Type': 'audio/mpeg',
+        'Accept-Ranges': 'bytes'
+    }
+
+    if start is not None:
+        end = end or file_size - 1
+        response_headers['Content-Range'] = f'bytes {start}-{end}/{file_size}'
+        content_length = end - start + 1
+        response_headers['Content-Length'] = str(content_length)
+        return StreamingResponse(generate_file_stream(filepath, start, end), status_code=206, headers=response_headers)
+    else:
+        response_headers['Content-Length'] = str(file_size)
+        return StreamingResponse(generate_file_stream(filepath), status_code=200, headers=response_headers)
+    
+##############################################
