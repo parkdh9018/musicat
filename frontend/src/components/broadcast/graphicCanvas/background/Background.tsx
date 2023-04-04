@@ -8,20 +8,26 @@ import { GroupProps } from '@react-three/fiber';
 
 
 interface propsType extends GroupProps {
-  num : number;
+  themeNum : number;
   position : THREE.Vector3;
 }
 
-export const Background = ({num, position, ...props} : propsType) => {
+export const Background = ({themeNum, position, ...props} : propsType) => {
 
-  const extraCat_position = new THREE.Vector3(2.6, 0, 0.7)
-  const backgroundStructre_rotation = new THREE.Euler(0, 0, 0);
+  let extraCat_position = new THREE.Vector3(0.2, 0, -1.6)
+  let extraCat_rotation = new THREE.Euler(0, 0, 0)
+  let object_position = new THREE.Vector3(0,0,0);
+  let backgroundStructre_rotation = new THREE.Euler(0, 0, 0);
+  
+  if (themeNum == 2) {
+    object_position = new THREE.Vector3(0.7,-0.075,0.2);
+  }
 
   return (
     <group position={position}>
-      <Objects {...props} num={num}/>
-      <BackgroundStructure {...props}  num={num} rotation={backgroundStructre_rotation}/>
-      <ExtraCat scale={0.5} position={extraCat_position}/>
+      <Objects {...props} position={object_position} themeNum={themeNum}/>
+      <BackgroundStructure {...props}  themeNum={themeNum} rotation={backgroundStructre_rotation}/>
+      <ExtraCat scale={0.5} position={extraCat_position} rotation={extraCat_rotation}/>
     </group>
   );
 };
