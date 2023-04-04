@@ -12,20 +12,21 @@
     padding-top: 2%;
     padding-right: 1%;
   }
-}
 
-.songListBox::-webkit-scrollbar {
-  width: 5px;
-}
-
-.songListBox::-webkit-scrollbar-thumb {
-  height: 30%;
-  background: var(--fade-font-color);
-  border-radius: 10px;
-}
-
-.songListBox::-webkit-scrollbar-track {
-  background: none;
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    height: 30%;
+    background: var(--fade-font-color);
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    background: none;
+  }
 }
 
 .songBtn {

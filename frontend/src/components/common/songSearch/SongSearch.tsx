@@ -6,6 +6,7 @@ import {
 } from "@/connect/axios/queryHooks/music";
 import { v4 as uuidv4 } from "uuid";
 import { Song } from "@/types/home";
+import { useCustomToast } from "@/customHooks/useCustomToast";
 
 interface SongSearchProps {
   setRequestSong: any; // 선택한 음악 객체 반환하는 함수
@@ -75,7 +76,11 @@ export const SongSearch = ({ setRequestSong, width }: SongSearchProps) => {
     // 타입스크립트가 버튼의 값을 string으로 요구해서 변환 과정 필요
     const value = e.currentTarget.value;
     const selectedSong = JSON.parse(value);
-    setSearch(`${selectedSong.musicTitle}_${selectedSong.musicArtist}`);
+
+    const searchedTitleArtist = `${selectedSong.musicTitle}_${selectedSong.musicArtist}`;
+    searchedTitleArtist.length > 65
+      ? setSearch(searchedTitleArtist.slice(0, 62) + "...")
+      : setSearch(searchedTitleArtist);
 
     // console.log(selectedSong);
     // 유튜브 검색결과 확인
@@ -99,6 +104,13 @@ export const SongSearch = ({ setRequestSong, width }: SongSearchProps) => {
       alert("재생할 수 없는 곡입니다. 다른곡을 선택해주세요.");
     }
   };
+
+  useEffect(() => {
+    if (search.length > 65) {
+      useCustomToast("warning", "검색어는 65자를 넘을 수 없습니다!");
+      setSearch(search.slice(0, 64));
+    }
+  }, [search]);
 
   // 스포티파이 검색 결과 목록
   const songSearchedList: JSX.Element[] = searchResults.map((searchResult) => (
