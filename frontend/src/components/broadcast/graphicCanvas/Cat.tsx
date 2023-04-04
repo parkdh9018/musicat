@@ -3,32 +3,35 @@ import { useAnimations, useGLTF, useTexture } from "@react-three/drei";
 import { GroupProps, useFrame } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
-import { ANI_NAME } from "./ani_name";
+import { ani } from "./ani_name";
 import * as THREE from "three";
 import { useRecoilValue } from "recoil";
-import { broadcastOperationState } from "@/atoms/broadcast.atom";
+import { broadcastState } from "@/atoms/broadcast.atom";
 
 interface ExtendedGLTF extends GLTF {
   nodes: any;
 }
 
 interface propsType extends GroupProps {
-  position: THREE.Vector3;// ...
+  position: THREE.Vector3; // ...
 }
 
-export const Cat = ({position, ...props}: propsType) => {
-
-  const operation = useRecoilValue(broadcastOperationState);
+export const Cat = ({ position, ...props }: propsType) => {
+  const broadcast = useRecoilValue(broadcastState);
 
   const speed = 0.2; // 움직임 속도를 조절하세요.
-  const startPosition = new THREE.Vector3(position.x, position.y + 10, position.z); // 시작 위치를 설정하세요.
-  const targetPosition = position // 목표 위치를 설정하세요.
+  const startPosition = new THREE.Vector3(
+    position.x,
+    position.y + 10,
+    position.z
+  ); // 시작 위치를 설정하세요.
+  const targetPosition = position; // 목표 위치를 설정하세요.
 
   const { scene } = useGLTF("/graphic/cat/Chibi_Cat_01.glb") as ExtendedGLTF;
 
-  const animations = ANI_NAME.reduce((acc: any, name) => {
+  const animations = Object.values(ani).reduce((acc: any, name) => {
     const { animations } = useGLTF(
-      `/graphic/animation/Anim_Chibi@${name}.glb`
+      `/graphic/animation/${name}.glb`
     ) as ExtendedGLTF;
     acc.push(animations[0]);
     return acc;
@@ -38,25 +41,25 @@ export const Cat = ({position, ...props}: propsType) => {
 
   const playSequentialAnimations = () => {
     if (actions) {
-      const jumpAction = actions["Anim_Chibi@Jump"]
-      const idleAction = actions["Anim_Chibi@Idle02"];
-  
+      const jumpAction = actions[ani.Jump];
+      const idleAction = actions[ani.Idle05];
+
       jumpAction?.reset().setLoop(THREE.LoopRepeat, 1).play();
       jumpAction?.crossFadeTo(idleAction as THREE.AnimationAction, 0.5, false);
-      idleAction?.play(); // Set the idle action to repeat infinitely
+      idleAction?.reset().setLoop(THREE.LoopRepeat, 1).fadeIn(0.5).play(); // Set the idle action to repeat infinitely
     }
   };
 
-  useFrame(({camera}) => {
+  useFrame(({ camera }) => {
     // console.log("postion : ",camera.position)
     // console.log("rotation : ",camera.rotation)
 
     // camera.rotation.
 
-    if(operation === "CHAT") {
-      camera.position.lerp(new THREE.Vector3(-0.031, 0.404, 1.640),0.01);
+    if (broadcast.operation === "CHAT") {
+      camera.position.lerp(new THREE.Vector3(-0.031, 0.404, 1.64), 0.01);
     } else {
-      camera.position.lerp(new THREE.Vector3(-1.34, 0.95, 1.20),0.01);
+      camera.position.lerp(new THREE.Vector3(-1.34, 0.95, 1.2), 0.01);
     }
 
     if (ref.current) {
@@ -71,9 +74,7 @@ export const Cat = ({position, ...props}: propsType) => {
         ref.current.position.copy(targetPosition);
       }
     }
-  })
-
-
+  });
 
   useEffect(() => {
     if (ref.current) {
@@ -83,32 +84,36 @@ export const Cat = ({position, ...props}: propsType) => {
     playSequentialAnimations();
   }, []);
 
-  
   useEffect(() => {
-
-    // console.log("operation : ", operation)
-
-    actions["Anim_Chibi@Idle"]?.fadeOut(0.5);
-    actions["Anim_Chibi@Yes"]?.fadeOut(0.5);
-    actions["Anim_Chibi@Idle03"]?.fadeOut(0.5);
-    actions["Anim_Chibi@Cute1"]?.fadeOut(0.5);
+    // console.log("operation : ", broadcast.operation);
+    // console.log("dataType : ", broadcast.dataType);
+    // console.log("datalength : ", broadcast.dataLength);
 
 
-    if(operation === "CHAT") {
-      actions["Anim_Chibi@Yes"]?.reset().fadeIn(0.5).play();
-    } else if (operation === "MUSIC") {
-      actions["Anim_Chibi@Idle03"]?.reset().fadeIn(0.5).play();
-    } else if (operation === "IDLE") {
-      actions["Anim_Chibi@Cute1"]?.reset().fadeIn(0.5).play();
+    actions[ani.Yes]?.fadeOut(0.5);
+    actions[ani.Hi]?.fadeOut(0.5);
+    actions[ani.Idle02]?.fadeOut(0.5);
+    actions[ani.Idle05]?.fadeOut(0.5);
+
+    if (broadcast.dataType === "mp3") {
+      // 말할때
+      // console.log("--말하는중")
+      actions[ani.Yes]?.reset().setLoop(THREE.LoopRepeat, (broadcast.dataLength / 1000) - 1).fadeIn(0.5).play();
+      actions[ani.Hi]?.reset().setLoop(THREE.LoopRepeat, (broadcast.dataLength / 1000) - 1).fadeIn(0.3).play();
+    } else if (broadcast.operation === "CHAT") {
+      // 채팅 시간
+      // console.log("--소통시간")
+      actions[ani.Idle02]?.reset().fadeIn(0.5).play();
+    } else if (broadcast.dataType === "youtube") {
+      // 노래
+      // console.log("--노래듣는중")
+      actions[ani.Yes]?.reset().setEffectiveTimeScale(0.3).fadeIn(0.5).play();
+    } else {
+      // console.log("--평소")
+      actions[ani.Idle05]?.reset().fadeIn(0.5).play();
     }
-  },[operation])
 
-  // useEffect(() => {
-  //   actions["Anim_Chibi@Idle02"]?.reset().fadeIn(0.5).play();
-  //   return () => {
-  //     actions["Anim_Chibi@Idle02"]?.fadeOut(0.5);
-  //   };
-  // }, [index, actions, names]);
+  }, [broadcast]);
 
   const characterClick = () => {
     // console.log("click")
@@ -116,11 +121,13 @@ export const Cat = ({position, ...props}: propsType) => {
   };
 
   const characterPointerEnter = () => {
-    actions["Anim_Chibi@Hi"]?.reset().fadeIn(0.5).play();
+    // actions[ani.Yes]?.reset().setEffectiveTimeScale(0.8).fadeIn(0.5).play();
+    actions[ani.Hi]?.reset().fadeIn(0.3).play();
   };
 
   const characterPointerLeave = () => {
-    actions["Anim_Chibi@Hi"]?.fadeOut(0.5);
+    // actions[ani.Yes]?.fadeOut(0.5);
+    actions[ani.Hi]?.fadeOut(0.5);
   };
 
   return (

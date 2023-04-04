@@ -1,24 +1,24 @@
 import { useRecoilValue } from "recoil";
 import style from "./OnairSign.module.css";
 import { useEffect, useState } from "react";
-import { broadcastOperationState } from "@/atoms/broadcast.atom";
+import { broadcastState } from "@/atoms/broadcast.atom";
 
 export const OnairSign = () => {
-  const broadcastOperation = useRecoilValue(broadcastOperationState);
+  const broadcast = useRecoilValue(broadcastState);
 
   const [title, setTitle] = useState("방송중");
 
   useEffect(() => {
-    if (broadcastOperation == "IDLE") {
+    if (broadcast.operation == "IDLE") {
       setTitle("휴식중");
-    } else if (broadcastOperation == "CHAT") {
+    } else if (broadcast.operation == "CHAT") {
       setTitle("소통중");
-    } else if (broadcastOperation == "MUSIC") {
+    } else if (broadcast.operation == "MUSIC") {
       setTitle("음악감상중");
-    } else if (broadcastOperation == "STORY") {
+    } else if (broadcast.operation == "STORY") {
       setTitle("사연소개중")
     }
-  }, [broadcastOperation]);
+  }, [broadcast]);
 
   return (
     <div className={style.onairSign}>
