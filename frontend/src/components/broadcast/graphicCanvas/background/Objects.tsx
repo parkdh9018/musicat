@@ -48,7 +48,7 @@ export const Objects = ({num, ...props}: ExtendedProps) => {
   })
 
   return (
-    <group ref={ref as any}>
+    <group ref={ref as any} {...props}>
       <primitive object={scene} />
     </group>
   );
