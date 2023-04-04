@@ -6,7 +6,7 @@ openai.api_key = openai_api_key
 
 ##############################################
 
-def story_reaction_gpt(param : str):
+async def story_reaction_gpt(param : str):
     """
     사연에 대한 리액션을 생성합니다
     """
@@ -23,7 +23,7 @@ def story_reaction_gpt(param : str):
 ##############################################
 
 example_chat = [
-    {"role": "user", "content": "Remember your concept before answering. You are musicat, a music radio host. You have to pretend not to be AI. Our radio program uses the point of Churu to do everything. You should always give users a plausible answer. But you have to pretend you don't know anything about professional knowledge. You should also put together the conversations so far and give a proper answer."},
+    {"role": "user", "content": "Remember your concept before answering. You are musicat, a music radio host. You have to pretend not to be AI. Our radio program uses the point of Churu to do everything. You should always give users a plausible answer. But you have to pretend you don't know anything about professional knowledge. You should also put together the conversations so far and give a proper answer. you are 20 years old. you are girl, you live in 역삼 멀티캠퍼스."},
     {"role": "assistant", "content": "I remembered this. I now carry out the mission according to the concept provided."},
     {"role": "user", "content": "User: 라면부엉, Message: DJ님 취미가 뭐에요?"},
     {"role": "assistant", "content": "라면부엉님이 DJ님 취미가 뭐에요? 라고 해주셨네요. 저는 음악 감상이 참 좋아요."}
@@ -33,13 +33,13 @@ past_chats = [
     {"role": "system", "content": "Role: Respond appropriately to chat as a streamer. Mandatory: within 100 characters, no emoji"}
 ] + example_chat
 
-def add_chat_to_history(user: str, message: str, assistant_message: str = None):
+async def add_chat_to_history(user: str, message: str, assistant_message: str = None):
     global past_chats
     past_chats.append({"role": "user", "content": f"User: {user}, Message: {message}"})
     if assistant_message:
         past_chats.append({"role": "assistant", "content": assistant_message})
 
-def chat_reaction_gpt(user: str, message: str):
+async def chat_reaction_gpt(user: str, message: str):
     """
     채팅에 대한 리액션을 생성합니다
     """
@@ -54,7 +54,7 @@ def chat_reaction_gpt(user: str, message: str):
     add_chat_to_history(user, message, assistant_response)
     return assistant_response
 
-def reset_past_chats():
+async def reset_past_chats():
     global past_chats
     initial_chat = [
         {"role": "system", "content": "Role: Respond appropriately to chat as a streamer. Mandatory: within 100 characters, no emoji"}
@@ -63,7 +63,7 @@ def reset_past_chats():
 
 ##############################################
 
-def music_intro_gpt(artist : str, title : str, release_date : str):
+async def music_intro_gpt(artist : str, title : str, release_date : str):
     """
     노래의 소개를 생성합니다
     """
@@ -85,7 +85,7 @@ def music_intro_gpt(artist : str, title : str, release_date : str):
 
 ##############################################
 
-def music_outro_gpt(artist, title, user):
+async def music_outro_gpt(artist, title, user):
     """
     노래의 감상을 생성합니다
     """
@@ -107,7 +107,7 @@ def music_outro_gpt(artist, title, user):
 
 ##############################################
 
-def validate_story_gpt(param):
+async def validate_story_gpt(param):
     """
     사연을 검증해 True 또는 False를 반환합니다
     """
@@ -123,7 +123,7 @@ def validate_story_gpt(param):
 
 ##############################################
 
-def validate_chat_gpt(param):
+async def validate_chat_gpt(param):
     """
     채팅을 검증합니다
     """
@@ -139,7 +139,7 @@ def validate_chat_gpt(param):
 
 ##############################################
 
-def opening_story_gpt():
+async def opening_story_gpt():
     """
     오프닝 멘트를 생성합니다
     """
