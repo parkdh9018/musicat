@@ -6,9 +6,9 @@ export interface Music {
   startTime: number;
   playedTime: number;
   length: number;
-  artist : string;
-  title : string;
-  image : string;
+  artist: string;
+  title: string;
+  image: string;
 }
 
 export const volumeState = atom({
@@ -24,9 +24,9 @@ export const musicState = atom<Music>({
     startTime: 0,
     playedTime: -10,
     length: 0,
-    artist : "",
-    image : "",
-    title : "",
+    artist: "",
+    image: "",
+    title: "",
   },
 });
 
@@ -44,4 +44,14 @@ export const nowPlaying = atom({
     audioCurrentTime: 0,
     musicSeq: 0,
   },
+});
+
+export const searchState = atom({
+  key: "searchState",
+  default: "",
+});
+
+export const nowYoutubeSearchState = atom({
+  key: "nowYoutubeSearchState",
+  default: false,
 });

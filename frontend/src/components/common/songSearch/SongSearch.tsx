@@ -7,6 +7,8 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import { Song } from "@/types/home";
 import { useCustomToast } from "@/customHooks/useCustomToast";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { nowYoutubeSearchState, searchState } from "@/atoms/song.atom";
 
 interface SongSearchProps {
   setRequestSong: any; // 선택한 음악 객체 반환하는 함수
@@ -16,7 +18,8 @@ interface SongSearchProps {
 export const SongSearch = ({ setRequestSong, width }: SongSearchProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useRecoilState(searchState);
+  const setYoutubeSearch = useSetRecoilState(nowYoutubeSearchState);
   const [searchResults, setSearchResults] = useState<Song[]>([]);
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();
   const [noResults, setNoResults] = useState(false);
@@ -36,7 +39,12 @@ export const SongSearch = ({ setRequestSong, width }: SongSearchProps) => {
     // if (e.target.value === "") {
     //   setNoResults(false);
     // }
+
     setSearch(e.target.value);
+    if (!e.target.value) {
+      setRequestSong(undefined);
+      return;
+    }
     setNoResults(false);
   };
 
@@ -67,12 +75,13 @@ export const SongSearch = ({ setRequestSong, width }: SongSearchProps) => {
     }
     // 검색어 입력이 1초이상 없는 경우에만 스포티파이 검색 실행
     if (timeoutId) clearTimeout(timeoutId);
-    setTimeoutId(setTimeout(() => searchSpotify(), 230));
+    if (search) setTimeoutId(setTimeout(() => searchSpotify(), 230));
   };
 
   // 스포티파이 검색 결과중에 신청할 곡을 선택했을 때
   const onClickSelectSong = async (e: React.MouseEvent<HTMLButtonElement>) => {
     setIsFocused(false);
+    setYoutubeSearch(true);
     // 타입스크립트가 버튼의 값을 string으로 요구해서 변환 과정 필요
     const value = e.currentTarget.value;
     const selectedSong = JSON.parse(value);
@@ -93,7 +102,7 @@ export const SongSearch = ({ setRequestSong, width }: SongSearchProps) => {
     if (result.status === 200) {
       // console.log(result.status);
       // console.log(result);
-
+      setYoutubeSearch(false);
       setRequestSong({
         ...selectedSong,
         musicLength: result.data.musicLength,
@@ -114,9 +123,8 @@ export const SongSearch = ({ setRequestSong, width }: SongSearchProps) => {
 
   // 스포티파이 검색 결과 목록
   const songSearchedList: JSX.Element[] = searchResults.map((searchResult) => (
-    <>
+    <div key={uuidv4()}>
       <button
-        key={uuidv4()}
         className={style.searchReasult}
         onClick={onClickSelectSong}
         value={JSON.stringify(searchResult)}
@@ -132,7 +140,7 @@ export const SongSearch = ({ setRequestSong, width }: SongSearchProps) => {
         </span>
       </button>
       <hr className={style.hr} />
-    </>
+    </div>
   ));
 
   return (

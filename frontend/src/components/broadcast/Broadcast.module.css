@@ -6,6 +6,7 @@
   height: 40vh;
   min-height: 250px;
   position: relative;
+  transition: 0.3s;
   background-color: white;
   z-index: 0;
 }
@@ -62,15 +63,14 @@
 
 .mypage {
   position: fixed;
-  min-width: 120px;
+  min-width: 100px;
   min-height: 60px;
-  width: 30vw;
-  height: 15vw;
+  width: 50vh;
+  height: 30vh;
   max-width: 460px;
   min-height: 140px;
-  bottom: 0;
+  transform: translateY(63vh);
   z-index: 1;
-  transition: 0.3s;
 }
 
 .mybackground {
@@ -82,8 +82,10 @@
 @media screen and (max-width: 768px) {
   .mypage {
     position: fixed;
-    min-width: 160px;
-    min-height: 80px;
+    min-width: 150px;
+    min-height: 90px;
+    width: 50vw;
+    height: 30vw;
   }
   .play {
     font-size: 30px;
