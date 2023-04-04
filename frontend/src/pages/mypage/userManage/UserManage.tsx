@@ -9,18 +9,18 @@ import { useSetRecoilState } from "recoil";
 import { SelectedUsers } from "./SelectedUsers/SelectedUsers";
 
 import style from "./UserManage.module.css";
-
-
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 export const UserManage = () => {
   const setNowSideNav = useSetRecoilState(nowSideNavState);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setNowSideNav("유저관리");
   }, []);
 
   const {
-    isLoading,
     searchInput,
     isFetchingNextPage,
     selectedUserList,
@@ -38,7 +38,6 @@ export const UserManage = () => {
     NotBanMutate,
     setSelectedUserList,
     setChangeSelectValue,
-
   } = getUsers();
 
   const searchOptions = [
@@ -64,6 +63,22 @@ export const UserManage = () => {
     "정지여부",
   ];
 
+  const isMobile = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    );
+  };
+
+  if (isMobile()) {
+    Swal.fire({
+      icon: "info",
+      title: "",
+      text: "관리 기능은 PC/테블릿만 지원합니다",
+      confirmButtonText: "닫기",
+    }).then(() => {
+      navigate(-1);
+    });
+  }
 
   // click eventListener
   const boardColumnClick = (seq: number, nickname: string) => {
@@ -105,7 +120,9 @@ export const UserManage = () => {
     if (
       window.innerHeight + document.documentElement.scrollTop >=
         document.documentElement.offsetHeight &&
-      !isFetchingNextPage && !isFetching && !isRefetching
+      !isFetchingNextPage &&
+      !isFetching &&
+      !isRefetching
     ) {
       fetchNextPage();
     }
@@ -138,7 +155,7 @@ export const UserManage = () => {
         <SelectBox
           options={useStateChangeOptions}
           setValue={setChangeSelectValue}
-          style={{ width: "13%" }}
+          style={{ width: "110px" }}
         />
         <Button content="적용" onClick={changeClick} />
       </div>
@@ -152,7 +169,6 @@ export const UserManage = () => {
           type={"userManage"}
           boardColumnClick={boardColumnClick}
         />
-
       </div>
     </div>
   );

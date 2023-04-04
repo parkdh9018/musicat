@@ -44,7 +44,14 @@ export const Board = ({
           style={{ gridTemplateColumns: grid }}
         >
           {headRow.map((content) => {
-            return <div key={uuidv4()}>{content}</div>;
+            return (
+              <div
+                key={uuidv4()}
+                style={headRow.length > 4 ? { fontSize: "0.85rem" } : undefined}
+              >
+                {content}
+              </div>
+            );
           })}
         </div>
       )}
