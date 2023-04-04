@@ -96,21 +96,21 @@ export const Cat = ({themeNum, position, ...props }: propsType) => {
     actions[ani.Idle02]?.fadeOut(0.5);
     actions[ani.Idle05]?.fadeOut(0.5);
 
+    // 말할때
     if (broadcast.dataType === "mp3") {
-      // 말할때
       // console.log("--말하는중")
       actions[ani.Yes]?.reset().setLoop(THREE.LoopRepeat, (broadcast.dataLength / 1000) - 1).fadeIn(0.5).play();
       actions[ani.Hi]?.reset().setLoop(THREE.LoopRepeat, (broadcast.dataLength / 1000) - 1).fadeIn(0.3).play();
-    } else if (broadcast.operation === "CHAT") {
       // 채팅 시간
+    } else if (broadcast.operation === "CHAT") {
       // console.log("--소통시간")
       actions[ani.Idle02]?.reset().fadeIn(0.5).play();
-    } else if (broadcast.dataType === "youtube") {
       // 노래
+    } else if (broadcast.dataType === "youtube") {
       // console.log("--노래듣는중")
-      actions[ani.Yes]?.reset().setEffectiveTimeScale(0.3).fadeIn(0.5).play();
+      actions[ani.Yes]?.reset().setLoop(THREE.LoopRepeat, Infinity).setEffectiveTimeScale(0.3).fadeIn(0.5).play();
     } else {
-      console.log("--평소")
+      // console.log("--평소")
       actions[ani.Idle05]?.reset().fadeIn(0.5).play();
     }
 
