@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { PagableResponse } from "@/types/mypage";
 import { $ } from "../setting";
 import { NoticeDetail } from "./notice";
+import Swal from "sweetalert2";
 
 interface Alert {
   alertSeq: number;
@@ -75,6 +76,15 @@ export function patchReadAllAlerts(search: string, pageNum: number) {
           ["AlertListUser" + search, pageNum],
           context?.oldData
         );
+        Swal.fire({
+          icon: "error",
+          title: "",
+          text: "네트워크 오류 / 다시 시도해 주세요",
+          confirmButtonText: "닫기",
+        });
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries(["getUserUnreadMsgNum"]);
       },
       onSettled: () => {
         queryClient.invalidateQueries(["AlertListUser" + search, pageNum]);

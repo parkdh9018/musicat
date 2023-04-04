@@ -14,6 +14,7 @@ import {
 } from "@/connect/axios/queryHooks/alert";
 import style from "./Notice.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useCustomToast } from "@/customHooks/useCustomToast";
 
 export const Notice = () => {
   const location = useLocation();
@@ -32,6 +33,13 @@ export const Notice = () => {
   useEffect(() => {
     setNowSideNav("알림 / 공지사항");
   }, []);
+
+  useEffect(() => {
+    if (input.length > 20) {
+      useCustomToast("warning", "검색 내용은 20자를 넘을 수 없습니다!");
+      setInput(input.slice(0, 19));
+    }
+  }, [input]);
 
   return (
     <div style={{ padding: "40px 3%" }}>

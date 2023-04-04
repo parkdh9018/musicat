@@ -1,8 +1,8 @@
 .popover {
   position: absolute;
   width: 140px;
-  top: 32px;
-  left: -90px;
+  top: 20px;
+  left: -120px;
   z-index: 2;
 
   .content {
@@ -25,11 +25,11 @@
     position: absolute;
     width: 0;
     height: 0;
-    top: -14px;
+    top: -8px;
     right: 25px;
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
-    border-bottom: 15px solid var(--font-color);
+    border-bottom: 10px solid var(--font-color);
   }
 }
 

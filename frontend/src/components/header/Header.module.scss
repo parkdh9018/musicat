@@ -53,8 +53,8 @@
       }
 
       &:hover .popover_state {
-        opacity: 1;
         z-index: 2;
+        visibility: visible;
       }
 
       &:hover .nickname_other {
@@ -105,9 +105,8 @@
   }
 
   .popover_state {
-    opacity: 0;
     position: relative;
-    transition: 0.4s;
+    visibility: hidden;
     z-index: -1;
   }
 }

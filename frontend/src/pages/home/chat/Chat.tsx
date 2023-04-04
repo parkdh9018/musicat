@@ -41,6 +41,11 @@ export const Chat = () => {
   }, [chatList]);
 
   const clickSubmit = () => {
+    if (userInfo?.userIsBan || userInfo?.userIsChattingBan) {
+      useCustomToast("error", "권한이 정지된 사용자입니다!");
+      return;
+    }
+
     if (!userInfo) {
       useCustomToast("error", "로그인이 필요한 서비스 입니다");
       return;
@@ -58,6 +63,13 @@ export const Chat = () => {
 
     setMessage("");
   };
+
+  useEffect(() => {
+    if (message.length > 40) {
+      useCustomToast("warning", "체팅은 40자를 넘을 수 없습니다!!");
+      setMessage(message.slice(0, 39));
+    }
+  }, [message]);
 
   return (
     <div className={style.chat_component}>

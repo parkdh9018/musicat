@@ -11,6 +11,7 @@ import {
 } from "@/connect/axios/queryHooks/item";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCustomToast } from "@/customHooks/useCustomToast";
+import Swal from "sweetalert2";
 
 interface InventoryModalProps {
   originSelet: number;
@@ -31,12 +32,20 @@ export const InventoryModal = ({
   const { data: userMoney } = getUserMoney();
   const [selected, setSelected] = useState(originSelet);
   const badge = ["none", "red", "skyblue", "green", "gray"];
+  const isMobile = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    );
+  };
 
   const { data: item } =
     type === 1 ? getBadge() : type === 2 ? getBackground() : getTheme();
 
   return (
-    <div className={style.inventory_modal}>
+    <div
+      className={style.inventory_modal}
+      style={isMobile() ? { height: "40vh", width: "80vw" } : undefined}
+    >
       <div className={style.item_flex}>
         {item?.map((x, i) => {
           return (
@@ -75,6 +84,11 @@ export const InventoryModal = ({
         })}
       </div>
       <div className={style.cal_box}>
+        <h4>
+          {item?.at(selected - 1)?.badgeName ||
+            item?.at(selected - 1)?.backgroundName ||
+            item?.at(selected - 1)?.themeName}
+        </h4>
         <p>나의 츄르 : {userMoney?.data.userMoney}</p>
         <p>
           {selected === originSelet ? (
@@ -118,12 +132,21 @@ export const InventoryModal = ({
         <Button
           content="변경 하기"
           onClick={() => {
-            putItem(type, selected)?.then(() => {
-              queryClient.invalidateQueries(["getUserMoney"]);
-              queryClient.invalidateQueries(["getUserConfig"]);
-              useCustomToast("success", "아이탬을 변경하였습니다.");
-              setIsModalOpen(false);
-            });
+            putItem(type, selected)
+              ?.then(() => {
+                queryClient.invalidateQueries(["getUserMoney"]);
+                queryClient.invalidateQueries(["getUserConfig"]);
+                useCustomToast("success", "아이탬을 변경하였습니다.");
+                setIsModalOpen(false);
+              })
+              .catch(() => {
+                Swal.fire({
+                  icon: "error",
+                  title: "",
+                  text: "네트워크 오류 / 다시 시도해 주세요",
+                  confirmButtonText: "닫기",
+                });
+              });
           }}
           style={
             (selected !== originSelet &&
