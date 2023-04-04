@@ -101,6 +101,7 @@ export const Cat = ({themeNum, position, ...props }: propsType) => {
       // console.log("--말하는중")
       actions[ani.Yes]?.reset().setLoop(THREE.LoopRepeat, (broadcast.dataLength / 1000) - 1).fadeIn(0.5).play();
       actions[ani.Hi]?.reset().setLoop(THREE.LoopRepeat, (broadcast.dataLength / 1000) - 1).fadeIn(0.3).play();
+      mixer.update(new THREE.Clock().getDelta())
       // 채팅 시간
     } else if (broadcast.operation === "CHAT") {
       // console.log("--소통시간")
