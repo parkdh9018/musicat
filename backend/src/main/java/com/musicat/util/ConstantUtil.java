@@ -54,6 +54,7 @@ public class ConstantUtil {
 
   // 최초 출석 시 지급되는 츄르
   public final long TODAY_MONEY = 100;
+  public final long STORY_REQUEST_MONEY = 50;
 
   /**
    * 재화 내역 MoneyLog
@@ -63,6 +64,8 @@ public class ConstantUtil {
   public final String MONEYLOG_BACKGROUND_TYPE = "배경 변경";
   public final String MONEYLOG_BADGE_TYPE = "뱃지 변경";
   public final String MONEYLOG_THEME_TYPE = "테마 변경";
+  public final String MONEYLOG_STORY_TYPE = "사연 신청";
+  public final String MONEYLOG_STORY_DETAIL = "사연 신청 완료 " + STORY_REQUEST_MONEY + " 츄르 차감!";
 
   /**
    * 알림

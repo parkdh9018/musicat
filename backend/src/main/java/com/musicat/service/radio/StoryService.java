@@ -5,10 +5,15 @@ import com.musicat.data.dto.story.StoryInfoDto;
 import com.musicat.data.dto.story.StoryKafkaDto;
 import com.musicat.data.dto.story.StoryRequestDto;
 import com.musicat.data.entity.radio.Story;
+import com.musicat.data.entity.user.MoneyLog;
+import com.musicat.data.entity.user.User;
 import com.musicat.data.repository.radio.StoryRepository;
+import com.musicat.data.repository.user.MoneyLogRepository;
+import com.musicat.data.repository.user.UserRepository;
 import com.musicat.service.kafka.KafkaProducerService;
 import com.musicat.util.ConstantUtil;
 import com.musicat.util.RegexUtil;
+import com.musicat.util.builder.MoneyLogBuilderUtil;
 import com.musicat.util.builder.StoryBuilderUtil;
 import java.util.Optional;
 import javax.persistence.EntityExistsException;
@@ -36,13 +41,16 @@ public class StoryService {
 
   // Repository 정의
   private final StoryRepository storyRepository;
+  private final UserRepository userRepository;
+  private final MoneyLogRepository moneyLogRepository;
 
   // Util 정의
   private final RegexUtil regexUtil;
+  private final MoneyLogBuilderUtil moneyLogBuilderUtil;
 
 
   /**
-   * 사연 신청
+   * 사연 신청 (-50 츄르)
    *
    * @param storyRequestDto
    */
@@ -50,6 +58,18 @@ public class StoryService {
   public void insertStory(StoryRequestDto storyRequestDto) {
     Story story = storyRepository.save(
         storyBuilderUtil.buildStoryEntity(storyRequestDto));
+
+    User user = userRepository.findById(storyRequestDto.getUserSeq()).orElseThrow();
+
+    if (user.getUserMoney() < 50) {
+      return;
+    }
+
+    user.setUserMoney(user.getUserMoney() - 50);
+
+    MoneyLog moneyLog = moneyLogBuilderUtil.buildMoneyLog(user, constantUtil.MONEYLOG_STORY_TYPE, constantUtil.MONEYLOG_STORY_DETAIL, constantUtil.STORY_REQUEST_MONEY * -1);
+
+    moneyLogRepository.save(moneyLog);
 
     // (사연 + 신청곡) 데이터 -> 카프카 -> 파이썬 서버 : valid 체크 후 DB 반영, Intro 음성 파일 생성, Reaction 음성 파일 생성, Outro 음성 파일 생성
     try {
