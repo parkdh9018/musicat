@@ -55,6 +55,7 @@ public class RadioService {
       acknowledgment.acknowledge();
       parseJsonMessageAndSetState(message);
       if (!tempState.equals(currentState) && currentState.equals("chat")) {
+        resetInfo();
         sendCurrentSound(true);
       }
     }
@@ -66,6 +67,10 @@ public class RadioService {
    */
   private void resetState() {
     currentState = "idle";
+    resetInfo();
+  }
+
+  private void resetInfo() {
     seq = 0L;
     type = "none";
     path = "";
@@ -208,7 +213,6 @@ public class RadioService {
   public void chatProcess() {
     long currentTime = System.currentTimeMillis();
     if (checkSoundChange() && currentTime - startTime < length) {
-      logger.debug("채팅 보냄");
       sendCurrentSound(true);
     }
     if (chatTimer > 0) {
@@ -234,7 +238,9 @@ public class RadioService {
   public boolean checkSoundChange() {
     long currentTime = System.currentTimeMillis();
     if (currentTime - startTime > length) {
+      logger.debug("재생 시간 초과~~");
       if (!playlist.isEmpty()) {
+        logger.debug("음원 파일 있어서 바꾼대...");
         PlaylistDto sound = playlist.poll();
         type = sound.getType();
         path = sound.getPath();
