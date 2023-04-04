@@ -11,11 +11,13 @@
   z-index: 0;
 }
 .broadcast .radioBooth {
-  max-width: 1200px;
+  max-width: 1201px;
   position: absolute;
   z-index: 1;
-  height: 40vh;
-  width: 100%;
+  top: -1px;
+  height: calc(40vh + 1px);
+  min-height: 252px;
+  width: 101%;
 }
 .broadcast .broad_back {
   z-index: 1;
