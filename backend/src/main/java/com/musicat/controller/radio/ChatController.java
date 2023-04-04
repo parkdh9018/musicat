@@ -4,6 +4,7 @@ import com.musicat.data.dto.chat.MessageDto;
 import com.musicat.data.dto.socket.SocketBaseDto;
 import com.musicat.data.dto.chat.MessageKafkaDto;
 import com.musicat.data.entity.item.Badge;
+import com.musicat.handler.MyWebSocketHandler;
 import com.musicat.service.kafka.KafkaProducerService;
 import com.musicat.service.chat.PerspectiveService;
 import com.musicat.service.radio.RadioService;
@@ -48,6 +49,9 @@ public class ChatController {
 
   // Session 접속 사용자 체크 클래스
   private final WebSocketUserCounterService userCounter;
+
+  // Session 접속 사용자 체크 클래스 2 : Handler
+  private final MyWebSocketHandler myWebSocketHandler;
 
   // Todo : CHAT 상태일 경우만 kafka로 데이터 전송
   @MessageMapping("/chat")
@@ -118,7 +122,10 @@ public class ChatController {
   @ResponseBody
   public ResponseEntity<Integer> getConnectionCount() {
 
-    return ResponseEntity.ok(userCounter.getCount());
+    //return ResponseEntity.ok(userCounter.getCount());
+
+    return ResponseEntity.ok(myWebSocketHandler.getSessionCount());
+
 
   }
 }
