@@ -234,6 +234,13 @@ public class RadioService {
   public boolean checkSoundChange() {
     long currentTime = System.currentTimeMillis();
     if (currentTime - startTime > length) {
+        type = "";
+        path = "";
+        length = 0;
+        title = "";
+        artist = "";
+        image = "";
+        startTime = currentTime;
       if (!playlist.isEmpty()) {
         PlaylistDto sound = playlist.poll();
         type = sound.getType();
