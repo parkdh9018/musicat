@@ -233,15 +233,19 @@ public class RadioService {
    */
   public boolean checkSoundChange() {
     long currentTime = System.currentTimeMillis();
-    if (currentTime - startTime > length && !playlist.isEmpty()) {
-      PlaylistDto sound = playlist.poll();
-      type = sound.getType();
-      path = sound.getPath();
-      length = sound.getLength();
-      title = sound.getTitle();
-      artist = sound.getArtist();
-      image = sound.getImage();
-      startTime = currentTime;
+    if (currentTime - startTime > length) {
+      if (!playlist.isEmpty()) {
+        PlaylistDto sound = playlist.poll();
+        type = sound.getType();
+        path = sound.getPath();
+        length = sound.getLength();
+        title = sound.getTitle();
+        artist = sound.getArtist();
+        image = sound.getImage();
+        startTime = currentTime;
+      } else {
+        resetState();
+      }
       return true;
     }
     return false;
