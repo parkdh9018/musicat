@@ -51,7 +51,7 @@ async def chat_reaction_gpt(user: str, message: str):
         temperature=0.5
     )
     assistant_response = result.choices[0].message.content.strip()
-    add_chat_to_history(user, message, assistant_response)
+    await add_chat_to_history(user, message, assistant_response)
     return assistant_response
 
 async def reset_past_chats():
