@@ -14,6 +14,7 @@ public class MyWebSocketHandler implements WebSocketHandler {
 
   private List<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
 
+
   @Override
   public void afterConnectionEstablished(WebSocketSession session) throws Exception {
     sessions.add(session);
@@ -26,13 +27,14 @@ public class MyWebSocketHandler implements WebSocketHandler {
   }
 
   @Override
-  public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
-    sessions.remove(session);
+  public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
+
   }
 
   @Override
-  public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
-    // Handle transport errors
+  public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus)
+      throws Exception {
+    sessions.remove(session);
   }
 
   @Override
@@ -40,6 +42,7 @@ public class MyWebSocketHandler implements WebSocketHandler {
     return false;
   }
 
+  // 연결된 세션 개수 리턴
   public int getSessionCount() {
     return sessions.size();
   }
