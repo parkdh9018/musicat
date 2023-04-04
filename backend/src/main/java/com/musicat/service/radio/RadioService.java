@@ -208,7 +208,7 @@ public class RadioService {
   public void chatProcess() {
     long currentTime = System.currentTimeMillis();
     logger.debug("채팅 상태 들어옴");
-    if (checkSoundChange() && currentTime - startTime < length) {
+    if (checkSoundChange() && currentTime - startTime > length) {
       sendCurrentSound(true);
     }
     if (chatTimer > 0) {
