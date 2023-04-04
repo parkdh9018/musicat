@@ -206,8 +206,9 @@ public class RadioService {
    * 채팅 관련 프로세스
    */
   public void chatProcess() {
+    long currentTime = System.currentTimeMillis();
     logger.debug("채팅 상태 들어옴");
-    if (checkSoundChange()) {
+    if (checkSoundChange() && currentTime - startTime < length) {
       sendCurrentSound(true);
     }
     if (chatTimer > 0) {
@@ -217,7 +218,6 @@ public class RadioService {
       sendKafkaMessage("finishChat", "finish");
       --chatTimer;
     } else {
-      long currentTime = System.currentTimeMillis();
       if (currentTime - startTime > length && playlist.isEmpty()) {
         sendKafkaMessage("finishState", "chat");
         resetState();
