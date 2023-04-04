@@ -56,7 +56,7 @@ export const Cat = ({position, ...props}: propsType) => {
     if(operation === "CHAT") {
       camera.position.lerp(new THREE.Vector3(-0.031, 0.404, 1.640),0.01);
     } else {
-      camera.position.lerp(new THREE.Vector3(-1.34, 0.95, 1.70),0.01);
+      camera.position.lerp(new THREE.Vector3(-1.34, 0.95, 1.20),0.01);
     }
 
     if (ref.current) {

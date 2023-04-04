@@ -23,7 +23,7 @@ export const Broadcast = () => {
         nowMainPage ? style.broadcast : style.broadcast + " " + style.mypage
       }
     >
-      {/* <img src={radioBoothIMG} alt="" className={style.radioBooth} /> */}
+      <img src={radioBoothIMG} alt="" className={style.radioBooth} />
       <GraphicCanvas />
       <RadioPlayer />
     </div>
