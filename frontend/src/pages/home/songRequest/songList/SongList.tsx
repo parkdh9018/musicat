@@ -20,14 +20,11 @@ export const SongList = () => {
   useEffect(() => {
     if (nowPlaying.type === "youtube") {
       const nowId: string = nowPlaying.path.split("embed/")[1];
-      console.log(nowId);
       setPlayingMusicId(nowId);
     } else {
       setPlayingMusicId("");
     }
   }, [nowPlaying]);
-
-  console.log(songs);
 
   const onSongDetail = (e: React.MouseEvent<HTMLButtonElement>) => {
     const value = e.currentTarget.value;

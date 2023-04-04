@@ -68,7 +68,7 @@ export const Inventory = () => {
 
         <div style={{ clear: "both" }} />
       </div>
-      <div className={style.content_div} style={{ minHeight: "14vw" }}>
+      <div className={style.content_div + " " + style.minhei}>
         <span>배경 설정 :</span>
         <img
           className={style.img1}

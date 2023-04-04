@@ -47,8 +47,15 @@
   border: 2px solid var(--blue-color);
 }
 
+.minhei {
+  min-height: 160px;
+}
+
 @media screen and (max-width: 768px) {
   .inventory {
     padding: 7%;
+  }
+  .minhei {
+    min-height: auto;
   }
 }/*# sourceMappingURL=Inventory.module.css.map */

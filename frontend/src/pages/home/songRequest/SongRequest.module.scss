@@ -6,10 +6,13 @@
 
 .songSearch {
   display: flex;
+  justify-content: center;
 }
 
 .hr {
   border: 0.5px solid var(--font-color);
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 .songRequestTxt {

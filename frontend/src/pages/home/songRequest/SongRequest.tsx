@@ -4,15 +4,18 @@ import { SongList } from "./songList/SongList";
 import { postSongRequest } from "@/connect/axios/queryHooks/music";
 import { SongSearch } from "@/components/common/songSearch/SongSearch";
 import { Song } from "@/types/home";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userInfoState } from "@/atoms/user.atom";
 import { useCustomToast } from "@/customHooks/useCustomToast";
 import { Button } from "@/components/common/button/Button";
 import Swal from "sweetalert2";
+import { nowYoutubeSearchState, searchState } from "@/atoms/song.atom";
 
 export const SongRequest = () => {
-  const [requestSong, setRequestSong] = useState<Song>();
+  const [requestSong, setRequestSong] = useState<Song | undefined>(undefined);
+  const setSearch = useSetRecoilState(searchState);
   const userInfo = useRecoilValue(userInfoState);
+  const youtubeSearch = useRecoilValue(nowYoutubeSearchState);
 
   const onClickReq = () => {
     if (userInfo.userRole === "") {
@@ -30,9 +33,20 @@ export const SongRequest = () => {
         }).then(async (result) => {
           if (result.isConfirmed) {
             const req = { ...requestSong, userSeq: userInfo.userSeq };
-            const result = await postSongRequest(req);
+            const result = await postSongRequest(req).catch(() => {
+              Swal.fire({
+                icon: "error",
+                title: "",
+                text: "네트워크 오류 / 다시 시도해 주세요",
+                confirmButtonText: "닫기",
+              });
+              return;
+            });
+
+            if (!result) return;
 
             // 신청한 곡이 아직 플레이 리스트에 남아있는 경우
+            // 이거 막아버리자 ㄱㄷ
             if (result.data.status === 1) {
               useCustomToast(
                 "warning",
@@ -47,11 +61,15 @@ export const SongRequest = () => {
                 `다른 사용자가 해당 곡을 이미 신청했습니다. 해당 곡은 ${result.data.playOrder}번째로 재생될 예정입니다.`
               );
             }
+
             Swal.fire(
               "신청되었습니다!",
-              "해당 곡이 재생된 이후 다시 신청 가능합니다",
+              "다음 곡은 해당 곡이 재생된 이후 다시 신청 가능합니다",
               "success"
-            );
+            ).then(() => {
+              setSearch("");
+              setRequestSong(undefined);
+            });
           }
         });
       }
@@ -62,8 +80,16 @@ export const SongRequest = () => {
     <>
       <div className={style.songRequest}>
         <div className={style.songSearch}>
-          <SongSearch setRequestSong={setRequestSong} width={85} />
-          <Button content="노래 신청" onClick={onClickReq} />
+          <SongSearch setRequestSong={setRequestSong} width={80} />
+          <Button
+            style={
+              !requestSong
+                ? { opacity: "0.5", pointerEvents: "none" }
+                : undefined
+            }
+            content={youtubeSearch ? "검색중..." : "노래 신청"}
+            onClick={onClickReq}
+          />
         </div>
         <hr className={style.hr} />
         <div className={style.songRequestTxt}>신청곡 목록</div>
