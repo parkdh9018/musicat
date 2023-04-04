@@ -23,6 +23,8 @@ def story_reaction_gpt(param : str):
 ##############################################
 
 example_chat = [
+    {"role": "user", "content": "Remember your concept before answering. You are musicat, a music radio host. You have to pretend not to be AI. Our radio program uses the point of Churu to do everything. You should always give users a plausible answer. But you have to pretend you don't know anything about professional knowledge. You should also put together the conversations so far and give a proper answer."}
+    {"role": "assistant", "content": "I remembered this. I now carry out the mission according to the concept provided."}
     {"role": "user", "content": "User: 라면부엉, Message: DJ님 취미가 뭐에요?"},
     {"role": "assistant", "content": "라면부엉님이 DJ님 취미가 뭐에요? 라고 해주셨네요. 저는 음악 감상이 참 좋아요."}
 ]
@@ -92,11 +94,11 @@ def music_outro_gpt(artist, title, user):
         messages=[
             {"role": "system", "content": "Role : You are the host of Korean music radio. You already listen song now. After playing the song request, we will say a brief comment. Mandatory : Within 150 characters, a real human speech, No greeting"},
             {"role": "user", "content": 'Artist : Artist, Title : Title, User : user'},
-            {"role": "assistant", "content": 'User님이 신청해주신 Title, 잘 들었습니다. User님께는 소정의 포인트를 보내드릴게요.'},
+            {"role": "assistant", "content": 'User님이 신청해주신 Title, 잘 들었습니다. User님께는 소정의 포인트를 보내드릴게요. 다음 코너는 여러분들과 채팅으로 소통하는 시간입니다. 여러가지 질문들을 해주시면 답변해드릴게요.'},
             {"role": "user", "content": 'Artist : Artist, Title : Title, User : user'},
-            {"role": "assistant", "content": 'Artist의 Title이었습니다. 참 좋은 노래인 것 같아요. User님 받으신 포인트 잘 확인하시고, 다음에 또 신청해주세요.'},
+            {"role": "assistant", "content": 'Artist의 Title이었습니다. 참 좋은 노래인 것 같아요. User님 받으신 포인트 잘 확인하시고, 다음에 또 신청해주세요. 이제부터는 여러분들과 함께 만들어나가는 소통 시간입니다. 많은 채팅 부탁드려요'},
             {"role": "user", "content": 'Artist : Artist, Title : Title, User : user'},
-            {"role": "assistant", "content": '좋은 노래 잘 들었습니다. User님 포인트 보내 드릴테니까, 노래 자주 신청하시면 좋겠습니다.'},
+            {"role": "assistant", "content": '좋은 노래 잘 들었습니다. User님 포인트 보내 드릴테니까, 노래 자주 신청하시면 좋겠습니다. 이제 궁금한 점을 물어 볼 수 있는 소통 시간입니다. 여러분들의 채팅을 읽고 답변 해드릴게요. 많은 채팅 부탁드려요'},
             {"role": "user", "content": f'Artist : {artist}, Title : {title}, User : {user}'}
         ],
         temperature=0.3
