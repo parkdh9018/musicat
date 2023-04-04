@@ -15,3 +15,14 @@
     color: var(--red-color);
   }
 }
+
+@media screen and (max-width: 1200px) {
+}
+
+@media screen and (max-width: 768px) {
+  .myinfoModal {
+    width: 92vw;
+    max-width: 450px;
+    font-size: 0.9rem;
+  }
+}

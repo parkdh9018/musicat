@@ -7,19 +7,14 @@ import { musicState } from "@/atoms/song.atom";
 export const Tape = () => {
   let an: anime.AnimeInstance;
 
-  // const textContent = "뉴진스 - ditto ffff";
-  // const backGroundImage = "/img/tape/background_img_test.png";
-
-  const [textContent, setTextContent] = useState("뉴진스 - ditto ffff");
-  const [backGroundImage, setBackGroundImage] = useState(
-    "/img/tape/default.png"
-  );
+  const [textContent, setTextContent] = useState("");
+  const [backGroundImage, setBackGroundImage] = useState("");
 
   const musicData = useRecoilValue(musicState);
 
   useEffect(() => {
-    console.log(musicData);
-    setBackGroundImage("/img/tape/Logo.png");
+    setBackGroundImage(musicData.image || "/img/tape/background_img_test.png");
+    setTextContent(musicData.artist + " / " + musicData.title);
   }, [musicData]);
 
   useEffect(() => {

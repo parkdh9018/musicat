@@ -8,4 +8,11 @@
   left: 3%;
   color: var(--fade-font-color);
   pointer-events: none;
+}
+
+@media screen and (max-width: 768px) {
+  .bottom_search .placeholder {
+    top: 22%;
+    left: 6%;
+  }
 }/*# sourceMappingURL=Notice.module.css.map */

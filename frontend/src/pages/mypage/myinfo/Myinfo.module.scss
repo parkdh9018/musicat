@@ -31,7 +31,7 @@
         cursor: pointer;
       }
       .circleLeft {
-        right: 53%;
+        right: 58%;
       }
     }
     .fc {
@@ -72,14 +72,16 @@
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 840px) {
   .myinfo {
     flex-direction: column;
 
     .leftbox {
       width: 100%;
+
       .toolbar {
         width: 16%;
+        max-width: 55px;
       }
     }
 

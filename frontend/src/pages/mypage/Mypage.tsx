@@ -1,7 +1,5 @@
 import { nowMainPageState } from "@/atoms/common.atom";
 import { userInfoState } from "@/atoms/user.atom";
-import { Broadcast } from "@/components/broadcast/Broadcast";
-import { Header } from "@/components/header/Header";
 import { MypageNav } from "@/components/sideNav/mypageNav/MypageNav";
 import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
@@ -30,10 +28,6 @@ export const Mypage = () => {
 
   return (
     <>
-      <Header />
-      <div>
-        <Broadcast />
-      </div>
       <div>
         <div className={style.mypage}>
           <div className={style.leftTab}>

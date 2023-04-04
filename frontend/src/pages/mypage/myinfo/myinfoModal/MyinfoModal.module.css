@@ -14,4 +14,12 @@
 }
 .myinfoModal .red {
   color: var(--red-color);
+}
+
+@media screen and (max-width: 768px) {
+  .myinfoModal {
+    width: 92vw;
+    max-width: 450px;
+    font-size: 0.9rem;
+  }
 }/*# sourceMappingURL=MyinfoModal.module.css.map */
