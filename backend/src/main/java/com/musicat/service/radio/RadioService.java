@@ -253,8 +253,9 @@ public class RadioService {
    */
   public void radioProcess() {
     resetTimer();
+    long currentTime = System.currentTimeMillis();
     if (checkSoundChange()) {
-      if (playlist.isEmpty()) {
+      if (playlist.isEmpty() && currentTime - startTime > length) {
         sendKafkaMessage("finishState", currentState);
         resetState();
       }
