@@ -22,7 +22,7 @@ async def radio_progress():
     current_state.set_state(queue.popleft())
     logger.info(f'[Radio] : 현재 라디오 상태 : {current_state.get_state()}')
     queue.append(current_state.get_state())
-    radio_state = None
+    radio_state = {"state" : "idle"}
 
     if current_state.get_state() == 'story':
         radio_state = await logic_story.process_story_state()
