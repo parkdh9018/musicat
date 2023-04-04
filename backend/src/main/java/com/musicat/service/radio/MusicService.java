@@ -13,6 +13,7 @@ import com.musicat.util.builder.MusicBuilderUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -146,4 +147,15 @@ public class MusicService {
   }
 
 
+  /**
+   * 음악 신청 중복 여부를 확인합니다
+   * @param userSeq
+   * @return
+   */
+  public void isUniqueMusic(long userSeq) {
+    Optional<Music> optionalMusic = musicRepository.findByUserSeqAndMusicPlayedFalse(userSeq);
+    if (optionalMusic.isPresent()) {
+      throw new EntityExistsException("이미 신청한 노래가 있습니다.");
+    }
+  }
 }

@@ -54,7 +54,18 @@ public class MusicController {
     List<MusicInfoDto> requestMusic = musicService.getMusicInfoList();
 
     return ResponseEntity.ok(requestMusic);
+  }
 
+  /**
+   * 신청곡 중복 검사
+   *
+   * @param userSeq
+   * @return 200, 409, 500
+   */
+  @GetMapping("/unique/{userSeq}")
+  public ResponseEntity<MusicInfoDto> isUniqueMusic(@PathVariable long userSeq) {
+    musicService.isUniqueMusic(userSeq);
+    return ResponseEntity.ok().build();
   }
 
   /**
@@ -68,7 +79,6 @@ public class MusicController {
 
     MusicInfoDto musicInfoDto = musicService.getMusic(musicSeq);
     return ResponseEntity.ok(musicInfoDto);
-
   }
 
   /**
