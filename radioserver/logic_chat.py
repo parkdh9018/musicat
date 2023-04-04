@@ -20,7 +20,7 @@ count = 1
 async def clear_user_check():
     global user_check
 
-    user_check.clear
+    user_check.clear()
 
 async def process_chat_data(data):
     global count
