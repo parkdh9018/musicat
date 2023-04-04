@@ -3,6 +3,8 @@ import { Buffer } from "buffer";
 export interface UserTokenData {
   userSeq: number;
   userNick: string;
+  userIsBan: boolean;
+  userIsChattingBan: boolean;
 }
 
 export function useTokenData(): UserTokenData | undefined {
@@ -15,5 +17,7 @@ export function useTokenData(): UserTokenData | undefined {
   return {
     userSeq: result.sub,
     userNick: result.userNickname,
+    userIsBan: result.userIsBan,
+    userIsChattingBan: result.userIsChattingBan,
   };
 }

@@ -21,6 +21,7 @@ import { useLocation } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import style from "./Myinfo.module.css";
 import { MyinfoModal } from "./myinfoModal/MyinfoModal";
+import Swal from "sweetalert2";
 
 export const Myinfo = () => {
   const location = useLocation();
@@ -50,6 +51,14 @@ export const Myinfo = () => {
         loginUser(setUserInfo);
         setInput("");
         useCustomToast("success", "닉네임 변경 성공!");
+      },
+      onError: () => {
+        Swal.fire({
+          icon: "error",
+          title: "",
+          text: "네트워크 오류 / 다시 시도해 주세요.",
+          confirmButtonText: "닫기",
+        });
       },
     }
   );
@@ -83,9 +92,18 @@ export const Myinfo = () => {
                 : style.circle + " " + style.circleLeft
             }
             onClick={() => {
-              putDarkMode().then(() => {
-                queryClient.invalidateQueries(["getUserConfig"]);
-              });
+              putDarkMode()
+                .then(() => {
+                  queryClient.invalidateQueries(["getUserConfig"]);
+                })
+                .catch(() => {
+                  Swal.fire({
+                    icon: "error",
+                    title: "",
+                    text: "네트워크 오류 / 다시 시도해 주세요",
+                    confirmButtonText: "닫기",
+                  });
+                });
               return;
             }}
           />

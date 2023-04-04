@@ -17,6 +17,11 @@ export const Inventory = () => {
     type: 0,
   });
   const badge = ["none", "red", "skyblue", "green", "gray"];
+  const isMobile = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    );
+  };
 
   /** 사이드 Nav 초기화 */
   useEffect(() => {
@@ -72,7 +77,7 @@ export const Inventory = () => {
             setModalData({
               originSelet: theme?.data.backgroundSeq,
               source: "/img/background/background",
-              width: "40%",
+              width: `${isMobile() ? 60 : 40}%`,
               type: 2,
             });
             setIsModalOpen(true);
@@ -89,7 +94,7 @@ export const Inventory = () => {
             setModalData({
               originSelet: theme?.data.themeSeq,
               source: "/img/theme/theme",
-              width: "20%",
+              width: `${isMobile() ? 32 : 20}%`,
               type: 3,
             });
             setIsModalOpen(true);

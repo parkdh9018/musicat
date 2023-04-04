@@ -5,14 +5,6 @@ import { SetterOrUpdater, useRecoilValue } from "recoil";
 import { Buffer } from "buffer";
 import { useCustomToast } from "@/customHooks/useCustomToast";
 
-interface UserSeq {
-  userSeq: number;
-}
-
-interface ModifyRequest extends UserSeq {
-  userNickname: string;
-}
-
 interface UserInfo {
   userSeq: number;
   userRole: string;
@@ -84,7 +76,7 @@ export function getUserMoney() {
     async () => {
       return await $.get(`/user/money`);
     },
-    { enabled: !!userInfo.userRole }
+    { enabled: !!userInfo.userRole, staleTime: 300000 }
   );
   return { data, isLoading };
 }
@@ -111,7 +103,7 @@ export function getUserConfig() {
     async () => {
       return await $.get(`/user/config`);
     },
-    { enabled: !!userInfo.userRole }
+    { enabled: !!userInfo.userRole, staleTime: 300000 }
   );
 
   return { data, isLoading };

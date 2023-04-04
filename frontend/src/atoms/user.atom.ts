@@ -13,10 +13,8 @@ export const userInfoState = atom({
 });
 
 export function logoutUser(func: Resetter, navigate: NavigateFunction) {
+  $.post("/logout", {});
   sessionStorage.clear();
-  $.post("/logout", {}).then(() => {
-    func();
-    navigate("/");
-  });
-  console.log("요청 보냈다!!!");
+  func();
+  navigate("/");
 }

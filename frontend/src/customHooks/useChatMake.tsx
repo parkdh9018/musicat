@@ -11,6 +11,12 @@ export function useChatMake(
   // 종료되었습니다 메세지 일 때 or 공지 메세지? => sender를 바꿔서 사용?
 
   // 내가 보낸 메세지 일 때
+  if (Number(data.badgeSeq) === 0)
+    return (
+      <div key={uuidv4()}>
+        <span style={{ color: "gray" }}>{data.content}</span>
+      </div>
+    );
 
   if (Number(userInfo?.userSeq) === data.senderSeq)
     return (

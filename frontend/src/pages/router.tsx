@@ -50,11 +50,11 @@ const router: RouteObject[] = [
     ],
   },
   {
-    path: "/except",
+    path: "*",
     element: <ExceptionPage />,
     children: [
       { path: "login-success", element: <LoginSuccess /> },
-      { path: "404", element: <Page404 /> },
+      { path: "*", element: <Page404 /> },
     ],
   },
 ];
