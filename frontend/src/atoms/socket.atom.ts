@@ -65,7 +65,11 @@ const dataClassification = (set: any, res: BaseResponse): void => {
     case "RADIO":
       console.log("나는 라디오");
       console.log(res);
-      set(broadcastState, {operation: res.operation.toUpperCase(), dataType: res.data.type});
+      set(broadcastState, {
+        operation: res.operation.toUpperCase(),
+        dataType: res.data.type,
+        dataLength: res.data.length,
+      });
       set(musicState, () => res.data);
       break;
     default:
