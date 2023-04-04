@@ -61,7 +61,7 @@ async def process_music_state():
     """
     music = database.find_oldest_unplayed_music()
     if not music:
-        return logic_empty.process_empty_state()
+        return await logic_empty.process_empty_state()
     logger.info(f'[Music Process] 노래 상태를 생성합니다 {music["music_seq"]}')
     
     music_intro = music["music_intro"]
