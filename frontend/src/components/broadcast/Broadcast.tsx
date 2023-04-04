@@ -25,6 +25,7 @@ export const Broadcast = () => {
     >
       <img src={radioBoothIMG} alt="" className={style.radioBooth} />
       <GraphicCanvas />
+      <RadioPlayer />
     </div>
   );
 };
