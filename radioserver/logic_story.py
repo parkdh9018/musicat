@@ -91,7 +91,9 @@ async def process_story_state():
     """
     story = database.find_story()
     if not story:
-        return None
+        return {
+            "state" : "idle"
+        }
     logger.info(f'[Story Process] 사연 상태를 생성합니다 {story["story_seq"]}')
     
     story_content = story["story_content"]
