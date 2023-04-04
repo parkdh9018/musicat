@@ -14,13 +14,15 @@ interface propsType extends GroupProps {
 
 export const Background = ({themeNum, position, ...props} : propsType) => {
 
-  let extraCat_position = new THREE.Vector3(0.2, 0, -1.6)
-  let extraCat_rotation = new THREE.Euler(0, 0, 0)
+  let extraCat_position = new THREE.Vector3(2.6, 0, 0.7)
+  let extraCat_rotation = new THREE.Euler(0, -0.9, 0)
   let object_position = new THREE.Vector3(0,0,0);
   let backgroundStructre_rotation = new THREE.Euler(0, 0, 0);
   
   if (themeNum == 2) {
-    object_position = new THREE.Vector3(0.7,-0.075,0.2);
+    object_position = new THREE.Vector3(0,5,0);
+    extraCat_position = new THREE.Vector3(0.2, 0, -1.6)
+    extraCat_rotation = new THREE.Euler(0, 0, 0)
   }
 
   return (
