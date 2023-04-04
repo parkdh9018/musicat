@@ -10,7 +10,6 @@ import {
   loginUser,
 } from "@/connect/axios/queryHooks/user";
 import style from "./Header.module.css";
-import { RadioPlayer } from "../broadcast/radioPlayer/RadioPlayer";
 
 export const Header = () => {
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);

@@ -38,17 +38,17 @@
       cursor: pointer;
 
       .nickname {
-        color: var(--fade-font-color);
+        color: #8d8d8d;
         transition: 0.2s;
       }
 
       .nickname_other {
-        color: var(--font-color);
+        color: #ececec;
         transition: 0.2s;
       }
 
       .login_sent {
-        color: var(--font-color);
+        color: #ececec;
         transition: 0.2s;
       }
 
@@ -58,11 +58,11 @@
       }
 
       &:hover .nickname_other {
-        color: var(--fade-font-color);
+        color: #8d8d8d;
       }
 
       &:hover .nickname {
-        color: var(--font-color);
+        color: #ececec;
       }
     }
   }
@@ -93,7 +93,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      color: var(--font-color);
+      color: #ececec;
       font-size: 0.7rem;
     }
   }

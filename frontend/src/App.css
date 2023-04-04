@@ -9,13 +9,13 @@
 }
 
 :root[color-theme="light"] {
-  --background-color: #979797;
+  --background-color: #cacaca;
   --font-color: #242424;
-  --fade-font-color: #515151;
-  --green-color: #6dae73;
-  --red-color: #935d5d;
-  --blue-color: #363f8d;
-  --modal-background: rgb(105, 105, 105);
+  --fade-font-color: #7a7a7a;
+  --green-color: #36cd45;
+  --red-color: #dd4f4f;
+  --blue-color: #242f96;
+  --modal-background: rgb(184, 184, 184);
 }
 
 .App {
