@@ -7,6 +7,7 @@ import com.google.api.services.youtube.model.Video;
 import com.google.api.services.youtube.model.VideoListResponse;
 import com.musicat.data.dto.music.YoutubeSearchResultDto;
 import com.musicat.util.ConvertTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class YoutubeApiService {
     String query = title + " " + artist;
     YouTube.Search.List searchRequest;
     try {
+
         searchRequest = youtubeApi.search().list(Arrays.asList("id","snippet"));
         searchRequest.setQ(query);
         searchRequest.setType(Arrays.asList("video"));
@@ -36,26 +38,29 @@ public class YoutubeApiService {
         SearchListResponse searchResponse = searchRequest.execute();
         List<SearchResult> searchResults = searchResponse.getItems();
 
+        List<String> videoIds = new ArrayList<>();
+        for (SearchResult searchResult : searchResults) {
+            videoIds.add(searchResult.getId().getVideoId());
+        }
+
+        VideoListResponse videoResponse = youtubeApi.videos().list(Arrays.asList("id", "statistics", "contentDetails"))
+                .setId(videoIds)
+                .execute();
+        List<Video> videoList = videoResponse.getItems();
+
+        // 검색 결과 필터링
         BigInteger maxViews = BigInteger.ZERO;
         YoutubeSearchResultDto result = new YoutubeSearchResultDto();
-
-        for (SearchResult searchResult : searchResults) {
-            String musicYoutubeId = searchResult.getId().getVideoId();
-            VideoListResponse videoResponse = youtubeApi.videos().list(Arrays.asList("id","statistics","contentDetails"))
-                    .setId(Arrays.asList(musicYoutubeId))
-                    .execute();
-
-            Video video = videoResponse.getItems().get(0);
-
-            // 재생 시간 검증 (+,- 3초)
+        for (Video video : videoList) {
+            // 음악 길이 차이 5초 이내만 검색
             long playTime = convertTime.convertDurationToMillis(video.getContentDetails().getDuration());
             if (Math.abs(spotifyMusicDuration - playTime) > 5000) continue;
 
-            // 조회수 가장 많은 동영상 1개 리턴
+            // 최대 시청 횟수가 10만 회 이상인 경우에만 반환
             BigInteger viewCount = video.getStatistics().getViewCount();
             if (viewCount.compareTo(maxViews) > 0 && viewCount.compareTo(BigInteger.valueOf(100000)) > 0) {
                 maxViews = viewCount;
-                result.setMusicYoutubeId(musicYoutubeId);
+                result.setMusicYoutubeId(video.getId());
                 result.setMusicLength(convertTime.convertDurationToMillis(video.getContentDetails().getDuration()));
             }
         }
