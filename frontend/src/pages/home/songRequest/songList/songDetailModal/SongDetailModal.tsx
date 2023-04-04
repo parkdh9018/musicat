@@ -31,13 +31,12 @@ export const SongDetailModal = ({ musicSeq }: SongDetailModalProps) => {
           alt="곡 사진"
         />{" "}
         <span className={style.songModalContentBox}>
-          <div>{song.musicTitle}</div>
-          <br />
-          <div>{song.musicArtist}</div>
-          <br />
-          <div>앨범: {song.musicAlbum}</div>
-          <br />
-          <div>발매일: {song.musicReleaseDate}</div>
+          <div className={style.songTitle}>{song.musicTitle}</div>
+          <div className={style.songDetail}>{song.musicArtist}</div>
+          <div className={style.songDetail}>앨범: {song.musicAlbum}</div>
+          <div className={style.songDetail}>
+            발매일: {song.musicReleaseDate}
+          </div>
         </span>
       </div>
     );
