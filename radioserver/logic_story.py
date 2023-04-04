@@ -107,12 +107,11 @@ async def process_story_state():
     story_outro_filename = os.path.join(tts_path, "outro.mp3")
 
     # TTS 생성
-    # await api_naver_tts.generate_tts_clova(story_opening, story_opening_filename, "nihyun")
-    # await api_naver_tts.generate_tts_clova(story_reaction, story_reaction_filename, "nihyun")
-    # await api_naver_tts.generate_tts_clova(story_outro, story_outro_filename, "nihyun")
+    await api_naver_tts.generate_tts_clova(story_reaction, story_reaction_filename, "nminseo")
+    await api_naver_tts.generate_tts_clova(story_outro, story_outro_filename, "nminseo")
 
-    await api_naver_tts.generate_tts_test(story_reaction, story_reaction_filename)
-    await api_naver_tts.generate_tts_test(story_outro, story_outro_filename)
+    # await api_naver_tts.generate_tts_test(story_reaction, story_reaction_filename)
+    # await api_naver_tts.generate_tts_test(story_outro, story_outro_filename)
 
     # Story TTS 생성 후 Merge
     story_tts_list = []
@@ -120,7 +119,8 @@ async def process_story_state():
     for i in range(len(story_content_list)):
         current_text = story_content_list[i]
         # await api_naver_tts.generate_tts_clova(current_text['content'], os.path.join(tts_path, f"{i}.mp3"), current_text['speaker'])
-        await api_naver_tts.generate_tts_test(current_text['content'], os.path.join(tts_path, f"{i}.mp3"))
+        await api_naver_tts.generate_tts_clova(current_text['content'], os.path.join(tts_path, f"{i}.mp3"), "nminseo")
+        # await api_naver_tts.generate_tts_test(current_text['content'], os.path.join(tts_path, f"{i}.mp3"))
         story_tts_list.append(os.path.join(tts_path, f'{i}.mp3'))
     merged_story_tts = await merge_audio(story_tts_list, 500)
     merged_story_tts_filename = os.path.join(tts_path, 'merged_story.mp3')
@@ -140,9 +140,11 @@ async def process_story_state():
     intro_url = await my_util.create_mp3_url("story", "intro.mp3")
     outro_url = await my_util.create_mp3_url("story", "outro.mp3")
 
+    database.update_story_readed_status(int(story["story_seq"]))
+
     playlist = [
         {"type": "mp3", "path": intro_url, "length": intro_length},
-        {"type": "youtube", "path": f'https://www.youtube.com/embed/{story["story_music_youtube_id"]}', "length": story["story_music_length"] / 100,
+        {"type": "youtube", "path": f'https://www.youtube.com/embed/{story["story_music_youtube_id"]}', "length": story["story_music_length"],
          "artist" : story["story_music_artist"], "title" : story["story_music_title"], "image" : story["story_music_cover"]},
         {"type": "mp3", "path": outro_url, "length": outro_length}
     ]
@@ -151,7 +153,6 @@ async def process_story_state():
         "seq": story["story_seq"],
         "playlist": playlist
     }
-    os.remove(story_opening_filename)
     os.remove(story_reaction_filename)
     os.remove(merged_story_tts_filename)
     for story_tts_path in story_tts_list:

@@ -8,6 +8,7 @@ import os
 import database
 import logic_story
 import logic_music
+import api_naver_tts
 from my_logger import setup_logger
 
 app = FastAPI()
@@ -26,6 +27,7 @@ async def set_remain_gpt_reaction():
     if remain_music is not None:
         for music in remain_music:
             await logic_music.process_remain_music_data(music)
+        
 
 ##############################################
 

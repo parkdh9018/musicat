@@ -193,20 +193,54 @@ def verify_story(story_seq : int, is_valid, is_readed):
 
 ##############################################
 
-def find_basic_song():
+def find_random_music():
     """
-    데이터베이스에 저장된 기본 곡을 불러옵니다 (아직 DB 없음)
+    데이터베이스에서 랜덤한 노래를 찾습니다.
     """
     conn = connect_db()
     cursor = conn.cursor()
     try:
-        cursor.execute("SELECT * FROM my_music ORDER BY music_played_at LIMIT 1")
-        basic_song = cursor.fetchone()
-        if basic_song:
+        cursor.execute("SELECT * FROM server_music ORDER BY RAND() LIMIT 1")
+        result = cursor.fetchone()
+        if result:
             column_names = [desc[0] for desc in cursor.description]
-            return dict(zip(column_names, basic_song))
+            return dict(zip(column_names, result))
         else:
             return None
+    except mariadb.Error as e:
+        print(f"Error: {e}")
+    finally:
+        cursor.close()
+        conn.close()
+
+##############################################
+
+def update_music_played_status(music_seq: int):
+    """
+    주어진 music_seq에 해당하는 노래의 music_played를 TRUE로 변경합니다.
+    """
+    conn = connect_db()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("UPDATE music SET music_played = true WHERE music_seq = ?", (music_seq,))
+        conn.commit()
+    except mariadb.Error as e:
+        print(f"Error: {e}")
+    finally:
+        cursor.close()
+        conn.close()
+
+##############################################
+
+def update_story_readed_status(story_seq: int):
+    """
+    주어진 story_seq에 해당하는 스토리의 story_readed를 TRUE로 변경합니다.
+    """
+    conn = connect_db()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("UPDATE story SET story_readed = true WHERE story_seq = ?", (story_seq,))
+        conn.commit()
     except mariadb.Error as e:
         print(f"Error: {e}")
     finally:
