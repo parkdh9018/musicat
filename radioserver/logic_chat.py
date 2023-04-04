@@ -34,11 +34,11 @@ async def process_chat_data(data):
             return
 
         if len(chat_cleaned) > 7 and len(chat_cleaned) < 200:
-            validate_result = api_chatgpt.validate_chat_gpt(chat_cleaned)
+            validate_result = await api_chatgpt.validate_chat_gpt(chat_cleaned)
             logger.info(f'채팅 validate 확인 {validate_result}')
             if 'True' in validate_result or 'true' in validate_result:
                 user_nickname = database.find_user_nickname(user_seq)
-                chat_reaction = api_chatgpt.chat_reaction_gpt(user_nickname, chat_cleaned)
+                chat_reaction = await api_chatgpt.chat_reaction_gpt(user_nickname, chat_cleaned)
                 logger.info(chat_reaction)
                 current_count = count
                 count = count + 1

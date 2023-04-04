@@ -24,8 +24,8 @@ async def process_music_data(data):
     title = data["musicTitle"]
     release_date = data["musicReleaseDate"]
 
-    music_intro = api_chatgpt.music_intro_gpt(artist, title, release_date)
-    music_outro = api_chatgpt.music_outro_gpt(artist, title, user_nickname)
+    music_intro = await api_chatgpt.music_intro_gpt(artist, title, release_date)
+    music_outro = await api_chatgpt.music_outro_gpt(artist, title, user_nickname)
 
     database.update_intro_outro(music_seq, music_intro, music_outro)
 
@@ -46,8 +46,8 @@ async def process_remain_music_data(data):
     title = data["music_title"]
     release_date = data["music_release_date"]
 
-    music_intro = api_chatgpt.music_intro_gpt(artist, title, release_date)
-    music_outro = api_chatgpt.music_outro_gpt(artist, title, user_nickname)
+    music_intro = await api_chatgpt.music_intro_gpt(artist, title, release_date)
+    music_outro = await api_chatgpt.music_outro_gpt(artist, title, user_nickname)
 
     database.update_intro_outro(music_seq, music_intro, music_outro)
 

@@ -29,12 +29,12 @@ async def process_verify_story_data(data):
         logger.info(f'[Story] : GPT 응답 생성 실패 - 사연 길이 초과 (storySeq = {story_seq})')
         return
     
-    validate_result = api_chatgpt.validate_story_gpt(story_cleaned)
+    validate_result = await api_chatgpt.validate_story_gpt(story_cleaned)
 
     if 'True' in validate_result or 'true' in validate_result:
         music_introduce = user_nickname + "님의 신청곡은" + music_artist + "의 " + music_title + "입니다."
-        story_reaction = api_chatgpt.story_reaction_gpt(story_cleaned)
-        story_outro = api_chatgpt.music_outro_gpt(music_artist, music_title, user_nickname)
+        story_reaction = await api_chatgpt.story_reaction_gpt(story_cleaned)
+        story_outro = await api_chatgpt.music_outro_gpt(music_artist, music_title, user_nickname)
         story_intro = f'{story_reaction}. {music_introduce}'
 
         database.update_story(story_seq, story_intro, story_outro)
@@ -65,13 +65,13 @@ async def process_verify_remain_story_data(data):
         logger.info(f'[Story] : GPT 응답 생성 실패 - 사연 길이 초과 (storySeq = {story_seq})')
         return
     
-    validate_result = api_chatgpt.validate_story_gpt(story_cleaned)
+    validate_result = await api_chatgpt.validate_story_gpt(story_cleaned)
 
     if 'True' in validate_result or 'true' in validate_result:
         story_opening = "이번 사연은 " + user_nickname + " 님이 보내주신 사연입니다."
         music_introduce = user_nickname + "님의 신청곡은" + music_artist + "의 " + music_title + "입니다."
-        story_reaction = api_chatgpt.story_reaction_gpt(story_cleaned)
-        story_outro = api_chatgpt.music_outro_gpt(music_artist, music_title, user_nickname)
+        story_reaction = await api_chatgpt.story_reaction_gpt(story_cleaned)
+        story_outro = await api_chatgpt.music_outro_gpt(music_artist, music_title, user_nickname)
         story_intro = f'{story_opening} {story_reaction}. {music_introduce}'
 
         database.update_story(story_seq, story_intro, story_outro)
