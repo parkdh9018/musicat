@@ -23,7 +23,7 @@
   color: var(--font-color);
 }
 .content_container:hover {
-  background-color: rgb(39, 39, 39);
+  background-color: var(--modal-background);
 }
 
 @media screen and (max-width: 1000px) {
