@@ -68,10 +68,11 @@ async def process_verify_remain_story_data(data):
     validate_result = api_chatgpt.validate_story_gpt(story_cleaned)
 
     if 'True' in validate_result or 'true' in validate_result:
+        story_opening = "이번 사연은 " + user_nickname + " 님이 보내주신 사연입니다."
         music_introduce = user_nickname + "님의 신청곡은" + music_artist + "의 " + music_title + "입니다."
         story_reaction = api_chatgpt.story_reaction_gpt(story_cleaned)
         story_outro = api_chatgpt.music_outro_gpt(music_artist, music_title, user_nickname)
-        story_intro = f'{story_reaction}. {music_introduce}'
+        story_intro = f'{story_opening} {story_reaction}. {music_introduce}'
 
         database.update_story(story_seq, story_intro, story_outro)
         database.verify_story(story_seq, 1, 0)
@@ -97,7 +98,6 @@ async def process_story_state():
     story_content = story["story_content"]
     story_content_list = json.loads(story_content)
 
-    story_opening = "이번 사연은 " + user_nickname + " 님이 보내주신 사연입니다."
     story_reaction = story["story_reaction"]
     story_outro = story["story_outro"]
 
