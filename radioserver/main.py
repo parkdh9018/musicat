@@ -71,35 +71,36 @@ def generate_file_stream(filepath: str, start: int = 0, end: int = None):
                 break
             yield data
 
+
 @app.get("/tts/{path}/{filename}")
 async def send_tts(request: Request, path: str, filename: str):
     filepath = os.path.join(f"./tts/{path}", filename)
-    if os.path.isfile(filepath):
-        range_header = request.headers.get('Range')
-        start, end = None, None
-
-        if range_header:
-            range_type, range_values = range_header.split('=')
-            if range_type.strip() == 'bytes':
-                range_values = range_values.split('-')
-                start = int(range_values[0]) if range_values[0] else None
-                end = int(range_values[1]) if len(range_values) > 1 and range_values[1] else None
-
-        file_size = os.path.getsize(filepath)
-        response_headers = {
-            'Content-Type': 'audio/mpeg',
-            'Accept-Ranges': 'bytes',
-            'Content-Length': str(file_size)
-        }
-
-        if start is not None:
-            end = end or file_size - 1
-            response_headers['Content-Range'] = f'bytes {start}-{end}/{file_size}'
-            response_headers['Content-Length'] = str(end - start + 1)
-            return StreamingResponse(generate_file_stream(filepath, start, end), status_code=206, headers=response_headers)
-        else:
-            return FileResponse(filepath, media_type="audio/mpeg")
-    else:
+    if not os.path.isfile(filepath):
         raise HTTPException(status_code=404, detail="재생할 파일이 존재하지 않습니다.")
+
+    range_header = request.headers.get('Range')
+    start, end = None, None
+
+    if range_header:
+        range_type, range_values = range_header.split('=')
+        if range_type.strip() == 'bytes':
+            range_values = range_values.split('-')
+            start = int(range_values[0]) if range_values[0] else None
+            end = int(range_values[1]) if len(range_values) > 1 and range_values[1] else None
+
+    file_size = os.path.getsize(filepath)
+    response_headers = {
+        'Content-Type': 'audio/mpeg',
+        'Accept-Ranges': 'bytes'
+    }
+
+    if start is not None:
+        end = end or file_size - 1
+        response_headers['Content-Range'] = f'bytes {start}-{end}/{file_size}'
+        response_headers['Content-Length'] = str(end - start + 1)
+        return StreamingResponse(generate_file_stream(filepath, start, end), status_code=206, headers=response_headers)
+    else:
+        response_headers['Content-Length'] = str(file_size)
+        return StreamingResponse(generate_file_stream(filepath), status_code=200, headers=response_headers)
     
 ##############################################
