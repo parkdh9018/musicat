@@ -208,7 +208,7 @@ public class RadioService {
   public void chatProcess() {
     long currentTime = System.currentTimeMillis();
     logger.debug("채팅 상태 들어옴");
-    if (checkSoundChange() && currentTime - startTime < length) {
+    if (checkSoundChange() && currentTime - startTime > length) {
       sendCurrentSound(true);
     }
     if (chatTimer > 0) {
@@ -234,6 +234,13 @@ public class RadioService {
   public boolean checkSoundChange() {
     long currentTime = System.currentTimeMillis();
     if (currentTime - startTime > length) {
+        type = "";
+        path = "";
+        length = 0;
+        title = "";
+        artist = "";
+        image = "";
+        startTime = currentTime;
       if (!playlist.isEmpty()) {
         PlaylistDto sound = playlist.poll();
         type = sound.getType();
