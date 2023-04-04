@@ -3,10 +3,10 @@ import { useAnimations, useGLTF, useTexture } from "@react-three/drei";
 import { GroupProps, useFrame } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
-import { ANI_NAME } from "./ani_name";
+import { ani } from "./ani_name";
 import * as THREE from "three";
 import { useRecoilValue } from "recoil";
-import { broadcastOperationState } from "@/atoms/broadcast.atom";
+import { broadcastState } from "@/atoms/broadcast.atom";
 
 interface ExtendedGLTF extends GLTF {
   nodes: any;
@@ -18,17 +18,17 @@ interface propsType extends GroupProps {
 
 export const Cat = ({position, ...props}: propsType) => {
 
-  const operation = useRecoilValue(broadcastOperationState);
+  const broadcast = useRecoilValue(broadcastState);
 
   const speed = 0.2; // 움직임 속도를 조절하세요.
   const startPosition = new THREE.Vector3(position.x, position.y + 10, position.z); // 시작 위치를 설정하세요.
   const targetPosition = position // 목표 위치를 설정하세요.
 
   const { scene } = useGLTF("/graphic/cat/Chibi_Cat_01.glb") as ExtendedGLTF;
-
-  const animations = ANI_NAME.reduce((acc: any, name) => {
+  
+  const animations = Object.values(ani).reduce((acc: any, name) => {
     const { animations } = useGLTF(
-      `/graphic/animation/Anim_Chibi@${name}.glb`
+      `/graphic/animation/${name}.glb`
     ) as ExtendedGLTF;
     acc.push(animations[0]);
     return acc;
@@ -38,8 +38,8 @@ export const Cat = ({position, ...props}: propsType) => {
 
   const playSequentialAnimations = () => {
     if (actions) {
-      const jumpAction = actions["Anim_Chibi@Jump"]
-      const idleAction = actions["Anim_Chibi@Idle02"];
+      const jumpAction = actions[ani.Jump]
+      const idleAction = actions[ani.Idle02];
   
       jumpAction?.reset().setLoop(THREE.LoopRepeat, 1).play();
       jumpAction?.crossFadeTo(idleAction as THREE.AnimationAction, 0.5, false);
@@ -53,7 +53,7 @@ export const Cat = ({position, ...props}: propsType) => {
 
     // camera.rotation.
 
-    if(operation === "CHAT") {
+    if(broadcast.operation === "CHAT") {
       camera.position.lerp(new THREE.Vector3(-0.031, 0.404, 1.640),0.01);
     } else {
       camera.position.lerp(new THREE.Vector3(-1.34, 0.95, 1.20),0.01);
@@ -88,27 +88,22 @@ export const Cat = ({position, ...props}: propsType) => {
 
     // console.log("operation : ", operation)
 
-    actions["Anim_Chibi@Idle"]?.fadeOut(0.5);
-    actions["Anim_Chibi@Yes"]?.fadeOut(0.5);
-    actions["Anim_Chibi@Idle03"]?.fadeOut(0.5);
-    actions["Anim_Chibi@Cute1"]?.fadeOut(0.5);
+    // console.log(broadcast)
+
+    actions[ani.Idle02]?.fadeOut(0.5);
+    actions[ani.Yes]?.fadeOut(0.5);
+    actions[ani.Idle03]?.fadeOut(0.5);
+    actions[ani.Cute1]?.fadeOut(0.5);
 
 
-    if(operation === "CHAT") {
-      actions["Anim_Chibi@Yes"]?.reset().fadeIn(0.5).play();
-    } else if (operation === "MUSIC") {
-      actions["Anim_Chibi@Idle03"]?.reset().fadeIn(0.5).play();
-    } else if (operation === "IDLE") {
-      actions["Anim_Chibi@Cute1"]?.reset().fadeIn(0.5).play();
+    if(broadcast.operation === "CHAT") {
+      actions[ani.Yes]?.reset().fadeIn(0.5).play();
+    } else if (broadcast.operation === "MUSIC") {
+      actions[ani.Idle03]?.reset().fadeIn(0.5).play();
+    } else if (broadcast.operation === "IDLE") {
+      actions[ani.Cute1]?.reset().fadeIn(0.5).play();
     }
-  },[operation])
-
-  // useEffect(() => {
-  //   actions["Anim_Chibi@Idle02"]?.reset().fadeIn(0.5).play();
-  //   return () => {
-  //     actions["Anim_Chibi@Idle02"]?.fadeOut(0.5);
-  //   };
-  // }, [index, actions, names]);
+  },[broadcast])
 
   const characterClick = () => {
     // console.log("click")
@@ -116,11 +111,11 @@ export const Cat = ({position, ...props}: propsType) => {
   };
 
   const characterPointerEnter = () => {
-    actions["Anim_Chibi@Hi"]?.reset().fadeIn(0.5).play();
+    actions[ani.Hi]?.reset().fadeIn(0.5).play();
   };
 
   const characterPointerLeave = () => {
-    actions["Anim_Chibi@Hi"]?.fadeOut(0.5);
+    actions[ani.Hi]?.fadeOut(0.5);
   };
 
   return (

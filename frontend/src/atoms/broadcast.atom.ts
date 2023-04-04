@@ -1,6 +1,14 @@
 import { atom } from "recoil";
 
-export const broadcastOperationState = atom({
+interface broadcastStateType {
+  operation : string;
+  dataType : string;
+}
+
+export const broadcastState = atom<broadcastStateType>({
   key: "broadcastOperationState",
-  default: "ON AIR",
+  default: {
+    operation: "ON AIR",
+    dataType : "" 
+  }
 });
