@@ -1,17 +1,11 @@
 export const ani = {
   Alert: "Anim_Chibi@Alert",
   Angry: "Anim_Chibi@Angry",
-  ATK1: "Anim_Chibi@ATK1",
-  ATK2: "Anim_Chibi@ATK2",
-  ATK3: "Anim_Chibi@ATK3",
   Block: "Anim_Chibi@Block",
   Bow: "Anim_Chibi@Bow",
   Cute1: "Anim_Chibi@Cute1",
   Damage: "Anim_Chibi@Damage",
   Dash: "Anim_Chibi@Dash",
-  DieA: "Anim_Chibi@DieA",
-  DieB: "Anim_Chibi@DieB",
-  DieC: "Anim_Chibi@DieC",
   DigA: "Anim_Chibi@DigA",
   DigB: "Anim_Chibi@DigB",
   Hi: "Anim_Chibi@Hi",
@@ -58,7 +52,7 @@ export const cameraPos = [
   },
   {
     default: [-1.34, 0.95, 1.2],
-    chat: [-1.34, 0.95, 1.2],
+    chat: [-0.031, 0.404, 1.640],
   },
   {
     default: [1.139, 1.060, 0.974],
