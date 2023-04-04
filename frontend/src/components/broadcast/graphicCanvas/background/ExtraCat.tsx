@@ -3,7 +3,7 @@ import { useAnimations, useGLTF, useTexture } from "@react-three/drei";
 import { GroupProps, useFrame } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
-import { ani } from "../ani_name";
+import { ani } from "../aniConfig";
 import * as THREE from "three";
 
 interface ExtendedGLTF extends GLTF {

@@ -10,12 +10,12 @@ interface ExtendedGLTF extends GLTF {
 }
 
 interface ExtendedProps extends GroupProps {
-  num : number;
+  themeNum : number;
 }
 
-export const BackgroundStructure = ({num, ...props} : ExtendedProps) => {
+export const BackgroundStructure = ({themeNum, ...props} : ExtendedProps) => {
   
-  const { scene, animations } = useGLTF(`/graphic/background/${num}/scene_structure.glb`) as ExtendedGLTF;
+  const { scene, animations } = useGLTF(`/graphic/background/${themeNum}/scene_structure.glb`) as ExtendedGLTF;
   const { actions, mixer, names, ref } = useAnimations(animations);
 
   const position = new THREE.Vector3(0,0,0);

@@ -3,7 +3,7 @@ import { useAnimations, useGLTF, useTexture } from "@react-three/drei";
 import { GroupProps, useFrame } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
-import { ani } from "./ani_name";
+import { ani, cameraPos } from "./aniConfig";
 import * as THREE from "three";
 import { useRecoilValue } from "recoil";
 import { broadcastState } from "@/atoms/broadcast.atom";
@@ -13,11 +13,15 @@ interface ExtendedGLTF extends GLTF {
 }
 
 interface propsType extends GroupProps {
+  themeNum : number;
   position: THREE.Vector3; // ...
 }
 
-export const Cat = ({ position, ...props }: propsType) => {
+export const Cat = ({themeNum, position, ...props }: propsType) => {
   const broadcast = useRecoilValue(broadcastState);
+
+  const defaultCameraPos = new THREE.Vector3().fromArray(cameraPos[themeNum].default);
+  const chatCameraPos = new THREE.Vector3().fromArray(cameraPos[themeNum].chat);
 
   const speed = 0.2; // 움직임 속도를 조절하세요.
   const startPosition = new THREE.Vector3(
@@ -46,20 +50,17 @@ export const Cat = ({ position, ...props }: propsType) => {
 
       jumpAction?.reset().setLoop(THREE.LoopRepeat, 1).play();
       jumpAction?.crossFadeTo(idleAction as THREE.AnimationAction, 0.5, false);
-      idleAction?.reset().setLoop(THREE.LoopRepeat, 1).fadeIn(0.5).play(); // Set the idle action to repeat infinitely
+      idleAction?.reset().fadeIn(0.5).play(); // Set the idle action to repeat infinitely
     }
   };
 
   useFrame(({ camera }) => {
     // console.log("postion : ",camera.position)
-    // console.log("rotation : ",camera.rotation)
-
-    // camera.rotation.
 
     if (broadcast.operation === "CHAT") {
-      camera.position.lerp(new THREE.Vector3(-0.031, 0.404, 1.64), 0.01);
+      camera.position.lerp(chatCameraPos, 0.01);
     } else {
-      camera.position.lerp(new THREE.Vector3(-1.34, 0.95, 1.2), 0.01);
+      camera.position.lerp(defaultCameraPos, 0.01);
     }
 
     if (ref.current) {
@@ -109,7 +110,7 @@ export const Cat = ({ position, ...props }: propsType) => {
       // console.log("--노래듣는중")
       actions[ani.Yes]?.reset().setEffectiveTimeScale(0.3).fadeIn(0.5).play();
     } else {
-      // console.log("--평소")
+      console.log("--평소")
       actions[ani.Idle05]?.reset().fadeIn(0.5).play();
     }
 

@@ -48,5 +48,20 @@ export const ani = {
   Walk_L: "Anim_Chibi@Walk_L",
   Walk_R: "Anim_Chibi@Walk_R",
   Worship: "Anim_Chibi@Worship",
-  Yes: "Anim_Chibi@Yes"
+  Yes: "Anim_Chibi@Yes",
 };
+
+export const cameraPos = [
+  {
+    default: [],
+    chat: [],
+  },
+  {
+    default: [-1.34, 0.95, 1.2],
+    chat: [-1.34, 0.95, 1.2],
+  },
+  {
+    default: [1.139, 1.060, 0.974],
+    chat: [0.145, 0.383, 1.438],
+  },
+];
