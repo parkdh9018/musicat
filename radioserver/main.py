@@ -71,7 +71,6 @@ def generate_file_stream(filepath: str, start: int = 0, end: int = None):
                 break
             yield data
 
-
 @app.get("/tts/{path}/{filename}")
 async def send_tts(request: Request, path: str, filename: str):
     filepath = os.path.join(f"./tts/{path}", filename)
@@ -97,7 +96,8 @@ async def send_tts(request: Request, path: str, filename: str):
     if start is not None:
         end = end or file_size - 1
         response_headers['Content-Range'] = f'bytes {start}-{end}/{file_size}'
-        response_headers['Content-Length'] = str(end - start + 1)
+        content_length = end - start + 1
+        response_headers['Content-Length'] = str(content_length)
         return StreamingResponse(generate_file_stream(filepath, start, end), status_code=206, headers=response_headers)
     else:
         response_headers['Content-Length'] = str(file_size)
