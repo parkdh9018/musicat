@@ -2,19 +2,13 @@
   position: relative;
   top: 30px;
   width: 100%;
-  // src: url("asset/font/tapeFont.ttf") format("truetype");
-  // font-weight: normal;
   aspect-ratio: 376 / 239;
-  // width: 376px;
-  // height: 239px;
-  // display: inline-block;
 }
 
 .fixedRatio {
-  // width: 100%; /* 원하는 너비 설정 */
   aspect-ratio: 376 / 220;
   width: 100%;
-  max-width: 29vw;
+  max-width: 24vw;
   border-radius: 10px;
   height: auto; /* 높이는 자동으로 설정됨 */
 }

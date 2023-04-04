@@ -4,7 +4,6 @@ import { Button } from "@/components/common/button/Button";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import { musicState, playNowState } from "@/atoms/song.atom";
 import SocketManager from "@/connect/socket/socket";
-import { socketConnection } from "@/atoms/socket.atom";
 
 export const TapeButtons = () => {
   const [playNow, setPlayNow] = useRecoilState(playNowState);

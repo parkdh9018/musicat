@@ -26,29 +26,45 @@
     background-color: rgba(0, 0, 0, 0);
     transition: 0.2s;
     position: absolute;
-
-    .play {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 50px;
-      color: rgb(200, 200, 200);
-      visibility: hidden;
-      cursor: pointer;
-
-      &:hover {
-        color: rgb(255, 83, 83);
-        transition: 0.4s;
-      }
-    }
   }
 
   &:hover .broad_back {
     background-color: rgba(0, 0, 0, 0.4);
   }
-  &:hover .play {
+  &:hover .play,
+  &:hover .share {
     visibility: visible;
+  }
+}
+
+.play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 50px;
+  color: rgb(200, 200, 200);
+  visibility: hidden;
+  cursor: pointer;
+
+  &:hover {
+    color: rgb(255, 83, 83);
+    transition: 0.4s;
+  }
+}
+
+.share {
+  position: absolute;
+  top: 3%;
+  right: 1%;
+  font-size: 23px;
+  color: rgb(200, 200, 200);
+  visibility: hidden;
+  cursor: pointer;
+
+  &:hover {
+    color: rgb(130, 130, 255);
+    transition: 0.2s;
   }
 }
 
@@ -58,6 +74,8 @@
   min-height: 60px;
   width: 30vw;
   height: 15vw;
+  max-width: 460px;
+  min-height: 140px;
   bottom: 0;
   z-index: 1;
   transition: 0.3s;
@@ -74,5 +92,12 @@
     position: fixed;
     min-width: 160px;
     min-height: 80px;
+  }
+
+  .play {
+    font-size: 30px;
+  }
+  .share {
+    font-size: 18px;
   }
 }

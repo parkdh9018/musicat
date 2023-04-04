@@ -9,17 +9,20 @@ import {
   faPlayCircle,
   faStopCircle,
 } from "@fortawesome/free-regular-svg-icons";
+import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import { playNowState } from "@/atoms/song.atom";
 import style from "./Broadcast.module.css";
 import radioBoothIMG from "@/asset/img/radioBooth.png";
 import SocketManager from "@/connect/socket/socket";
 import { musicState } from "@/atoms/song.atom";
+import { useNavigate } from "react-router-dom";
 
 export const Broadcast = () => {
   const nowMainPage = useRecoilValue(nowMainPageState);
   const [playNow, setPlayNow] = useRecoilState(playNowState);
   const socket = socketConnection();
   const stopRadio = useResetRecoilState(musicState);
+  const navigate = useNavigate();
   const socketManager = SocketManager.getInstance();
 
   useEffect(() => {
@@ -58,6 +61,13 @@ export const Broadcast = () => {
             setPlayNow(false);
             stopRadio();
             socketManager.disconnect();
+          }}
+        />
+        <FontAwesomeIcon
+          icon={faArrowUpRightFromSquare}
+          className={style.share}
+          onClick={() => {
+            navigate("/");
           }}
         />
       </div>
