@@ -9,12 +9,19 @@ interface ExtendedGLTF extends GLTF {
   nodes: any;
 }
 
-export const Objects = (props: GroupProps) => {
+interface ExtendedProps extends GroupProps {
+  num : number;
+}
+
+export const BackgroundStructure = ({num, ...props} : ExtendedProps) => {
+  
+  const { scene, animations } = useGLTF(`/graphic/background/${num}/scene_structure.glb`) as ExtendedGLTF;
+  const { actions, mixer, names, ref } = useAnimations(animations);
 
   const position = new THREE.Vector3(0,0,0);
 
   const speed = 0.02; // 움직임 속도를 조절하세요.
-  const startPosition = new THREE.Vector3(position.x, position.y + 10, position.z); // 시작 위치를 설정하세요.
+  const startPosition = new THREE.Vector3(position.x + 10, position.y, position.z); // 시작 위치를 설정하세요.
   const targetPosition = position // 목표 위치를 설정하세요.
 
 
@@ -40,12 +47,8 @@ export const Objects = (props: GroupProps) => {
     }
   })
 
-
-  const { scene, animations } = useGLTF("/graphic/background/objects.glb") as ExtendedGLTF;
-  const { actions, mixer, names, ref } = useAnimations(animations);
-
   return (
-    <group ref={ref as any}>
+    <group ref={ref as any} {...props}>
       <primitive object={scene} />
     </group>
   );

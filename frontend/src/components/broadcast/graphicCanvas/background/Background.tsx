@@ -1,23 +1,27 @@
 /* eslint-disable */
-import React, { useRef, useEffect } from 'react';
-import { Canvas, GroupProps, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
-import { BackgroundStructure } from './type1/BackgroundStructure';
-import { Objects } from './type1/Objects';
-import { ExtraCat } from './type1/ExtraCat';
+import { BackgroundStructure } from './BackgroundStructure';
+import { Objects } from './Objects';
+import { ExtraCat } from './ExtraCat';
+import { GroupProps } from '@react-three/fiber';
 
-interface ExtendedGLTF extends GLTF {
-  nodes: any;
+
+interface propsType extends GroupProps {
+  num : number;
+  position : THREE.Vector3;
 }
 
-export const Background = () => {
+export const Background = ({num, position, ...props} : propsType) => {
+
+  const extraCat_position = new THREE.Vector3(2.6, 0, 0.7)
+  const backgroundStructre_rotation = new THREE.Euler(0, 0, 0);
 
   return (
-    <>
-      <Objects/>
-      <BackgroundStructure/>
-      <ExtraCat scale={0.5} position={new THREE.Vector3(2.6, 0, 1)}/>
-    </>
+    <group position={position}>
+      <Objects {...props} num={num}/>
+      <BackgroundStructure {...props}  num={num} rotation={backgroundStructre_rotation}/>
+      <ExtraCat scale={0.5} position={extraCat_position}/>
+    </group>
   );
 };

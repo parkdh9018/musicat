@@ -48,7 +48,17 @@ export const Cat = ({position, ...props}: propsType) => {
   };
 
   useFrame(({camera}) => {
-    // console.log(camera.position)
+    // console.log("postion : ",camera.position)
+    // console.log("rotation : ",camera.rotation)
+
+    // camera.rotation.
+
+    if(operation === "CHAT") {
+      camera.position.lerp(new THREE.Vector3(-0.031, 0.404, 1.640),0.01);
+    } else {
+      camera.position.lerp(new THREE.Vector3(-1.34, 0.95, 1.20),0.01);
+    }
+
     if (ref.current) {
       // 객체의 위치와 목표 위치 사이의 거리를 계산합니다.
       const distance = ref.current.position.distanceTo(targetPosition);
