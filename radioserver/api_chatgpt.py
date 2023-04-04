@@ -44,7 +44,7 @@ async def chat_reaction_gpt(user: str, message: str):
     채팅에 대한 리액션을 생성합니다
     """
     global past_chats
-    add_chat_to_history(user, message)
+    await add_chat_to_history(user, message)
     result = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=past_chats[-1000:],
