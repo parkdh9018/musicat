@@ -12,7 +12,7 @@ export const GraphicCanvas = () => {
   const { data } = getUserConfig();
 
   // let themeNum = 2;
-  let themeNum = data ? data?.data.themeSeq : 1;
+  let themeNum = data ? data?.data.backgroundSeq  : 1;
 
   let camera = { fov: 50, near: 0.1, far: 500, position: cameraPos[themeNum].default, scale:1 };
   let catPosition = new THREE.Vector3(0, -0.2, -0.7);
