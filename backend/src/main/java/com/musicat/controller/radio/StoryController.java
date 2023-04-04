@@ -86,7 +86,7 @@ public class StoryController {
     // 이미 신청한 사연이 존재할 경우 409 Exception 발생
     storyService.isUniqueStory(userSeq);
 
-    // 201 HttpStatus Code 리턴
+    // 200 HttpStatus Code 리턴
     return ResponseEntity.ok().build();
   }
 

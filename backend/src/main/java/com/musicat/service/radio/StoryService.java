@@ -10,6 +10,7 @@ import com.musicat.service.kafka.KafkaProducerService;
 import com.musicat.util.ConstantUtil;
 import com.musicat.util.RegexUtil;
 import com.musicat.util.builder.StoryBuilderUtil;
+import java.util.Optional;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -82,8 +83,12 @@ public class StoryService {
    * @return
    */
   public void isUniqueStory(long userSeq) {
-    storyRepository.findByUserSeqAndStoryReadedFalseOrUserSeqAndStoryReadedNull(userSeq, userSeq)
-        .orElseThrow(() -> new EntityExistsException("이미 신청한 사연이 존재합니다."));
+    Optional<Story> optionalStory = storyRepository.findByUserSeqAndStoryReadedFalseOrUserSeqAndStoryReadedNull(
+        userSeq, userSeq);
+
+    if (optionalStory.isPresent()) {
+      throw new EntityExistsException("이미 신청한 사연이 있습니다.");
+    }
   }
 
 
