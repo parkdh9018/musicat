@@ -115,7 +115,7 @@ async def validate_story_gpt(param):
         model = "gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": "You are a machine that can only say True or False. Answer in less than 5 letters"},
-            {"role": "user", "content": 'Role: Return False if the input story contains any of the following: profanity, gender discrimination, origin discrimination, political bias, appearance discrimination, criticism, sexual harassment, racial discrimination, age discrimination, religious discrimination. If the input message follows the format of a radio story, return True.'},
+            {"role": "user", "content": 'Role: Return False if the input story contains any of the following: profanity, gender discrimination, origin discrimination, political bias, appearance discrimination, criticism, sexual harassment, racial discrimination, age discrimination, religious discrimination. If the input message follows the format of a radio story, return True.Interesting or enjoyable stories, stories that need comfort, trivial everyday tales, and short stories also return True.'},
             {"role": "assistant", "content": "I understand my role well!"},
             {"role": "user", "content": f'story : "{param}"'}
         ],

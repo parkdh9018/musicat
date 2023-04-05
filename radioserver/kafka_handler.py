@@ -54,7 +54,8 @@ async def consume_verify_story(topic: str):
     await consumer.start()
     try:
         async for msg in consumer:
-            await logic_story.process_verify_story_data(msg.value)
+            data = await logic_story.process_verify_story_data(msg.value)
+            await send_state("storyValidateResult", data)
     finally:
         await consumer.stop()
 
