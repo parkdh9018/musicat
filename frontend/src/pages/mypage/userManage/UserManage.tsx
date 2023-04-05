@@ -132,7 +132,10 @@ export const UserManage = () => {
 
   return (
     <div className={style.userManage}>
-      <div className={style.searchBar}>
+      <div
+        className={style.searchBar}
+        style={{ animation: "0.7s ease-in-out loadEffect5" }}
+      >
         <span>유저검색 : </span>
         <SelectBox
           options={searchOptions}
@@ -143,14 +146,20 @@ export const UserManage = () => {
         <Button content="검색" onClick={searchClick} />
       </div>
       <div className={style.horizontal_line}></div>
-      <div className={style.seleceted_userList}>
+      <div
+        className={style.seleceted_userList}
+        style={{ animation: "0.7s ease-in-out loadEffect5" }}
+      >
         <div>선택된 유저들</div>
         <SelectedUsers
           selectedUserList={selectedUserList}
           userClick={userClick}
         />
       </div>
-      <div className={style.userStateChange}>
+      <div
+        className={style.userStateChange}
+        style={{ animation: "0.7s ease-in-out loadEffect5" }}
+      >
         <span>유저 상태변경 : </span>
         <SelectBox
           options={useStateChangeOptions}
@@ -161,7 +170,9 @@ export const UserManage = () => {
       </div>
       <div className={style.horizontal_line}></div>
       <div className={style.userList}>
-        <div>유저 리스트</div>
+        <div style={{ animation: "0.7s ease-in-out loadEffect3" }}>
+          유저 리스트
+        </div>
         <Board
           data={filtered_userList}
           grid={userList_grid}

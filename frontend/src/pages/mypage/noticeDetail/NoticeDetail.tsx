@@ -25,7 +25,10 @@ export const NoticeDetail = () => {
   }, []);
 
   return (
-    <div className={style.notice_detail}>
+    <div
+      className={style.notice_detail}
+      style={{ animation: "0.7s ease-in-out loadEffect3" }}
+    >
       <hr className={style.bold_hr} style={{ marginTop: "14px" }} />
       <div className={style.title}>
         <span style={{ textAlign: "center" }}>

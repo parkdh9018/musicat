@@ -21,18 +21,16 @@ export const MypageNav = ({
   const navigate = useNavigate();
 
   return (
-    <div className={style.side_board}>
-      <h4 style={{ animation: "0.7s ease-in-out loadEffect2" }}>
-        {sideNavTitle}
-      </h4>
-      <hr style={{ animation: "0.7s ease-in-out loadEffect2" }} />
+    <div
+      className={style.side_board}
+      style={{ animation: "0.7s ease-in-out loadEffect2" }}
+    >
+      <h4>{sideNavTitle}</h4>
+      <hr />
       {sideNavContent.map((data, i) => {
         return (
           <div
             key={uuidv4()}
-            style={{
-              animation: `${(i + 1) * 0.4}s ease-in-out loadEffect2`,
-            }}
             className={
               nowNav === data ? style.now + " " + style.nav : style.nav
             }
@@ -49,7 +47,7 @@ export const MypageNav = ({
           </div>
         );
       })}
-      <hr style={{ animation: "0.7s ease-in-out loadEffect2" }} />
+      <hr />
     </div>
   );
 };

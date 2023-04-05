@@ -36,42 +36,44 @@ export const NoticeManage = () => {
         url={"/mypage/notice/n"}
         type={"noticeAll"}
       />
-      <div style={{ textAlign: "right" }}>
-        <Button
-          content="공지작성"
-          onClick={() => {
-            navigate("/mypage/notice-manage/new");
-          }}
-          style={{ marginTop: "10px" }}
+      <div style={{ animation: "0.7s ease-in-out loadEffect6" }}>
+        <div style={{ textAlign: "right" }}>
+          <Button
+            content="공지작성"
+            onClick={() => {
+              navigate("/mypage/notice-manage/new");
+            }}
+            style={{ marginTop: "10px" }}
+          />
+        </div>
+        <Pagenation
+          number={noticeList?.number}
+          first={noticeList?.first}
+          last={noticeList?.last}
+          totalPages={noticeList?.totalPages}
+          url={`?search=${search ? search : ""}&page=`}
         />
-      </div>
-      <Pagenation
-        number={noticeList?.number}
-        first={noticeList?.first}
-        last={noticeList?.last}
-        totalPages={noticeList?.totalPages}
-        url={`?search=${search ? search : ""}&page=`}
-      />
-      <div className={style.bottom_search}>
-        <Input
-          input={input}
-          setInput={setInput}
-          placeholder={""}
-          style={{ width: "45%" }}
-        />
-        {!input && (
-          <div className={style.placeholder}>
-            <FontAwesomeIcon icon={faMagnifyingGlass} />
-            <span> 제목 + 내용</span>
-          </div>
-        )}
-        <Button
-          content="검색"
-          onClick={() => {
-            navigate(`?search=${input ? input : ""}&page=1`);
-          }}
-          style={{ margin: "0 5px" }}
-        />
+        <div className={style.bottom_search}>
+          <Input
+            input={input}
+            setInput={setInput}
+            placeholder={""}
+            style={{ width: "45%" }}
+          />
+          {!input && (
+            <div className={style.placeholder}>
+              <FontAwesomeIcon icon={faMagnifyingGlass} />
+              <span> 제목 + 내용</span>
+            </div>
+          )}
+          <Button
+            content="검색"
+            onClick={() => {
+              navigate(`?search=${input ? input : ""}&page=1`);
+            }}
+            style={{ margin: "0 5px" }}
+          />
+        </div>
       </div>
     </div>
   );
