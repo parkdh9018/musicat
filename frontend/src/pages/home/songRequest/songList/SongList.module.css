@@ -29,7 +29,12 @@
   background: none;
   border: none;
   align-items: center;
+  cursor: pointer;
+  transition: 0.1s;
   color: var(--font-color);
+}
+.songBtn:hover {
+  color: var(--blue-color);
 }
 
 .songSpan {

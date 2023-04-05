@@ -14,7 +14,6 @@ export const SongDetailModal = ({ musicSeq }: SongDetailModalProps) => {
   useEffect(() => {
     async function fetchData() {
       const detailFromAPI = await $.get(`/music/${musicSeq}`);
-      console.log(detailFromAPI);
       setSong(detailFromAPI.data);
     }
     fetchData();

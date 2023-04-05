@@ -22,7 +22,7 @@ export const musicState = atom<Music>({
     type: "",
     path: "",
     startTime: 0,
-    playedTime: -10,
+    playedTime: 0,
     length: 0,
     artist: "",
     image: "",

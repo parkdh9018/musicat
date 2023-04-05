@@ -16,11 +16,13 @@ import radioBoothIMG from "@/asset/img/radioBooth.png";
 import SocketManager from "@/connect/socket/socket";
 import { musicState } from "@/atoms/song.atom";
 import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const Broadcast = () => {
+  const queryClinet = useQueryClient();
   const nowMainPage = useRecoilValue(nowMainPageState);
   const [playNow, setPlayNow] = useRecoilState(playNowState);
-  const socket = socketConnection();
+  const socket = socketConnection(queryClinet);
   const stopRadio = useResetRecoilState(musicState);
   const navigate = useNavigate();
   const socketManager = SocketManager.getInstance();
