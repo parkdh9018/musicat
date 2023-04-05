@@ -3,7 +3,7 @@
 .songListBox {
   overflow-y: scroll;
   overflow-x: hidden;
-  height: 250px;
+  min-height: 150px;
 
   .songList {
     display: flex;

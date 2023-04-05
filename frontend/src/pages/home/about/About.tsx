@@ -5,7 +5,10 @@ import AboutImg03 from "@/asset/img/about03.png";
 
 export const About = () => {
   return (
-    <div className={style.about}>
+    <div
+      className={style.about}
+      style={{ animation: "0.7s ease-in-out loadEffect3" }}
+    >
       <div>
         <img src={AboutImg01} className={style.AboutImg}></img>
       </div>

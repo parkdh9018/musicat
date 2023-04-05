@@ -38,7 +38,12 @@ export const Header = () => {
       <div className={style.innerHeader}>
         <div className={style.innerContent} style={{ justifyContent: "start" }}>
           <Link to={"/"}>
-            <img className={style.logo_img} src="/img/newlogo.png" alt="로고" />
+            <img
+              className={style.logo_img}
+              style={{ animation: "0.7s ease-in-out loadEffect5" }}
+              src="/img/newlogo.png"
+              alt="로고"
+            />
           </Link>
         </div>
         <div className={style.innerContent}>
@@ -61,7 +66,10 @@ export const Header = () => {
               </span>
             </div>
           ) : (
-            <div className={style.user_info}>
+            <div
+              className={style.user_info}
+              style={{ animation: "0.7s ease-in-out loadEffect5" }}
+            >
               <span className={style.nickname}>{userInfo.userNick}</span>
               <span className={style.nickname_other}>님 환영합니다</span>
               <div className={style.popover_state}>
