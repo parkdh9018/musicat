@@ -3,6 +3,7 @@ import style from "./SongSearch.module.css";
 import {
   getLastFmSearch,
   getSongSearch,
+  getYoutubeSearch,
 } from "@/connect/axios/queryHooks/music";
 import { v4 as uuidv4 } from "uuid";
 import { Song } from "@/types/home";
@@ -99,28 +100,28 @@ export const SongSearch = ({
       : setSearch(searchedTitleArtist);
 
     // 유튜브 검색결과 확인
-    // const result = await getYoutubeSearch(
-    //   selectedSong.musicTitle,
-    //   selectedSong.musicArtist,
-    //   selectedSong.spotifyMusicDuration
-    // );
+    const result = await getYoutubeSearch(
+      selectedSong.musicTitle,
+      selectedSong.musicArtist,
+      selectedSong.spotifyMusicDuration
+    );
 
     // LastFm 검색결과 확인
-    let result = await getLastFmSearch(
-      selectedSong.musicTitleEn,
-      selectedSong.musicArtistEn
-    ).catch((e) => e.response.status);
-    if (result === 500) {
-      result = await getLastFmSearch(
-        selectedSong.musicTitle + selectedSong.musicArtist,
-        ""
-      ).catch((e) => e.response.status);
-      if (result === 500) {
-        result = await getLastFmSearch(selectedSong.musicTitle, "").catch(
-          (e) => e.response.status
-        );
-      }
-    }
+    // let result = await getLastFmSearch(
+    //   selectedSong.musicTitleEn,
+    //   selectedSong.musicArtistEn
+    // ).catch((e) => e.response.status);
+    // if (result === 500) {
+    //   result = await getLastFmSearch(
+    //     selectedSong.musicTitle + selectedSong.musicArtist,
+    //     ""
+    //   ).catch((e) => e.response.status);
+    //   if (result === 500) {
+    //     result = await getLastFmSearch(selectedSong.musicTitle, "").catch(
+    //       (e) => e.response.status
+    //     );
+    //   }
+    // }
 
     if (result.status === 200) {
       setYoutubeSearch(false);
