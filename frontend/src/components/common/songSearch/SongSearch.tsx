@@ -104,7 +104,7 @@ export const SongSearch = ({
       selectedSong.musicTitle,
       selectedSong.musicArtist,
       selectedSong.spotifyMusicDuration
-    );
+    ).catch((e) => e.response);
 
     // LastFm 검색결과 확인
     // let result = await getLastFmSearch(
