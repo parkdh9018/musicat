@@ -45,6 +45,7 @@ public class MusicService {
   // Service 정의
   private final SpotifyApiService spotifyApiService;
   private final YoutubeApiService youtubeApiService;
+  private final LastFmApiService lastFmApiService;
   private final KafkaProducerService kafkaProducerService;
 
   // JWT Provider 정의
@@ -189,5 +190,9 @@ public class MusicService {
     if (optionalMusic.isPresent()) {
       throw new EntityExistsException("이미 신청한 노래가 있습니다.");
     }
+  }
+
+  public Object searchMusicByLastFm(String musicTitle, String musicArtist) {
+    return lastFmApiService.getYoutubeVideoIdAndLength(musicArtist, musicTitle);
   }
 }

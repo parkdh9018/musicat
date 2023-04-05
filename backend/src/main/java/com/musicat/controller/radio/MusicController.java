@@ -105,4 +105,10 @@ public class MusicController {
       @RequestParam String musicArtist, @RequestParam long spotifyMusicDuration) {
     return ResponseEntity.ok(musicService.searchMusicByYoutube(musicTitle, musicArtist, spotifyMusicDuration));
   }
+
+  @GetMapping("/search/lastfm")
+  public ResponseEntity<?> searchMusicByYoutube(@RequestParam String musicTitle,
+      @RequestParam String musicArtist) {
+    return ResponseEntity.ok(musicService.searchMusicByLastFm(musicTitle, musicArtist));
+  }
 }

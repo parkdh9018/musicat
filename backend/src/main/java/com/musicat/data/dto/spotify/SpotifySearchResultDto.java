@@ -14,7 +14,9 @@ import lombok.Setter;
 public class SpotifySearchResultDto {
 
   private String musicTitle;
+  private String musicTitleEn;
   private String musicArtist;
+  private String musicArtistEn;
   private String musicAlbum;
   private String musicImage;
   private String musicReleaseDate;
