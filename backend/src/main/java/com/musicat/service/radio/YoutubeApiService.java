@@ -24,6 +24,14 @@ public class YoutubeApiService {
 
   private final ConvertTime convertTime;
 
+  /**
+   * 유튜브 영상 찾는 로직
+   *
+   * @param title
+   * @param artist
+   * @param spotifyMusicDuration
+   * @return
+   */
   public YoutubeSearchResultDto findVideo(String title, String artist, long spotifyMusicDuration) {
     String query = title + " " + artist;
     YouTube.Search.List searchRequest;
@@ -73,6 +81,12 @@ public class YoutubeApiService {
     }
   }
 
+  /**
+   * LastFM 검색 사용할 때 영상의 길이 구하는 로직
+   *
+   * @param youtubeVideoId
+   * @return
+   */
   public long findLength(String youtubeVideoId) {
     try {
       VideoListResponse videoResponse = youtubeApi.videos()
