@@ -3,6 +3,7 @@
   height: 365px;
   border-radius: 10px;
   background-color: #141d27;
+  scroll-snap-type: y mandatory;
 }
 .about .AboutImg {
   width: 100%;
@@ -20,4 +21,8 @@
 .about::-webkit-scrollbar-button {
   width: 0;
   height: 1%;
+}
+
+.about div {
+  scroll-snap-align: start;
 }/*# sourceMappingURL=About.module.css.map */
