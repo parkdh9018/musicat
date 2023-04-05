@@ -1,6 +1,6 @@
 import { SelectBox } from "@/components/common/selectBox/SelectBox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faPencil } from "@fortawesome/free-solid-svg-icons";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import style from "./ContentBox.module.css";
 import {
   KeyboardEventHandler,
@@ -14,16 +14,13 @@ import {
   editStorySpeaker,
 } from "@/atoms/story.atoms";
 import { StoryContent } from "@/types/home";
+import { TTS_OPTION } from "./speakerConfig";
 
 // TODO : atoms에 있는 type과 하나로 통합 하면 좋을듯
 interface ContentBoxProps extends StoryContent {
   index: number;
 }
 export const ContentBox = ({ index, speaker, content }: ContentBoxProps) => {
-  const dumyOption = [
-    { value: "male", name: "남성" },
-    { value: "female", name: "여성" },
-  ];
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [editstate, setEditState] = useState(false);
@@ -73,9 +70,9 @@ export const ContentBox = ({ index, speaker, content }: ContentBoxProps) => {
         ) : (
           <div className={style.speaker}>
             <SelectBox
-              style={{marginTop: "0px"}}
+              style={{marginTop: "0px", width: "70%"}}
               defaultValue={speaker}
-              options={dumyOption}
+              options={TTS_OPTION}
               setValue={useEditSpeakerCallback}
             />
           </div>
