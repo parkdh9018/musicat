@@ -33,8 +33,6 @@ export const Story = () => {
   const userInfo = useTokenData();
   const {data : moneyData} = getUserMoney();
   
-  console.log(moneyData)
-  
   const { data, mutate, storyReqeustData, isLoading } = storyHook(userInfo?.userSeq ? userInfo.userSeq : -1);
 
   const resetTitle = useResetRecoilState(storyTitleState);

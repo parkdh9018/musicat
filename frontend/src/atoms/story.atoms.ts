@@ -10,20 +10,7 @@ export const storyTitleState = atom<string>({
 
 export const storySongState = atom<Song>({
   key: "songTitle",
-  default: {
-    musicSeq: 0,
-    userSeq: 0,
-    musicTitle: "",
-    musicGenre: "",
-    musicArtist: "",
-    musicAlbum: "",
-    musicImage: "",
-    musicYoutubeId: "",
-    musicLength: 0,
-    musicReleaseDate: "",
-    musicCreatedAt: "",
-    musicIsPlayed: false,
-  },
+  default: undefined,
 });
 
 export const storyContentState = atom<StoryContent[]>({
