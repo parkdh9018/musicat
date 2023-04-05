@@ -20,11 +20,20 @@
 .group {
   align-content: baseline;
   margin-bottom: 3%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 
-.content_label {
-  float: left;
-  margin-top: 10px;
-  margin-left: 5px;
-  margin-right: -20px;
+@media screen and (max-width: 768px) {
+  .group {
+    align-content: center;
+    margin-bottom: 3%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 10px;
+    margin-bottom: 5%;
+  }
+  
 }
