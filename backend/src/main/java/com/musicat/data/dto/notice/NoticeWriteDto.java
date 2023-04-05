@@ -11,10 +11,9 @@ import lombok.*;
 public class NoticeWriteDto {
 
 
-    private long userSeq;
-    private String noticeTitle;
-    private String noticeContent;
-
+  private long userSeq;
+  private String noticeTitle;
+  private String noticeContent;
 
 
 }
