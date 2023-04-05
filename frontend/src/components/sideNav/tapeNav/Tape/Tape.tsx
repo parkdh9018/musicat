@@ -1,5 +1,5 @@
 import anime from "animejs";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import style from "./Tape.module.css";
 import { useRecoilValue } from "recoil";
 import { musicState } from "@/atoms/song.atom";
@@ -14,7 +14,11 @@ export const Tape = () => {
 
   useEffect(() => {
     setBackGroundImage(musicData.image || "/img/tape/init.png");
-    setTextContent( musicData.title ? musicData.artist + " / " + musicData.title : " ------ musicat ------ ");
+    setTextContent(
+      musicData.title
+        ? musicData.artist + " / " + musicData.title
+        : " ------ musicat ------ "
+    );
   }, [musicData]);
 
   useEffect(() => {
@@ -30,8 +34,8 @@ export const Tape = () => {
 
     anime({
       targets: `.${style.text}`,
-      translateX: -width,
-      duration: 4000,
+      translateX: -320,
+      duration: 3800,
       round: 1, // round the text to integer values
       easing: "linear",
       loop: true,
@@ -50,8 +54,11 @@ export const Tape = () => {
     <>
       <div className={style.tape}>
         <div className={style.songName}>
-          <div className={style.text} style={{ fontFamily: "TapeFont" }}>
-            {textContent}
+          <div
+            className={style.text}
+            style={{ fontFamily: "TapeFont", transform: "translateX(200px)" }}
+          >
+            {"  " + textContent}
           </div>
         </div>
         <img className={style.tapeImg} src="/img/tape/tape.png" />
