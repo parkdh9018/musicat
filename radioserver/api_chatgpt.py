@@ -6,7 +6,7 @@ openai.api_key = openai_api_key
 
 ##############################################
 
-def story_reaction_gpt(param : str):
+async def story_reaction_gpt(param : str):
     """
     사연에 대한 리액션을 생성합니다
     """
@@ -23,6 +23,8 @@ def story_reaction_gpt(param : str):
 ##############################################
 
 example_chat = [
+    {"role": "user", "content": "Remember your concept before answering. You are musicat, a music radio host. You have to pretend not to be AI. Our radio program uses the point of 츄르 to do everything. You should always give users a plausible answer. But you have to pretend you don't know anything about professional knowledge. You should also put together the conversations so far and give a proper answer. you are 20 years old. you are girl, you live in 역삼 멀티캠퍼스."},
+    {"role": "assistant", "content": "I remembered this. I now carry out the mission according to the concept provided."},
     {"role": "user", "content": "User: 라면부엉, Message: DJ님 취미가 뭐에요?"},
     {"role": "assistant", "content": "라면부엉님이 DJ님 취미가 뭐에요? 라고 해주셨네요. 저는 음악 감상이 참 좋아요."}
 ]
@@ -31,28 +33,28 @@ past_chats = [
     {"role": "system", "content": "Role: Respond appropriately to chat as a streamer. Mandatory: within 100 characters, no emoji"}
 ] + example_chat
 
-def add_chat_to_history(user: str, message: str, assistant_message: str = None):
+async def add_chat_to_history(user: str, message: str, assistant_message: str = None):
     global past_chats
     past_chats.append({"role": "user", "content": f"User: {user}, Message: {message}"})
     if assistant_message:
         past_chats.append({"role": "assistant", "content": assistant_message})
 
-def chat_reaction_gpt(user: str, message: str):
+async def chat_reaction_gpt(user: str, message: str):
     """
     채팅에 대한 리액션을 생성합니다
     """
     global past_chats
-    add_chat_to_history(user, message)
+    await add_chat_to_history(user, message)
     result = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=past_chats[-1000:],
         temperature=0.5
     )
     assistant_response = result.choices[0].message.content.strip()
-    add_chat_to_history(user, message, assistant_response)
+    await add_chat_to_history(user, message, assistant_response)
     return assistant_response
 
-def reset_past_chats():
+async def reset_past_chats():
     global past_chats
     initial_chat = [
         {"role": "system", "content": "Role: Respond appropriately to chat as a streamer. Mandatory: within 100 characters, no emoji"}
@@ -61,7 +63,7 @@ def reset_past_chats():
 
 ##############################################
 
-def music_intro_gpt(artist : str, title : str, release_date : str):
+async def music_intro_gpt(artist : str, title : str, release_date : str):
     """
     노래의 소개를 생성합니다
     """
@@ -83,20 +85,20 @@ def music_intro_gpt(artist : str, title : str, release_date : str):
 
 ##############################################
 
-def music_outro_gpt(artist, title, user):
+async def music_outro_gpt(artist, title, user):
     """
     노래의 감상을 생성합니다
     """
     result = openai.ChatCompletion.create(
         model = "gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "Role : You are the host of Korean music radio. You already listen song now. After playing the song request, we will say a brief comment. Mandatory : Within 150 characters, a real human speech, No greeting"},
+            {"role": "system", "content": "Role : You are the host of Korean music radio. You already listen song now. After playing the song request, we will say a brief comment. Mandatory : Within 200 characters, a real human speech, No greeting"},
             {"role": "user", "content": 'Artist : Artist, Title : Title, User : user'},
-            {"role": "assistant", "content": 'User님이 신청해주신 Title, 잘 들었습니다. User님께는 소정의 포인트를 보내드릴게요.'},
+            {"role": "assistant", "content": 'User님이 신청해주신 Title, 잘 들었습니다. 다음 코너는 여러분들과 채팅으로 소통하는 시간입니다. 여러가지 질문들을 해주시면 답변해드릴게요.'},
             {"role": "user", "content": 'Artist : Artist, Title : Title, User : user'},
-            {"role": "assistant", "content": 'Artist의 Title이었습니다. 참 좋은 노래인 것 같아요. User님 받으신 포인트 잘 확인하시고, 다음에 또 신청해주세요.'},
+            {"role": "assistant", "content": 'Artist의 Title이었습니다. 참 좋은 노래인 것 같아요. 이제부터는 여러분들과 함께 만들어나가는 소통 시간입니다. 많은 채팅 부탁드려요'},
             {"role": "user", "content": 'Artist : Artist, Title : Title, User : user'},
-            {"role": "assistant", "content": '좋은 노래 잘 들었습니다. User님 포인트 보내 드릴테니까, 노래 자주 신청하시면 좋겠습니다.'},
+            {"role": "assistant", "content": '좋은 노래 잘 들었습니다. 이제 궁금한 점을 물어 볼 수 있는 소통 시간입니다. 여러분들의 채팅을 읽고 답변 해드릴게요. 많은 채팅 부탁드려요'},
             {"role": "user", "content": f'Artist : {artist}, Title : {title}, User : {user}'}
         ],
         temperature=0.3
@@ -105,7 +107,7 @@ def music_outro_gpt(artist, title, user):
 
 ##############################################
 
-def validate_story_gpt(param):
+async def validate_story_gpt(param):
     """
     사연을 검증해 True 또는 False를 반환합니다
     """
@@ -121,7 +123,7 @@ def validate_story_gpt(param):
 
 ##############################################
 
-def validate_chat_gpt(param):
+async def validate_chat_gpt(param):
     """
     채팅을 검증합니다
     """
@@ -137,7 +139,7 @@ def validate_chat_gpt(param):
 
 ##############################################
 
-def opening_story_gpt():
+async def opening_story_gpt():
     """
     오프닝 멘트를 생성합니다
     """

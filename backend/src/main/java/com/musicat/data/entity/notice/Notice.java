@@ -1,13 +1,12 @@
 package com.musicat.data.entity.notice;
 
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.*;
 
 import com.musicat.data.entity.user.User;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -16,6 +15,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "notice")
 public class Notice {
 
@@ -39,16 +39,5 @@ public class Notice {
   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   @Column(name = "notice_created_at")
   private LocalDateTime noticeCreatedAt;
-
-  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-  @Column(name = "notice_updated_at")
-  private LocalDateTime noticeUpdatedAt;
-
-  @PrePersist
-  public void prePersist() {
-    this.noticeCreatedAt = LocalDateTime.now();
-    this.noticeUpdatedAt = LocalDateTime.now();
-  }
-
 
 }

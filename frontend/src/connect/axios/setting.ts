@@ -8,7 +8,7 @@ export const $ = axios.create({
   },
 });
 
-// $.interceptors.request.use((config) => {
-//   config.headers["Access-Token"] = sessionStorage.getItem("access-token");
-//   return config;
-// });
+$.interceptors.request.use((config) => {
+  config.headers["token"] = sessionStorage.getItem("token");
+  return config;
+});

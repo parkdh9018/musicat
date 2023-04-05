@@ -16,7 +16,6 @@ public class MusicInfoDto {
   private long musicSeq;
   private long userSeq;
   private String musicTitle;
-  private String musicGenre;
   private String musicArtist;
   private String musicAlbum;
   private String musicImage;

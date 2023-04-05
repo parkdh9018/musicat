@@ -30,7 +30,7 @@
   cursor: pointer;
 }
 .myinfo .leftbox .toolbar .circleLeft {
-  right: 53%;
+  right: 58%;
 }
 .myinfo .leftbox .fc {
   color: var(--font-color);
@@ -57,10 +57,33 @@
 }
 .myinfo .middle_hr {
   margin: 2% 3%;
-  border: 1px solid white;
+  border: 1px solid var(--font-color);
   writing-mode: vertical-rl;
   height: 96%;
 }
+.myinfo .rightbox {
+  min-width: 50%;
+}
 .myinfo .rightbox h3 {
   margin-left: 10px;
+}
+
+@media screen and (max-width: 840px) {
+  .myinfo {
+    flex-direction: column;
+  }
+  .myinfo .leftbox {
+    width: 100%;
+  }
+  .myinfo .leftbox .toolbar {
+    width: 16%;
+    max-width: 55px;
+  }
+  .myinfo .middle_hr {
+    writing-mode: horizontal-tb;
+    margin: 30px 0px;
+  }
+  .myinfo .rightbox {
+    width: 100%;
+  }
 }/*# sourceMappingURL=Myinfo.module.css.map */

@@ -4,7 +4,6 @@ import datetime
 import logic_story
 import logic_chat
 import logic_music
-import logic_test
 import radio_progress
 from shared_state import radio_health, chat_readable
 from my_logger import setup_logger
@@ -26,8 +25,6 @@ async def consume_finish_state(topic: str):
         async for msg in consumer:
             if radio_health.get_state() is True:
                 await radio_progress.radio_progress()
-            else:
-                await logic_test.radio_progress_test()
     finally:
         await consumer.stop()
 
@@ -74,8 +71,6 @@ async def consume_chat(topic: str):
         async for msg in consumer:
             if radio_health.get_state() is True:
                 await logic_chat.process_chat_data(msg.value)
-            else:
-                await logic_test.process_chat_data(msg.value)
     finally:
         await consumer.stop()
 

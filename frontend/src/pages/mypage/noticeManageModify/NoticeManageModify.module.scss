@@ -35,3 +35,19 @@
     margin-right: 10%;
   }
 }
+
+@media screen and (max-width: 768px) {
+  .NoticeManageModify {
+    padding-left: 10%;
+    span {
+      display: block;
+      margin-bottom: 10px;
+    }
+    .content_div {
+      .content {
+        width: 85%;
+        min-height: 400px;
+      }
+    }
+  }
+}

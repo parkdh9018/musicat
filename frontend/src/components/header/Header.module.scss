@@ -1,87 +1,174 @@
 @use "../../_var.scss";
 
 .header {
-  background-color: rgb(0, 0, 0, 0.6);
-}
+  background-color: rgb(26, 26, 26);
 
-.innerHeader {
-  height: 72px;
-  max-width: var.$최대넓이;
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  .innerContent {
-    width: 30%;
+  .innerHeader {
+    height: 65px;
+    max-width: var.$최대넓이;
+    margin-left: auto;
+    margin-right: auto;
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .innerContent {
+      width: 30%;
+      margin-top: 3px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .logo_img {
+      width: 130px;
+      margin-left: 20px;
+      margin-top: 3px;
+      transition: 0.1s;
+
+      &:hover {
+        width: 133px;
+        box-shadow: 1px 1px 0 1px rgb(0, 0, 0, 0.1);
+      }
+    }
+
+    .user_info {
+      display: flex;
+      align-items: center;
+      margin-right: 20px;
+      cursor: pointer;
+
+      .nickname {
+        color: #8d8d8d;
+        transition: 0.2s;
+      }
+
+      .nickname_other {
+        color: #ececec;
+        transition: 0.2s;
+      }
+
+      .login_sent {
+        color: #ececec;
+        transition: 0.2s;
+      }
+
+      &:hover .popover_state {
+        z-index: 2;
+        visibility: visible;
+      }
+
+      &:hover .nickname_other {
+        color: #8d8d8d;
+      }
+
+      &:hover .nickname {
+        color: #ececec;
+      }
+    }
+  }
+
+  .profile_div {
+    position: relative;
+
+    img {
+      width: 42px;
+      height: 42px;
+      border-radius: 100%;
+      box-shadow: 0 4px 4px 0 rgb(0, 0, 0, 25%);
+      margin-left: 10px;
+      display: block;
+      object-fit: cover;
+    }
+
+    .badge {
+      position: absolute;
+      border: 1px solid white;
+      width: 18px;
+      height: 18px;
+      background-color: #ff4e4e;
+      border-radius: 50%;
+      padding: 10px;
+      top: -8px;
+      right: -9px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #ececec;
+      font-size: 0.7rem;
+    }
+  }
+
+  .sign_content {
+    display: flex;
+    // align-items: center;
     justify-content: center;
   }
 
-  .logo_img {
-    margin-left: 20px;
-  }
-
-  .user_info {
-    display: flex;
-    align-items: center;
-    margin-right: 20px;
-    .nickname {
-      color: var(--fade-font-color);
-    }
-
-    .nickname_other {
-      color: var(--font-color);
-    }
-
-    &:hover .popover_state {
-      visibility: visible;
-      opacity: 100;
-    }
+  .popover_state {
+    position: relative;
+    visibility: hidden;
+    z-index: -1;
   }
 }
 
-.profile_div {
-  position: relative;
-
-  img {
-    width: 50px;
-    height: 50px;
-    border-radius: 100%;
-    box-shadow: 0 4px 4px 0 rgb(0, 0, 0, 25%);
-    margin-left: 10px;
-    display: block;
-    object-fit: cover;
-  }
-
-  .badge {
-    position: absolute;
-    border: 1px solid white;
-    width: 21px;
-    height: 21px;
-    background-color: #ff4e4e;
-    border-radius: 50%;
-    padding: 12px;
-    top: -8px;
-    right: -9px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--font-color);
-    font-size: 0.8rem;
+@media screen and (max-width: 1200px) {
+  .header {
+    font-size: 0.9rem;
   }
 }
 
-.sign_content {
-  display: flex;
-  // align-items: center;
-  justify-content: center;
-}
+@media screen and (max-width: 768px) {
+  .header {
+    height: 60px;
+    .innerHeader {
+      .logo_img {
+        width: 92px;
+        margin-left: 12px;
+        margin-top: 0px;
+        transition: 0.1s;
 
-.popover_state {
-  visibility: hidden;
-  opacity: 0;
-  position: relative;
-  transition: 0.8s;
+        &:hover {
+          width: 92px;
+        }
+      }
+    }
+
+    .user_info {
+      .nickname {
+        display: none;
+      }
+      .nickname_other {
+        display: none;
+      }
+
+      &:hover .popover_state {
+        opacity: 1;
+        z-index: 2;
+      }
+
+      .profile_div {
+        position: relative;
+
+        img {
+          width: 40px;
+          height: 40px;
+          margin-left: 12px;
+        }
+
+        .badge {
+          width: 16px;
+          height: 16px;
+          padding: 8px;
+          top: -5px;
+          right: -5px;
+          font-size: 0.5rem;
+        }
+      }
+
+      .popover_state {
+        opacity: 100;
+        z-index: 1;
+      }
+    }
+  }
 }

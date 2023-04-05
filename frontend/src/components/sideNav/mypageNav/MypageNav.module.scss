@@ -18,6 +18,7 @@
   background-color: var(--background-color);
   color: var(--font-color);
   padding: 5px 10% 25px;
+  border-radius: 10px;
 
   hr {
     margin: 0;
@@ -26,24 +27,25 @@
     border: 0;
   }
 
-  p,
+  .nav,
   h4 {
     margin: 20px 0px 15px 20px;
   }
 
-  p {
+  .nav {
     cursor: pointer;
     position: relative;
+    width: 100%;
     color: var(--fade-font-color);
 
     &:hover {
       color: rgb(123, 123, 123);
     }
 
-    div {
+    .tag {
       position: absolute;
       top: -10px;
-      left: -10px;
+      left: -20px;
       height: 36px;
       width: 100%;
       animation: 0.3s ease-in-out sideNavEffect;
@@ -83,7 +85,7 @@
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 840px) {
   .side_board {
     display: none;
   }

@@ -1,40 +1,28 @@
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import style from "./SelectedUsers.module.css";
-
 interface userType {
   userNickname : string;
+  userSeq: number;
 }
 
+interface props {
+  userClick: (seq:number) => void;
+  selectedUserList : userType[];
+}
 
-export const SelectedUsers = () => {
+export const SelectedUsers = ({userClick, selectedUserList}:props) => {
 
-  const [userList, setUserList] = useState<userType[]>([]);
-
-  useEffect(() => {
-    setUserList(prev => [...prev, {userNickname : "라면부엉"}])
-    setUserList(prev => [...prev, {userNickname : "라면부엉"}])
-    setUserList(prev => [...prev, {userNickname : "안녕하세요"}])
-    setUserList(prev => [...prev, {userNickname : "라면부엉"}])
-    setUserList(prev => [...prev, {userNickname : "안녕"}])
-    setUserList(prev => [...prev, {userNickname : "라면부엉"}])
-
-  }, [])
-
-
-  const userClick = (index:number) => {
-    setUserList(prev => prev.filter((_, i) => i != index))
-  }
 
   return (
     <div className={style.selectedUsers}>
       <div className={style.container}>
-        {userList.map((user, i) => (
-          <div key={uuidv4()} className={style.userComponent} onClick={() => userClick(i)}>
-            <span>{user.userNickname}</span>
+        {selectedUserList.length == 0 ? <span>선택된 유저가 없습니다</span> : ""}
+        {selectedUserList.map((user) => (
+          <div key={uuidv4()} className={style.userComponent} onClick={() => userClick(user.userSeq)}>
+            <span>{user.userSeq}-{user.userNickname}</span>
             <FontAwesomeIcon icon={faXmark} className={style.close} />
           </div>
         ))}

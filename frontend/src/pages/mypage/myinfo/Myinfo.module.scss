@@ -31,7 +31,7 @@
         cursor: pointer;
       }
       .circleLeft {
-        right: 53%;
+        right: 58%;
       }
     }
     .fc {
@@ -60,13 +60,37 @@
   }
   .middle_hr {
     margin: 2% 3%;
-    border: 1px solid white;
+    border: 1px solid var(--font-color);
     writing-mode: vertical-rl;
     height: 96%;
   }
   .rightbox {
+    min-width: 50%;
     h3 {
       margin-left: 10px;
+    }
+  }
+}
+
+@media screen and (max-width: 840px) {
+  .myinfo {
+    flex-direction: column;
+
+    .leftbox {
+      width: 100%;
+
+      .toolbar {
+        width: 16%;
+        max-width: 55px;
+      }
+    }
+
+    .middle_hr {
+      writing-mode: horizontal-tb;
+      margin: 30px 0px;
+    }
+    .rightbox {
+      width: 100%;
     }
   }
 }

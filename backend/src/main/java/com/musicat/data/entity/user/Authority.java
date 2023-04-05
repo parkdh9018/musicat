@@ -11,12 +11,12 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "authority")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Table(name = "authority")
 public class Authority {
 
     @Id

@@ -48,3 +48,15 @@
     }
   }
 }
+
+@media screen and (max-width: 768px) {
+  .inventory_modal {
+    .item_flex {
+      .img_box {
+        .badge {
+          margin-top: 7vh;
+        }
+      }
+    }
+  }
+}

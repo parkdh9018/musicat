@@ -1,18 +1,18 @@
 .popover {
   position: absolute;
-  width: 180px;
-  top: 50px;
+  width: 140px;
+  top: 20px;
   left: -120px;
   z-index: 2;
 }
 .popover .content {
   background-color: var(--font-color);
   border-radius: 10px;
-  padding: 7%;
-  padding-top: 3%;
+  padding: 4% 10%;
 }
 .popover .content .content_text {
-  margin-top: 8%;
+  margin-top: 15px;
+  margin-bottom: 15px;
   transition: 0.1s;
 }
 .popover .content .content_text:hover {
@@ -22,9 +22,36 @@
   position: absolute;
   width: 0;
   height: 0;
-  top: -14px;
-  right: 18px;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 15px solid var(--font-color);
+  top: -8px;
+  right: 25px;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 10px solid var(--font-color);
+}
+
+@media screen and (max-width: 768px) {
+  .popover {
+    position: absolute;
+    width: 125px;
+    top: 26px;
+    left: -53px;
+    z-index: 2;
+    transition: 0.3s;
+  }
+  .popover .content {
+    background-color: var(--font-color);
+    border-radius: 7px;
+    padding: 4% 10%;
+  }
+  .popover .content .content_text {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    transition: 0.1s;
+  }
+  .popover .triangle {
+    display: none;
+  }
+  .off {
+    top: -200px;
+  }
 }/*# sourceMappingURL=Popover.module.css.map */
