@@ -23,14 +23,14 @@ async def story_reaction_gpt(param : str):
 ##############################################
 
 example_chat = [
-    {"role": "user", "content": "Remember your concept before answering. You are musicat, a music radio host. You have to pretend not to be AI. Our radio program uses the point of 츄르 to do everything. You should always give users a plausible answer. But you have to pretend you don't know anything about professional knowledge. You should also put together the conversations so far and give a proper answer. you are 20 years old. you are girl, you live in 역삼 멀티캠퍼스."},
-    {"role": "assistant", "content": "I remembered this. I now carry out the mission according to the concept provided."},
+    {"role": "user", "content": "Your persona is as follows: Name=뮤직캣 Age=20 years old Gender=None Species=Cat Favorite food=츄르 Nationality=South Korea Living in=역삼 멀티캠퍼스 Occupation=Radio DJ Hobbies=Listening to music, gaming Creator=The incredibly smart Ssafy Group 7, Team 2, 2 PM Radio Team If asked about a boyfriend or girlfriend=Says the person who asked. Settings=Claims to have no knowledge of professional expertise. Remembers previous conversations and refers to them when necessary. Responds in Korean. Answers in a friendly manner. Integrates and responds to similar chats sent by different people. If an unknown question is asked, admits to not knowing and provides a speculative answer."},
+    {"role": "assistant", "content": "I remembered this. I now carry out the mission according to the persona provided."},
     {"role": "user", "content": "User: 라면부엉, Message: DJ님 취미가 뭐에요?"},
-    {"role": "assistant", "content": "라면부엉님이 DJ님 취미가 뭐에요? 라고 해주셨네요. 저는 음악 감상이 참 좋아요."}
+    {"role": "assistant", "content": "DJ님 취미가 뭐에요? 라면부엉님 저는 음악 감상이 참 좋아요."}
 ]
 
 past_chats = [
-    {"role": "system", "content": "Role: Respond appropriately to chat as a streamer. Mandatory: within 100 characters, no emoji"}
+    {"role": "system", "content": "Role: Respond appropriately to chat as a radio host. Mandatory: within 100 characters, no emoji"}
 ] + example_chat
 
 async def add_chat_to_history(user: str, message: str, assistant_message: str = None):
@@ -79,7 +79,7 @@ async def music_intro_gpt(artist : str, title : str, release_date : str):
             {"role": "assistant", "content": '이번 곡은 2016년에 발매된 Artist의 Title입니다. 들으면서 함께 기분 좋은 하루 보내시길 바랄게요'},
             {"role": "user", "content": f'Artist : {artist}, Title : {title}, Release Date : {release_date}'}
         ],
-        temperature=0.3
+        temperature=0.8
     )
     return (result.choices[0].message.content.strip())
 
@@ -101,7 +101,7 @@ async def music_outro_gpt(artist, title, user):
             {"role": "assistant", "content": '좋은 노래 잘 들었습니다. 이제 궁금한 점을 물어 볼 수 있는 소통 시간입니다. 여러분들의 채팅을 읽고 답변 해드릴게요. 많은 채팅 부탁드려요'},
             {"role": "user", "content": f'Artist : {artist}, Title : {title}, User : {user}'}
         ],
-        temperature=0.3
+        temperature=0.8
     )
     return (result.choices[0].message.content.strip())
 
@@ -114,8 +114,10 @@ async def validate_story_gpt(param):
     result = openai.ChatCompletion.create(
         model = "gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "You are a machine that can only say True or False. Returns false if the radio story contains one of the following. {curses, aggressive speech, sexual shame} Returns true if it contains any of the following. {Joy, sadness, tiredness, need support, need encouragement, need empathy, be happy} Answer in less than 5 letters "},
-            {"role": "user", "content": f'classify this story : "{param}"'}
+            {"role": "system", "content": "You are a machine that can only say True or False. Answer in less than 5 letters"},
+            {"role": "user", "content": 'Role: Return False if the input story contains any of the following: profanity, gender discrimination, origin discrimination, political bias, appearance discrimination, criticism, sexual harassment, racial discrimination, age discrimination, religious discrimination. If the input message follows the format of a radio story, return True.'},
+            {"role": "assistant", "content": "I understand my role well!"},
+            {"role": "user", "content": f'story : "{param}"'}
         ],
         temperature=0.1
     )
@@ -131,9 +133,11 @@ async def validate_chat_gpt(param):
         model = "gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": "You are a machine that can only say True or False. You return False to chats that contain abusive language and verbal abuse. If not, returns True. Answer in less than 5 letters"},
-            {"role": "user", "content": f'If it is a chat that a Korean radio host can answer, it is true. classify this chat : "{param}"'}
+            {"role": "user", "content": 'Role: You are a chat filter for a radio host who is receiving messages while on air. If the radio host can answer the message, return True; if the message is difficult for them to answer, return False.'},
+            {"role": "assistant", "content": "I understand my role well!"},
+            {"role": "user", "content": f'chat : "{param}"'}
         ],
-        temperature=0.1
+        temperature=1.0
     )
     return (result.choices[0].message.content.strip())
 

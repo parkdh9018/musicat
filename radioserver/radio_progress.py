@@ -9,7 +9,7 @@ from my_logger import setup_logger
 
 logger = setup_logger()
 
-queue = deque(['story', 'chat', 'music', 'chat', 'music', 'chat', 'music', 'chat'])
+queue = deque(['music', 'chat', 'story', 'chat', 'music', 'chat', 'music', 'chat', 'music', 'chat'])
 
 ##############################################
 
@@ -42,7 +42,7 @@ def reset_radio():
     라디오 상태 초기화 함수
     """
     global queue
-    queue = deque(['story', 'chat', 'music', 'chat', 'music', 'chat', 'music', 'chat'])
+    queue = deque(['music', 'chat', 'story', 'chat', 'music', 'chat', 'music', 'chat', 'music', 'chat'])
     logger.info('[Radio] : 라디오 상태 초기화 완료')
 
 ##############################################
