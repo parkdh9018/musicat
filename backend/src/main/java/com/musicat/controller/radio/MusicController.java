@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -59,12 +60,12 @@ public class MusicController {
   /**
    * 신청곡 중복 검사
    *
-   * @param userSeq
+   * @param token
    * @return 200, 409, 500
    */
-  @GetMapping("/unique/{userSeq}")
-  public ResponseEntity<MusicInfoDto> isUniqueMusic(@PathVariable long userSeq) {
-    musicService.isUniqueMusic(userSeq);
+  @GetMapping("/unique")
+  public ResponseEntity<MusicInfoDto> isUniqueMusic(@RequestHeader("token") String token) {
+    musicService.isUniqueMusic(token);
     return ResponseEntity.ok().build();
   }
 
