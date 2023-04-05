@@ -4,12 +4,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.musicat.data.dto.story.StoryInfoDto;
 import com.musicat.data.dto.story.StoryKafkaDto;
 import com.musicat.data.dto.story.StoryRequestDto;
+import com.musicat.data.dto.user.UserInfoJwtDto;
 import com.musicat.data.entity.radio.Story;
 import com.musicat.data.entity.user.MoneyLog;
 import com.musicat.data.entity.user.User;
 import com.musicat.data.repository.radio.StoryRepository;
 import com.musicat.data.repository.user.MoneyLogRepository;
 import com.musicat.data.repository.user.UserRepository;
+import com.musicat.jwt.TokenProvider;
 import com.musicat.service.kafka.KafkaProducerService;
 import com.musicat.util.ConstantUtil;
 import com.musicat.util.RegexUtil;
@@ -35,6 +37,7 @@ public class StoryService {
   // Utility 정의
   private final StoryBuilderUtil storyBuilderUtil;
   private final ConstantUtil constantUtil;
+  private final TokenProvider tokenProvider;
 
   // Service 정의
   private final KafkaProducerService kafkaProducerService;
@@ -98,12 +101,15 @@ public class StoryService {
   /**
    * 사연 중복 검사
    *
-   * @param userSeq
+   * @param token
    * @return
    */
-  public void isUniqueStory(long userSeq) {
+  public void isUniqueStory(String token) {
+
+    UserInfoJwtDto userInfo = tokenProvider.getUserInfo(token);
+
     Optional<Story> optionalStory = storyRepository.findByUserSeqAndStoryReadedFalseOrUserSeqAndStoryReadedNull(
-        userSeq, userSeq);
+        userInfo.getUserSeq(), userInfo.getUserSeq());
 
     if (optionalStory.isPresent()) {
       throw new EntityExistsException("이미 신청한 사연이 있습니다.");
