@@ -123,6 +123,11 @@ public class StoryService {
     User user = userRepository.findById(storyRequestDto.getUserSeq())
         .orElseThrow(() -> new EntityNotFoundException("유저 정보가 존재하지 않습니다."));
 
+    // 신청곡이 없는 경우
+    if (storyRequestDto.getMusicYoutubeId() == null) {
+      throw new IllegalArgumentException("신청곡이 존재하지 않습니다."); // 400
+    }
+
     if (user.getUserMoney() < 50) {
       return;
     }
