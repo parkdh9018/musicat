@@ -36,6 +36,14 @@
   color: var(--fade-font-color);
 }
 
+.placeholder {
+  position: absolute;
+  top: 27%;
+  left: 3.5%;
+  color: var(--fade-font-color);
+  pointer-events: none;
+}
+
 .searchReasult {
   border: none;
   background-color: rgba(0, 0, 0, 0);
@@ -101,4 +109,14 @@
 .hr {
   border: 0.1px solid var(--fade-font-color);
   margin: 3px;
+}
+
+@media screen and (max-width: 768px) {
+  .placeholder {
+    position: absolute;
+    top: 34%;
+    left: 5%;
+    color: var(--fade-font-color);
+    pointer-events: none;
+  }
 }/*# sourceMappingURL=SongSearch.module.css.map */

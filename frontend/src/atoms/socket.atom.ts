@@ -4,6 +4,7 @@ import { changeChatList, Chat, chatListState } from "./chat.atom";
 import SocketManager from "@/connect/socket/socket";
 import { Music, musicState, playNowState } from "./song.atom";
 import { broadcastState } from "./broadcast.atom";
+import { QueryClient, useQueryClient } from "@tanstack/react-query";
 
 interface BaseResponse {
   type: string;
@@ -15,7 +16,7 @@ const socketManager = SocketManager.getInstance();
 let stompClient = socketManager.connect();
 
 // 소켓 연결
-export const socketConnection = () => {
+export const socketConnection = (queryClinet: QueryClient) => {
   const callback = useRecoilCallback(
     ({ set }) =>
       async () => {
@@ -29,11 +30,11 @@ export const socketConnection = () => {
           console.log("연결 시작");
 
           stompClient.subscribe("/topic", (message) => {
-            dataClassification(set, JSON.parse(message.body));
+            dataClassification(set, JSON.parse(message.body), queryClinet);
           });
 
           stompClient.subscribe("/user/queue", (message) => {
-            dataClassification(set, JSON.parse(message.body));
+            dataClassification(set, JSON.parse(message.body), queryClinet);
           });
 
           stompClient.send("/app/subscribe", {}, "");
@@ -55,7 +56,11 @@ export const sendData = async (api: string, data: object) => {
 };
 
 // 데이터 분류
-const dataClassification = (set: any, res: BaseResponse): void => {
+const dataClassification = (
+  set: any,
+  res: BaseResponse,
+  queryClinet: QueryClient
+): void => {
   switch (res.type) {
     case "CHAT":
       console.log("나는 챗");
@@ -65,6 +70,11 @@ const dataClassification = (set: any, res: BaseResponse): void => {
     case "RADIO":
       console.log("나는 라디오");
       console.log(res);
+      if (res.data.type === "youtube") {
+        console.log(res.data.type);
+        queryClinet.invalidateQueries(["SongRequset"]);
+        queryClinet.invalidateQueries(["AlredayRegistedSong"]);
+      }
       set(broadcastState, {
         operation: res.operation.toUpperCase(),
         dataType: res.data.type,

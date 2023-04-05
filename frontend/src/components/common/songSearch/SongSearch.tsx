@@ -1,45 +1,54 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import style from "./SongSearch.module.css";
 import {
+  getLastFmSearch,
   getSongSearch,
-  getYoutubeSearch,
 } from "@/connect/axios/queryHooks/music";
 import { v4 as uuidv4 } from "uuid";
 import { Song } from "@/types/home";
 import { useCustomToast } from "@/customHooks/useCustomToast";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { nowYoutubeSearchState, searchState } from "@/atoms/song.atom";
+import Swal from "sweetalert2";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { userInfoState } from "@/atoms/user.atom";
 
 interface SongSearchProps {
   setRequestSong: any; // 선택한 음악 객체 반환하는 함수
   width: number; // % 값을 주면 됩니다.
+  placeholder: string;
+  status: number | undefined;
 }
 
-export const SongSearch = ({ setRequestSong, width }: SongSearchProps) => {
-  const [isFocused, setIsFocused] = useState(false);
+export const SongSearch = ({
+  setRequestSong,
+  width,
+  placeholder,
+  status,
+}: SongSearchProps) => {
+  const userInfo = useRecoilValue(userInfoState);
   const [isSearching, setIsSearching] = useState(false);
   const [search, setSearch] = useRecoilState(searchState);
   const setYoutubeSearch = useSetRecoilState(nowYoutubeSearchState);
   const [searchResults, setSearchResults] = useState<Song[]>([]);
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();
   const [noResults, setNoResults] = useState(false);
-
-  const onFocus = () => {
-    setIsFocused(true);
-  };
-
-  const onBlur = () => {
-    // 여기서 검색 결과나 상태에 맞춰 블러 처리 할지 말지 로직 넣기
-    setIsFocused(false);
-  };
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // 스포티파이에 보낼 검색어(인풋)
   const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     // {}[]^|%\ 입력 불가...
-    // if (e.target.value === "") {
-    //   setNoResults(false);
-    // }
-
+    if (!userInfo.userRole) {
+      Swal.fire({
+        icon: "warning",
+        title: "",
+        text: "로그인이 필요한 서비스 입니다!",
+        confirmButtonText: "닫기",
+      }).then(() => {
+        e.target.value = "";
+      });
+    }
     setSearch(e.target.value);
     if (!e.target.value) {
       setRequestSong(undefined);
@@ -51,7 +60,6 @@ export const SongSearch = ({ setRequestSong, width }: SongSearchProps) => {
   // 입력 값 스포티파이에서 검색
   const searchSpotify = async () => {
     const SearchResult = await getSongSearch(search);
-    // console.log(SearchResult);
     // 검색 결과가 있는 경우 드랍다운에 들어갈 데이터 설정
     if (SearchResult.data.length > 0) {
       setSearchResults(SearchResult.data);
@@ -80,7 +88,6 @@ export const SongSearch = ({ setRequestSong, width }: SongSearchProps) => {
 
   // 스포티파이 검색 결과중에 신청할 곡을 선택했을 때
   const onClickSelectSong = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    setIsFocused(false);
     setYoutubeSearch(true);
     // 타입스크립트가 버튼의 값을 string으로 요구해서 변환 과정 필요
     const value = e.currentTarget.value;
@@ -91,26 +98,42 @@ export const SongSearch = ({ setRequestSong, width }: SongSearchProps) => {
       ? setSearch(searchedTitleArtist.slice(0, 62) + "...")
       : setSearch(searchedTitleArtist);
 
-    // console.log(selectedSong);
     // 유튜브 검색결과 확인
-    const result = await getYoutubeSearch(
-      selectedSong.musicTitle,
-      selectedSong.musicArtist,
-      selectedSong.spotifyMusicDuration
-    );
+    // const result = await getYoutubeSearch(
+    //   selectedSong.musicTitle,
+    //   selectedSong.musicArtist,
+    //   selectedSong.spotifyMusicDuration
+    // );
+
+    // LastFm 검색결과 확인
+    let result = await getLastFmSearch(
+      selectedSong.musicTitleEn,
+      selectedSong.musicArtistEn
+    ).catch((e) => e.response.status);
+    if (result === 500) {
+      console.log(selectedSong.musicArtist);
+      result = await getLastFmSearch(
+        selectedSong.musicTitle,
+        selectedSong.musicArtist
+      ).catch((e) => e.response.status);
+    }
 
     if (result.status === 200) {
-      // console.log(result.status);
-      // console.log(result);
       setYoutubeSearch(false);
       setRequestSong({
         ...selectedSong,
         musicLength: result.data.musicLength,
         musicYoutubeId: result.data.musicYoutubeId,
       });
-      setIsFocused(false);
     } else {
-      alert("재생할 수 없는 곡입니다. 다른곡을 선택해주세요.");
+      Swal.fire({
+        icon: "error",
+        title: "",
+        text: "재생할 수 없는 곡입니다. 다른곡을 선택해주세요.",
+        confirmButtonText: "닫기",
+      }).then(() => {
+        setYoutubeSearch(false);
+      });
     }
   };
 
@@ -148,13 +171,19 @@ export const SongSearch = ({ setRequestSong, width }: SongSearchProps) => {
       <input
         className={style.inputText}
         type="text"
-        onFocus={onFocus}
         value={search}
         onChange={onChangeValue}
         onKeyUp={onKeyUpSearch}
-        placeholder="가수나 노래 제목을 입력하세요"
+        disabled={status === 409}
+        ref={inputRef}
       />
-      {isFocused ? (
+      {!search && (
+        <div className={style.placeholder}>
+          {status === 200 ? <FontAwesomeIcon icon={faMagnifyingGlass} /> : null}
+          <span>{placeholder}</span>
+        </div>
+      )}
+      {inputRef.current === document.activeElement ? (
         <span>
           {isSearching ? (
             <div className={style.dropdownContent}>
