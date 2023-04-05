@@ -19,6 +19,7 @@ import { useCustomToast } from "@/customHooks/useCustomToast";
 import { LoadingSpinner } from "@/pages/common/loadingSpinner/LoadingSpinner";
 import { useTokenData } from "@/customHooks/useTokenData";
 import { useResetRecoilState } from "recoil";
+import { getUserMoney } from "@/connect/axios/queryHooks/user";
 
 export const Story = () => {
   const disable: React.CSSProperties = {
@@ -30,6 +31,9 @@ export const Story = () => {
   // const userInfo = useRecoilValue(userInfoState);
 
   const userInfo = useTokenData();
+  const {data : moneyData} = getUserMoney();
+  
+  console.log(moneyData)
   
   const { data, mutate, storyReqeustData, isLoading } = storyHook(userInfo?.userSeq ? userInfo.userSeq : -1);
 
@@ -40,17 +44,17 @@ export const Story = () => {
   const [title, setTitle] = useRecoilState(storyTitleState);
   const [song, setSong] = useRecoilState(storySongState);
   const content = useRecoilValue(storyContentState);
+  
   const [titlePlaceholder, setTitlePlaceholder] = useState("제목을 입력해주세요");
 
   const [submitButton, setSubmitButton] = useState(false);
   
   useEffect(() => {
     if (userInfo?.userNick) {
-      if(data != '200') {
-        useCustomToast("error","이미 신청한 사연이 있습니다.")
-        
-      } else {
+      if(data == '200') {
         setSubmitButton(true);
+      } else if(data == '409') {
+        useCustomToast("error","이미 신청한 사연이 있습니다.")
       }
     } else {
       setTitlePlaceholder(LOGIN_REQUEST_STRING);
@@ -73,6 +77,12 @@ export const Story = () => {
   const allStory = useRecoilValue(allStorySelector);
 
   const requestStoryEvent = () => {
+
+    if(!moneyData || moneyData.data.userMoney < 50) {
+      useCustomToast("error", "츄르가 부족합니다");
+      return;
+    }
+
     mutate(allStory);
   };
 
@@ -86,7 +96,7 @@ export const Story = () => {
         <div className={style.group}>
           <span className={style.content_label}>제목</span>
           <Input
-            style={{ width: "80%", marginLeft: "2%" }}
+            style={{ width: "80%"}}
             placeholder={titlePlaceholder}
             input={title}
             setInput={setTitle}
@@ -94,7 +104,7 @@ export const Story = () => {
           />
         </div>
         <div className={style.group}>
-          <span className={style.content_label} style={{ marginRight: "20px" }}>
+          <span className={style.content_label}>
             신청곡
           </span>
           <SongSearch
@@ -106,7 +116,7 @@ export const Story = () => {
         </div>
         <div className={style.group}>
           <span className={style.content_label}>내용</span>
-          <div className={style.content} style={{ marginLeft: "2%" }}>
+          <div className={style.content}>
             {content.map((v, i) => (
               <ContentBox key={uuidv4()} {...v} index={i} />
             ))}

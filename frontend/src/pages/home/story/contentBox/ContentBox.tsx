@@ -70,7 +70,7 @@ export const ContentBox = ({ index, speaker, content }: ContentBoxProps) => {
         ) : (
           <div className={style.speaker}>
             <SelectBox
-              style={{marginTop: "0px", width: "70%"}}
+              style={{marginTop: "0px", width: "100%"}}
               defaultValue={speaker}
               options={TTS_OPTION}
               setValue={useEditSpeakerCallback}
