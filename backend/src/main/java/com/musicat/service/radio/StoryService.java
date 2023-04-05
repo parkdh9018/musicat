@@ -17,7 +17,6 @@ import com.musicat.data.repository.user.MoneyLogRepository;
 import com.musicat.data.repository.user.UserRepository;
 import com.musicat.jwt.TokenProvider;
 import com.musicat.service.kafka.KafkaProducerService;
-import com.musicat.service.user.AlertService;
 import com.musicat.util.ConstantUtil;
 import com.musicat.util.RegexUtil;
 import com.musicat.util.builder.MoneyLogBuilderUtil;
@@ -48,7 +47,6 @@ public class StoryService {
 
   // Service 정의
   private final KafkaProducerService kafkaProducerService;
-  private final AlertService alertService;
 
   // Repository 정의
   private final StoryRepository storyRepository;
@@ -84,8 +82,15 @@ public class StoryService {
         String alertContent = "불합격";
 
         if (valid.equals("true")) {
-          // Todo : 츄르 지급 로직
-          alertContent = "합격";
+          User user = userRepository.findById(userSeq)
+              .orElseThrow(() -> new EntityNotFoundException("유저 정보가 존재하지 않습니다."));
+
+          // 100 츄르 지급
+          long userMoney = user.getUserMoney();
+          user.setUserMoney(userMoney + 100);
+          userRepository.save(user);
+          // 합격 문구 생성
+          alertContent = "합격 \n" + user.getUserNickname() + "님 좋은 사연 감사합니다.\n감사의 의미로 100츄르가 지급되었습니다.";
         }
 
         Alert alert = Alert.builder()
