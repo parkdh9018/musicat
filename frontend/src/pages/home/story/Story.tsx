@@ -17,28 +17,35 @@ import { useEffect, useState } from "react";
 import { storyHook } from "@/connect/axios/queryHooks/story";
 import { useCustomToast } from "@/customHooks/useCustomToast";
 import { LoadingSpinner } from "@/pages/common/loadingSpinner/LoadingSpinner";
+import { useTokenData } from "@/customHooks/useTokenData";
 
 export const Story = () => {
   const disable: React.CSSProperties = {
     opacity: "0.5",
     pointerEvents: "none",
   };
+  const LOGIN_REQUEST_STRING = "로그인이 필요합니다."
 
-  const userSeq = useRecoilValue(userInfoState).userSeq;
+  // const userInfo = useRecoilValue(userInfoState);
 
-  const { button, mutate, setButton, isLoading } = storyHook(userSeq);
+  const userInfo = useTokenData();
+  
+  const { button, mutate, setButton, isLoading } = storyHook(userInfo?.userSeq ? userInfo.userSeq : -1);
 
   const [title, setTitle] = useRecoilState(storyTitleState);
   const [song, setSong] = useRecoilState(storySongState);
   const content = useRecoilValue(storyContentState);
+  const [titlePlaceholder, setTitlePlaceholder] = useState("제목을 입력해주세요");
 
+  
   useEffect(() => {
-    if (userSeq > 0) {
+    if (userInfo?.userNick) {
       setButton(true);
     } else {
-      useCustomToast("warning", "로그인이 필요합니다.");
+      setTitlePlaceholder(LOGIN_REQUEST_STRING)
+      useCustomToast("warning", LOGIN_REQUEST_STRING);
     }
-  }, [userSeq]);
+  }, [userInfo]);
 
   const allStory = useRecoilValue(allStorySelector);
 
@@ -54,8 +61,10 @@ export const Story = () => {
           <span className={style.content_label}>제목</span>
           <Input
             style={{ width: "80%", marginLeft: "2%" }}
+            placeholder={titlePlaceholder}
             input={title}
             setInput={setTitle}
+            disabled={userInfo?.userNick ? false : true}
           />
         </div>
         <div className={style.group}>

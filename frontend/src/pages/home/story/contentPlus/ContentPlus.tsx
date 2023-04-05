@@ -6,9 +6,12 @@ import { Button } from "@/components/common/button/Button";
 import { MouseEventHandler, useState } from "react";
 import { useClickOutside } from "@mantine/hooks";
 import { addStoryContent } from "@/atoms/story.atoms";
+import { useTokenData } from "@/customHooks/useTokenData";
+import { useCustomToast } from "@/customHooks/useCustomToast";
 
 export const ContentPlus = () => {
 
+  const userInfo = useTokenData();
 
   const [popover, setPopover] = useState(false)
   const ref = useClickOutside(() => setPopover(false));
@@ -28,6 +31,12 @@ export const ContentPlus = () => {
   };
 
   const plusEvent:MouseEventHandler<HTMLDivElement> = () => {
+
+    if(!userInfo?.userNick) {
+      useCustomToast("error", "로그인이 필요합니다.")
+      return;
+    }
+
     setPopover(true)
   }
 

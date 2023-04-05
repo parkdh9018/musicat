@@ -13,7 +13,7 @@ export function storyHook(userSeq: number) {
   const { data } = useQuery(
     ["storyRequest", userSeq],
     async ({ queryKey }): Promise<string> => {
-      const { data } = await $.get(`/story/unique/${queryKey[1]}`);
+      const { data } = await $.get(`/story/unique`);
       return data;
     },
     {
@@ -35,9 +35,11 @@ export function storyHook(userSeq: number) {
         payload.storyContent.some(v => v.content == "")
       ) {
         useCustomToast("error", "내용을 확인해주세요");
-      } else if (payload.storySong.musicTitle == "") {
-        useCustomToast("error", "신청곡을 확인해주세요");
-      } else {
+      } 
+      // else if (payload.storySong.musicTitle == "") {
+      //   useCustomToast("error", "신청곡을 확인해주세요");
+      // } 
+      else {
         await $.post("/story", payload);
         return true;
       }
