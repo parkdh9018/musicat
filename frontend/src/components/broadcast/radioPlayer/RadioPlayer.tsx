@@ -24,6 +24,8 @@ export const RadioPlayer = () => {
         ref={playerRef}
         width={0}
         height={0}
+        playsinline={true}
+        webkit-playsinline="true"
       />
     </div>
   );
