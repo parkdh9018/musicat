@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,7 +77,8 @@ public class AlertService {
   public Page<AlertListResponseDto> getAlertList(String token, String query, int page) {
     UserInfoJwtDto userInfo = tokenProvider.getUserInfo(token);
 
-    PageRequest pageable = PageRequest.of(page, constantUtil.ALERT_PAGE_SIZE);
+    PageRequest pageable = PageRequest.of(page, constantUtil.ALERT_PAGE_SIZE,
+        Sort.by(Sort.Direction.DESC, "alertCreatedAt"));
     // Page 타입으로 리턴
     Page<Alert> alertListPage = null;
     if (query.equals("")) { // 아무것도 입력하지 않은 경우
