@@ -1,18 +1,23 @@
 package com.musicat.service.radio;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.musicat.data.dto.story.StoryInfoDto;
 import com.musicat.data.dto.story.StoryKafkaDto;
 import com.musicat.data.dto.story.StoryRequestDto;
 import com.musicat.data.dto.user.UserInfoJwtDto;
 import com.musicat.data.entity.radio.Story;
+import com.musicat.data.entity.user.Alert;
 import com.musicat.data.entity.user.MoneyLog;
 import com.musicat.data.entity.user.User;
 import com.musicat.data.repository.radio.StoryRepository;
+import com.musicat.data.repository.user.AlertRepository;
 import com.musicat.data.repository.user.MoneyLogRepository;
 import com.musicat.data.repository.user.UserRepository;
 import com.musicat.jwt.TokenProvider;
 import com.musicat.service.kafka.KafkaProducerService;
+import com.musicat.service.user.AlertService;
 import com.musicat.util.ConstantUtil;
 import com.musicat.util.RegexUtil;
 import com.musicat.util.builder.MoneyLogBuilderUtil;
@@ -23,6 +28,8 @@ import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,15 +48,60 @@ public class StoryService {
 
   // Service 정의
   private final KafkaProducerService kafkaProducerService;
+  private final AlertService alertService;
 
   // Repository 정의
   private final StoryRepository storyRepository;
   private final UserRepository userRepository;
   private final MoneyLogRepository moneyLogRepository;
+  private final AlertRepository alertRepository;
 
   // Util 정의
   private final RegexUtil regexUtil;
   private final MoneyLogBuilderUtil moneyLogBuilderUtil;
+
+  // mapper 정의
+  private final ObjectMapper objectMapper = new ObjectMapper();
+
+
+  @KafkaListener(topics = "storyValidateResult")
+  public void getRadioState(String message, Acknowledgment acknowledgment) {
+    if (message != null) {
+
+      logger.debug("수신한 사연 유효성 결과 데이터 : {} ", message);
+      acknowledgment.acknowledge(); // offset commit
+
+      try {
+        JsonNode jsonNode = objectMapper.readTree(message);
+        JsonNode storyValidateResultNode = jsonNode.get("valid");
+        JsonNode userSeqNode = jsonNode.get("userseq");
+
+        // true, false
+        String valid = storyValidateResultNode.asText().toLowerCase();
+        long userSeq = userSeqNode.asLong();
+
+        String alertTitle = "사연 신청 결과";
+        String alertContent = "불합격";
+
+        if (valid.equals("true")) {
+          // Todo : 츄르 지급 로직
+          alertContent = "합격";
+        }
+
+        Alert alert = Alert.builder()
+            .userSeq(userSeq)
+            .alertTitle(alertTitle)
+            .alertContent(alertContent)
+            .build();
+
+        alertRepository.save(alert);
+
+      } catch (Exception e) {
+        throw new RuntimeException("카프카 에러 발생!!");
+      }
+
+    }
+  }
 
 
   /**
