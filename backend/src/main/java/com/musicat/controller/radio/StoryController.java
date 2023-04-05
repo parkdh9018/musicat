@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,7 +41,7 @@ public class StoryController {
   @PostMapping("")
   public ResponseEntity<?> insertStory(/**@RequestBody StoryRequestDto storyRequestDto**/
       @RequestBody
-      Map<String, Object> map) {
+      Map<String, Object> map, @RequestHeader("token") String token) {
 
     // spotify + youtube 검색 결과 = storySong
     HashMap<String, String> storySongMap = (HashMap<String, String>) map.get("storySong");
@@ -66,7 +67,7 @@ public class StoryController {
 
     // 이미 신청한 사연이 있는지 검증
     // 이미 존재할 경우 409 Exception 발생
-    storyService.isUniqueStory(longUserSeq);
+    storyService.isUniqueStory(token);
 
     // 사연 등록 서비스 호출
     storyService.insertStory(storyRequestDto);
@@ -77,14 +78,14 @@ public class StoryController {
 
   /**
    * 사연 중복 검사
-   * @param userSeq
+   * @param token
    * @return 200, 409, 500
    */
-  @GetMapping("/unique/{userSeq}")
-  public ResponseEntity<?> isUniqueStory(@PathVariable long userSeq) {
+  @GetMapping("/unique")
+  public ResponseEntity<?> isUniqueStory(@RequestHeader("token") String token) {
     // Todo : 토큰에서 userSeq 가져오는 로직으로 변경해야함
     // 이미 신청한 사연이 존재할 경우 409 Exception 발생
-    storyService.isUniqueStory(userSeq);
+    storyService.isUniqueStory(token);
 
     // 200 HttpStatus Code 리턴
     return ResponseEntity.ok().build();
