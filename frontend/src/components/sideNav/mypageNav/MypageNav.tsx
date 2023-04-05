@@ -21,7 +21,10 @@ export const MypageNav = ({
   const navigate = useNavigate();
 
   return (
-    <div className={style.side_board}>
+    <div
+      className={style.side_board}
+      style={{ animation: "0.7s ease-in-out loadEffect2" }}
+    >
       <h4>{sideNavTitle}</h4>
       <hr />
       {sideNavContent.map((data, i) => {

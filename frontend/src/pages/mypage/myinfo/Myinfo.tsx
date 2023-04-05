@@ -77,35 +77,40 @@ export const Myinfo = () => {
 
   return (
     <div className={style.myinfo}>
-      <div className={style.leftbox}>
+      <div
+        className={style.leftbox}
+        style={{ animation: "0.7s ease-in-out loadEffect2" }}
+      >
         <img src={userInfo.userProfile} alt="프로필 이미지" />
         <h3 style={{ textAlign: "center" }}>{userInfo.userNick} 님</h3>
         <p className={style.ffc} style={{ marginBottom: "40px" }}>
           환영합니다
         </p>
         <p className={style.ffc}>다크 모드</p>
-        <div className={style.toolbar}>
+        <div
+          className={style.toolbar}
+          onClick={() => {
+            putDarkMode()
+              .then(() => {
+                queryClient.invalidateQueries(["getUserConfig"]);
+              })
+              .catch(() => {
+                Swal.fire({
+                  icon: "error",
+                  title: "",
+                  text: "네트워크 오류 / 다시 시도해 주세요",
+                  confirmButtonText: "닫기",
+                });
+              });
+            return;
+          }}
+        >
           <div
             className={
               data?.data.userIsDarkmode
                 ? style.circle
                 : style.circle + " " + style.circleLeft
             }
-            onClick={() => {
-              putDarkMode()
-                .then(() => {
-                  queryClient.invalidateQueries(["getUserConfig"]);
-                })
-                .catch(() => {
-                  Swal.fire({
-                    icon: "error",
-                    title: "",
-                    text: "네트워크 오류 / 다시 시도해 주세요",
-                    confirmButtonText: "닫기",
-                  });
-                });
-              return;
-            }}
           />
         </div>
         <p className={style.ffc}>가입 날짜</p>
@@ -115,8 +120,14 @@ export const Myinfo = () => {
         <p className={style.ffc}>이메일</p>
         <p className={style.fc}>{userDetailInfo?.data.userEmail}</p>
       </div>
-      <hr className={style.middle_hr} />
-      <div className={style.rightbox}>
+      <hr
+        className={style.middle_hr}
+        style={{ animation: "0.7s ease-in-out loadEffect5" }}
+      />
+      <div
+        className={style.rightbox}
+        style={{ animation: "0.7s ease-in-out loadEffect3" }}
+      >
         <h3>닉네임</h3>
         <Input input={input} setInput={setInput} />
         <Button

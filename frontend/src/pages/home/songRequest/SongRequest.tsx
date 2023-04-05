@@ -96,33 +96,34 @@ export const SongRequest = () => {
   };
 
   return (
-    <>
-      <div className={style.songRequest}>
-        <div className={style.songSearch}>
-          <SongSearch
-            setRequestSong={setRequestSong}
-            width={isMobile() ? 65 : 80}
-            placeholder={
-              alreadyRegisted === 409
-                ? "이미 신청한 노래가 있습니다!"
-                : " 가수 이름 / 노래 제목"
-            }
-            status={alreadyRegisted}
-          />
-          <Button
-            style={
-              !requestSong || alreadyRegisted === 409
-                ? { opacity: "0.5", pointerEvents: "none" }
-                : undefined
-            }
-            content={youtubeSearch ? "검색중..." : "노래 신청"}
-            onClick={onClickReq}
-          />
-        </div>
-        <hr className={style.hr} />
-        <div className={style.songRequestTxt}>신청곡 목록</div>
-        <SongList />
+    <div
+      className={style.songRequest}
+      style={{ animation: "0.7s ease-in-out loadEffect3" }}
+    >
+      <div className={style.songSearch}>
+        <SongSearch
+          setRequestSong={setRequestSong}
+          width={isMobile() ? 65 : 80}
+          placeholder={
+            alreadyRegisted === 409
+              ? "이미 신청한 노래가 있습니다!"
+              : " 가수 이름 / 노래 제목"
+          }
+          status={alreadyRegisted}
+        />
+        <Button
+          style={
+            !requestSong || alreadyRegisted === 409
+              ? { opacity: "0.5", pointerEvents: "none" }
+              : undefined
+          }
+          content={youtubeSearch ? "검색중..." : "노래 신청"}
+          onClick={onClickReq}
+        />
       </div>
-    </>
+      <hr className={style.hr} />
+      <div className={style.songRequestTxt}>신청곡 목록</div>
+      <SongList />
+    </div>
   );
 };

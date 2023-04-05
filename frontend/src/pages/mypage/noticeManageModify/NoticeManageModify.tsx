@@ -30,7 +30,10 @@ export const NoticeManageModify = () => {
   }, []);
 
   return (
-    <div className={style.NoticeManageModify}>
+    <div
+      className={style.NoticeManageModify}
+      style={{ animation: "0.7s ease-in-out loadEffect6" }}
+    >
       <div>
         <span>제목 :</span>
         <Input input={title} setInput={setTitle} style={{ width: "80%" }} />

@@ -1,6 +1,6 @@
 import { userInfoState } from "@/atoms/user.atom";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { OnairSign } from "./onairSign/onairSign";
 import { Popover } from "./popover/Popover";
@@ -16,6 +16,7 @@ export const Header = () => {
   const { data: userUnreadMsgNum, isLoading: unreadMsgLoading } =
     getUserUnreadMsgNum();
   const [isPopoverOn, setIsPopoverOn] = useState(false);
+  const navigate = useNavigate();
 
   //헤더가 아니라 어디선가 받아야 하나?
   const { data: checkDarkMode, isLoading } = getUserConfig();
@@ -38,7 +39,12 @@ export const Header = () => {
       <div className={style.innerHeader}>
         <div className={style.innerContent} style={{ justifyContent: "start" }}>
           <Link to={"/"}>
-            <img className={style.logo_img} src="/img/newlogo.png" alt="로고" />
+            <img
+              className={style.logo_img}
+              style={{ animation: "0.7s ease-in-out loadEffect5" }}
+              src="/img/newlogo.png"
+              alt="로고"
+            />
           </Link>
         </div>
         <div className={style.innerContent}>
@@ -61,9 +67,22 @@ export const Header = () => {
               </span>
             </div>
           ) : (
-            <div className={style.user_info}>
-              <span className={style.nickname}>{userInfo.userNick}</span>
-              <span className={style.nickname_other}>님 환영합니다</span>
+            <div
+              className={style.user_info}
+              style={{ animation: "0.7s ease-in-out loadEffect5" }}
+            >
+              <span
+                className={style.nickname}
+                onClick={() => navigate("/mypage/myinfo")}
+              >
+                {userInfo.userNick}
+              </span>
+              <span
+                className={style.nickname_other}
+                onClick={() => navigate("/mypage/myinfo")}
+              >
+                님 환영합니다
+              </span>
               <div className={style.popover_state}>
                 <Popover
                   isPopoverOn={isPopoverOn}
