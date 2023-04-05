@@ -72,7 +72,10 @@ export const Chat = () => {
   }, [message]);
 
   return (
-    <div className={style.chat_component}>
+    <div
+      className={style.chat_component}
+      style={{ animation: "0.7s ease-in-out loadEffect3" }}
+    >
       <div className={style.users}>
         <FontAwesomeIcon icon={faUsers} />
         <div className={style.user_num}>{chatPeople}</div>

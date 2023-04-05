@@ -32,7 +32,11 @@ export const Inventory = () => {
     <div className={style.inventory}>
       <div
         className={style.content_div}
-        style={{ marginTop: "0", minHeight: "40px" }}
+        style={{
+          marginTop: "0",
+          minHeight: "40px",
+          animation: "0.7s ease-in-out loadEffect3",
+        }}
       >
         <span>배지 장착 :</span>
         {theme?.data.badgeSeq === 1 ? (
@@ -53,7 +57,10 @@ export const Inventory = () => {
         ) : (
           <div
             className={style.badge}
-            style={{ backgroundColor: `${badge[theme?.data.badgeSeq - 1]}` }}
+            style={{
+              backgroundColor: `${badge[theme?.data.badgeSeq - 1]}`,
+              animation: "0.7s ease-in-out loadEffect3",
+            }}
             onClick={() => {
               setModalData({
                 originSelet: theme?.data.badgeSeq,
@@ -68,7 +75,10 @@ export const Inventory = () => {
 
         <div style={{ clear: "both" }} />
       </div>
-      <div className={style.content_div + " " + style.minhei}>
+      <div
+        className={style.content_div + " " + style.minhei}
+        style={{ animation: "0.9s ease-in-out loadEffect3" }}
+      >
         <span>배경 설정 :</span>
         <img
           className={style.img1}
@@ -85,7 +95,10 @@ export const Inventory = () => {
         />
         <div style={{ clear: "both" }} />
       </div>
-      <div className={style.content_div}>
+      <div
+        className={style.content_div}
+        style={{ animation: "1.1s ease-in-out loadEffect3" }}
+      >
         <span>테마 설정 :</span>
         <img
           className={style.img2}

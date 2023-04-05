@@ -16,10 +16,16 @@ export const Home = () => {
     <>
       <div>
         <div className={style.home}>
-          <div className={style.leftTab}>
+          <div
+            className={style.leftTab}
+            style={{ animation: "0.7s ease-in-out loadEffect2" }}
+          >
             <TapeNav />
           </div>
-          <div className={style.rightTab}>
+          <div
+            className={style.rightTab}
+            style={{ animation: "0.7s ease-in-out loadEffect3" }}
+          >
             <div className={style.content}>
               <Outlet />
             </div>

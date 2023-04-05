@@ -24,25 +24,27 @@ export const Story = () => {
     opacity: "0.5",
     pointerEvents: "none",
   };
-  const LOGIN_REQUEST_STRING = "로그인이 필요합니다."
+  const LOGIN_REQUEST_STRING = "로그인이 필요합니다.";
 
   // const userInfo = useRecoilValue(userInfoState);
 
   const userInfo = useTokenData();
-  
-  const { button, mutate, setButton, isLoading } = storyHook(userInfo?.userSeq ? userInfo.userSeq : -1);
+
+  const { button, mutate, setButton, isLoading } = storyHook(
+    userInfo?.userSeq ? userInfo.userSeq : -1
+  );
 
   const [title, setTitle] = useRecoilState(storyTitleState);
   const [song, setSong] = useRecoilState(storySongState);
   const content = useRecoilValue(storyContentState);
-  const [titlePlaceholder, setTitlePlaceholder] = useState("제목을 입력해주세요");
+  const [titlePlaceholder, setTitlePlaceholder] =
+    useState("제목을 입력해주세요");
 
-  
   useEffect(() => {
     if (userInfo?.userNick) {
       setButton(true);
     } else {
-      setTitlePlaceholder(LOGIN_REQUEST_STRING)
+      setTitlePlaceholder(LOGIN_REQUEST_STRING);
       useCustomToast("warning", LOGIN_REQUEST_STRING);
     }
   }, [userInfo]);
@@ -55,7 +57,10 @@ export const Story = () => {
 
   return (
     <>
-      <div className={style.story}>
+      <div
+        className={style.story}
+        style={{ animation: "0.7s ease-in-out loadEffect3" }}
+      >
         {/* {isLoading ? "나 로딩중" : "로딩안함"} */}
         <div className={style.group}>
           <span className={style.content_label}>제목</span>
@@ -71,7 +76,12 @@ export const Story = () => {
           <span className={style.content_label} style={{ marginRight: "20px" }}>
             신청곡
           </span>
-          <SongSearch status={200} placeholder=" 가수 이름 / 노래 제목" width={85} setRequestSong={setSong} />
+          <SongSearch
+            status={200}
+            placeholder=" 가수 이름 / 노래 제목"
+            width={85}
+            setRequestSong={setSong}
+          />
         </div>
         <div className={style.group}>
           <span className={style.content_label}>내용</span>

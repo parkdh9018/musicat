@@ -111,11 +111,15 @@ export const SongSearch = ({
       selectedSong.musicArtistEn
     ).catch((e) => e.response.status);
     if (result === 500) {
-      console.log(selectedSong.musicArtist);
       result = await getLastFmSearch(
-        selectedSong.musicTitle,
-        selectedSong.musicArtist
+        selectedSong.musicTitle + selectedSong.musicArtist,
+        ""
       ).catch((e) => e.response.status);
+      if (result === 500) {
+        result = await getLastFmSearch(selectedSong.musicTitle, "").catch(
+          (e) => e.response.status
+        );
+      }
     }
 
     if (result.status === 200) {
@@ -132,6 +136,7 @@ export const SongSearch = ({
         text: "재생할 수 없는 곡입니다. 다른곡을 선택해주세요.",
         confirmButtonText: "닫기",
       }).then(() => {
+        setSearch("");
         setYoutubeSearch(false);
       });
     }
