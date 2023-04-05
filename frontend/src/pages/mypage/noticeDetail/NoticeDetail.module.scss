@@ -14,7 +14,7 @@
 
   .title {
     display: grid;
-    grid-template-columns: 15% 50% 35%;
+    grid-template-columns: 10% 50% 40%;
     height: 30px;
 
     span {
@@ -28,5 +28,41 @@
   .content {
     padding: 10px 5%;
     min-height: 300px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .notice_detail {
+    padding: 4% 6%;
+    color: var(--font-color);
+    font-size: 0.8rem;
+
+    .bold_hr {
+      width: 100%;
+      border: 1.5px solid var(--font-color);
+    }
+
+    .thin_hr {
+      width: 100%;
+      border: 1px solid var(--font-color);
+    }
+
+    .title {
+      display: grid;
+      grid-template-columns: 10% 50% 40%;
+      height: 30px;
+
+      span {
+        display: inline-block;
+        padding-top: 8px;
+        margin-top: auto;
+        margin-bottom: auto;
+      }
+    }
+
+    .content {
+      padding: 10px 5%;
+      min-height: 300px;
+    }
   }
 }

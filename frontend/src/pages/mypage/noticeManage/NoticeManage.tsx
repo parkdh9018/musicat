@@ -8,19 +8,20 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import style from "./NoticeManage.module.css";
 import { useSetRecoilState } from "recoil";
 import { nowSideNavState } from "@/atoms/common.atom";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getNoticeList } from "@/connect/axios/queryHooks/notice";
 
 export const NoticeManage = () => {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const page = searchParams.get("page");
+  const search = searchParams.get("search") || "";
+
   const [input, setInput] = useState("");
   const navigate = useNavigate();
   const setNowSideNav = useSetRecoilState(nowSideNavState);
-  const dumyData = [
-    { a: 213, b: 1234, c: 12345 },
-    { a: 213, b: 1234, c: 12345 },
-    { a: 213, b: 1234, c: 12345 },
-    { a: 213, b: 1234, c: 12345 },
-    { a: 213, b: 1234, c: 12345 },
-  ];
+
+  const { data: noticeList } = getNoticeList(Number(page), search);
 
   /** 사이드 Nav 초기화 */
   useEffect(() => {
@@ -29,9 +30,11 @@ export const NoticeManage = () => {
   return (
     <div style={{ padding: "40px 3%" }}>
       <Board
-        data={dumyData}
+        data={noticeList?.content}
         grid={"20% 50% 30%"}
         headRow={["번호", "제목", "날짜"]}
+        url={"/mypage/notice/n"}
+        type={"noticeAll"}
       />
       <div style={{ textAlign: "right" }}>
         <Button
@@ -43,11 +46,11 @@ export const NoticeManage = () => {
         />
       </div>
       <Pagenation
-        number={1}
-        first={false}
-        last={false}
-        totalPages={3}
-        url={"/"}
+        number={noticeList?.number}
+        first={noticeList?.first}
+        last={noticeList?.last}
+        totalPages={noticeList?.totalPages}
+        url={`?search=${search ? search : ""}&page=`}
       />
       <div className={style.bottom_search}>
         <Input
@@ -62,7 +65,13 @@ export const NoticeManage = () => {
             <span> 제목 + 내용</span>
           </div>
         )}
-        <Button content="검색" onClick={() => {}} style={{ margin: "0 5px" }} />
+        <Button
+          content="검색"
+          onClick={() => {
+            navigate(`?search=${input ? input : ""}&page=1`);
+          }}
+          style={{ margin: "0 5px" }}
+        />
       </div>
     </div>
   );

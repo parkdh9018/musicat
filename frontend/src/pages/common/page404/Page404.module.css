@@ -1,0 +1,396 @@
+.the_container {
+  display: block;
+  height: 0px;
+  margin: auto;
+  margin-top: 40px;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.no_found {
+  font-size: 100px;
+  margin: 100px 0px 0px;
+  text-align: center;
+}
+
+.no_found2 {
+  font-size: 50px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.c_window {
+  display: block;
+  position: relative;
+  width: 235px;
+  height: 235px;
+  margin: 0 auto;
+  border-radius: 100%;
+  border: 8px solid #ffb399;
+  background: #5ddfe8;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25) inset;
+  overflow: hidden;
+  transition: background 1s ease-in-out;
+}
+
+.c_window .the_sun {
+  display: block;
+  position: relative;
+  top: 18px;
+  height: 40px;
+  width: 40px;
+  background: #ffee94;
+  border-radius: 100%;
+  margin: 0 auto;
+  box-shadow: 0px 0px 40px #ffee94;
+  left: 30px;
+  transition: top 0.5s ease-in-out;
+}
+
+.c_window .the_moon {
+  position: relative;
+  height: 24px;
+  width: 24px;
+  top: 200px;
+  background: #eee;
+  border-radius: 100%;
+  box-shadow: 0px 0px 20px #fff;
+  transition: top 0.5s ease-in-out;
+}
+
+.c_window .the_cat {
+  display: block;
+  position: absolute;
+  bottom: -20px;
+  height: 140px;
+  width: 135px;
+  margin: 0 50px;
+  background: #777777;
+  transition: bottom 0.25s ease-in-out;
+}
+
+.c_window .the_cat:before {
+  width: 0;
+  height: 0;
+  border-left: 0px solid transparent;
+  border-right: 30px solid transparent;
+  border-bottom: 20px solid #777;
+  top: -20px;
+  left: 0;
+  position: absolute;
+  content: "";
+}
+.c_window .the_cat:after {
+  width: 0;
+  height: 0;
+  border-right: 0px solid transparent;
+  border-left: 30px solid transparent;
+  border-bottom: 20px solid #777;
+  top: -20px;
+  right: 0;
+  position: absolute;
+  content: "";
+}
+
+.c_window .the_cat:hover {
+  display: block;
+  position: absolute;
+  bottom: -40px;
+  cursor: pointer;
+}
+
+.c_window .the_cat .eyes {
+  display: block;
+  position: absolute;
+  background: #ffee94;
+  height: 40px;
+  width: 40px;
+  border-radius: 100%;
+  bottom: 80px;
+}
+
+.c_window .the_cat:hover .eyes {
+  display: block;
+  position: absolute;
+  height: 8px;
+  width: 40px;
+  bottom: 100px;
+}
+
+.c_window .the_cat .eyes.left {
+  left: 12px;
+}
+
+.c_window .the_cat .eyes.right {
+  right: 12px;
+}
+
+.c_window .the_cat .eyes .pupil {
+  display: block;
+  position: relative;
+  background: #ffb399;
+  height: 100%;
+  width: 5px;
+  border-radius: 100%;
+  margin: 0 auto;
+  transition: width 0.5s ease-in-out;
+}
+
+.c_window .the_cat .nose {
+  display: block;
+  position: relative;
+  background: #ffb399;
+  height: 10px;
+  width: 10px;
+  border-radius: 100%;
+  margin: 0 auto;
+  top: 45px;
+}
+
+input[type="checkbox"] {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+}
+
+input#toggle[type="checkbox"] {
+  display: none;
+}
+
+label {
+  position: absolute;
+  height: 40px;
+  width: 120px;
+  display: block;
+  top: 0px;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 9999;
+  cursor: pointer;
+  margin: 0 auto;
+}
+
+.switch {
+  display: block;
+  position: relative;
+  border-bottom: 1px solid #fff;
+  border-radius: 25px;
+  background: #ffb399;
+  box-shadow: inset 0 0 10px #888888;
+  -webkit-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.25);
+  height: 40px;
+  width: 100px;
+  margin: 0px auto 30px auto;
+}
+
+.switch .button {
+  display: block;
+  position: absolute;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #aaa;
+  border-radius: 100%;
+  background: #ffcfbf;
+  height: 32px;
+  width: 32px;
+  top: 4px;
+  left: 4px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.25);
+}
+
+.switch .button .b-inside {
+  display: block;
+  position: absolute;
+  border: 1px solid #888;
+  border-radius: 100%;
+  background: #ffee94;
+  height: 15px;
+  width: 15px;
+  top: 7px;
+  left: 7px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.25);
+}
+
+.day-night-cont {
+  display: block;
+  position: absolute;
+  width: 180px;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  height: 40px;
+  top: 0px;
+}
+
+.day-night-cont .the-sun {
+  display: block;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  height: 20px;
+  width: 20px;
+  border-radius: 100%;
+  background: #ffee94;
+  box-shadow: 0px 0px 40px #ffee94;
+}
+
+.day-night-cont .the-moon {
+  display: block;
+  position: absolute;
+  right: 8px;
+  top: 10px;
+  height: 20px;
+  width: 20px;
+  border-radius: 100%;
+  background: #eee;
+  box-shadow: 0px 0px 20px #eee;
+}
+
+.day-night-cont .the-moon .moon-inside {
+  display: block;
+  position: absolute;
+  left: 8px;
+  height: 20px;
+  width: 20px;
+  border-radius: 100%;
+  background: #ffcfbf;
+}
+
+/* TOGGLE */
+
+.switch .button {
+  transition: left 0.25s ease-in-out;
+  -webkit-transition: left 0.25s ease-in-out;
+}
+
+input[type="checkbox"]:checked ~ .switch .button {
+  position: absolute;
+  left: 64px;
+}
+
+/* NIGHT ANIMATION */
+
+input[type="checkbox"]:checked ~ .c_window {
+  background: #111;
+}
+
+input[type="checkbox"]:checked ~ .c_window .the-sun {
+  top: 200px;
+}
+
+input[type="checkbox"]:checked ~ .c_window .the-moon {
+  display: block;
+  position: absolute;
+  margin: 0 auto;
+  top: 40px;
+  left: 60px;
+}
+
+input[type="checkbox"]:checked ~ .c_window .the_cat {
+  background: #444;
+}
+
+input[type="checkbox"]:checked ~ .c_window .the_cat:before {
+  width: 0;
+  height: 0;
+  border-left: 0px solid transparent;
+  border-right: 30px solid transparent;
+  border-bottom: 20px solid #444;
+  top: -20px;
+  left: 0;
+  position: absolute;
+  content: "";
+}
+input[type="checkbox"]:checked ~ .c_window .the_cat:after {
+  width: 0;
+  height: 0;
+  border-right: 0px solid transparent;
+  border-left: 30px solid transparent;
+  border-bottom: 20px solid #444;
+  top: -20px;
+  right: 0;
+  position: absolute;
+  content: "";
+}
+
+input[type="checkbox"]:checked ~ .c_window .the_cat .eyes .pupil {
+  height: 90%;
+  width: 34px;
+  margin: 5% auto;
+}
+
+input[type="checkbox"]:checked ~ .c_window .the_cat:hover .eyes {
+  height: 40px;
+  bottom: 80px;
+}
+
+.w_btn {
+  position: relative;
+  border: none;
+  display: block;
+  padding: 15px 30px 13px;
+  border-radius: 15px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.25s;
+  transition: 0.4s;
+  font-size: 25px;
+  margin-right: auto;
+  margin-left: auto;
+  cursor: pointer;
+}
+
+.w_btn_gra3 {
+  background: linear-gradient(
+    45deg,
+    #ff0000,
+    #ff7300,
+    #fffb00,
+    #48ff00,
+    #00ffd5,
+    #002bff,
+    #7a00ff,
+    #ff00c8,
+    #ff0000
+  );
+  color: white;
+}
+
+.w_btn_gra_anim {
+  background-size: 400% 400%;
+  animation: gradient1 5s ease infinite;
+}
+
+.w_btn:hover {
+  font-size: 28px;
+}
+
+@keyframes gradient1 {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .no_found {
+    font-size: 70px;
+    margin: 40px 0px 0px;
+    text-align: center;
+  }
+
+  .no_found2 {
+    font-size: 30px;
+    margin-top: 20px;
+    text-align: center;
+  }
+}

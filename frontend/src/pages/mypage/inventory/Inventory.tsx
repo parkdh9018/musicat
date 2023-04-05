@@ -1,22 +1,27 @@
 import { nowSideNavState } from "@/atoms/common.atom";
-import { userthemeState } from "@/atoms/user.atom";
 import { Modal } from "@/components/common/modal/Modal";
+import { getUserConfig } from "@/connect/axios/queryHooks/user";
 import { useEffect, useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import style from "./Inventory.module.css";
 import { InventoryModal } from "./inventoryModal/InventoryModal";
 
 export const Inventory = () => {
   const setNowSideNav = useSetRecoilState(nowSideNavState);
-  const theme = useRecoilValue(userthemeState);
+  const { data: theme } = getUserConfig();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState({
-    itemCount: 0,
+    originSelet: 0,
     source: "",
     width: "",
     type: 0,
   });
   const badge = ["none", "red", "skyblue", "green", "gray"];
+  const isMobile = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    );
+  };
 
   /** 사이드 Nav 초기화 */
   useEffect(() => {
@@ -30,12 +35,12 @@ export const Inventory = () => {
         style={{ marginTop: "0", minHeight: "40px" }}
       >
         <span>배지 장착 :</span>
-        {theme.type1 === 0 ? (
+        {theme?.data.badgeSeq === 1 ? (
           <span
             className={style.badge_span}
             onClick={() => {
               setModalData({
-                itemCount: 5,
+                originSelet: theme?.data.badgeSeq,
                 source: "",
                 width: "10%",
                 type: 1,
@@ -48,10 +53,10 @@ export const Inventory = () => {
         ) : (
           <div
             className={style.badge}
-            style={{ backgroundColor: `${badge[theme.type1]}` }}
+            style={{ backgroundColor: `${badge[theme?.data.badgeSeq - 1]}` }}
             onClick={() => {
               setModalData({
-                itemCount: 5,
+                originSelet: theme?.data.badgeSeq,
                 source: "",
                 width: "10%",
                 type: 1,
@@ -63,16 +68,16 @@ export const Inventory = () => {
 
         <div style={{ clear: "both" }} />
       </div>
-      <div className={style.content_div} style={{ minHeight: "11vw" }}>
+      <div className={style.content_div + " " + style.minhei}>
         <span>배경 설정 :</span>
         <img
           className={style.img1}
-          src={`/img/background/background${theme.type2}.png`}
+          src={`/img/background/background${theme?.data.backgroundSeq}.png`}
           onClick={() => {
             setModalData({
-              itemCount: 6,
+              originSelet: theme?.data.backgroundSeq,
               source: "/img/background/background",
-              width: "40%",
+              width: `${isMobile() ? 60 : 40}%`,
               type: 2,
             });
             setIsModalOpen(true);
@@ -84,12 +89,12 @@ export const Inventory = () => {
         <span>테마 설정 :</span>
         <img
           className={style.img2}
-          src={`/img/theme/theme${theme.type3}.png`}
+          src={`/img/theme/theme${theme?.data.themeSeq}.png`}
           onClick={() => {
             setModalData({
-              itemCount: 6,
+              originSelet: theme?.data.themeSeq,
               source: "/img/theme/theme",
-              width: "20%",
+              width: `${isMobile() ? 32 : 20}%`,
               type: 3,
             });
             setIsModalOpen(true);
@@ -98,17 +103,15 @@ export const Inventory = () => {
         <div style={{ clear: "both" }} />
       </div>
       {isModalOpen && (
-        <Modal
-          setModalOpen={setIsModalOpen}
-          children={
-            <InventoryModal
-              itemCount={modalData.itemCount}
-              source={modalData.source}
-              width={modalData.width}
-              type={modalData.type}
-            />
-          }
-        />
+        <Modal setModalOpen={setIsModalOpen}>
+          <InventoryModal
+            originSelet={modalData.originSelet}
+            source={modalData.source}
+            width={modalData.width}
+            type={modalData.type}
+            setIsModalOpen={setIsModalOpen}
+          />
+        </Modal>
       )}
     </div>
   );

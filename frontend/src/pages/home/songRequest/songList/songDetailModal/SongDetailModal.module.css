@@ -1,0 +1,46 @@
+.songModalContainer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  min-width: 520px;
+}
+.songModalContainer .songModalImg {
+  padding: 5% 4% 3% 6%;
+  width: 50%;
+  height: auto;
+  min-width: 230px;
+}
+.songModalContainer .songModalContentBox {
+  padding: 5% 6% 3% 0%;
+  color: var(--font-color);
+  min-width: 170px;
+}
+.songModalContainer .songModalContentBox .songTitle {
+  font-weight: bold;
+}
+.songModalContainer .songModalContentBox .songDetail {
+  margin-top: 5%;
+}
+
+@media screen and (max-width: 768px) {
+  .songModalContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    min-width: 300px;
+  }
+  .songModalContainer .songModalImg {
+    padding: 6%;
+    width: 80%;
+    height: auto;
+  }
+  .songModalContainer .songModalContentBox {
+    color: var(--font-color);
+    padding: 0% 5% 5% 5%;
+    width: 80%;
+  }
+  .songModalContainer .songModalContentBox .songTitle {
+    font-weight: bold;
+  }
+}/*# sourceMappingURL=SongDetailModal.module.css.map */

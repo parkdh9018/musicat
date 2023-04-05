@@ -1,30 +1,68 @@
-.songList {
+.songListBox {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 250px;
+}
+.songListBox .songList {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   padding-top: 2%;
+  padding-right: 1%;
 }
-
-.songSpan {
+.songListBox::-webkit-scrollbar {
+  width: 5px;
+}
+.songListBox::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+.songListBox::-webkit-scrollbar-thumb {
+  height: 30%;
+  background: var(--fade-font-color);
+  border-radius: 10px;
+}
+.songListBox::-webkit-scrollbar-track {
   background: none;
-  border: none;
-  align-items: center;
-  color: white;
 }
 
 .songBtn {
   background: none;
   border: none;
   align-items: center;
-  color: white;
+  color: var(--font-color);
 }
 
-.songModal {
+.songSpan {
   display: flex;
-  flex-direction: row;
-  padding: 5%;
+  align-items: center;
+  flex-grow: 1;
+  background: none;
+  border: none;
+  align-items: center;
+  color: var(--font-color);
 }
 
-.songModalImg {
-  padding: 5%;
+.userSongSpan {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  background: none;
+  border: none;
+  align-items: center;
+  color: var(--red-color);
+}
+
+.playingSongSpan {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  background: none;
+  border: none;
+  align-items: center;
+  color: var(--blue-color);
+}
+
+.songImg {
+  width: 40px;
+  margin-right: 3%;
 }/*# sourceMappingURL=SongList.module.css.map */

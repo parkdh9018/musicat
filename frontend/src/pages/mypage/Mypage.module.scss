@@ -22,6 +22,20 @@
       width: 100%;
       min-height: 100%;
       background-color: var(--background-color);
+      border-radius: 10px;
+    }
+  }
+}
+
+@media screen and (max-width: 840px) {
+  .mypage {
+    .leftTab {
+      display: none;
+    }
+
+    .rightTab {
+      width: 100%;
+      padding: 2%;
     }
   }
 }

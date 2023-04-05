@@ -1,5 +1,5 @@
 .onairSign {
-  height: 125px;
+  height: 100px;
   z-index: 4;
   display: flex;
   align-items: center;
@@ -8,10 +8,11 @@
 }
 
 .box {
-  width: 180px;
-  height: 55px;
+  width: 170px;
+  height: 60px;
   border-radius: 3px;
   border: 1.2mm ridge black;
+  box-shadow: 4px 4px 1px 1px rgba(0, 0, 0, 0.2);
   background: linear-gradient(to top, red, rgb(228, 107, 107), red);
   display: flex;
   align-items: center;
@@ -70,5 +71,29 @@
   92.5% {
     color: inherit;
     text-shadow: inherit;
+  }
+}
+@media screen and (max-width: 1200px) {
+  .onairSign {
+    height: 90px;
+  }
+  .onairSign .box {
+    width: 150px;
+    height: 55px;
+  }
+  .onairSign .logo b {
+    font-size: 25px;
+  }
+}
+@media screen and (max-width: 768px) {
+  .onairSign {
+    height: 75px;
+  }
+  .onairSign .box {
+    width: 115px;
+    height: 45px;
+  }
+  .onairSign .logo b {
+    font-size: 18px;
   }
 }/*# sourceMappingURL=OnairSign.module.css.map */

@@ -5,16 +5,94 @@
   margin-right: auto;
   height: 40vh;
   min-height: 250px;
-  background-color: blue;
+  position: relative;
+  transition: 0.3s;
+  background-color: white;
+  z-index: 0;
+}
+.broadcast .radioBooth {
+  max-width: 1201px;
+  position: absolute;
+  z-index: 1;
+  top: -1px;
+  height: calc(40vh + 1px);
+  min-height: 252px;
+  width: 101%;
+}
+.broadcast .broad_back {
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  transition: 0.2s;
+  position: absolute;
+}
+.broadcast:hover .broad_back {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.broadcast:hover .play, .broadcast:hover .share {
+  visibility: visible;
+}
+
+.play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 50px;
+  color: rgb(200, 200, 200);
+  visibility: hidden;
+  cursor: pointer;
+}
+.play:hover {
+  color: rgb(255, 83, 83);
+  transition: 0.4s;
+}
+
+.share {
+  position: absolute;
+  top: 3%;
+  right: 1%;
+  font-size: 23px;
+  color: rgb(200, 200, 200);
+  visibility: hidden;
+  cursor: pointer;
+}
+.share:hover {
+  color: rgb(130, 130, 255);
+  transition: 0.2s;
 }
 
 .mypage {
   position: fixed;
-  min-width: 120px;
+  min-width: 100px;
   min-height: 60px;
-  width: 30vw;
-  height: 15vw;
-  bottom: 0;
+  width: 50vh;
+  height: 30vh;
+  max-width: 460px;
+  min-height: 140px;
+  transform: translateY(63vh);
   z-index: 1;
-  transition: 0.3s;
+}
+
+.mybackground {
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+@media screen and (max-width: 768px) {
+  .mypage {
+    position: fixed;
+    min-width: 150px;
+    min-height: 90px;
+    width: 50vw;
+    height: 30vw;
+  }
+  .play {
+    font-size: 30px;
+  }
+  .share {
+    font-size: 18px;
+  }
 }/*# sourceMappingURL=Broadcast.module.css.map */

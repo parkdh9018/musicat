@@ -9,19 +9,37 @@
   flex-grow: 1;
 
   .leftTab {
-    flex-grow: 1;
+    width: 33%;
     padding: 0% 1% 1% 1%;
   }
 
   .rightTab {
     width: 67%;
-    min-height: calc(60vh - 60px);
+    min-height: 300px;
     padding: 1% 1% 1% 0%;
 
     .content {
       width: 100%;
       min-height: 100%;
       background-color: var(--background-color);
+      border-radius: 10px;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .home {
+    flex-direction: column;
+
+    .leftTab {
+      width: 100%;
+      padding: 1%;
+      margin-bottom: 30px;
+    }
+
+    .rightTab {
+      width: 100%;
+      padding: 2%;
     }
   }
 }

@@ -7,16 +7,32 @@
   flex-grow: 1;
 }
 .home .leftTab {
-  flex-grow: 1;
+  width: 33%;
   padding: 0% 1% 1% 1%;
 }
 .home .rightTab {
   width: 67%;
-  min-height: calc(60vh - 60px);
+  min-height: 300px;
   padding: 1% 1% 1% 0%;
 }
 .home .rightTab .content {
   width: 100%;
   min-height: 100%;
   background-color: var(--background-color);
+  border-radius: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  .home {
+    flex-direction: column;
+  }
+  .home .leftTab {
+    width: 100%;
+    padding: 1%;
+    margin-bottom: 30px;
+  }
+  .home .rightTab {
+    width: 100%;
+    padding: 2%;
+  }
 }/*# sourceMappingURL=Home.module.css.map */

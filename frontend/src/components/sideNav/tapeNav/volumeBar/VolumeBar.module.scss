@@ -1,7 +1,7 @@
 .volumeBar {
   position: relative;
   top: 15px;
-  width: 361px;
+  width: 90%;
   height: 41px;
 }
 
@@ -28,7 +28,7 @@
   -webkit-appearance: none;
   appearance: none;
   width: 1%;
-  height: 41px;
+  height: 3.1vw;
   background: #e73730;
   cursor: pointer;
 }
@@ -38,4 +38,10 @@
   height: 10px;
   background: #e73730;
   cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  .volumeBar {
+    display: none;
+  }
 }

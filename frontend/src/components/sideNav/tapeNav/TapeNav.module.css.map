@@ -1,1 +1,1 @@
-{"version":3,"sources":["TapeNav.module.scss","TapeNav.module.css"],"names":[],"mappings":"AAAA;EACE,aAAA;EACA,eAAA;EACA,sBAAA;EACA,uBAAA;EACA,mBAAA;EACA,gBAAA;EACA,QAAA;ACCF","file":"TapeNav.module.css"}
+{"version":3,"sources":["TapeNav.module.scss","TapeNav.module.css"],"names":[],"mappings":"AAAA;EACE,aAAA;EACA,sBAAA;EACA,uBAAA;EACA,mBAAA;EACA,gBAAA;EACA,QAAA;EAEA,uBAAA;EACA,sBAAA;EACA,oBAAA;EACA,kBAAA;EAEA,yBAAA;EAEA,sBAAA;EACA,oBAAA;EACA,iBAAA;ACDF","file":"TapeNav.module.css"}

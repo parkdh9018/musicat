@@ -1,41 +1,56 @@
+import { Song, StoryContent, StoryRequest } from "@/types/home";
 import { atom, selector, useRecoilCallback } from "recoil";
+import { userInfoState } from "./user.atom";
 
-interface content {
-  type: "normal" | "narr";
-  speaker : string;
-  value: string;
-}
 
 export const storyTitleState = atom<string>({
   key: "title",
   default: "",
 });
 
-export const songTitleState = atom<string>({
+export const storySongState = atom<Song>({
   key: "songTitle",
-  default: "",
-})
+  default: {
+    musicSeq: 0,
+    userSeq: 0,
+    musicTitle: "",
+    musicGenre: "",
+    musicArtist: "",
+    musicAlbum: "",
+    musicImage: "",
+    musicYoutubeId: "",
+    musicLength: 0,
+    musicReleaseDate: "",
+    musicCreatedAt: "",
+    musicIsPlayed: false,
+  },
+});
 
-export const storyContentState = atom<content[]>({
+export const storyContentState = atom<StoryContent[]>({
   key: "content",
-  default: [{ type: "normal", speaker: "male", value: "" }],
+  default: [{ speaker: "narr", content: "" }],
 });
 
 export const allStorySelector = selector({
   key: "allStory",
-  get: ({get}) => {
+  get: ({ get }):StoryRequest => {
     const storyTitle = get(storyTitleState);
-    const storyContents = get(storyContentState);
-    const storyMusicName = get(songTitleState);
+    const storyContent = get(storyContentState);
+    const user = get(userInfoState);
+    const storySong = get(storySongState);
 
-    // TODO : api에 맞게 수정필요
-    return JSON.stringify({storyTitle, storyContents, storyMusicName})
+    return {
+      userSeq: user.userSeq,
+      storyTitle,
+      storyContent,
+      storySong,
+    }
   },
-})
+});
 
 export const addStoryContent = () => {
   const callback = useRecoilCallback(({ set }) => {
-    return (payload: content) => {
+    return (payload: StoryContent) => {
       set(storyContentState, (prev) => [...prev, payload]);
     };
   }, []);
@@ -44,40 +59,48 @@ export const addStoryContent = () => {
 };
 
 export const deleteStoryContent = () => {
-  const callback = useRecoilCallback(({ set }) => {
-    return (index: number) => {
-      set(storyContentState, (prev) => prev.filter((v, i) => i !== index));
-    };
-  }, [storyContentState]);
+  const callback = useRecoilCallback(
+    ({ set }) => {
+      return (index: number) => {
+        set(storyContentState, (prev) => prev.filter((v, i) => i !== index));
+      };
+    },
+    [storyContentState]
+  );
 
   return callback;
 };
 
 export const editStoryConent = () => {
-  const callback = useRecoilCallback(({ set }) => {
-    return (index: number, value : string) => {
-      set(storyContentState, (prev) => {
-        const pr = [...prev];
-        pr[index] = {...pr[index], value};
-        return pr;
-      });
-    };
-  }, [storyContentState]);
+  const callback = useRecoilCallback(
+    ({ set }) => {
+      return (index: number, content: string) => {
+        set(storyContentState, (prev) => {
+          const pr = [...prev];
+          pr[index] = { ...pr[index], content };
+          return pr;
+        });
+      };
+    },
+    [storyContentState]
+  );
 
   return callback;
 };
 
 export const editStorySpeaker = () => {
-  const callback = useRecoilCallback(({ set }) => {
-    return (index: number, speaker : string) => {
-      set(storyContentState, (prev) => {
-        let pr = [...prev];
-        pr[index] = {...pr[index], speaker};
-        return pr;
-      });
-    };
-  }, [storyContentState]);
+  const callback = useRecoilCallback(
+    ({ set }) => {
+      return (index: number, speaker: string) => {
+        set(storyContentState, (prev) => {
+          const pr = [...prev];
+          pr[index] = { ...pr[index], speaker };
+          return pr;
+        });
+      };
+    },
+    [storyContentState]
+  );
 
   return callback;
 };
-

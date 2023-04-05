@@ -23,14 +23,19 @@
   color: var(--font-color);
 }
 .content_container:hover {
-  background-color: rgb(39, 39, 39);
+  background-color: var(--modal-background);
 }
 
-@media screen and (max-width: 600px) {
-  .header_container {
-    font-size: 1rem;
-  }
+@media screen and (max-width: 1000px) {
   .content_container {
     font-size: 0.8rem;
+  }
+}
+@media screen and (max-width: 840px) {
+  .header_container {
+    font-size: 1.1em;
+  }
+  .content_container {
+    font-size: 0.9rem;
   }
 }/*# sourceMappingURL=Board.module.css.map */

@@ -12,12 +12,12 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AlertListResponseDto {
 
-    private long alertSeq;
+  private long alertSeq;
 
-    private String alertTitle;
+  private String alertTitle;
 
-    private String alertCreatedAt;
+  private String alertCreatedAt;
 
-    private boolean alertIsRead;
+  private boolean alertIsRead;
 
 }
