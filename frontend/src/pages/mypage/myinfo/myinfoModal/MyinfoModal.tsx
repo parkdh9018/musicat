@@ -1,3 +1,4 @@
+import { getUserMoneyDetail } from "@/connect/axios/queryHooks/user";
 import style from "./MyinfoModal.module.css";
 
 interface MyinfoModalProps {
@@ -5,22 +6,27 @@ interface MyinfoModalProps {
 }
 
 export const MyinfoModal = ({ dataSeq }: MyinfoModalProps) => {
+  const { data } = getUserMoneyDetail(dataSeq);
+
   return (
     <div className={style.myinfoModal}>
       <p>
-        날짜<span>2022년 12월 14일(수) 18:23</span>
+        날짜<span>{data?.data.moneyLogCreatedAt}</span>
       </p>
       <p>
         구분
         <span>
-          노래 신청 /
-          <span className={style.red} style={{ marginLeft: "5px" }}>
-            -40 츄르
+          {data?.data.moneyLogType} /
+          <span
+            className={data?.data.moneyLogChange < 0 ? style.red : style.green}
+            style={{ marginLeft: "5px" }}
+          >
+            {data?.data.moneyLogChange} 츄르
           </span>
         </span>
       </p>
       <p>
-        상세<span>신청곡 / LE SSERAFIM - ANTIFRAGILE</span>
+        상세<span>{data?.data.moneyLogDetail}</span>
       </p>
     </div>
   );

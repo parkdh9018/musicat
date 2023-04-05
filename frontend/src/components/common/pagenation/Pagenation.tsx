@@ -11,11 +11,11 @@ import style from "./Pagenation.module.css";
  *  url부분은 구조를 바꿔야 한다. 나중에 수정하자
  */
 interface PagenationProps {
-  number: number;
-  first: boolean;
-  last: boolean;
-  totalPages: number;
-  url: string;
+  number?: number;
+  first?: boolean;
+  last?: boolean;
+  totalPages?: number;
+  url?: string;
 }
 
 export const Pagenation = ({
@@ -25,6 +25,12 @@ export const Pagenation = ({
   totalPages,
   url,
 }: PagenationProps) => {
+  number = number || 0;
+  first = first || first;
+  last = last || last;
+  totalPages = totalPages || 1;
+  url = url || "";
+
   const navigate = useNavigate();
   const startNum = Math.floor((Math.max(number + 1, 1) - 1) / 10) * 10 + 1;
 
@@ -35,7 +41,7 @@ export const Pagenation = ({
       <div className={!first ? style.page_number : style.noWork} key={uuidv4()}>
         <FontAwesomeIcon
           onClick={() => {
-            navigate("/" + url + (number + 0));
+            navigate((url as string) + ((number as number) + 0));
           }}
           icon={faChevronLeft}
         />
@@ -44,17 +50,19 @@ export const Pagenation = ({
 
     for (
       let i = startNum;
-      i <= Math.min(Math.max(totalPages, 1), startNum + 9);
+      i <= Math.min(Math.max(totalPages as number, 1), startNum + 9);
       i++
     ) {
       pageList.push(
         <div
           key={uuidv4()}
-          className={i !== number + 1 ? style.page_number : style.nowPage}
+          className={
+            i !== (number as number) + 1 ? style.page_number : style.nowPage
+          }
         >
           <span
             onClick={() => {
-              navigate("/" + url + i);
+              navigate((url as string) + i);
             }}
           >
             {i}
@@ -68,7 +76,7 @@ export const Pagenation = ({
         <FontAwesomeIcon
           icon={faChevronRight}
           onClick={() => {
-            navigate("/" + url + (number + 2));
+            navigate((url as string) + ((number as number) + 2));
           }}
         />
       </div>

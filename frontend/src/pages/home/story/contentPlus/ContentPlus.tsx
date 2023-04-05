@@ -5,7 +5,7 @@ import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@/components/common/button/Button";
 import { MouseEventHandler, useState } from "react";
 import { useClickOutside } from "@mantine/hooks";
-import { addStoryContent, storyContentState } from "@/atoms/story.atoms";
+import { addStoryContent } from "@/atoms/story.atoms";
 
 export const ContentPlus = () => {
 
@@ -17,13 +17,13 @@ export const ContentPlus = () => {
 
   const clickNormal:MouseEventHandler<HTMLDivElement> = (e) => {
     e.stopPropagation();
-    add({type : "normal", speaker: "narr", value : ""})
+    add({speaker: "male", content: ""})
     setPopover(false)
   };
 
   const clickNarration:MouseEventHandler<HTMLDivElement> = (e) => {    
     e.stopPropagation();
-    add({type : "narr", speaker : "male", value : ""})
+    add({speaker : "narr", content : ""})
     setPopover(false)
   };
 

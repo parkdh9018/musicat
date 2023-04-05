@@ -15,6 +15,7 @@
   background-color: var(--background-color);
   color: var(--font-color);
   padding: 5px 10% 25px;
+  border-radius: 10px;
 }
 .side_board hr {
   margin: 0;
@@ -22,28 +23,29 @@
   height: 1.5px;
   border: 0;
 }
-.side_board p,
+.side_board .nav,
 .side_board h4 {
   margin: 20px 0px 15px 20px;
 }
-.side_board p {
+.side_board .nav {
   cursor: pointer;
   position: relative;
+  width: 100%;
   color: var(--fade-font-color);
 }
-.side_board p:hover {
+.side_board .nav:hover {
   color: rgb(123, 123, 123);
 }
-.side_board p div {
+.side_board .nav .tag {
   position: absolute;
   top: -10px;
-  left: -10px;
+  left: -20px;
   height: 36px;
   width: 100%;
   animation: 0.3s ease-in-out sideNavEffect;
   background-color: rgba(94, 94, 94, 0.3);
 }
-.side_board p div::after {
+.side_board .nav .tag::after {
   content: "";
   float: right;
   border-right: 6px solid rgba(254, 155, 66, 0.7);
@@ -70,7 +72,7 @@
     font-size: 0.9rem;
   }
 }
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 840px) {
   .side_board {
     display: none;
   }

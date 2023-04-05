@@ -1,15 +1,33 @@
 import style from "./TapeButtons.module.css";
 import { NavLink } from "react-router-dom";
 import { Button } from "@/components/common/button/Button";
+import { useRecoilState, useResetRecoilState } from "recoil";
+import { musicState, playNowState } from "@/atoms/song.atom";
+import SocketManager from "@/connect/socket/socket";
 
 export const TapeButtons = () => {
-  // 재생, 정지 버튼에 소켓 연결, 해제 기능 연결 필요
-  // 정지 버튼은 clicked 스타일 적용 필요
+  const [playNow, setPlayNow] = useRecoilState(playNowState);
+  const stopRadio = useResetRecoilState(musicState);
+  const socket = SocketManager.getInstance();
 
   return (
     <div className={style.bg}>
-      <Button content="재생" onClick={() => {}} className={style.play} />
-      <Button content="정지" onClick={() => {}} className={style.stop} />
+      <Button
+        content="재생"
+        onClick={() => {
+          setPlayNow(true);
+        }}
+        className={!playNow ? style.play : style.play_clicked}
+      />
+      <Button
+        content="정지"
+        onClick={() => {
+          setPlayNow(false);
+          stopRadio();
+          socket.disconnect();
+        }}
+        className={playNow ? style.stop : style.stop_clicked}
+      />
       <NavLink
         to="/"
         className={({ isActive }) =>

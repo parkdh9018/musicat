@@ -1,9 +1,8 @@
 .header {
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgb(26, 26, 26);
 }
-
-.innerHeader {
-  height: 72px;
+.header .innerHeader {
+  height: 65px;
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
@@ -11,36 +10,56 @@
   align-items: center;
   justify-content: space-between;
 }
-.innerHeader .innerContent {
+.header .innerHeader .innerContent {
   width: 30%;
+  margin-top: 3px;
   display: flex;
   justify-content: center;
 }
-.innerHeader .logo_img {
+.header .innerHeader .logo_img {
+  width: 130px;
   margin-left: 20px;
+  margin-top: 3px;
+  transition: 0.1s;
 }
-.innerHeader .user_info {
+.header .innerHeader .logo_img:hover {
+  width: 133px;
+  box-shadow: 1px 1px 0 1px rgba(0, 0, 0, 0.1);
+}
+.header .innerHeader .user_info {
   display: flex;
   align-items: center;
   margin-right: 20px;
+  cursor: pointer;
 }
-.innerHeader .user_info .nickname {
-  color: var(--fade-font-color);
+.header .innerHeader .user_info .nickname {
+  color: #8d8d8d;
+  transition: 0.2s;
 }
-.innerHeader .user_info .nickname_other {
-  color: var(--font-color);
+.header .innerHeader .user_info .nickname_other {
+  color: #ececec;
+  transition: 0.2s;
 }
-.innerHeader .user_info:hover .popover_state {
+.header .innerHeader .user_info .login_sent {
+  color: #ececec;
+  transition: 0.2s;
+}
+.header .innerHeader .user_info:hover .popover_state {
+  z-index: 2;
   visibility: visible;
-  opacity: 100;
 }
-
-.profile_div {
+.header .innerHeader .user_info:hover .nickname_other {
+  color: #8d8d8d;
+}
+.header .innerHeader .user_info:hover .nickname {
+  color: #ececec;
+}
+.header .profile_div {
   position: relative;
 }
-.profile_div img {
-  width: 50px;
-  height: 50px;
+.header .profile_div img {
+  width: 42px;
+  height: 42px;
   border-radius: 100%;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
   margin-left: 10px;
@@ -48,31 +67,78 @@
   -o-object-fit: cover;
      object-fit: cover;
 }
-.profile_div .badge {
+.header .profile_div .badge {
   position: absolute;
   border: 1px solid white;
-  width: 21px;
-  height: 21px;
+  width: 18px;
+  height: 18px;
   background-color: #ff4e4e;
   border-radius: 50%;
-  padding: 12px;
+  padding: 10px;
   top: -8px;
   right: -9px;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: var(--font-color);
-  font-size: 0.8rem;
+  color: #ececec;
+  font-size: 0.7rem;
 }
-
-.sign_content {
+.header .sign_content {
   display: flex;
   justify-content: center;
 }
-
-.popover_state {
-  visibility: hidden;
-  opacity: 0;
+.header .popover_state {
   position: relative;
-  transition: 0.8s;
+  visibility: hidden;
+  z-index: -1;
+}
+
+@media screen and (max-width: 1200px) {
+  .header {
+    font-size: 0.9rem;
+  }
+}
+@media screen and (max-width: 768px) {
+  .header {
+    height: 60px;
+  }
+  .header .innerHeader .logo_img {
+    width: 92px;
+    margin-left: 12px;
+    margin-top: 0px;
+    transition: 0.1s;
+  }
+  .header .innerHeader .logo_img:hover {
+    width: 92px;
+  }
+  .header .user_info .nickname {
+    display: none;
+  }
+  .header .user_info .nickname_other {
+    display: none;
+  }
+  .header .user_info:hover .popover_state {
+    opacity: 1;
+    z-index: 2;
+  }
+  .header .user_info .profile_div {
+    position: relative;
+  }
+  .header .user_info .profile_div img {
+    width: 40px;
+    height: 40px;
+    margin-left: 12px;
+  }
+  .header .user_info .profile_div .badge {
+    width: 16px;
+    height: 16px;
+    padding: 8px;
+    top: -5px;
+    right: -5px;
+    font-size: 0.5rem;
+  }
+  .header .user_info .popover_state {
+    opacity: 100;
+    z-index: 1;
+  }
 }/*# sourceMappingURL=Header.module.css.map */

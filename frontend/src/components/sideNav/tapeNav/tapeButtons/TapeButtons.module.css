@@ -3,11 +3,12 @@
   background: linear-gradient(#5f6062 5%, #a7a5a8 23%, #a7a5a8 35%, #a7a5a8 40%, #a7a5a8 50%, #a7a5a8 60%, #a7a5a8 65%, #a7a5a8 77%, #5f6062 95%);
   color: #ffffff;
   height: 70px;
-  width: 80%;
+  width: 90%;
   cursor: pointer;
 }
 
 .clicked {
+  color: #313131;
   display: flex;
   flex-grow: 1;
   font-size: 1em;
@@ -19,6 +20,10 @@
   background-color: #a7a5a8;
 }
 
+.clicked:visited {
+  color: #313131;
+}
+
 .unclicked {
   display: flex;
   flex-grow: 1;
@@ -27,6 +32,11 @@
   align-items: center;
   border: 1px solid #4f5050;
   border-radius: 5%;
+  color: #313131;
+}
+
+.unclicked:visited {
+  color: #313131;
 }
 
 .play {
@@ -39,6 +49,16 @@
   background-color: rgba(223, 1, 1, 0.6);
 }
 
+.play_clicked {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #4f5050;
+  border-radius: 5%;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.8), rgba(223, 1, 1, 0.3) 30%), linear-gradient(180deg, rgba(0, 0, 0, 0.8), rgba(223, 1, 1, 0.3) 30%), linear-gradient(270deg, rgba(0, 0, 0, 0.8), rgba(223, 1, 1, 0.3) 30%);
+}
+
 .stop {
   display: flex;
   flex-grow: 1;
@@ -47,4 +67,26 @@
   border: 1px solid #4f5050;
   border-radius: 5%;
   background-color: rgba(0, 0, 0, 0.4);
+}
+
+.stop_clicked {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #4f5050;
+  border-radius: 5%;
+  background-color: rgba(0, 0, 0, 0.4);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.15) 30%), linear-gradient(180deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.15) 30%), linear-gradient(270deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.15) 30%);
+}
+
+@media screen and (max-width: 1200px) {
+  .bg {
+    font-size: 0.7rem;
+  }
+}
+@media screen and (max-width: 768px) {
+  .bg {
+    font-size: 1rem;
+  }
 }/*# sourceMappingURL=TapeButtons.module.css.map */

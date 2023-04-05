@@ -5,6 +5,10 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import style from "./NoticeManageModify.module.css";
+import {
+  getNoticeDetail,
+  requestNoticeModify,
+} from "@/connect/axios/queryHooks/notice";
 
 export const NoticeManageModify = () => {
   const { noticeSeq } = useParams();
@@ -13,8 +17,13 @@ export const NoticeManageModify = () => {
   const [content, setContent] = useState("");
   const setNowSideNav = useSetRecoilState(nowSideNavState);
 
-  // 리엑트 쿼리를 사용해서 detail 정보를 가져온다.
   // param이 new라면 새로운 글 작성이니까 새글작성 세팅
+  const { isLoading } = getNoticeDetail(
+    `/notice/detail?noticeSeq=${noticeSeq}`,
+    noticeSeq,
+    setTitle,
+    setContent
+  );
 
   useEffect(() => {
     setNowSideNav("공지사항");
@@ -30,6 +39,7 @@ export const NoticeManageModify = () => {
         <span>내용 :</span>
         <textarea
           className={style.content}
+          value={content}
           onChange={(e) => {
             setContent(e.target.value);
           }}
@@ -44,7 +54,20 @@ export const NoticeManageModify = () => {
           }}
           style={{ marginRight: "7px" }}
         />
-        <Button content="등 록" onClick={() => {}} />
+        <Button
+          content={noticeSeq === "new" ? "등 록" : "수 정"}
+          onClick={() => {
+            noticeSeq === "new"
+              ? requestNoticeModify("post", navigate, title, content)
+              : requestNoticeModify(
+                  "patch",
+                  navigate,
+                  title,
+                  content,
+                  noticeSeq
+                );
+          }}
+        />
       </div>
     </div>
   );

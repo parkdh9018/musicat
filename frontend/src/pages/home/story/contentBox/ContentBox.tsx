@@ -10,19 +10,16 @@ import {
 } from "@/atoms/story.atoms";
 import { useClickOutside } from "@mantine/hooks";
 import { Input } from "@/components/common/input/Input";
+import { StoryContent } from "@/types/home";
 
 // TODO : atoms에 있는 type과 하나로 통합 하면 좋을듯
-interface ContentBoxProps {
+interface ContentBoxProps extends StoryContent {
   index: number;
-  type: "normal" | "narr";
-  value: string;
-  speaker: string;
 }
 export const ContentBox = ({
   index,
-  type,
-  value,
   speaker,
+  content,
 }: ContentBoxProps) => {
   const dumyOption = [
     { value: "male", name: "남성" },
@@ -30,7 +27,7 @@ export const ContentBox = ({
   ];
 
   const [editstate, setEditState] = useState(false);
-  const [editText, setEditText] = useState(value);
+  const [editText, setEditText] = useState(content);
 
   const useEditSpeaker = editStorySpeaker();
   const useDelete = deleteStoryContent();
@@ -66,16 +63,17 @@ export const ContentBox = ({
     <>
       <div className={style.contentBox}>
         <div className={style.item_number}>{index + 1}</div>
-        {type == "normal" ? (
-          <div className={style.speaker}>
-            <SelectBox
-              defaultValue={speaker}
-              options={dumyOption}
-              setValue={useEditSpeakerCallback}
-            />
-          </div>
-        ) : (
+        {speaker == "narr" ? (
           <div className={style.speaker}>나레이션</div>
+
+        ) : (
+          <div className={style.speaker}>
+          <SelectBox
+            defaultValue={speaker}
+            options={dumyOption}
+            setValue={useEditSpeakerCallback}
+          />
+        </div>
         )}
         <div className={style.delete_icon}>
           <FontAwesomeIcon icon={faTrash} onClick={deleteClick} />

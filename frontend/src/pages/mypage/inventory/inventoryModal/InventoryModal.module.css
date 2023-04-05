@@ -41,4 +41,10 @@
 }
 .inventory_modal .cal_box .red {
   color: var(--red-color);
+}
+
+@media screen and (max-width: 768px) {
+  .inventory_modal .item_flex .img_box .badge {
+    margin-top: 7vh;
+  }
 }/*# sourceMappingURL=InventoryModal.module.css.map */

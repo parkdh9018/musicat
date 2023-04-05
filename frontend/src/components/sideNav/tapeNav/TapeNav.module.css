@@ -1,9 +1,16 @@
 .tapeNav {
   display: flex;
-  margin-top: 5px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   position: sticky;
   top: 5px;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }/*# sourceMappingURL=TapeNav.module.css.map */

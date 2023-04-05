@@ -13,22 +13,19 @@ export const Home = () => {
   }, []);
 
   return (
-    <div
-      style={{
-        backgroundImage: "url(/img/pagebackground/theme1.png)",
-        width: "100vw",
-      }}
-    >
-      <div className={style.home}>
-        <div className={style.leftTab}>
-          <TapeNav />
-        </div>
-        <div className={style.rightTab}>
-          <div className={style.content}>
-            <Outlet />
+    <>
+      <div>
+        <div className={style.home}>
+          <div className={style.leftTab}>
+            <TapeNav />
+          </div>
+          <div className={style.rightTab}>
+            <div className={style.content}>
+              <Outlet />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };

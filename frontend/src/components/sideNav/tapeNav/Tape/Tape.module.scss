@@ -1,14 +1,15 @@
 .tape {
   position: relative;
-  top: 40px;
-  // aspect-ratio: 376 / 239;
-  // width: 376px;
-  // height: 239px;
-  // display: inline-block;
+  top: 30px;
+  width: 100%;
+  aspect-ratio: 376 / 239;
 }
 
 .fixedRatio {
-  width: 100%; /* 원하는 너비 설정 */
+  aspect-ratio: 376 / 220;
+  width: 100%;
+  max-width: 28vw;
+  border-radius: 10px;
   height: auto; /* 높이는 자동으로 설정됨 */
 }
 
@@ -20,19 +21,21 @@
 }
 
 .left {
-  top: 47.28%;
+  top: 46.28%;
   left: 26.9%;
 }
 
 .right {
-  top: 47.28%;
+  top: 46.28%;
   left: 61.2%;
 }
 
 .tapeImg {
   position: absolute;
   width: 100%;
+  max-width: 30vw;
   height: auto;
+  border-radius: 10px;
 }
 
 .songName {
@@ -46,5 +49,35 @@
 
 .text {
   white-space: nowrap;
-  font-size: 24px;
+  font-size: 1.5vw;
+}
+
+@media screen and (max-width: 768px) {
+  .tape {
+    top: 20px;
+  }
+
+  .fixedRatio {
+    max-width: 89%;
+    margin-left: 5%;
+  }
+
+  .tapeImg {
+    max-width: 90%;
+    margin-left: 5%;
+  }
+
+  .text {
+    font-size: 3vw;
+  }
+
+  .left {
+    top: 40.28%;
+    left: 28.9%;
+  }
+
+  .right {
+    top: 40.28%;
+    left: 60.2%;
+  }
 }
