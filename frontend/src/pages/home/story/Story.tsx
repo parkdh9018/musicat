@@ -71,7 +71,7 @@ export const Story = () => {
           <span className={style.content_label} style={{ marginRight: "20px" }}>
             신청곡
           </span>
-          <SongSearch width={85} setRequestSong={setSong} />
+          <SongSearch status={200} placeholder=" 가수 이름 / 노래 제목" width={85} setRequestSong={setSong} />
         </div>
         <div className={style.group}>
           <span className={style.content_label}>내용</span>
