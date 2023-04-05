@@ -122,8 +122,10 @@ export const SongSearch = ({
     //     );
     //   }
     // }
+    console.log("노래데이터");
+    console.log(result);
 
-    if (result.status === 200) {
+    if (result.status === 200 && result.data.musicYoutubeId) {
       setYoutubeSearch(false);
       setRequestSong({
         ...selectedSong,
@@ -137,8 +139,9 @@ export const SongSearch = ({
         text: "재생할 수 없는 곡입니다. 다른곡을 선택해주세요.",
         confirmButtonText: "닫기",
       }).then(() => {
-        setSearch("");
         setYoutubeSearch(false);
+        setRequestSong(undefined);
+        setSearch("");
       });
     }
   };
