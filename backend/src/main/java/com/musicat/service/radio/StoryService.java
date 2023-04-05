@@ -62,6 +62,7 @@ public class StoryService {
   private final ObjectMapper objectMapper = new ObjectMapper();
 
 
+  @Transactional
   @KafkaListener(topics = "storyValidateResult")
   public void getRadioState(String message, Acknowledgment acknowledgment) {
     if (message != null) {
@@ -88,7 +89,7 @@ public class StoryService {
           // 100 츄르 지급
           long userMoney = user.getUserMoney();
           user.setUserMoney(userMoney + 100);
-          userRepository.save(user);
+
           // 합격 문구 생성
           alertContent = "합격 \n" + user.getUserNickname() + "님 좋은 사연 감사합니다.\n감사의 의미로 100츄르가 지급되었습니다.";
         }
