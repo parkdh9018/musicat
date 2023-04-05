@@ -28,7 +28,7 @@ export const storySongState = atom<Song>({
 
 export const storyContentState = atom<StoryContent[]>({
   key: "content",
-  default: [{ speaker: "narr", content: "" }],
+  default: [],
 });
 
 export const allStorySelector = selector({
@@ -65,7 +65,7 @@ export const deleteStoryContent = () => {
         set(storyContentState, (prev) => prev.filter((v, i) => i !== index));
       };
     },
-    [storyContentState]
+    []
   );
 
   return callback;
@@ -82,7 +82,7 @@ export const editStoryConent = () => {
         });
       };
     },
-    [storyContentState]
+    []
   );
 
   return callback;
@@ -92,6 +92,7 @@ export const editStorySpeaker = () => {
   const callback = useRecoilCallback(
     ({ set }) => {
       return (index: number, speaker: string) => {
+        console.log("E")
         set(storyContentState, (prev) => {
           const pr = [...prev];
           pr[index] = { ...pr[index], speaker };
@@ -99,7 +100,7 @@ export const editStorySpeaker = () => {
         });
       };
     },
-    [storyContentState]
+    []
   );
 
   return callback;
