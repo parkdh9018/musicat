@@ -92,7 +92,6 @@ export const editStorySpeaker = () => {
   const callback = useRecoilCallback(
     ({ set }) => {
       return (index: number, speaker: string) => {
-        console.log("E")
         set(storyContentState, (prev) => {
           const pr = [...prev];
           pr[index] = { ...pr[index], speaker };

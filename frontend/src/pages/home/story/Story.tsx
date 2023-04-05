@@ -18,6 +18,7 @@ import { storyHook } from "@/connect/axios/queryHooks/story";
 import { useCustomToast } from "@/customHooks/useCustomToast";
 import { LoadingSpinner } from "@/pages/common/loadingSpinner/LoadingSpinner";
 import { useTokenData } from "@/customHooks/useTokenData";
+import { useResetRecoilState } from "recoil";
 
 export const Story = () => {
   const disable: React.CSSProperties = {
@@ -30,22 +31,41 @@ export const Story = () => {
 
   const userInfo = useTokenData();
   
-  const { button, mutate, setButton, isLoading } = storyHook(userInfo?.userSeq ? userInfo.userSeq : -1);
+  const { data, mutate, storyReqeustData, isLoading } = storyHook(userInfo?.userSeq ? userInfo.userSeq : -1);
 
   const [title, setTitle] = useRecoilState(storyTitleState);
   const [song, setSong] = useRecoilState(storySongState);
   const content = useRecoilValue(storyContentState);
   const [titlePlaceholder, setTitlePlaceholder] = useState("제목을 입력해주세요");
 
+  const [submitButton, setSubmitButton] = useState(false);
   
   useEffect(() => {
     if (userInfo?.userNick) {
-      setButton(true);
+      if(data != '200') {
+        useCustomToast("error","이미 신청한 사연이 있습니다.")
+        
+      } else {
+        setSubmitButton(true);
+      }
     } else {
       setTitlePlaceholder(LOGIN_REQUEST_STRING)
       useCustomToast("warning", LOGIN_REQUEST_STRING);
     }
   }, [userInfo]);
+
+  const resestState = () => {
+    useResetRecoilState(storyTitleState)
+    useResetRecoilState(storyContentState)
+    useResetRecoilState(storySongState)
+  }
+
+  useEffect(() => {
+    if(storyReqeustData) {
+      // 사연 신청완료 되면 리코일 초기화
+      resestState();
+    }
+  },[storyReqeustData])
 
   const allStory = useRecoilValue(allStorySelector);
 
@@ -89,7 +109,7 @@ export const Story = () => {
           ) : (
             <Button
               content="등록하기"
-              style={button ? {} : disable}
+              style={submitButton ? {} : disable}
               onClick={requestStoryEvent}
             />
           )}
