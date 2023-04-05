@@ -2,13 +2,21 @@ package com.musicat.service.radio;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.musicat.data.dto.music.MusicInfoDto;
-import com.musicat.data.dto.music.MusicRequestResultDto;
 import com.musicat.data.dto.music.MusicRequestDto;
-import com.musicat.data.dto.spotify.SpotifySearchResultDto;
+import com.musicat.data.dto.music.MusicRequestResultDto;
 import com.musicat.data.dto.music.YoutubeSearchResultDto;
+import com.musicat.data.dto.spotify.SpotifySearchResultDto;
+import com.musicat.data.dto.user.UserInfoJwtDto;
 import com.musicat.data.entity.radio.Music;
+import com.musicat.data.entity.user.MoneyLog;
+import com.musicat.data.entity.user.User;
 import com.musicat.data.repository.radio.MusicRepository;
+import com.musicat.data.repository.user.MoneyLogRepository;
+import com.musicat.data.repository.user.UserRepository;
+import com.musicat.jwt.TokenProvider;
 import com.musicat.service.kafka.KafkaProducerService;
+import com.musicat.util.ConstantUtil;
+import com.musicat.util.builder.MoneyLogBuilderUtil;
 import com.musicat.util.builder.MusicBuilderUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +34,22 @@ public class MusicService {
 
   // Utility 정의
   private final MusicBuilderUtil musicBuilderUtil;
+  private final MoneyLogBuilderUtil moneyLogBuilderUtil;
+  private final ConstantUtil constantUtil;
 
   // Repository 정의
   private final MusicRepository musicRepository;
+  private final UserRepository userRepository;
+  private final MoneyLogRepository moneyLogRepository;
 
   // Service 정의
   private final SpotifyApiService spotifyApiService;
   private final YoutubeApiService youtubeApiService;
   private final KafkaProducerService kafkaProducerService;
+
+  // JWT Provider 정의
+  private final TokenProvider tokenProvider;
+
 
   /**
    * 사용자가 신청한 노래를 DB에 저장합니다. 만약 사용자가 이미 곡을 신청했거나, 신청한 곡이 이미 DB에 존재할 경우 저장하지 않습니다.
@@ -51,11 +67,19 @@ public class MusicService {
     // 검증 로직에 사용할 변수 호출
     String musicTitle = musicRequestDto.getMusicTitle();
     String musicArtist = musicRequestDto.getMusicArtist();
-    long UserSeq = musicRequestDto.getUserSeq();
+    long userSeq = musicRequestDto.getUserSeq();
+
+    User user = userRepository.findById(userSeq)
+        .orElseThrow(() -> new EntityNotFoundException("유저 정보가 존재하지 않습니다."));
+
+    // 재화가 부족한 경우 예외 처리
+    if (user.getUserMoney() < 20) {
+      throw new IllegalArgumentException("재화가 부족합니다.");
+    }
 
     // 중복 신청 여부 체크
     Optional<Music> existingMusicByUser = musicRepository.findByUserSeqAndMusicPlayedFalse(
-        UserSeq);
+        userSeq);
     if (existingMusicByUser.isPresent()) {
       Music music = existingMusicByUser.get();
       int playOrder =
@@ -80,8 +104,14 @@ public class MusicService {
     Music music = musicRepository.save(
         musicBuilderUtil.buildMusicEntity(musicRequestDto));
 
+    // 20 재화를 사용
+    user.setUserMoney(user.getUserMoney() - 20);
+    MoneyLog moneyLog = moneyLogBuilderUtil.buildMoneyLog(user, constantUtil.MONEYLOG_MUSIC_TYPE, constantUtil.MONEYLOG_MUSIC_DETAIL,
+        constantUtil.MUSIC_REQUEST_MONEY * -1);
+    moneyLogRepository.save(moneyLog);
+
     try {
-      kafkaProducerService.send("musicRequest", music);
+      kafkaProducerService.send(constantUtil.MUSIC_TOPIC, music);
     } catch (JsonProcessingException e) {
       throw new RuntimeException(e);
     }
@@ -149,11 +179,13 @@ public class MusicService {
 
   /**
    * 음악 신청 중복 여부를 확인합니다
-   * @param userSeq
+   * @param token
    * @return
    */
-  public void isUniqueMusic(long userSeq) {
-    Optional<Music> optionalMusic = musicRepository.findByUserSeqAndMusicPlayedFalse(userSeq);
+  public void isUniqueMusic(String token) {
+    UserInfoJwtDto userInfo = tokenProvider.getUserInfo(token);
+    Optional<Music> optionalMusic = musicRepository.findByUserSeqAndMusicPlayedFalse(
+        userInfo.getUserSeq());
     if (optionalMusic.isPresent()) {
       throw new EntityExistsException("이미 신청한 노래가 있습니다.");
     }

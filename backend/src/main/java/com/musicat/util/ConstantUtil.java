@@ -54,7 +54,10 @@ public class ConstantUtil {
 
   // 최초 출석 시 지급되는 츄르
   public final long TODAY_MONEY = 100;
+  // 사연 신청 소모 츄르
   public final long STORY_REQUEST_MONEY = 50;
+  // 신청곡 신청 소모 츄르
+  public final long MUSIC_REQUEST_MONEY = 20;
 
   /**
    * 재화 내역 MoneyLog
@@ -66,6 +69,8 @@ public class ConstantUtil {
   public final String MONEYLOG_THEME_TYPE = "테마 변경";
   public final String MONEYLOG_STORY_TYPE = "사연 신청";
   public final String MONEYLOG_STORY_DETAIL = "사연 신청 완료 " + STORY_REQUEST_MONEY + " 츄르 차감!";
+  public final String MONEYLOG_MUSIC_TYPE = "신청곡 신청";
+  public final String MONEYLOG_MUSIC_DETAIL = "신청곡 신청 완료 " + MUSIC_REQUEST_MONEY + " 츄르 차감!";
 
   /**
    * 알림

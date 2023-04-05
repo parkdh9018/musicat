@@ -59,16 +59,15 @@ public class StoryService {
     Story story = storyRepository.save(
         storyBuilderUtil.buildStoryEntity(storyRequestDto));
 
-    User user = userRepository.findById(storyRequestDto.getUserSeq()).orElseThrow();
+    User user = userRepository.findById(storyRequestDto.getUserSeq())
+        .orElseThrow(() -> new EntityNotFoundException("유저 정보가 존재하지 않습니다."));
 
     if (user.getUserMoney() < 50) {
       return;
     }
 
     user.setUserMoney(user.getUserMoney() - 50);
-
     MoneyLog moneyLog = moneyLogBuilderUtil.buildMoneyLog(user, constantUtil.MONEYLOG_STORY_TYPE, constantUtil.MONEYLOG_STORY_DETAIL, constantUtil.STORY_REQUEST_MONEY * -1);
-
     moneyLogRepository.save(moneyLog);
 
     // (사연 + 신청곡) 데이터 -> 카프카 -> 파이썬 서버 : valid 체크 후 DB 반영, Intro 음성 파일 생성, Reaction 음성 파일 생성, Outro 음성 파일 생성
