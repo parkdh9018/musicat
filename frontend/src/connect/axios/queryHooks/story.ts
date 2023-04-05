@@ -36,7 +36,7 @@ export function storyHook(userSeq: number) {
         payload.storyContent.some((v) => v.content == "")
       ) {
         useCustomToast("error", "내용을 확인해주세요");
-      } else if (payload.storySong.musicTitle == "") {
+      } else if (!payload.storySong) {
         useCustomToast("error", "신청곡을 확인해주세요");
       } else {
         response = await $.post("/story", payload)
