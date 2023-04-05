@@ -33,6 +33,10 @@ export const Story = () => {
   
   const { data, mutate, storyReqeustData, isLoading } = storyHook(userInfo?.userSeq ? userInfo.userSeq : -1);
 
+  const resetTitle = useResetRecoilState(storyTitleState);
+  const resetContent = useResetRecoilState(storyContentState);
+  const resetSong = useResetRecoilState(storySongState)
+
   const [title, setTitle] = useRecoilState(storyTitleState);
   const [song, setSong] = useRecoilState(storySongState);
   const content = useRecoilValue(storyContentState);
@@ -54,16 +58,15 @@ export const Story = () => {
     }
   }, [userInfo]);
 
-  const resestState = () => {
-    useResetRecoilState(storyTitleState)
-    useResetRecoilState(storyContentState)
-    useResetRecoilState(storySongState)
-  }
+
 
   useEffect(() => {
     if(storyReqeustData) {
       // 사연 신청완료 되면 리코일 초기화
-      resestState();
+      resetTitle();
+      resetContent();
+      resetSong();
+      setSubmitButton(false);
     }
   },[storyReqeustData])
 
