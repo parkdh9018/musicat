@@ -71,14 +71,24 @@ public class SpotifyApiService {
     }
 
     ResponseEntity<SearchResponse> responseEntity = restTemplate.exchange(
-        "https://api.spotify.com/v1/search?q={query}&type=track&limit=5&market=KR&locale=ko-KR",
+        "https://api.spotify.com/v1/search?q={query}&type=track&limit=10&market=KR&locale=ko-KR",
+        HttpMethod.GET,
+        requestEntity,
+        SearchResponse.class,
+        query);
+    ResponseEntity<SearchResponse> responseEntityEn = restTemplate.exchange(
+        "https://api.spotify.com/v1/search?q={query}&type=track&limit=10&market=KR&",
         HttpMethod.GET,
         requestEntity,
         SearchResponse.class,
         query);
 
     List<SpotifySearchResultDto> results = new ArrayList<>();
-    for (Track track : responseEntity.getBody().getTracks().getItems()) {
+    int resultSize = responseEntity.getBody().getTracks().getItems().size();
+    for (int i = 0; i < resultSize; i++) {
+//    for (Track track : responseEntity.getBody().getTracks().getItems()) {
+      Track track = responseEntity.getBody().getTracks().getItems().get(i);
+      Track trackEn = responseEntityEn.getBody().getTracks().getItems().get(i);
       String imageUrl = null;
       List<Image> images = track.getAlbum().getImages();
       if (images != null && !images.isEmpty()) {
@@ -89,7 +99,9 @@ public class SpotifyApiService {
 
       SpotifySearchResultDto spotifySearchResultDto = SpotifySearchResultDto.builder()
           .musicTitle(track.getName())
+          .musicTitleEn(trackEn.getName())
           .musicArtist(track.getArtists().get(0).getName()) // Use get() to access the first artist
+          .musicArtistEn(trackEn.getArtists().get(0).getName())
           .musicAlbum(track.getAlbum().getName())
           .musicImage(imageUrl)
           .musicReleaseDate(musicReleaseDate)
