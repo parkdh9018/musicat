@@ -2,7 +2,6 @@ import style from "./About.module.css";
 import AboutImg01 from "@/asset/img/about01.png";
 import AboutImg02 from "@/asset/img/about02.png";
 import AboutImg03 from "@/asset/img/about03.png";
-import { FullPage } from "react-full-page";
 
 export const About = () => {
   return (
