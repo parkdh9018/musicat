@@ -119,7 +119,7 @@ async def validate_story_gpt(param):
             {"role": "assistant", "content": "I understand my role well!"},
             {"role": "user", "content": f'story : "{param}"'}
         ],
-        temperature=0.1
+        temperature=1.0
     )
     return (result.choices[0].message.content.strip())
 
