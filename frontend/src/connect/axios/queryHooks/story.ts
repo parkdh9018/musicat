@@ -27,6 +27,8 @@ export function storyHook(userSeq: number) {
     data: storyReqeustData,
   } = useMutation(
     async (payload: StoryRequest): Promise<boolean> => {
+      let response = false;
+
       if (!payload.storyTitle) {
         useCustomToast("error", "제목을 입력해주세요");
       } else if (
@@ -37,18 +39,22 @@ export function storyHook(userSeq: number) {
       } else if (payload.storySong.musicTitle == "") {
         useCustomToast("error", "신청곡을 확인해주세요");
       } else {
-        await $.post("/story", payload).catch(() => {
-          useCustomToast("error", "사연을 신청하지 못하였습니다");
-        });
-        return true;
+        response = await $.post("/story", payload)
+          .then(() => {
+            useCustomToast("success", "사연이 신청되었습니다");
+            return true;
+          })
+          .catch(() => {
+            useCustomToast("error", "사연을 신청하지 못하였습니다");
+            return false;
+          });
       }
 
-      return false;
+      return response;
     },
     {
       onSuccess: (data) => {
         if (data) {
-          useCustomToast("success", "사연이 신청되었습니다");
           return true;
         }
       },
