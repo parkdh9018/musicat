@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import style from "./SongSearch.module.css";
 import {
-  getLastFmSearch,
   getSongSearch,
   getYoutubeSearch,
 } from "@/connect/axios/queryHooks/music";
@@ -152,6 +151,10 @@ export const SongSearch = ({
       setSearch(search.slice(0, 64));
     }
   }, [search]);
+
+  useEffect(() => {
+    setSearch("");
+  }, []);
 
   // 스포티파이 검색 결과 목록
   const songSearchedList: JSX.Element[] = searchResults.map((searchResult) => (
