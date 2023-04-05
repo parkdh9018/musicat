@@ -120,8 +120,8 @@ async def process_story_state():
     story_content_list = json.loads(story_content)
     for i in range(len(story_content_list)):
         current_text = story_content_list[i]
-        # await api_naver_tts.generate_tts_clova(current_text['content'], os.path.join(tts_path, f"{i}.mp3"), current_text['speaker'])
-        await api_naver_tts.generate_tts_clova(current_text['content'], os.path.join(tts_path, f"{i}.mp3"), "nminseo")
+        await api_naver_tts.generate_tts_clova(current_text['content'], os.path.join(tts_path, f"{i}.mp3"), current_text['speaker'])
+        # await api_naver_tts.generate_tts_clova(current_text['content'], os.path.join(tts_path, f"{i}.mp3"), "nminseo")
         # await api_naver_tts.generate_tts_test(current_text['content'], os.path.join(tts_path, f"{i}.mp3"))
         story_tts_list.append(os.path.join(tts_path, f'{i}.mp3'))
     merged_story_tts = await merge_audio(story_tts_list, 500)
