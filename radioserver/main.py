@@ -23,7 +23,8 @@ async def set_remain_gpt_reaction():
     remain_music = database.find_null_intro_outro_music()
     if remain_story is not None:
         for story in remain_story:
-            await logic_story.process_verify_remain_story_data(story)
+            data = await logic_story.process_verify_remain_story_data(story)
+            kafka_handler.send_state("storyValidateResult", data)
     if remain_music is not None:
         for music in remain_music:
             await logic_music.process_remain_music_data(music)

@@ -6,6 +6,7 @@ import json
 import asyncio
 import os
 import my_util
+import kafka_handler
 from my_logger import setup_logger
 
 logger = setup_logger()
@@ -27,7 +28,11 @@ async def process_verify_story_data(data):
     if len(story_cleaned) > 500:
         database.verify_story(story_seq, 0, 1)
         logger.info(f'[Story] : GPT 응답 생성 실패 - 사연 길이 초과 (storySeq = {story_seq})')
-        return
+        result = {
+            "valid" : "false",
+            "userseq" : data["userSeq"]
+        }
+        return result
     
     validate_result = await api_chatgpt.validate_story_gpt(story_cleaned)
 
@@ -41,10 +46,19 @@ async def process_verify_story_data(data):
         database.verify_story(story_seq, 1, 0)
 
         logger.info(f'[Story] : GPT 응답 생성 완료 (storySeq = {story_seq})')
+        result = {
+            "valid" : "true",
+            "userseq" : data["userSeq"]
+        }
+        return result
     else:
         database.verify_story(story_seq, 0, 1)
-
         logger.info(f'[Story] : GPT 응답 생성 실패 - 사연 적합도 낮음 (storySeq = {story_seq})')
+        result = {
+            "valid" : "false",
+            "userseq" : data["userSeq"]
+        }
+        return result
 
 ##############################################
 
@@ -63,7 +77,11 @@ async def process_verify_remain_story_data(data):
     if len(story_cleaned) > 500:
         database.verify_story(story_seq, 0, 1)
         logger.info(f'[Story] : GPT 응답 생성 실패 - 사연 길이 초과 (storySeq = {story_seq})')
-        return
+        result = {
+            "valid" : "false",
+            "userseq" : data["user_seq"]
+        }
+        return result
     
     validate_result = await api_chatgpt.validate_story_gpt(story_cleaned)
 
@@ -78,10 +96,20 @@ async def process_verify_remain_story_data(data):
         database.verify_story(story_seq, 1, 0)
 
         logger.info(f'[Story] : GPT 응답 생성 완료 (storySeq = {story_seq})')
+        result = {
+            "valid" : "true",
+            "userseq" : data["user_seq"]
+        }
+        return result
     else:
         database.verify_story(story_seq, 0, 1)
 
         logger.info(f'[Story] : GPT 응답 생성 실패 - 사연 적합도 낮음 (storySeq = {story_seq})')
+        result = {
+            "valid" : "false",
+            "userseq" : data["user_seq"]
+        }
+        return result
 
 ##############################################
 
