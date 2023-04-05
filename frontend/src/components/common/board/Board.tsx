@@ -41,7 +41,10 @@ export const Board = ({
       {headRow.length !== 0 && (
         <div
           className={style.header_container}
-          style={{ gridTemplateColumns: grid }}
+          style={{
+            gridTemplateColumns: grid,
+            animation: "0.7s ease-in-out loadEffect2",
+          }}
         >
           {headRow.map((content) => {
             return (
@@ -55,7 +58,7 @@ export const Board = ({
           })}
         </div>
       )}
-      {data?.map((content) => {
+      {data?.map((content, i) => {
         return (
           <div
             key={uuidv4()}
@@ -66,6 +69,9 @@ export const Board = ({
               (contentRow: any) => {
                 return (
                   <div
+                    style={{
+                      animation: `${(i + 1) * 0.3}s ease-in-out loadEffect3`,
+                    }}
                     key={uuidv4()}
                     onClick={() => {
                       setMoneySeq

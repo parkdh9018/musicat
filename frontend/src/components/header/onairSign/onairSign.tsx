@@ -16,12 +16,15 @@ export const OnairSign = () => {
     } else if (broadcast.operation == "MUSIC") {
       setTitle("음악감상중");
     } else if (broadcast.operation == "STORY") {
-      setTitle("사연소개중")
+      setTitle("사연소개중");
     }
   }, [broadcast]);
 
   return (
-    <div className={style.onairSign}>
+    <div
+      className={style.onairSign}
+      style={{ animation: "0.7s ease-in-out loadEffect5" }}
+    >
       <div className={style.box}>
         <div className={style.logo}>
           <b>
