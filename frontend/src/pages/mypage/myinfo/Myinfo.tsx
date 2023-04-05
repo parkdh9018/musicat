@@ -87,28 +87,30 @@ export const Myinfo = () => {
           환영합니다
         </p>
         <p className={style.ffc}>다크 모드</p>
-        <div className={style.toolbar}>
+        <div
+          className={style.toolbar}
+          onClick={() => {
+            putDarkMode()
+              .then(() => {
+                queryClient.invalidateQueries(["getUserConfig"]);
+              })
+              .catch(() => {
+                Swal.fire({
+                  icon: "error",
+                  title: "",
+                  text: "네트워크 오류 / 다시 시도해 주세요",
+                  confirmButtonText: "닫기",
+                });
+              });
+            return;
+          }}
+        >
           <div
             className={
               data?.data.userIsDarkmode
                 ? style.circle
                 : style.circle + " " + style.circleLeft
             }
-            onClick={() => {
-              putDarkMode()
-                .then(() => {
-                  queryClient.invalidateQueries(["getUserConfig"]);
-                })
-                .catch(() => {
-                  Swal.fire({
-                    icon: "error",
-                    title: "",
-                    text: "네트워크 오류 / 다시 시도해 주세요",
-                    confirmButtonText: "닫기",
-                  });
-                });
-              return;
-            }}
           />
         </div>
         <p className={style.ffc}>가입 날짜</p>

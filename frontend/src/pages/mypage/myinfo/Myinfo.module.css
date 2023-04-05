@@ -17,6 +17,7 @@
   margin: 0 auto 40px;
   border-radius: 20px;
   position: relative;
+  cursor: pointer;
 }
 .myinfo .leftbox .toolbar .circle {
   height: 25px;
@@ -27,7 +28,6 @@
   top: -8%;
   right: -1%;
   transition: 0.25s;
-  cursor: pointer;
 }
 .myinfo .leftbox .toolbar .circleLeft {
   right: 58%;
