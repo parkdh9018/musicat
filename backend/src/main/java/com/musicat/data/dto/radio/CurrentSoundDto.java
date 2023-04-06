@@ -15,6 +15,7 @@ import lombok.ToString;
 @ToString
 public class CurrentSoundDto {
   private String type;
+  private long typePlayedTime;
   private String path;
   private long startTime;
   private long playedTime;

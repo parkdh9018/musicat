@@ -6,18 +6,35 @@ import { requestNoticeModify } from "@/connect/axios/queryHooks/notice";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import { v4 as uuidv4 } from "uuid";
 import style from "./NoticeDetail.module.css";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const NoticeDetail = () => {
+  const queryClient = useQueryClient();
   const setNowSideNav = useSetRecoilState(nowSideNavState);
   const navigate = useNavigate();
   const userInfo = useRecoilValue(userInfoState);
   const { noticeSeq } = useParams();
+  queryClient.invalidateQueries(["getUserUnreadMsgNum"]);
   const { data: detail } = getAlertDetail(
     noticeSeq?.charAt(0) === "n"
       ? `/notice/detail?noticeSeq=${noticeSeq.replace("n", "")}`
-      : `/alert/detail/${noticeSeq}`
+      : `/alert/detail/${noticeSeq}`,
+    queryClient
   );
+
+  const filteredNewLine = (str: string | undefined) => {
+    if (str === undefined) return null;
+
+    return str.split("\\n").map((line) => (
+      <>
+        {line}
+        <br />
+        <br />
+      </>
+    ));
+  };
 
   useEffect(() => {
     if (userInfo.userRole === "ROLE_ADMIN") setNowSideNav("공지사항");
@@ -25,7 +42,10 @@ export const NoticeDetail = () => {
   }, []);
 
   return (
-    <div className={style.notice_detail}>
+    <div
+      className={style.notice_detail}
+      style={{ animation: "0.7s ease-in-out loadEffect3" }}
+    >
       <hr className={style.bold_hr} style={{ marginTop: "14px" }} />
       <div className={style.title}>
         <span style={{ textAlign: "center" }}>
@@ -36,7 +56,8 @@ export const NoticeDetail = () => {
       </div>
       <hr className={style.thin_hr} style={{ marginTop: "14px" }} />
       <div className={style.content}>
-        {detail?.alertContent || detail?.noticeContent}
+        {filteredNewLine(detail?.alertContent) ||
+          filteredNewLine(detail?.noticeContent)}
       </div>
       <hr className={style.thin_hr} />
       {userInfo.userRole === "ROLE_ADMIN" ? (

@@ -5,6 +5,7 @@ interface InputProps extends HTMLAttributes<HTMLInputElement> {
   type?: string;
   input: string;
   onKeyDown?: any;
+  disabled? : boolean;
   setInput: React.Dispatch<React.SetStateAction<string>>;
 }
 
@@ -14,6 +15,7 @@ export const Input = ({
   input,
   onKeyDown,
   setInput,
+  disabled,
   ...props
 }: InputProps) => {
   return (
@@ -28,6 +30,7 @@ export const Input = ({
       onKeyDown={(event) => {
         if (event.key === "Enter") onKeyDown();
       }}
+      disabled = {disabled === undefined ? false : disabled}
       {...props}
     />
   );

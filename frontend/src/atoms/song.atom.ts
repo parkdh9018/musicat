@@ -5,6 +5,7 @@ export interface Music {
   path: string;
   startTime: number;
   playedTime: number;
+  typePlayedTime: number;
   length: number;
   artist: string;
   title: string;
@@ -22,7 +23,8 @@ export const musicState = atom<Music>({
     type: "",
     path: "",
     startTime: 0,
-    playedTime: -10,
+    typePlayedTime: 0,
+    playedTime: 0,
     length: 0,
     artist: "",
     image: "",

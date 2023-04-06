@@ -2,7 +2,7 @@
   color: var(--font-color);
   text-align: center;
   padding: 3%;
-  padding-top: 5%;
+  padding-top: 3.7%;
 }
 
 .content {
@@ -20,11 +20,29 @@
 .group {
   align-content: baseline;
   margin-bottom: 3%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 
 .content_label {
-  float: left;
-  margin-top: 10px;
-  margin-left: 5px;
-  margin-right: -20px;
+  margin-top: 3px;
+}
+
+.contentNotLogin {
+  height: 70px;
+  padding-top: 3.5%;
+  color: var(--fade-font-color);
+}
+
+@media screen and (max-width: 768px) {
+  .group {
+    align-content: center;
+    margin-bottom: 3%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 10px;
+    margin-bottom: 5%;
+  }
 }/*# sourceMappingURL=Story.module.css.map */

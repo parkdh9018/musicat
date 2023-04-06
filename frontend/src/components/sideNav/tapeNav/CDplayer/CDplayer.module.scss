@@ -1,0 +1,82 @@
+.cd_box {
+  width: 30vw;
+  max-width: 60%;
+  position: relative;
+}
+
+/* CD 모양을 위한 스타일 */
+.cd {
+  aspect-ratio: 1 / 1;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 30px;
+  width: 14vw; /* CD의 가로 크기 */
+  border-radius: 50%; /* CD를 둥글게 만듦 */
+  border: 0.5vw solid #b8b8b8; /* CD의 외곽선 색상 */
+  position: relative; /* 위치 지정을 위한 속성 */
+  animation: rotate 4s infinite linear;
+  max-width: 90%;
+}
+/* CD 안쪽 원 모양을 위한 스타일 */
+.cd2 {
+  aspect-ratio: 1 / 1;
+  content: "";
+  display: block;
+  position: absolute;
+  border-radius: 50%; /* 안쪽 원을 둥글게 만듦 */
+  background-size: cover; /* 배경 이미지를 요소에 맞게 조절 */
+  background-position: center; /* 배경 이미지 위치를 중앙에 맞춤 */
+  width: 100%;
+}
+/* CD 안쪽 홀 모양을 위한 스타일 */
+.cd3 {
+  aspect-ratio: 1 / 1;
+  content: "";
+  display: block;
+  position: absolute;
+  top: calc(50% - 10%); /* 안쪽 홀의 위치 */
+  left: calc(50% - 10%); /* 안쪽 홀의 위치 */
+  width: 20%; /* 안쪽 홀의 가로 크기 */
+  border-radius: 50%; /* 안쪽 홀을 둥글게 만듦 */
+  background-color: #cecece; /* 안쪽 홀의 색상 */
+}
+
+.title_player {
+  width: 95%;
+  position: absolute;
+  left: 0%;
+  top: 0;
+  z-index: -1;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .cd_box {
+    width: 350px;
+    max-width: 100%;
+  }
+
+  .cd {
+    width: 250px; /* CD의 가로 크기 */
+    border: 4px solid #b8b8b8;
+  }
+  /* CD 안쪽 원 모양을 위한 스타일 */
+  .cd2 {
+    content: "";
+    width: 242px; /* 안쪽 원의 가로 크기 */
+  }
+  /* CD 안쪽 홀 모양을 위한 스타일 */
+  .cd3 {
+    top: calc(50% - 15px); /* 안쪽 홀의 위치 */
+    left: calc(50% - 15px); /* 안쪽 홀의 위치 */
+    width: 30px; /* 안쪽 홀의 가로 크기 */
+  }
+}

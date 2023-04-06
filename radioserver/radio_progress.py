@@ -9,7 +9,7 @@ from my_logger import setup_logger
 
 logger = setup_logger()
 
-queue = deque(['story', 'chat', 'music', 'chat', 'music', 'chat', 'music', 'chat'])
+queue = deque(['music', 'chat', 'story', 'chat', 'music', 'chat', 'music', 'chat', 'music', 'chat'])
 
 ##############################################
 
@@ -29,7 +29,8 @@ async def radio_progress():
     elif current_state.get_state() == 'chat':
         radio_state = {"state" : "chat"}
         await logic_chat.clear_user_check()
-        await api_chatgpt.reset_past_chats()
+        # await api_chatgpt.reset_past_chats()
+        await api_chatgpt.force_flush_chat()
         chat_readable.set_state(True)
     elif current_state.get_state() == 'music':
         radio_state = await logic_music.process_music_state()
@@ -42,7 +43,7 @@ def reset_radio():
     라디오 상태 초기화 함수
     """
     global queue
-    queue = deque(['story', 'chat', 'music', 'chat', 'music', 'chat', 'music', 'chat'])
+    queue = deque(['music', 'chat', 'story', 'chat', 'music', 'chat', 'music', 'chat', 'music', 'chat'])
     logger.info('[Radio] : 라디오 상태 초기화 완료')
 
 ##############################################

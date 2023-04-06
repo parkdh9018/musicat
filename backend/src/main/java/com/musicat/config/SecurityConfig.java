@@ -5,6 +5,7 @@ import com.musicat.Oauth.CustomUserOAuth2Service;
 import com.musicat.handler.OAuth2AuthenticationSuccessHandler;
 import com.musicat.jwt.JwtAccessDeniedHandler;
 import com.musicat.jwt.JwtAuthenticationEntryPoint;
+import com.musicat.jwt.JwtSecurityConfig;
 import com.musicat.jwt.TokenProvider;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.filter.CorsFilter;
 
 @EnableWebSecurity
@@ -59,7 +61,7 @@ public class SecurityConfig {
         .csrf().disable()
 
         // 설정된 로그인 URL로 오는 요청을 감시하며, 유저인증을 처리합니다. 인증 실패 시, AuthenticationFailureHandler를 실행합니다.
-        .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
+//        .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
 
         /**
          * 예외 처리를 구성하는 부분

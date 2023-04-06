@@ -16,7 +16,7 @@
 }
 .chat_component .chat_list {
   overflow: auto;
-  height: 225px;
+  height: 228.5px;
   color: var(--font-color);
 }
 .chat_component .chat_list div {
