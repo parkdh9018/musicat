@@ -253,8 +253,6 @@ public class RadioService {
         artist = sound.getArtist();
         image = sound.getImage();
         startTime = currentTime;
-      } else {
-        resetInfo();
       }
       return true;
     }
