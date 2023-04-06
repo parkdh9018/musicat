@@ -9,7 +9,7 @@ import json
 openai.api_key = openai_api_key
 
 async def call_openai_api(messages, temperature):
-    url = "https://api.openai.com/v1/engines/gpt-3.5-turbo/completions"
+    url = "https://api.openai.com/v1/chat/completions"
     api_key = openai_api_key  # Replace with your actual API key
 
     headers = {
@@ -19,6 +19,7 @@ async def call_openai_api(messages, temperature):
     }
 
     data = {
+        "model": "gpt-3.5-turbo",
         "messages": messages,
         "temperature": temperature,
     }
