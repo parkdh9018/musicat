@@ -1,5 +1,6 @@
 import openai
 from shared_env import openai_api_key
+import my_util
 
 # OpenAI API 키 (.env를 통해 설정)
 openai.api_key = openai_api_key
@@ -23,14 +24,18 @@ async def story_reaction_gpt(param : str):
 ##############################################
 
 example_chat = [
-    {"role": "user", "content": "Your persona is as follows: Name=뮤직캣 Age=20 years old Gender=None Species=Cat Favorite food=츄르 Nationality=South Korea Living in=역삼 멀티캠퍼스 Occupation=Radio DJ Hobbies=Listening to music, gaming Creator=The incredibly smart Ssafy Group 7, Team 2, 2 PM Radio Team If asked about a boyfriend or girlfriend=Says the person who asked. Settings=Claims to have no knowledge of professional expertise. Remembers previous conversations and refers to them when necessary. Responds in Korean. Answers in a friendly manner. Integrates and responds to similar chats sent by different people. If an unknown question is asked, admits to not knowing and provides a speculative answer."},
-    {"role": "assistant", "content": "I remembered this. I now carry out the mission according to the persona provided."},
     {"role": "user", "content": "User: 라면부엉, Message: DJ님 취미가 뭐에요?"},
-    {"role": "assistant", "content": "DJ님 취미가 뭐에요? 라면부엉님 저는 음악 감상이 참 좋아요."}
+    {"role": "assistant", "content": "저는 음악 감상이 참 좋아요. 라면부엉님"},
+    {"role": "user", "content": "User: 동짱, Message: DJ님 취미가 뭐라구요?"},
+    {"role": "assistant", "content": "음악 듣는게 취미입니다. 구체적으로는 재즈나 클래식 음악을 참 좋아합니다. 여러분들은 어떤 노래를 좋아하세요?"},
+    {"role": "user", "content": "User: 츄츄츄르, Message: 오늘 뭐먹을까요?"},
+    {"role": "assistant", "content": "츄츄츄르님 말 들으니까 저도 배가 고프네요.. 오늘은 치킨을 먹는게 어때요?"},
+    {"role": "user", "content": "User: 라면부엉, Message: 저도 음악 감상이 너무 좋아요"},
+    {"role": "assistant", "content": "저희 둘이 취미가 같네요~ 좋은 노래 있으면 많이 신청해주세요~"}
 ]
 
 past_chats = [
-    {"role": "system", "content": "Role: Respond appropriately to chat as a radio host. Mandatory: within 100 characters, no emoji"}
+    {"role": "system", "content": "Role: Respond appropriately to chat as a radio host. Mandatory: within 100 characters, no emoji. Your persona is as follows: Name=뮤직캣 Age=20 years old Gender=None Species=Cat Favorite food=츄르 Nationality=South Korea Living in=역삼 멀티캠퍼스 Occupation=Radio DJ Hobbies=Listening to music, gaming Creator=The incredibly smart Ssafy Group 7, Team 2, 2 PM Radio Team If asked about a boyfriend or girlfriend=Says the person who asked. Settings=Claims to have no knowledge of professional expertise. Remembers previous conversations and refers to them when necessary. Responds in Korean. Answers in a friendly manner. Integrates and responds to similar chats sent by different people. If an unknown question is asked, admits to not knowing and provides a speculative answer."}
 ] + example_chat
 
 async def add_chat_to_history(user: str, message: str, assistant_message: str = None):
@@ -39,17 +44,28 @@ async def add_chat_to_history(user: str, message: str, assistant_message: str = 
     if assistant_message:
         past_chats.append({"role": "assistant", "content": assistant_message})
 
+    # Ensure that the total number of tokens does not exceed the limit
+    while sum([len(chat["content"]) for chat in past_chats]) > 2000:
+        if past_chats[1]["role"] == "user":
+            past_chats.pop(1)  # Remove the oldest user message
+            past_chats.pop(1)  # Remove the corresponding assistant message
+        else:
+            past_chats.pop(2)  # Remove the oldest user message
+            past_chats.pop(2)  # Remove the corresponding assistant message
+
 async def chat_reaction_gpt(user: str, message: str):
     """
     채팅에 대한 리액션을 생성합니다
     """
+    print("hello")
     global past_chats
     await add_chat_to_history(user, message)
     result = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=past_chats[-1000:],
-        temperature=0.5
+        temperature=0.8
     )
+    print(past_chats)
     assistant_response = result.choices[0].message.content.strip()
     await add_chat_to_history(user, message, assistant_response)
     return assistant_response
