@@ -9,6 +9,9 @@
   font-size: 1.4rem;
   margin: 0 0 5px 0;
 }
+.myinfo .leftbox {
+  margin-top: 3%;
+}
 .myinfo .leftbox .toolbar {
   width: 25%;
   height: 25px;
@@ -58,10 +61,11 @@
   margin: 2% 3%;
   border: 1px solid var(--font-color);
   writing-mode: vertical-rl;
-  height: 96%;
+  height: 75%;
 }
 .myinfo .rightbox {
   min-width: 50%;
+  margin-top: 5%;
 }
 .myinfo .rightbox h3 {
   margin-left: 10px;

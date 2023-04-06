@@ -11,6 +11,7 @@
   }
 
   .leftbox {
+    margin-top: 3%;
     .toolbar {
       width: 25%;
       height: 25px;
@@ -62,10 +63,11 @@
     margin: 2% 3%;
     border: 1px solid var(--font-color);
     writing-mode: vertical-rl;
-    height: 96%;
+    height: 75%;
   }
   .rightbox {
     min-width: 50%;
+    margin-top: 5%;
     h3 {
       margin-left: 10px;
     }
