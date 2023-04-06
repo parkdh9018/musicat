@@ -12,7 +12,6 @@ import {
 } from "@/atoms/story.atoms";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { SongSearch } from "@/components/common/songSearch/SongSearch";
-import { userInfoState } from "@/atoms/user.atom";
 import { useEffect, useState } from "react";
 import { storyHook } from "@/connect/axios/queryHooks/story";
 import { useCustomToast } from "@/customHooks/useCustomToast";
@@ -31,28 +30,31 @@ export const Story = () => {
   // const userInfo = useRecoilValue(userInfoState);
 
   const userInfo = useTokenData();
-  const {data : moneyData} = getUserMoney();
-  
-  const { data, mutate, storyReqeustData, isLoading } = storyHook(userInfo?.userSeq ? userInfo.userSeq : -1);
+  const { data: moneyData } = getUserMoney();
+
+  const { data, mutate, storyReqeustData, isLoading } = storyHook(
+    userInfo?.userSeq ? userInfo.userSeq : -1
+  );
 
   const resetTitle = useResetRecoilState(storyTitleState);
   const resetContent = useResetRecoilState(storyContentState);
-  const resetSong = useResetRecoilState(storySongState)
+  const resetSong = useResetRecoilState(storySongState);
 
   const [title, setTitle] = useRecoilState(storyTitleState);
   const [song, setSong] = useRecoilState(storySongState);
   const content = useRecoilValue(storyContentState);
-  
-  const [titlePlaceholder, setTitlePlaceholder] = useState("제목을 입력해주세요");
+
+  const [titlePlaceholder, setTitlePlaceholder] =
+    useState("제목을 입력해주세요");
 
   const [submitButton, setSubmitButton] = useState(false);
-  
+
   useEffect(() => {
     if (userInfo?.userNick) {
-      if(data == '200') {
+      if (data == "200") {
         setSubmitButton(true);
-      } else if(data == '409') {
-        useCustomToast("error","이미 신청한 사연이 있습니다.")
+      } else if (data == "409") {
+        useCustomToast("error", "이미 신청한 사연이 있습니다.");
       }
     } else {
       setTitlePlaceholder(LOGIN_REQUEST_STRING);
@@ -60,23 +62,20 @@ export const Story = () => {
     }
   }, [userInfo]);
 
-
-
   useEffect(() => {
-    if(storyReqeustData) {
+    if (storyReqeustData) {
       // 사연 신청완료 되면 리코일 초기화
       resetTitle();
       resetContent();
       resetSong();
       setSubmitButton(false);
     }
-  },[storyReqeustData])
+  }, [storyReqeustData]);
 
   const allStory = useRecoilValue(allStorySelector);
 
   const requestStoryEvent = () => {
-
-    if(!moneyData || moneyData.data.userMoney < 50) {
+    if (!moneyData || moneyData.data.userMoney < 50) {
       useCustomToast("error", "츄르가 부족합니다");
       return;
     }
@@ -94,7 +93,7 @@ export const Story = () => {
         <div className={style.group}>
           <span className={style.content_label}>제목</span>
           <Input
-            style={{ width: "80%"}}
+            style={{ width: "80%" }}
             placeholder={titlePlaceholder}
             input={title}
             setInput={setTitle}
@@ -102,9 +101,7 @@ export const Story = () => {
           />
         </div>
         <div className={style.group}>
-          <span className={style.content_label}>
-            신청곡
-          </span>
+          <span className={style.content_label}>신청곡</span>
           <SongSearch
             status={200}
             placeholder=" 가수 이름 / 노래 제목"
@@ -113,7 +110,7 @@ export const Story = () => {
           />
         </div>
         <div className={style.group}>
-          <span className={style.content_label}>내용</span>
+          <span>내용</span>
           <div className={style.content}>
             {content.map((v, i) => (
               <ContentBox key={uuidv4()} {...v} index={i} />

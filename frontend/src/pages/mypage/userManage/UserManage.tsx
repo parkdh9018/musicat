@@ -4,8 +4,8 @@ import { Button } from "@/components/common/button/Button";
 import { Input } from "@/components/common/input/Input";
 import { SelectBox } from "@/components/common/selectBox/SelectBox";
 import { getUsers } from "@/connect/axios/queryHooks/admin";
-import { MouseEventHandler, useEffect, useMemo, useState } from "react";
-import { useSetRecoilState } from "recoil";
+import { MouseEventHandler, useEffect } from "react";
+import { useRecoilState } from "recoil";
 import { SelectedUsers } from "./SelectedUsers/SelectedUsers";
 
 import style from "./UserManage.module.css";
@@ -13,11 +13,11 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
 export const UserManage = () => {
-  const setNowSideNav = useSetRecoilState(nowSideNavState);
+  const [nowSideNav, setNowSideNav] = useRecoilState(nowSideNavState);
   const navigate = useNavigate();
 
   useEffect(() => {
-    setNowSideNav("유저관리");
+    if (nowSideNav !== "유저관리") setNowSideNav("유저관리");
   }, []);
 
   const {

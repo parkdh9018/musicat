@@ -18,7 +18,7 @@ import { useCustomToast } from "@/customHooks/useCustomToast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import style from "./Myinfo.module.css";
 import { MyinfoModal } from "./myinfoModal/MyinfoModal";
 import Swal from "sweetalert2";
@@ -32,7 +32,7 @@ export const Myinfo = () => {
   const { data: moneyList } = getUserMoneyList(Number(page));
   const { data: userDetailInfo } = getUserDetailInfo();
   const { data: userMoney } = getUserMoney();
-  const setNowSideNav = useSetRecoilState(nowSideNavState);
+  const [nowSideNav, setNowSideNav] = useRecoilState(nowSideNavState);
 
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const [input, setInput] = useState("");
@@ -65,7 +65,7 @@ export const Myinfo = () => {
 
   /** 사이드 Nav 초기화 */
   useEffect(() => {
-    setNowSideNav("나의 정보 관리");
+    if (nowSideNav !== "나의 정보 관리") setNowSideNav("나의 정보 관리");
   }, []);
 
   useEffect(() => {
