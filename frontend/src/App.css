@@ -6,16 +6,18 @@
   --red-color: #e89393;
   --blue-color: #5b69ea;
   --modal-background: rgb(52, 52, 52);
+  --broadcast-color: rgb(25, 25, 25);
 }
 
 :root[color-theme="light"] {
-  --background-color: #cacaca;
+  --background-color: #ffffff;
   --font-color: #242424;
-  --fade-font-color: #7a7a7a;
+  --fade-font-color: #aeaeae;
   --green-color: #36cd45;
   --red-color: #dd4f4f;
   --blue-color: #242f96;
-  --modal-background: rgb(184, 184, 184);
+  --modal-background: rgb(209, 209, 209);
+  --broadcast-color: rgb(161, 161, 161);
 }
 
 .App {

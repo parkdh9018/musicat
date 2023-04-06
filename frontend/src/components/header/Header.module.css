@@ -1,5 +1,5 @@
 .header {
-  background-color: rgb(26, 26, 26);
+  background-color: var(--broadcast-color);
 }
 .header .innerHeader {
   height: 65px;
@@ -24,7 +24,7 @@
 }
 .header .innerHeader .logo_img:hover {
   width: 133px;
-  box-shadow: 1px 1px 0 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 1px 1px 0 1px rgba(0, 0, 0, 0.3);
 }
 .header .innerHeader .user_info {
   display: flex;
@@ -33,15 +33,15 @@
   cursor: pointer;
 }
 .header .innerHeader .user_info .nickname {
-  color: #8d8d8d;
+  color: #6a6969;
   transition: 0.2s;
 }
 .header .innerHeader .user_info .nickname_other {
-  color: #ececec;
+  color: #c3c3c3;
   transition: 0.2s;
 }
 .header .innerHeader .user_info .login_sent {
-  color: #ececec;
+  color: #adadad;
   transition: 0.2s;
 }
 .header .innerHeader .user_info:hover .popover_state {
@@ -49,10 +49,10 @@
   visibility: visible;
 }
 .header .innerHeader .user_info:hover .nickname_other {
-  color: #8d8d8d;
+  color: #7b7575;
 }
 .header .innerHeader .user_info:hover .nickname {
-  color: #ececec;
+  color: #c3c3c3;
 }
 .header .profile_div {
   position: relative;
