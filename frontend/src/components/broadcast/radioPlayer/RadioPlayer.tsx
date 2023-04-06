@@ -19,7 +19,14 @@ export const RadioPlayer = () => {
         url={music.path}
         controls
         onStart={() => {
-          console.log(playerRef1.current);
+          console.log("노래 정상 작동");
+          playerRef1.current?.seekTo(
+            Math.floor(music.playedTime / 1000),
+            "seconds"
+          );
+        }}
+        onError={() => {
+          console.log("애러발생!!!");
           playerRef1.current?.seekTo(
             Math.floor(music.playedTime / 1000),
             "seconds"
