@@ -45,17 +45,6 @@ export const Cat = ({ themeNum, position, ...props }: propsType) => {
 
   const { actions, mixer, names, ref } = useAnimations(animations);
 
-  const playSequentialAnimations = () => {
-    if (actions) {
-      const jumpAction = actions[ani.Jump];
-      const idleAction = actions[ani.Idle05];
-
-      jumpAction?.reset().setLoop(THREE.LoopRepeat, 1).play();
-      jumpAction?.crossFadeTo(idleAction as THREE.AnimationAction, 0.5, false);
-      idleAction?.reset().fadeIn(0.5).play(); // Set the idle action to repeat infinitely
-    }
-  };
-
   useFrame(({ camera }) => {
     if (broadcast.operation === "CHAT") {
       camera.position.lerp(chatCameraPos, 0.01);
@@ -82,7 +71,7 @@ export const Cat = ({ themeNum, position, ...props }: propsType) => {
       // 객체가 로드되면 시작 위치를 설정합니다.
       ref.current.position.copy(startPosition);
     }
-    playSequentialAnimations();
+    // playSequentialAnimations();
   }, []);
 
   useEffect(() => {
@@ -132,10 +121,6 @@ export const Cat = ({ themeNum, position, ...props }: propsType) => {
     }
   }, [broadcast]);
 
-  const characterClick = () => {
-    // console.log("click")
-    // setIndex((prev) => (prev + 1) % names.length);
-  };
 
   const characterPointerEnter = () => {
     // actions[ani.Yes]?.reset().setEffectiveTimeScale(0.8).fadeIn(0.5).play();
@@ -150,10 +135,10 @@ export const Cat = ({ themeNum, position, ...props }: propsType) => {
   return (
     <group
       {...props}
-      onClick={characterClick}
       onPointerEnter={characterPointerEnter}
       onPointerLeave={characterPointerLeave}
       ref={ref as any}
+      dispose={null}
     >
       <primitive object={scene} />
     </group>
