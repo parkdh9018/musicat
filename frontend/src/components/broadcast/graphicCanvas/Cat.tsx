@@ -73,15 +73,12 @@ export const Cat = ({ themeNum, position, ...props }: propsType) => {
     }
     // playSequentialAnimations();
   }, []);
-  
 
   useEffect(() => {
     actions[ani.Yes]?.fadeOut(0.5);
     actions[ani.Hi]?.fadeOut(0.5);
     actions[ani.Idle02]?.fadeOut(0.5);
     actions[ani.Idle05]?.fadeOut(0.5);
-
-    console.log(broadcast)
 
     // 말할때
     if (broadcast.dataType === "mp3") {
@@ -123,7 +120,6 @@ export const Cat = ({ themeNum, position, ...props }: propsType) => {
         .play();
     }
   }, [broadcast]);
-
 
   const characterPointerEnter = () => {
     // actions[ani.Yes]?.reset().setEffectiveTimeScale(0.8).fadeIn(0.5).play();

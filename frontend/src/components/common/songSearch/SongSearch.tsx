@@ -121,8 +121,6 @@ export const SongSearch = ({
     //     );
     //   }
     // }
-    console.log("노래데이터");
-    console.log(result);
 
     if (result.status === 200 && result.data.musicYoutubeId) {
       setYoutubeSearch(false);
@@ -188,7 +186,9 @@ export const SongSearch = ({
         onKeyUp={onKeyUpSearch}
         disabled={status === 409}
         ref={inputRef}
-        onBlur={() => setSearchResults([])}
+        onBlur={() => {
+          setTimeout(() => setSearchResults([]), 100);
+        }}
       />
       {!search && (
         <div className={style.placeholder}>
