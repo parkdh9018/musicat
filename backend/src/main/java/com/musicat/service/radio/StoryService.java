@@ -91,7 +91,7 @@ public class StoryService {
           user.setUserMoney(userMoney + 100);
 
           // 합격 문구 생성
-          alertContent = "합격 \n" + user.getUserNickname() + "님 좋은 사연 감사합니다.\n감사의 의미로 100츄르가 지급되었습니다.";
+          alertContent = "합격 \\n" + user.getUserNickname() + "님 좋은 사연 감사합니다.\\n감사의 의미로 100츄르가 지급되었습니다.";
         }
 
         Alert alert = Alert.builder()
