@@ -13,17 +13,17 @@ export const TTS_OPTION = [
 
   // 남자 청년
   // 태진 (ntaejin)
-  { value: "ntaejin", name: "남자 청년" },
+  { value: "ntaejin", name: "젊은 남성" },
 
   // 여자 청년
   // 유나 (nyuna)
-  { value: "nyuna", name: "여자 청년" },
-
-  // 여자 할머니
-  // 선희 (nsunhee)
-  { value: "nsunhee", name: "여자 할머니" },
+  { value: "nyuna", name: "젊은 여성" },
 
   // 남자 할아버지
   // 경태 (nkyungtae)
-  { value: "nkyungtae", name: "남자 할아버지" },
+  { value: "nkyungtae", name: "할아버지" },
+  
+  // 여자 할머니
+  // 선희 (nsunhee)
+  { value: "nsunhee", name: "할머니" },
 ];
