@@ -1,7 +1,7 @@
 @use "../../_var.scss";
 
 .header {
-  background-color: rgb(26, 26, 26);
+  background-color: var(--broadcast-color);
 
   .innerHeader {
     height: 65px;
@@ -27,7 +27,7 @@
 
       &:hover {
         width: 133px;
-        box-shadow: 1px 1px 0 1px rgb(0, 0, 0, 0.1);
+        box-shadow: 1px 1px 0 1px rgb(0, 0, 0, 0.3);
       }
     }
 
@@ -38,17 +38,17 @@
       cursor: pointer;
 
       .nickname {
-        color: #8d8d8d;
+        color: #6a6969;
         transition: 0.2s;
       }
 
       .nickname_other {
-        color: #ececec;
+        color: #c3c3c3;
         transition: 0.2s;
       }
 
       .login_sent {
-        color: #ececec;
+        color: #adadad;
         transition: 0.2s;
       }
 
@@ -58,11 +58,11 @@
       }
 
       &:hover .nickname_other {
-        color: #8d8d8d;
+        color: #7b7575;
       }
 
       &:hover .nickname {
-        color: #ececec;
+        color: #c3c3c3;
       }
     }
   }

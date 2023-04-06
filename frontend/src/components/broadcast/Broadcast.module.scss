@@ -9,18 +9,9 @@
   min-height: 250px;
   position: relative;
   transition: 0.3s;
-  background-color: rgb(25, 25, 25);
+  background-color: var(--broadcast-color);
   z-index: 0;
-
-  .radioBooth {
-    max-width: 1201px;
-    position: absolute;
-    z-index: 1;
-    top: -1px;
-    height: calc(40vh + 1px);
-    min-height: 252px;
-    width: 101%;
-  }
+  margin-bottom: 30px;
 
   .broad_back {
     z-index: 1;

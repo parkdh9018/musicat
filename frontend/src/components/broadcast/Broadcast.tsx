@@ -37,12 +37,6 @@ export const Broadcast = () => {
         nowMainPage ? style.broadcast : style.broadcast + " " + style.mypage
       }
     >
-      <img
-        src={radioBoothIMG}
-        alt=""
-        className={style.radioBooth}
-        style={!nowMainPage ? { display: "none" } : undefined}
-      />
       <div
         className={style.broad_back}
         style={nowMainPage ? { display: "none" } : undefined}
