@@ -1,4 +1,5 @@
 from shared_env import fastapi_url
+from typing import List, Dict
 
 # 리스트 형태로 들어온 사연 파싱
 async def parse_story_content(contents):
@@ -10,3 +11,4 @@ async def parse_story_content(contents):
 
 async def create_mp3_url(state:str, filename:str):
     return f"{fastapi_url}/tts/{state}/{filename}"
+

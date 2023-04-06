@@ -9,6 +9,7 @@ import database
 import logic_story
 import logic_music
 import api_naver_tts
+import api_chatgpt
 from my_logger import setup_logger
 
 app = FastAPI()
@@ -107,3 +108,8 @@ async def send_tts(request: Request, path: str, filename: str):
         return StreamingResponse(generate_file_stream(filepath), status_code=200, headers=response_headers)
     
 ##############################################
+
+@app.post("/chat")
+async def chat_endpoint(user: str, message: str):
+    assistant_response = await api_chatgpt.chat_reaction_gpt(user, message)
+    return {"response": assistant_response}
