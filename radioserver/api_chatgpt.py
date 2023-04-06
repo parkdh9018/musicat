@@ -21,9 +21,11 @@ async def call_openai_api(messages: list, temperature: float):
         "temperature": temperature
     }
 
+
     async with aiohttp.ClientSession() as session:
         async with session.post(url, headers=headers, data=json.dumps(data)) as response:
             result = await response.json()
+            print(result)
             return result
 
 ##############################################
