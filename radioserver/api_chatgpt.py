@@ -50,8 +50,7 @@ async def add_chat_to_history(user: str, message: str, assistant_message: str = 
             past_chats.pop(1)  # Remove the oldest user message
             past_chats.pop(1)  # Remove the corresponding assistant message
         else:
-            past_chats.pop(2)  # Remove the oldest user message
-            past_chats.pop(2)  # Remove the corresponding assistant message
+            past_chats.pop(1)  # Remove the oldest user message
 
 async def chat_reaction_gpt(user: str, message: str):
     """
@@ -65,17 +64,9 @@ async def chat_reaction_gpt(user: str, message: str):
         messages=past_chats,
         temperature=0.8
     )
-    print(past_chats)
     assistant_response = result.choices[0].message.content.strip()
     await add_chat_to_history(user, message, assistant_response)
     return assistant_response
-
-async def reset_past_chats():
-    global past_chats
-    initial_chat = [
-        {"role": "system", "content": "Role: Respond appropriately to chat as a streamer. Mandatory: within 100 characters, no emoji"}
-    ] + example_chat
-    past_chats = initial_chat.copy()
 
 ##############################################
 
