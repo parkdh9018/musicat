@@ -1,12 +1,14 @@
 import openai
 from shared_env import openai_api_key
 import my_util
+from my_logger import measure_execution_time
 
 # OpenAI API 키 (.env를 통해 설정)
 openai.api_key = openai_api_key
 
 ##############################################
 
+@measure_execution_time
 async def story_reaction_gpt(param : str):
     """
     사연에 대한 리액션을 생성합니다
@@ -38,6 +40,7 @@ past_chats = [
     {"role": "system", "content": "Role: Respond appropriately to chat as a radio host. Mandatory: within 100 characters, no emoji. Your persona is as follows: Name=뮤직캣 Age=20 years old Gender=None Species=Cat Favorite food=츄르 Nationality=South Korea Living in=역삼 멀티캠퍼스 Occupation=Radio DJ Hobbies=Listening to music, gaming Creator=The incredibly smart Ssafy Group 7, Team 2, 2 PM Radio Team If asked about a boyfriend or girlfriend=Says the person who asked. Settings=Claims to have no knowledge of professional expertise. Remembers previous conversations and refers to them when necessary. Responds in Korean. Answers in a friendly manner. Integrates and responds to similar chats sent by different people. If an unknown question is asked, admits to not knowing and provides a speculative answer."}
 ] + example_chat
 
+@measure_execution_time
 async def add_chat_to_history(user: str, message: str, assistant_message: str = None):
     global past_chats
     past_chats.append({"role": "user", "content": f"User: {user}, Message: {message}"})
@@ -52,6 +55,7 @@ async def add_chat_to_history(user: str, message: str, assistant_message: str = 
         else:
             past_chats.pop(1)  # Remove the oldest user message
 
+@measure_execution_time
 async def chat_reaction_gpt(user: str, message: str):
     """
     채팅에 대한 리액션을 생성합니다
@@ -68,6 +72,7 @@ async def chat_reaction_gpt(user: str, message: str):
     await add_chat_to_history(user, message, assistant_response)
     return assistant_response
 
+@measure_execution_time
 async def force_flush_chat():
     global past_chats
     global example_chat
@@ -77,6 +82,7 @@ async def force_flush_chat():
 
 ##############################################
 
+@measure_execution_time
 async def music_intro_gpt(artist : str, title : str, release_date : str):
     """
     노래의 소개를 생성합니다
@@ -99,6 +105,7 @@ async def music_intro_gpt(artist : str, title : str, release_date : str):
 
 ##############################################
 
+@measure_execution_time
 async def music_outro_gpt(artist, title, user):
     """
     노래의 감상을 생성합니다
@@ -121,6 +128,7 @@ async def music_outro_gpt(artist, title, user):
 
 ##############################################
 
+@measure_execution_time
 async def validate_story_gpt(param):
     """
     사연을 검증해 True 또는 False를 반환합니다
@@ -139,6 +147,7 @@ async def validate_story_gpt(param):
 
 ##############################################
 
+@measure_execution_time
 async def validate_chat_gpt(param):
     """
     채팅을 검증합니다
@@ -157,6 +166,7 @@ async def validate_chat_gpt(param):
 
 ##############################################
 
+@measure_execution_time
 async def opening_story_gpt():
     """
     오프닝 멘트를 생성합니다
