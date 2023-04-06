@@ -20,11 +20,12 @@ export const socketConnection = (queryClinet: QueryClient) => {
   const callback = useRecoilCallback(
     ({ set }) =>
       async () => {
+        stompClient = socketManager.connect();
+
         // 스톰프 디버그 모드 끄기 ( 콘솔창에 뜨는거)
         stompClient.debug = () => {
           return null;
         };
-        stompClient = socketManager.connect();
 
         stompClient.connect({}, () => {
           console.log("연결 시작");
