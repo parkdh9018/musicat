@@ -24,6 +24,8 @@ async def process_verify_story_data(data):
     music_title = data["storyMusicTitle"]
     music_artist = data["storyMusicArtist"]
     story_cleaned = await my_util.parse_story_content(json.loads(story_content))
+    logger.info(story_cleaned)
+    logger.info(f'사연 길이 : {len(story_cleaned)}')
 
     if len(story_cleaned) > 1000:
         database.verify_story(story_seq, 0, 1)
