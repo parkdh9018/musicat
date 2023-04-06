@@ -3,6 +3,7 @@ from shared_env import openai_api_key
 import my_util
 from my_logger import measure_execution_time
 import aiohttp
+import json
 
 # OpenAI API 키 (.env를 통해 설정)
 openai.api_key = openai_api_key
