@@ -25,6 +25,10 @@
   justify-content: space-around;
 }
 
+.content_label {
+  margin-top: 3px;
+}
+
 @media screen and (max-width: 768px) {
   .group {
     align-content: center;
@@ -35,5 +39,4 @@
     gap: 10px;
     margin-bottom: 5%;
   }
-  
 }

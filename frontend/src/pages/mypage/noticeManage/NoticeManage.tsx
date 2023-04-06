@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import style from "./NoticeManage.module.css";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { nowSideNavState } from "@/atoms/common.atom";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getNoticeList } from "@/connect/axios/queryHooks/notice";
@@ -19,13 +19,13 @@ export const NoticeManage = () => {
 
   const [input, setInput] = useState("");
   const navigate = useNavigate();
-  const setNowSideNav = useSetRecoilState(nowSideNavState);
+  const [nowSideNav, setNowSideNav] = useRecoilState(nowSideNavState);
 
   const { data: noticeList } = getNoticeList(Number(page), search);
 
   /** 사이드 Nav 초기화 */
   useEffect(() => {
-    setNowSideNav("공지사항");
+    if (nowSideNav !== "공지사항") setNowSideNav("공지사항");
   }, []);
   return (
     <div style={{ padding: "40px 3%" }}>

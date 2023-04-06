@@ -2,12 +2,12 @@ import { nowSideNavState } from "@/atoms/common.atom";
 import { Modal } from "@/components/common/modal/Modal";
 import { getUserConfig } from "@/connect/axios/queryHooks/user";
 import { useEffect, useState } from "react";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import style from "./Inventory.module.css";
 import { InventoryModal } from "./inventoryModal/InventoryModal";
 
 export const Inventory = () => {
-  const setNowSideNav = useSetRecoilState(nowSideNavState);
+  const [nowSideNav, setNowSideNav] = useRecoilState(nowSideNavState);
   const { data: theme } = getUserConfig();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState({
@@ -25,7 +25,7 @@ export const Inventory = () => {
 
   /** 사이드 Nav 초기화 */
   useEffect(() => {
-    setNowSideNav("인벤토리");
+    if (nowSideNav !== "인벤토리") setNowSideNav("인벤토리");
   }, []);
 
   return (

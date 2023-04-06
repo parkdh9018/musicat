@@ -3,7 +3,7 @@ import { Button } from "@/components/common/button/Button";
 import { Input } from "@/components/common/input/Input";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import style from "./NoticeManageModify.module.css";
 import {
   getNoticeDetail,
@@ -15,7 +15,7 @@ export const NoticeManageModify = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const setNowSideNav = useSetRecoilState(nowSideNavState);
+  const [nowSideNav, setNowSideNav] = useRecoilState(nowSideNavState);
 
   // param이 new라면 새로운 글 작성이니까 새글작성 세팅
   const { isLoading } = getNoticeDetail(
@@ -26,7 +26,7 @@ export const NoticeManageModify = () => {
   );
 
   useEffect(() => {
-    setNowSideNav("공지사항");
+    if (nowSideNav !== "공지사항") setNowSideNav("공지사항");
   }, []);
 
   return (
