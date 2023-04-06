@@ -11,8 +11,6 @@ export const RadioPlayer = () => {
   const playerRef1 = useRef<ReactPlayer>(null);
   const playerRef2 = useRef<ReactPlayer>(null);
   const playNow = useRecoilValue(playNowState);
-  console.log(music.path);
-  console.log(music.playedTime > music.length);
 
   return (
     <div style={{ visibility: "hidden" }}>
