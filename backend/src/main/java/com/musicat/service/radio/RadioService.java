@@ -301,7 +301,7 @@ public class RadioService {
     long currentTime = System.currentTimeMillis();
     CurrentSoundDto currentSound = CurrentSoundDto.builder()
         .type(type)
-        .typePlayedTime(typeStartTime - currentTime)
+        .typePlayedTime(currentTime - typeStartTime)
         .path(path)
         .startTime(startTime)
         .playedTime(currentTime - startTime)
