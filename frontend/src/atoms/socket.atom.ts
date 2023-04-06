@@ -23,9 +23,9 @@ export const socketConnection = (queryClinet: QueryClient) => {
         stompClient = socketManager.connect();
 
         // 스톰프 디버그 모드 끄기 ( 콘솔창에 뜨는거)
-        // stompClient.debug = () => {
-        //   return null;
-        // };
+        stompClient.debug = () => {
+          return null;
+        };
 
         stompClient.connect({}, () => {
           console.log("연결 시작");
