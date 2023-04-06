@@ -79,7 +79,7 @@ public class ConstantUtil {
   // 하루 최초 출석 시 츄르 지급 멘트
   public final String ALERT_TODAY_TYPE = "today";
   public final String ALERT_TODAY_TITLE = "출석 츄르 지급";
-  public final String ALERT_TODAY_CONTENT = "오늘 최초 출석하셔서 츄르를 지급합니다!";
+  public final String ALERT_TODAY_CONTENT = "오늘 최초 출석하셔서 100 츄르를 지급합니다!";
 
   // 채팅 금지
   public final String ALERT_CHATTING_BAN_TYPE = "chattingBan";
