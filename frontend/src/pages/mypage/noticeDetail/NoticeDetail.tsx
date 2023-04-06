@@ -7,16 +7,20 @@ import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import style from "./NoticeDetail.module.css";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const NoticeDetail = () => {
+  const queryClient = useQueryClient();
   const setNowSideNav = useSetRecoilState(nowSideNavState);
   const navigate = useNavigate();
   const userInfo = useRecoilValue(userInfoState);
   const { noticeSeq } = useParams();
+  queryClient.invalidateQueries(["getUserUnreadMsgNum"]);
   const { data: detail } = getAlertDetail(
     noticeSeq?.charAt(0) === "n"
       ? `/notice/detail?noticeSeq=${noticeSeq.replace("n", "")}`
-      : `/alert/detail/${noticeSeq}`
+      : `/alert/detail/${noticeSeq}`,
+    queryClient
   );
 
   useEffect(() => {
