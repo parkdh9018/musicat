@@ -9,21 +9,23 @@ import database
 import logic_story
 import logic_music
 import api_naver_tts
-from my_logger import setup_logger
+import api_chatgpt
+from my_logger import setup_logger, measure_execution_time
 
 app = FastAPI()
 
 logger = setup_logger()
 
 ##############################################
-
+@measure_execution_time
 async def set_remain_gpt_reaction():
     logger.info("[Main] : *** 서버가 꺼져있을 때 추가된 데이터에 작업 ***")
     remain_story = database.find_null_intro_outro_story()
     remain_music = database.find_null_intro_outro_music()
     if remain_story is not None:
         for story in remain_story:
-            await logic_story.process_verify_remain_story_data(story)
+            data = await logic_story.process_verify_remain_story_data(story)
+            kafka_handler.send_state("storyValidateResult", data)
     if remain_music is not None:
         for music in remain_music:
             await logic_music.process_remain_music_data(music)
@@ -61,7 +63,8 @@ def switch_radio():
 
 ##############################################
 
-def generate_file_stream(filepath: str, start: int = 0, end: int = None):
+@measure_execution_time
+async def generate_file_stream(filepath: str, start: int = 0, end: int = None):
     with open(filepath, 'rb') as file:
         file.seek(start)
         chunk_size = 8192
@@ -72,7 +75,8 @@ def generate_file_stream(filepath: str, start: int = 0, end: int = None):
             if not data:
                 break
             yield data
-
+            
+@measure_execution_time
 @app.get("/tts/{path}/{filename}")
 async def send_tts(request: Request, path: str, filename: str):
     filepath = os.path.join(f"./tts/{path}", filename)
@@ -100,9 +104,19 @@ async def send_tts(request: Request, path: str, filename: str):
         response_headers['Content-Range'] = f'bytes {start}-{end}/{file_size}'
         content_length = end - start + 1
         response_headers['Content-Length'] = str(content_length)
-        return StreamingResponse(generate_file_stream(filepath, start, end), status_code=206, headers=response_headers)
+        return StreamingResponse(await asyncio.to_thread(generate_file_stream, filepath, start, end), status_code=206, headers=response_headers)
     else:
         response_headers['Content-Length'] = str(file_size)
-        return StreamingResponse(generate_file_stream(filepath), status_code=200, headers=response_headers)
+        return StreamingResponse(await asyncio.to_thread(generate_file_stream, filepath), status_code=200, headers=response_headers)
     
 ##############################################
+
+@app.post("/chat")
+async def chat_endpoint(user: str, message: str):
+    assistant_response = await api_chatgpt.chat_reaction_gpt(user, message)
+    return {"response": assistant_response}
+
+@app.post("/chat/flush")
+async def flush_chat():
+    await api_chatgpt.force_flush_chat()
+    return {"result" : "flush success"}
