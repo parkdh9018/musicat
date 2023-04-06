@@ -6,7 +6,7 @@ import { musicState, playNowState } from "@/atoms/song.atom";
 export const CDplayer = () => {
   const [backGroundImage, setBackGroundImage] = useState("");
   const musicData = useRecoilValue(musicState);
-  const [playNow, setPlayNow] = useRecoilState(playNowState);
+  const [playNow] = useRecoilState(playNowState);
 
   useEffect(() => {
     setBackGroundImage(musicData.image || "/img/tape/init.png");

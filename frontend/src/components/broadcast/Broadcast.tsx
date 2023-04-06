@@ -12,7 +12,6 @@ import {
 import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import { playNowState } from "@/atoms/song.atom";
 import style from "./Broadcast.module.css";
-import radioBoothIMG from "@/asset/img/radioBooth.png";
 import SocketManager from "@/connect/socket/socket";
 import { musicState } from "@/atoms/song.atom";
 import { useNavigate } from "react-router-dom";
