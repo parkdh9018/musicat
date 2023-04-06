@@ -6,9 +6,11 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import style from "./Mypage.module.css";
 import Swal from "sweetalert2";
+import { useTokenData } from "@/customHooks/useTokenData";
 
 export const Mypage = () => {
   const userInfo = useRecoilValue(userInfoState);
+  const userToken = useTokenData();
   const setNowMainPage = useSetRecoilState(nowMainPageState);
   const navigate = useNavigate();
 
@@ -26,7 +28,7 @@ export const Mypage = () => {
 
   useEffect(() => {
     setNowMainPage(false);
-    if (!userInfo.userRole) {
+    if (!userToken?.userNick) {
       Swal.fire({
         icon: "warning",
         title: "",
