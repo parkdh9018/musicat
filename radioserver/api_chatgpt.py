@@ -114,7 +114,9 @@ async def chat_reaction_gpt(user: str, message: str):
     """
     채팅에 대한 리액션을 생성합니다
     """
-    messages=past_chats
+    global past_chats
+    await add_chat_to_history(user, message)
+    messages=past_chats 
     temperature=0.8
     result = await call_openai_api(messages, temperature)
     assistant_response = result["choices"][0]["message"]["content"].strip()

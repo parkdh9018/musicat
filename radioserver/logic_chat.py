@@ -57,6 +57,7 @@ async def process_chat_data(data):
                 radio_state = {
                     "state": "chat",  "playlist": playlist
                 }
-                await kafka_handler.send_state("radioState", radio_state)
+                if current_state.get_state() == "chat"
+                    await kafka_handler.send_state("radioState", radio_state)
 
 ##############################################
