@@ -32,6 +32,7 @@ public class RadioService {
   private String title = "";
   private String artist = "";
   private String image = "";
+  private long typeStartTime = System.currentTimeMillis();
   private long startTime = System.currentTimeMillis();
   private long idleTimer = 0L;
   private long chatTimer = 0L;
@@ -54,9 +55,12 @@ public class RadioService {
       logger.debug("수신한 라디오 상태 데이터 : {} ", message);
       acknowledgment.acknowledge();
       parseJsonMessageAndSetState(message);
-      if (!tempState.equals(currentState) && currentState.equals("chat")) {
-        resetInfo();
-        sendCurrentSound(true);
+      if (!tempState.equals(currentState)) {
+        typeStartTime = System.currentTimeMillis();
+        if (currentState.equals("chat")) {
+          resetInfo();
+          sendCurrentSound(true);
+        }
       }
     }
   }
@@ -277,6 +281,7 @@ public class RadioService {
   private void sendCurrentSound(boolean isChanged) {
     CurrentSoundDto currentSound = getCurrentSound();
     if (isChanged) {
+      currentSound.setTypePlayedTime(0L);
       currentSound.setPlayedTime(0L);
     }
     SocketBaseDto<CurrentSoundDto> socketBaseDto = SocketBaseDto.<CurrentSoundDto>builder()
@@ -296,6 +301,7 @@ public class RadioService {
     long currentTime = System.currentTimeMillis();
     CurrentSoundDto currentSound = CurrentSoundDto.builder()
         .type(type)
+        .typePlayedTime(typeStartTime - currentTime)
         .path(path)
         .startTime(startTime)
         .playedTime(currentTime - startTime)
