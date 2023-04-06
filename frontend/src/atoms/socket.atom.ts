@@ -63,15 +63,10 @@ const dataClassification = (
 ): void => {
   switch (res.type) {
     case "CHAT":
-      console.log("나는 챗");
-      console.log(res);
       set(chatListState, (prev: Chat[]) => changeChatList(prev, res.data));
       break;
     case "RADIO":
-      console.log("나는 라디오");
-      console.log(res);
       if (res.data.type === "youtube") {
-        console.log(res.data.type);
         queryClinet.invalidateQueries(["SongRequset"]);
         queryClinet.invalidateQueries(["AlredayRegistedSong"]);
       }
