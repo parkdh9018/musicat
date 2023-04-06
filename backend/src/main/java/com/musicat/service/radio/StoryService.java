@@ -80,7 +80,7 @@ public class StoryService {
         long userSeq = userSeqNode.asLong();
 
         String alertTitle = "사연 신청 결과";
-        String alertContent = "불합격";
+        String alertContent = "아쉽게도 사연이 당첨되지 않았습니다.";
 
         if (valid.equals("true")) {
           User user = userRepository.findById(userSeq)
@@ -91,7 +91,7 @@ public class StoryService {
           user.setUserMoney(userMoney + 100);
 
           // 합격 문구 생성
-          alertContent = "합격 \\n" + user.getUserNickname() + "님 좋은 사연 감사합니다.\\n감사의 의미로 100츄르가 지급되었습니다.";
+          alertContent = "사연 당첨! \\n" + user.getUserNickname() + "님 좋은 사연 감사합니다.\\n감사의 의미로 100츄르가 지급되었습니다.";
         }
 
         Alert alert = Alert.builder()
