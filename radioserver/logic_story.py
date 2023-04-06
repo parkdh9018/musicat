@@ -25,7 +25,7 @@ async def process_verify_story_data(data):
     music_artist = data["storyMusicArtist"]
     story_cleaned = await my_util.parse_story_content(json.loads(story_content))
 
-    if len(story_cleaned) > 500:
+    if len(story_cleaned) > 1000:
         database.verify_story(story_seq, 0, 1)
         logger.info(f'[Story] : GPT 응답 생성 실패 - 사연 길이 초과 (storySeq = {story_seq})')
         result = {
@@ -74,7 +74,7 @@ async def process_verify_remain_story_data(data):
     music_artist = data["story_music_artist"]
 
     story_cleaned = await my_util.parse_story_content(json.loads(story_content))
-    if len(story_cleaned) > 500:
+    if len(story_cleaned) > 1000:
         database.verify_story(story_seq, 0, 1)
         logger.info(f'[Story] : GPT 응답 생성 실패 - 사연 길이 초과 (storySeq = {story_seq})')
         result = {
