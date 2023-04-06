@@ -188,6 +188,7 @@ export const SongSearch = ({
         onKeyUp={onKeyUpSearch}
         disabled={status === 409}
         ref={inputRef}
+        onBlur={() => setSearchResults([])}
       />
       {!search && (
         <div className={style.placeholder}>
