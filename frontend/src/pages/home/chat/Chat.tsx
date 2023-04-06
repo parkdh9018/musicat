@@ -66,7 +66,7 @@ export const Chat = () => {
 
   useEffect(() => {
     if (message.length > 50) {
-      useCustomToast("warning", "체팅은 50자를 넘을 수 없습니다!!");
+      useCustomToast("warning", "채팅은 50자를 넘을 수 없습니다!!");
       setMessage(message.slice(0, 49));
     }
   }, [message]);

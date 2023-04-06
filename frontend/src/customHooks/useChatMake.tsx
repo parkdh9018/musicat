@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { UserTokenData } from "./useTokenData";
 import { Chat } from "@/atoms/chat.atom";
+import { imageBadge } from "@/pages/mypage/inventory/badgeConfig";
 
 const badgeColor = ["none", "red", "skyblue", "green", "gray"];
 
@@ -22,12 +23,14 @@ export function useChatMake(
     return (
       <div key={uuidv4()}>
         {data.badgeSeq - 1 ? (
-          <div
+          <img
+            src={imageBadge[data.badgeSeq - 1]}
             style={{
+              backgroundColor: "white",
               display: "inline-block",
               height: "1rem",
               width: "1rem",
-              backgroundColor: `${badgeColor[data.badgeSeq - 1]}`,
+              // backgroundColor: `${badgeColor[data.badgeSeq - 1]}`,
               position: "relative",
               top: "3px",
               marginRight: "4px",
@@ -46,12 +49,13 @@ export function useChatMake(
   return (
     <div key={uuidv4()}>
       {data.badgeSeq - 1 ? (
-        <div
+        <img
+          src={imageBadge[data.badgeSeq - 1]}
           style={{
+            backgroundColor: "white",
             display: "inline-block",
             height: "1rem",
             width: "1rem",
-            backgroundColor: `${badgeColor[data.badgeSeq - 1]}`,
             position: "relative",
             top: "3px",
             marginRight: "4px",
