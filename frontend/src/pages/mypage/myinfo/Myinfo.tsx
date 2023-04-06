@@ -18,7 +18,7 @@ import { useCustomToast } from "@/customHooks/useCustomToast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import style from "./Myinfo.module.css";
 import { MyinfoModal } from "./myinfoModal/MyinfoModal";
 import Swal from "sweetalert2";
@@ -35,45 +35,14 @@ export const Myinfo = () => {
   const [nowSideNav, setNowSideNav] = useRecoilState(nowSideNavState);
 
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
-  const [input, setInput] = useState("");
   const [moneySeq, setMoneySeq] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { data } = getUserConfig();
-
-  const { mutate } = useMutation(
-    async () => {
-      const { data } = await $.put(`/user/nickname`, input);
-      return data;
-    },
-    {
-      onSuccess: (data) => {
-        sessionStorage.setItem("token", data.token);
-        loginUser(setUserInfo);
-        setInput("");
-        useCustomToast("success", "닉네임 변경 성공!");
-      },
-      onError: () => {
-        Swal.fire({
-          icon: "error",
-          title: "",
-          text: "네트워크 오류 / 다시 시도해 주세요.",
-          confirmButtonText: "닫기",
-        });
-      },
-    }
-  );
 
   /** 사이드 Nav 초기화 */
   useEffect(() => {
     if (nowSideNav !== "나의 정보 관리") setNowSideNav("나의 정보 관리");
   }, []);
-
-  useEffect(() => {
-    if (input.length > 15) {
-      useCustomToast("warning", "닉네임은 15자를 넘을 수 없습니다!");
-      setInput(input.slice(0, 14));
-    }
-  }, [input]);
 
   return (
     <div className={style.myinfo}>
@@ -129,14 +98,7 @@ export const Myinfo = () => {
         style={{ animation: "0.7s ease-in-out loadEffect3" }}
       >
         <h3>닉네임</h3>
-        <Input input={input} setInput={setInput} />
-        <Button
-          content="변 경"
-          style={{ marginLeft: "5px" }}
-          onClick={() => {
-            mutate();
-          }}
-        />
+        <InputCpn />
         <h3 style={{ margin: "40px 0" }}>
           나의 츄르 : {userMoney?.data.userMoney}p
         </h3>
@@ -162,5 +124,51 @@ export const Myinfo = () => {
         </Modal>
       )}
     </div>
+  );
+};
+
+const InputCpn = () => {
+  const [input, setInput] = useState("");
+  const setUserInfo = useSetRecoilState(userInfoState);
+  const { mutate } = useMutation(
+    async () => {
+      const { data } = await $.put(`/user/nickname`, input);
+      return data;
+    },
+    {
+      onSuccess: (data) => {
+        sessionStorage.setItem("token", data.token);
+        loginUser(setUserInfo);
+        setInput("");
+        useCustomToast("success", "닉네임 변경 성공!");
+      },
+      onError: () => {
+        Swal.fire({
+          icon: "error",
+          title: "",
+          text: "네트워크 오류 / 다시 시도해 주세요.",
+          confirmButtonText: "닫기",
+        });
+      },
+    }
+  );
+
+  useEffect(() => {
+    if (input.length > 15) {
+      useCustomToast("warning", "닉네임은 15자를 넘을 수 없습니다!");
+      setInput(input.slice(0, 14));
+    }
+  }, [input]);
+  return (
+    <>
+      <Input input={input} setInput={setInput} />
+      <Button
+        content="변 경"
+        style={{ marginLeft: "5px" }}
+        onClick={() => {
+          mutate();
+        }}
+      />
+    </>
   );
 };
