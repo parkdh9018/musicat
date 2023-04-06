@@ -14,7 +14,7 @@ export const RadioPlayer = () => {
 
   return (
     <div style={{ visibility: "hidden" }}>
-      {/* 일반적인 노래 / TTS 플레이어 */}
+      {/* 일반적인 노래 / */}
       <ReactPlayer
         url={music.path}
         controls
@@ -24,7 +24,7 @@ export const RadioPlayer = () => {
             "seconds"
           );
         }}
-        playing={music.playedTime > music.length ? false : true}
+        playing={true}
         volume={volume}
         ref={playerRef1}
         width={0}
