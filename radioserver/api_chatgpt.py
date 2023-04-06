@@ -62,7 +62,7 @@ async def chat_reaction_gpt(user: str, message: str):
     await add_chat_to_history(user, message)
     result = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
-        messages=past_chats[-1000:],
+        messages=past_chats,
         temperature=0.8
     )
     print(past_chats)
