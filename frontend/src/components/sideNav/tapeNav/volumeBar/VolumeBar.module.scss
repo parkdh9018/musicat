@@ -3,41 +3,41 @@
   top: 15px;
   width: 90%;
   height: 41px;
-}
 
-.bgImg {
-  position: absolute;
-  width: 100%;
-}
+  .rangeInput {
+    position: absolute;
+    -webkit-appearance: none;
+    width: 87%;
+    margin-left: 7.5%;
+    background: none;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: 0.2s;
+    transition: opacity 0.2s;
+    z-index: 1;
+    cursor: pointer;
+  }
+  .rangeInput::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 1%;
+    height: 41px;
+    background: #e73730;
+    cursor: pointer;
+  }
 
-.rangeInput {
-  position: absolute;
-  -webkit-appearance: none;
-  width: 87%;
-  margin-left: 7.5%;
-  background: none;
-  outline: none;
-  opacity: 0.7;
-  -webkit-transition: 0.2s;
-  transition: opacity 0.2s;
-  z-index: 1;
-  cursor: pointer;
-}
+  .rangeInput::-moz-range-thumb {
+    width: 3px;
+    height: 41px;
+    background: #e73730;
+    cursor: pointer;
+  }
 
-.rangeInput::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 1%;
-  height: 3.1vw;
-  background: #e73730;
-  cursor: pointer;
-}
-
-.rangeInput::-moz-range-thumb {
-  width: 3px;
-  height: 10px;
-  background: #e73730;
-  cursor: pointer;
+  .bgImg {
+    position: absolute;
+    width: 100%;
+    height: 41px;
+  }
 }
 
 @media screen and (max-width: 768px) {

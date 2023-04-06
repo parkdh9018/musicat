@@ -6,7 +6,7 @@ export const NormalPage = () => {
   return (
     <>
       <Header />
-      <div style={{ backgroundColor: "rgb(26,26,26)" }}>
+      <div style={{ backgroundColor: "var(--broadcast-color)" }}>
         <Broadcast />
       </div>
       <Outlet />

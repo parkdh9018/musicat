@@ -66,13 +66,16 @@ export const Chat = () => {
 
   useEffect(() => {
     if (message.length > 50) {
-      useCustomToast("warning", "체팅은 50자를 넘을 수 없습니다!!");
+      useCustomToast("warning", "채팅은 50자를 넘을 수 없습니다!!");
       setMessage(message.slice(0, 49));
     }
   }, [message]);
 
   return (
-    <div className={style.chat_component}>
+    <div
+      className={style.chat_component}
+      style={{ animation: "0.7s ease-in-out loadEffect3" }}
+    >
       <div className={style.users}>
         <FontAwesomeIcon icon={faUsers} />
         <div className={style.user_num}>{chatPeople}</div>

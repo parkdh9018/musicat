@@ -10,25 +10,12 @@ export const storyTitleState = atom<string>({
 
 export const storySongState = atom<Song>({
   key: "songTitle",
-  default: {
-    musicSeq: 0,
-    userSeq: 0,
-    musicTitle: "",
-    musicGenre: "",
-    musicArtist: "",
-    musicAlbum: "",
-    musicImage: "",
-    musicYoutubeId: "",
-    musicLength: 0,
-    musicReleaseDate: "",
-    musicCreatedAt: "",
-    musicIsPlayed: false,
-  },
+  default: undefined,
 });
 
 export const storyContentState = atom<StoryContent[]>({
   key: "content",
-  default: [{ speaker: "narr", content: "" }],
+  default: [],
 });
 
 export const allStorySelector = selector({
@@ -65,7 +52,7 @@ export const deleteStoryContent = () => {
         set(storyContentState, (prev) => prev.filter((v, i) => i !== index));
       };
     },
-    [storyContentState]
+    []
   );
 
   return callback;
@@ -82,7 +69,7 @@ export const editStoryConent = () => {
         });
       };
     },
-    [storyContentState]
+    []
   );
 
   return callback;
@@ -99,7 +86,7 @@ export const editStorySpeaker = () => {
         });
       };
     },
-    [storyContentState]
+    []
   );
 
   return callback;

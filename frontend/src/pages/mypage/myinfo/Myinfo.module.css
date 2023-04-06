@@ -1,7 +1,6 @@
 .myinfo {
   display: flex;
   justify-content: space-around;
-  height: 100%;
   padding: 5% 3%;
 }
 .myinfo h3 {
@@ -10,6 +9,9 @@
   font-size: 1.4rem;
   margin: 0 0 5px 0;
 }
+.myinfo .leftbox {
+  margin-top: 3%;
+}
 .myinfo .leftbox .toolbar {
   width: 25%;
   height: 25px;
@@ -17,6 +19,7 @@
   margin: 0 auto 40px;
   border-radius: 20px;
   position: relative;
+  cursor: pointer;
 }
 .myinfo .leftbox .toolbar .circle {
   height: 25px;
@@ -27,7 +30,6 @@
   top: -8%;
   right: -1%;
   transition: 0.25s;
-  cursor: pointer;
 }
 .myinfo .leftbox .toolbar .circleLeft {
   right: 58%;
@@ -59,10 +61,11 @@
   margin: 2% 3%;
   border: 1px solid var(--font-color);
   writing-mode: vertical-rl;
-  height: 96%;
+  height: 75%;
 }
 .myinfo .rightbox {
   min-width: 50%;
+  margin-top: 5%;
 }
 .myinfo .rightbox h3 {
   margin-left: 10px;

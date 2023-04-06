@@ -1,14 +1,15 @@
 .contentBox {
+  margin-top: 4%;
+  margin-left: 3%;
+  margin-right: 3%;
   text-align: left;
-  padding: 4.5%;
+  padding: 4%;
   border: 1.5px solid var(--font-color);
   border-radius: 20px;
-  margin-top: 12px;
   display: grid;
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-rows: 50px 1fr;
   grid-template-columns: repeat(8, 1fr);
-  grid-template-areas: "item_number speaker speaker  speaker . . . delete_icon" ". edit_text edit_text edit_text edit_text edit_text . edit_icon";
-  align-items: center;
+  grid-template-areas: "item_number speaker speaker  speaker . . . delete_icon" ". edit_text edit_text edit_text edit_text edit_text edit_text edit_icon";
   row-gap: 5px;
 }
 
@@ -34,4 +35,22 @@
 
 .edit {
   grid-area: edit_text;
+}
+.edit .edit_textarea {
+  height: 30px;
+  padding: 15px 15px 3px;
+  border: 1.5px solid var(--font-color);
+  background-color: var(--background-color);
+  color: var(--font-color);
+  border-radius: 20px;
+  margin-bottom: 12px;
+  overflow-y: hidden;
+}
+.edit .edit_text {
+  color: var(--fade-font-color);
+}
+.edit .textLengthLimit {
+  font-size: 15px;
+  color: var(--fade-font-color);
+  float: right;
 }/*# sourceMappingURL=ContentBox.module.css.map */

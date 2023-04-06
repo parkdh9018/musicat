@@ -1,6 +1,6 @@
 .songRequest {
   padding: 3%;
-  min-height: 360px;
+  min-height: 364px;
   color: var(--font-color);
 }
 
@@ -32,8 +32,8 @@
   font-size: small;
 }
 
-@media screen and (max-width: 1200px) {
-}
-
 @media screen and (max-width: 768px) {
+  .songSearch {
+    font-size: 0.85rem;
+  }
 }
