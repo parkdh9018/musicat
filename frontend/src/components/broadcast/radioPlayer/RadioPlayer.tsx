@@ -11,8 +11,6 @@ export const RadioPlayer = () => {
   const playerRef1 = useRef<ReactPlayer>(null);
   const playerRef2 = useRef<ReactPlayer>(null);
   const playNow = useRecoilValue(playNowState);
-  console.log(music.path);
-  console.log(music.playedTime > music.length);
 
   return (
     <div style={{ visibility: "hidden" }}>
@@ -20,13 +18,13 @@ export const RadioPlayer = () => {
       <ReactPlayer
         url={music.path}
         controls
-        playing={music.playedTime > music.length ? false : true}
         onStart={() => {
           playerRef1.current?.seekTo(
             Math.floor(music.playedTime / 1000),
             "seconds"
           );
         }}
+        playing={music.playedTime > music.length ? false : true}
         volume={volume}
         ref={playerRef1}
         width={0}
@@ -42,13 +40,13 @@ export const RadioPlayer = () => {
             : undefined
         }
         controls
-        playing={broadcast.operation === "CHAT" && playNow ? true : false}
         onStart={() => {
           playerRef2.current?.seekTo(
             Math.floor(music.typePlayedTime / 1000),
             "seconds"
           );
         }}
+        playing={broadcast.operation === "CHAT" && playNow ? true : false}
         volume={volume / 4}
         ref={playerRef2}
         width={0}
