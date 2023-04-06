@@ -1,14 +1,18 @@
 package com.musicat.service.radio;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.musicat.data.dto.story.StoryInfoDto;
 import com.musicat.data.dto.story.StoryKafkaDto;
 import com.musicat.data.dto.story.StoryRequestDto;
 import com.musicat.data.dto.user.UserInfoJwtDto;
 import com.musicat.data.entity.radio.Story;
+import com.musicat.data.entity.user.Alert;
 import com.musicat.data.entity.user.MoneyLog;
 import com.musicat.data.entity.user.User;
 import com.musicat.data.repository.radio.StoryRepository;
+import com.musicat.data.repository.user.AlertRepository;
 import com.musicat.data.repository.user.MoneyLogRepository;
 import com.musicat.data.repository.user.UserRepository;
 import com.musicat.jwt.TokenProvider;
@@ -23,6 +27,8 @@ import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,10 +52,62 @@ public class StoryService {
   private final StoryRepository storyRepository;
   private final UserRepository userRepository;
   private final MoneyLogRepository moneyLogRepository;
+  private final AlertRepository alertRepository;
 
   // Util 정의
   private final RegexUtil regexUtil;
   private final MoneyLogBuilderUtil moneyLogBuilderUtil;
+
+  // mapper 정의
+  private final ObjectMapper objectMapper = new ObjectMapper();
+
+
+  @Transactional
+  @KafkaListener(topics = "storyValidateResult")
+  public void getRadioState(String message, Acknowledgment acknowledgment) {
+    if (message != null) {
+
+      logger.debug("수신한 사연 유효성 결과 데이터 : {} ", message);
+      acknowledgment.acknowledge(); // offset commit
+
+      try {
+        JsonNode jsonNode = objectMapper.readTree(message);
+        JsonNode storyValidateResultNode = jsonNode.get("valid");
+        JsonNode userSeqNode = jsonNode.get("userseq");
+
+        // true, false
+        String valid = storyValidateResultNode.asText().toLowerCase();
+        long userSeq = userSeqNode.asLong();
+
+        String alertTitle = "사연 신청 결과";
+        String alertContent = "아쉽게도 사연이 당첨되지 않았습니다.";
+
+        if (valid.equals("true")) {
+          User user = userRepository.findById(userSeq)
+              .orElseThrow(() -> new EntityNotFoundException("유저 정보가 존재하지 않습니다."));
+
+          // 100 츄르 지급
+          long userMoney = user.getUserMoney();
+          user.setUserMoney(userMoney + 100);
+
+          // 합격 문구 생성
+          alertContent = "사연 당첨! \\n" + user.getUserNickname() + "님 좋은 사연 감사합니다.\\n감사의 의미로 100츄르가 지급되었습니다.";
+        }
+
+        Alert alert = Alert.builder()
+            .userSeq(userSeq)
+            .alertTitle(alertTitle)
+            .alertContent(alertContent)
+            .build();
+
+        alertRepository.save(alert);
+
+      } catch (Exception e) {
+        throw new RuntimeException("카프카 에러 발생!!");
+      }
+
+    }
+  }
 
 
   /**
@@ -64,6 +122,11 @@ public class StoryService {
 
     User user = userRepository.findById(storyRequestDto.getUserSeq())
         .orElseThrow(() -> new EntityNotFoundException("유저 정보가 존재하지 않습니다."));
+
+    // 신청곡이 없는 경우
+    if (storyRequestDto.getMusicYoutubeId() == null) {
+      throw new IllegalArgumentException("신청곡이 존재하지 않습니다."); // 400
+    }
 
     if (user.getUserMoney() < 50) {
       return;

@@ -6,11 +6,16 @@ import com.google.api.services.youtube.model.SearchResult;
 import com.google.api.services.youtube.model.Video;
 import com.google.api.services.youtube.model.VideoListResponse;
 import com.musicat.data.dto.music.YoutubeSearchResultDto;
+import com.musicat.data.entity.radio.CacheMusic;
+import com.musicat.data.repository.radio.CacheMusicRepository;
 import com.musicat.util.ConvertTime;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
@@ -24,6 +29,9 @@ public class YoutubeApiService {
 
   private final ConvertTime convertTime;
 
+  private final CacheMusicRepository cacheMusicRepository;
+  private static final Logger logger = LoggerFactory.getLogger(YoutubeApiService.class);
+
   /**
    * 유튜브 영상 찾는 로직
    *
@@ -33,6 +41,15 @@ public class YoutubeApiService {
    * @return
    */
   public YoutubeSearchResultDto findVideo(String title, String artist, long spotifyMusicDuration) {
+    YoutubeSearchResultDto result = new YoutubeSearchResultDto();
+    Optional<CacheMusic>  optionalCacheMusic = cacheMusicRepository.findByMusicTitleAndMusicArtist(title, artist);
+    if (optionalCacheMusic.isPresent()) {
+      logger.debug("이미 신청한 적 있는 노래 신청!!");
+      CacheMusic cacheMusic = optionalCacheMusic.get();
+      result.setMusicLength(cacheMusic.getMusicLength());
+      result.setMusicYoutubeId(cacheMusic.getMusicYoutubeId());
+      return result;
+    }
     String query = title + " " + artist;
     YouTube.Search.List searchRequest;
     try {
@@ -47,7 +64,6 @@ public class YoutubeApiService {
       List<SearchResult> searchResults = searchResponse.getItems();
 
       BigInteger maxViews = BigInteger.ZERO;
-      YoutubeSearchResultDto result = new YoutubeSearchResultDto();
 
       for (SearchResult searchResult : searchResults) {
         String musicYoutubeId = searchResult.getId().getVideoId();
@@ -75,8 +91,20 @@ public class YoutubeApiService {
               convertTime.convertDurationToMillis(video.getContentDetails().getDuration()));
         }
       }
+      CacheMusic curCacheMusic = CacheMusic.builder()
+          .musicTitle(title)
+          .musicArtist(artist)
+          .musicLength(result.getMusicLength())
+          .musicYoutubeId(result.getMusicYoutubeId()).build();
+      cacheMusicRepository.save(curCacheMusic);
       return result;
     } catch (Exception e) {
+      CacheMusic curCacheMusic = CacheMusic.builder()
+          .musicTitle(title)
+          .musicArtist(artist)
+          .musicLength(0)
+          .musicYoutubeId(null).build();
+      cacheMusicRepository.save(curCacheMusic);
       throw new EntityNotFoundException("youtube Video Not Found");
     }
   }
