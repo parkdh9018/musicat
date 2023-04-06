@@ -29,6 +29,12 @@
   margin-top: 3px;
 }
 
+.contentNotLogin {
+  height: 70px;
+  padding-top: 3.5%;
+  color: var(--fade-font-color);
+}
+
 @media screen and (max-width: 768px) {
   .group {
     align-content: center;

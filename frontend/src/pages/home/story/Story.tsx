@@ -47,22 +47,27 @@ export const Story = () => {
   const content = useRecoilValue(storyContentState);
 
   const [titlePlaceholder, setTitlePlaceholder] =
-    useState("제목을 입력해주세요");
-
-  const [submitButton, setSubmitButton] = useState(false);
+    useState("로그인을 해야 신청이 가능합니다");
+  // const [submitButton, setSubmitButton] = useState(false);
+  // const [titleDisable, setTitleDisable] = useState(true);
+  const [submitState, setSubmitState] = useState<boolean>(false);
 
   useEffect(() => {
     if (userInfo?.userNick) {
       if (data == "200") {
-        setSubmitButton(true);
+        // 사연 신청 가능할때
+        setSubmitState(true);
+        setTitlePlaceholder("제목을 입력해주세요");
       } else if (data == "409") {
-        useCustomToast("error", "이미 신청한 사연이 있습니다.");
+        // 사연 신청 불가능할때
+        useCustomToast("error", "이미 신청한 사연이 있습니다");
+        setTitlePlaceholder("이미 신청한 사연이 있습니다");
       }
     } else {
       setTitlePlaceholder(LOGIN_REQUEST_STRING);
       useCustomToast("warning", LOGIN_REQUEST_STRING);
     }
-  }, [userInfo]);
+  }, [data]);
 
   useEffect(() => {
     if (storyReqeustData) {
@@ -70,16 +75,20 @@ export const Story = () => {
       resetTitle();
       resetContent();
       resetSong();
-      setSubmitButton(false);
+      setSubmitState(false);
+      // setSubmitButton(false);
     }
   }, [storyReqeustData]);
 
   useEffect(() => {
-    if(title.length >= TITLE_LENGTH_MAX) {
-      useCustomToast("warning", `글자수 ${TITLE_LENGTH_MAX}자 초과는 제한됩니다`)
-      setTitle((prev) => prev.slice(0, TITLE_LENGTH_MAX))
+    if (title.length >= TITLE_LENGTH_MAX) {
+      useCustomToast(
+        "warning",
+        `글자수 ${TITLE_LENGTH_MAX}자 초과는 제한됩니다`
+      );
+      setTitle((prev) => prev.slice(0, TITLE_LENGTH_MAX));
     }
-  },[title])
+  }, [title]);
 
   const allStory = useRecoilValue(allStorySelector);
 
@@ -106,17 +115,27 @@ export const Story = () => {
             placeholder={titlePlaceholder}
             input={title}
             setInput={setTitle}
-            disabled={userInfo?.userNick ? false : true}
+            disabled={!submitState}
           />
         </div>
         <div className={style.group}>
           <span className={style.content_label}>신청곡</span>
-          <SongSearch
-            status={200}
-            placeholder=" 가수 이름 / 노래 제목"
-            width={85}
-            setRequestSong={setSong}
-          />
+          {submitState ? (
+            <SongSearch
+              status={200}
+              placeholder=" 가수 이름 / 노래 제목"
+              width={85}
+              setRequestSong={setSong}
+            />
+          ) : (
+            <Input
+              style={{ width: "80%" }}
+              placeholder=""
+              input={""}
+              setInput={() => {}}
+              disabled={true}
+            />
+          )}
         </div>
         <div className={style.group}>
           <span>내용</span>
@@ -124,7 +143,11 @@ export const Story = () => {
             {content.map((v, i) => (
               <ContentBox key={uuidv4()} {...v} index={i} />
             ))}
-            <ContentPlus />
+            {submitState ? (
+              <ContentPlus />
+            ) : (
+              <div className={style.contentNotLogin}></div>
+            )}
           </div>
         </div>
 
@@ -134,7 +157,7 @@ export const Story = () => {
           ) : (
             <Button
               content="등록하기"
-              style={submitButton ? {} : disable}
+              style={submitState ? {} : disable}
               onClick={requestStoryEvent}
             />
           )}
