@@ -2,15 +2,27 @@ import anime from "animejs";
 import { useEffect, useState } from "react";
 import style from "./Tape.module.css";
 import { useRecoilValue } from "recoil";
-import { musicState } from "@/atoms/song.atom";
+import { musicState, playNowState } from "@/atoms/song.atom";
+let an: anime.AnimeInstance;
 
 export const Tape = () => {
-  let an: anime.AnimeInstance;
 
   const [textContent, setTextContent] = useState("");
   const [backGroundImage, setBackGroundImage] = useState("");
 
   const musicData = useRecoilValue(musicState);
+  const playNow = useRecoilValue(playNowState);
+
+  useEffect(() => {
+
+    if(!an) return;
+
+    if (playNow) {
+      an.play();
+    } else {
+      an.pause();
+    }
+  }, [playNow]);
 
   useEffect(() => {
     setBackGroundImage(musicData.image || "/img/tape/init.png");
@@ -22,7 +34,7 @@ export const Tape = () => {
   }, [musicData]);
 
   useEffect(() => {
-    const width = textContent.length * 11;
+    // const width = textContent.length * 11;
 
     an = anime({
       targets: `.${style.gearImg}`,
@@ -35,20 +47,12 @@ export const Tape = () => {
     anime({
       targets: `.${style.text}`,
       translateX: -320,
-      duration: 3800,
+      duration: 6000,
       round: 1, // round the text to integer values
       easing: "linear",
       loop: true,
     });
   }, []);
-
-  const pauseEvent = () => {
-    an.pause();
-  };
-
-  const playEvent = () => {
-    an.play();
-  };
 
   return (
     <>
@@ -76,8 +80,6 @@ export const Tape = () => {
           src={backGroundImage}
         />
       </div>
-      {/* <button onClick={pauseEvent}>pause</button>
-      <button onClick={playEvent}>play</button> */}
     </>
   );
 };
