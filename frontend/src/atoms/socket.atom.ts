@@ -1,17 +1,15 @@
-import { nowMainPageState } from "@/atoms/common.atom";
-import { useRecoilCallback, useRecoilValue } from "recoil";
+import { useRecoilCallback } from "recoil";
 import { changeChatList, Chat, chatListState } from "./chat.atom";
 import SocketManager from "@/connect/socket/socket";
-import { Music, musicState, playNowState } from "./song.atom";
+import { Music, musicState } from "./song.atom";
 import { broadcastState } from "./broadcast.atom";
-import { QueryClient, useQueryClient } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 
 interface BaseResponse {
   type: string;
   operation: string;
   data: Music;
 }
-
 const socketManager = SocketManager.getInstance();
 let stompClient = socketManager.connect();
 

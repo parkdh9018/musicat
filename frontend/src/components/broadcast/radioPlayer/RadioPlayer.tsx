@@ -19,6 +19,7 @@ export const RadioPlayer = () => {
         url={music.path}
         controls
         onStart={() => {
+          console.log(playerRef1.current);
           playerRef1.current?.seekTo(
             Math.floor(music.playedTime / 1000),
             "seconds"
@@ -32,6 +33,7 @@ export const RadioPlayer = () => {
         playsinline={true}
         webkit-playsinline="true"
       />
+
       {/* 채팅시간 배경음악용 플레이어 */}
       <ReactPlayer
         url={
