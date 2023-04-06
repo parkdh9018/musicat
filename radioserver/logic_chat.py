@@ -30,7 +30,7 @@ async def process_chat_data(data):
         chat_cleaned = re.sub(r"[^가-힣A-Za-z0-9\s]+", " ", data["content"])
         user_seq = int(data["userSeq"])
 
-        if user_check[user_seq] >= 3:
+        if user_check[user_seq] >= 7:
             return
 
         if len(chat_cleaned) > 7 and len(chat_cleaned) < 200:
@@ -57,6 +57,7 @@ async def process_chat_data(data):
                 radio_state = {
                     "state": "chat",  "playlist": playlist
                 }
-                await kafka_handler.send_state("radioState", radio_state)
+                if current_state.get_state() == "chat":
+                    await kafka_handler.send_state("radioState", radio_state)
 
 ##############################################

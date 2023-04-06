@@ -7,17 +7,9 @@
   min-height: 250px;
   position: relative;
   transition: 0.3s;
-  background-color: white;
+  background-color: var(--broadcast-color);
   z-index: 0;
-}
-.broadcast .radioBooth {
-  max-width: 1201px;
-  position: absolute;
-  z-index: 1;
-  top: -1px;
-  height: calc(40vh + 1px);
-  min-height: 252px;
-  width: 101%;
+  margin-bottom: 30px;
 }
 .broadcast .broad_back {
   z-index: 1;
@@ -88,6 +80,7 @@
     min-height: 90px;
     width: 50vw;
     height: 30vw;
+    transform: translateY(78vh);
   }
   .play {
     font-size: 30px;

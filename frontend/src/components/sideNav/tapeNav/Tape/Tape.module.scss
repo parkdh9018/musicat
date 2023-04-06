@@ -8,9 +8,11 @@
 .fixedRatio {
   aspect-ratio: 376 / 220;
   width: 100%;
-  max-width: 28vw;
+  // max-width: 28vw;
   border-radius: 10px;
   height: auto; /* 높이는 자동으로 설정됨 */
+
+  max-width: 30vw;
 }
 
 // 톱니바퀴
@@ -50,6 +52,7 @@
 .text {
   white-space: nowrap;
   font-size: 1.5vw;
+  margin-bottom: 8.5px;
 }
 
 @media screen and (max-width: 768px) {
@@ -58,7 +61,10 @@
   }
 
   .fixedRatio {
-    max-width: 89%;
+    // max-width: 89%;
+    // margin-left: 5%;
+
+    max-width: 90%;
     margin-left: 5%;
   }
 

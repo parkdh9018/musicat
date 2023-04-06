@@ -12,15 +12,16 @@ import {
 import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import { playNowState } from "@/atoms/song.atom";
 import style from "./Broadcast.module.css";
-import radioBoothIMG from "@/asset/img/radioBooth.png";
 import SocketManager from "@/connect/socket/socket";
 import { musicState } from "@/atoms/song.atom";
 import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const Broadcast = () => {
+  const queryClinet = useQueryClient();
   const nowMainPage = useRecoilValue(nowMainPageState);
   const [playNow, setPlayNow] = useRecoilState(playNowState);
-  const socket = socketConnection();
+  const socket = socketConnection(queryClinet);
   const stopRadio = useResetRecoilState(musicState);
   const navigate = useNavigate();
   const socketManager = SocketManager.getInstance();
@@ -35,12 +36,6 @@ export const Broadcast = () => {
         nowMainPage ? style.broadcast : style.broadcast + " " + style.mypage
       }
     >
-      <img
-        src={radioBoothIMG}
-        alt=""
-        className={style.radioBooth}
-        style={!nowMainPage ? { display: "none" } : undefined}
-      />
       <div
         className={style.broad_back}
         style={nowMainPage ? { display: "none" } : undefined}

@@ -5,7 +5,6 @@ import { Page404 } from "./common/page404/Page404";
 import { ExceptionPage } from "./ExceptionPage";
 import { About } from "./home/about/About";
 import { Chat } from "./home/chat/Chat";
-import { Introduce } from "./home/introduce/Introduce";
 import { SongRequest } from "./home/songRequest/SongRequest";
 import { Story } from "./home/story/Story";
 import { Inventory } from "./mypage/inventory/Inventory";
@@ -28,7 +27,6 @@ const router: RouteObject[] = [
         element: <Home />,
         children: [
           { index: true, element: <Chat /> },
-          { path: "introduce", element: <Introduce /> },
           { path: "songRequest", element: <SongRequest /> },
           { path: "story", element: <Story /> },
           { path: "about", element: <About /> },

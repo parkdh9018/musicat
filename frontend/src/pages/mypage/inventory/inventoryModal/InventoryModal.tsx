@@ -12,6 +12,7 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import { useCustomToast } from "@/customHooks/useCustomToast";
 import Swal from "sweetalert2";
+import { imageBadge } from "../badgeConfig";
 
 interface InventoryModalProps {
   originSelet: number;
@@ -55,6 +56,7 @@ export const InventoryModal = ({
               style={{ width: width }}
             >
               {type === 1 ? (
+                i == 0 ? 
                 <div
                   className={
                     selected === i + 1
@@ -62,6 +64,19 @@ export const InventoryModal = ({
                       : style.badge
                   }
                   style={{ backgroundColor: badge[i] }}
+                  onClick={() => {
+                    setSelected(i + 1);
+                  }}
+                />
+                :
+                <img
+                  src={`${imageBadge[i]}`}
+                  className={
+                    selected === i + 1
+                      ? style.badge + " " + style.selected
+                      : style.badge
+                  }
+                  // style={{ backgroundColor: badge[i] }}
                   onClick={() => {
                     setSelected(i + 1);
                   }}

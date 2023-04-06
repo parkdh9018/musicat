@@ -6,6 +6,7 @@ import json
 import asyncio
 import os
 import my_util
+import kafka_handler
 from my_logger import setup_logger
 
 logger = setup_logger()
@@ -23,11 +24,17 @@ async def process_verify_story_data(data):
     music_title = data["storyMusicTitle"]
     music_artist = data["storyMusicArtist"]
     story_cleaned = await my_util.parse_story_content(json.loads(story_content))
+    logger.info(story_cleaned)
+    logger.info(f'사연 길이 : {len(story_cleaned)}')
 
-    if len(story_cleaned) > 500:
+    if len(story_cleaned) > 1000:
         database.verify_story(story_seq, 0, 1)
         logger.info(f'[Story] : GPT 응답 생성 실패 - 사연 길이 초과 (storySeq = {story_seq})')
-        return
+        result = {
+            "valid" : "false",
+            "userseq" : data["userSeq"]
+        }
+        return result
     
     validate_result = await api_chatgpt.validate_story_gpt(story_cleaned)
 
@@ -41,10 +48,19 @@ async def process_verify_story_data(data):
         database.verify_story(story_seq, 1, 0)
 
         logger.info(f'[Story] : GPT 응답 생성 완료 (storySeq = {story_seq})')
+        result = {
+            "valid" : "true",
+            "userseq" : data["userSeq"]
+        }
+        return result
     else:
         database.verify_story(story_seq, 0, 1)
-
         logger.info(f'[Story] : GPT 응답 생성 실패 - 사연 적합도 낮음 (storySeq = {story_seq})')
+        result = {
+            "valid" : "false",
+            "userseq" : data["userSeq"]
+        }
+        return result
 
 ##############################################
 
@@ -60,10 +76,14 @@ async def process_verify_remain_story_data(data):
     music_artist = data["story_music_artist"]
 
     story_cleaned = await my_util.parse_story_content(json.loads(story_content))
-    if len(story_cleaned) > 500:
+    if len(story_cleaned) > 1000:
         database.verify_story(story_seq, 0, 1)
         logger.info(f'[Story] : GPT 응답 생성 실패 - 사연 길이 초과 (storySeq = {story_seq})')
-        return
+        result = {
+            "valid" : "false",
+            "userseq" : data["user_seq"]
+        }
+        return result
     
     validate_result = await api_chatgpt.validate_story_gpt(story_cleaned)
 
@@ -78,10 +98,20 @@ async def process_verify_remain_story_data(data):
         database.verify_story(story_seq, 1, 0)
 
         logger.info(f'[Story] : GPT 응답 생성 완료 (storySeq = {story_seq})')
+        result = {
+            "valid" : "true",
+            "userseq" : data["user_seq"]
+        }
+        return result
     else:
         database.verify_story(story_seq, 0, 1)
 
         logger.info(f'[Story] : GPT 응답 생성 실패 - 사연 적합도 낮음 (storySeq = {story_seq})')
+        result = {
+            "valid" : "false",
+            "userseq" : data["user_seq"]
+        }
+        return result
 
 ##############################################
 
@@ -120,8 +150,8 @@ async def process_story_state():
     story_content_list = json.loads(story_content)
     for i in range(len(story_content_list)):
         current_text = story_content_list[i]
-        # await api_naver_tts.generate_tts_clova(current_text['content'], os.path.join(tts_path, f"{i}.mp3"), current_text['speaker'])
-        await api_naver_tts.generate_tts_clova(current_text['content'], os.path.join(tts_path, f"{i}.mp3"), "nminseo")
+        await api_naver_tts.generate_tts_clova(current_text['content'], os.path.join(tts_path, f"{i}.mp3"), current_text['speaker'])
+        # await api_naver_tts.generate_tts_clova(current_text['content'], os.path.join(tts_path, f"{i}.mp3"), "nminseo")
         # await api_naver_tts.generate_tts_test(current_text['content'], os.path.join(tts_path, f"{i}.mp3"))
         story_tts_list.append(os.path.join(tts_path, f'{i}.mp3'))
     merged_story_tts = await merge_audio(story_tts_list, 500)

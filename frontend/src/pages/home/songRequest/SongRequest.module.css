@@ -1,6 +1,6 @@
 .songRequest {
   padding: 3%;
-  min-height: 360px;
+  min-height: 364px;
   color: var(--font-color);
 }
 
@@ -30,4 +30,10 @@
   background-color: rgba(0, 0, 0, 0);
   color: var(--font-color);
   font-size: small;
+}
+
+@media screen and (max-width: 768px) {
+  .songSearch {
+    font-size: 0.85rem;
+  }
 }/*# sourceMappingURL=SongRequest.module.css.map */

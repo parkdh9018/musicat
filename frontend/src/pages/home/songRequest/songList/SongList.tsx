@@ -33,42 +33,35 @@ export const SongList = () => {
     setIsSongDetailModalOpen(true);
   };
 
-  if (!songs) {
-    return <div>로딩 중...</div>;
-  }
-
-  const songList: JSX.Element[] = songs.map((song) => (
-    <div className={style.songList} key={uuidv4()}>
-      {song.musicYoutubeId === playingMuisicId ? (
-        <span className={style.playingSongSpan}>
-          <img src={song.musicImage} alt="사진" className={style.songImg} />
-          {song.musicTitle} - {song.musicArtist}
-        </span>
-      ) : song.userSeq == userInfo.userSeq ? (
-        <span className={style.userSongSpan}>
-          <img src={song.musicImage} alt="사진" className={style.songImg} />
-          {song.musicTitle} - {song.musicArtist}
-        </span>
-      ) : (
-        <span className={style.songSpan}>
-          <img src={song.musicImage} alt="사진" className={style.songImg} />
-          {song.musicTitle} - {song.musicArtist}
-        </span>
-      )}
-
-      <button
-        className={style.songBtn}
-        value={JSON.stringify(song)}
-        onClick={onSongDetail}
-      >
-        ...
-      </button>
-    </div>
-  ));
-
   return (
     <div className={style.songListBox}>
-      <div>{songList}</div>
+      {songs?.map((song) => (
+        <div className={style.songList} key={uuidv4()}>
+          {song.musicYoutubeId === playingMuisicId ? (
+            <span className={style.playingSongSpan}>
+              <img src={song.musicImage} alt="사진" className={style.songImg} />
+              {song.musicTitle} - {song.musicArtist}
+            </span>
+          ) : song.userSeq == userInfo.userSeq ? (
+            <span className={style.userSongSpan}>
+              <img src={song.musicImage} alt="사진" className={style.songImg} />
+              {song.musicTitle} - {song.musicArtist}
+            </span>
+          ) : (
+            <span className={style.songSpan}>
+              <img src={song.musicImage} alt="사진" className={style.songImg} />
+              {song.musicTitle} - {song.musicArtist}
+            </span>
+          )}
+          <button
+            className={style.songBtn}
+            value={JSON.stringify(song)}
+            onClick={onSongDetail}
+          >
+            ....
+          </button>
+        </div>
+      ))}
       {isSongDetailModalOpen && selectedSong != undefined && (
         <Modal setModalOpen={setIsSongDetailModalOpen}>
           <SongDetailModal musicSeq={selectedSong.musicSeq} />

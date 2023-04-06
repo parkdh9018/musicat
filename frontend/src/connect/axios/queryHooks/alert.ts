@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  QueryClient,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { PagableResponse } from "@/types/mypage";
 import { $ } from "../setting";
 import { NoticeDetail } from "./notice";
@@ -33,12 +38,20 @@ export function getAlertList(pageNum: number, search: string | null) {
 }
 
 // 알람/공지사항 detail를 받아오기 => 분류가 애매함
-export function getAlertDetail(url: string) {
+export function getAlertDetail(url: string, queryClient: QueryClient) {
   async function fetchAlertDetail(): Promise<NoticeAlertDetail> {
     const { data } = await $.get(url);
     return data;
   }
-  const { data, isLoading } = useQuery(["AlertDetail" + url], fetchAlertDetail);
+  const { data, isLoading } = useQuery(
+    ["AlertDetail" + url],
+    fetchAlertDetail,
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["getUserUnreadMsgNum"]);
+      },
+    }
+  );
   return { data, isLoading };
 }
 

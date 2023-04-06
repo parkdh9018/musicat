@@ -1,23 +1,29 @@
 .about {
-  overflow: auto;
+  overflow-y: scroll;
   height: 365px;
-
+  border-radius: 10px;
+  background-color: #141d27;
+  scroll-snap-type: y mandatory;
   .AboutImg {
     width: 100%;
-    border-radius: 10px;
+    // border-radius: 10px;
   }
   &::-webkit-scrollbar {
     width: 6px;
   }
   &::-webkit-scrollbar-track {
-    background-color: transparent;
+    background: none;
   }
   &::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background-color: gray;
+    background-color: #4b4d5098;
   }
   &::-webkit-scrollbar-button {
     width: 0;
     height: 1%;
   }
+}
+
+.about div {
+  scroll-snap-align: start;
 }
