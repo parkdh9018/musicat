@@ -8,6 +8,7 @@ export const ani = {
   IdleC: "Anim_Chibi@IdleC",
   Jump: "Anim_Chibi@Jump",
   Make_A: "Anim_Chibi@Make_A",
+  Victory: "Anim_Chibi@Victory",
   Yes: "Anim_Chibi@Yes",
 };
 

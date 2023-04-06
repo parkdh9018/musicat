@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import style from "./Inventory.module.css";
 import { InventoryModal } from "./inventoryModal/InventoryModal";
+import { imageBadge } from "./badgeConfig";
 
 export const Inventory = () => {
   const [nowSideNav, setNowSideNav] = useRecoilState(nowSideNavState);
@@ -55,10 +56,10 @@ export const Inventory = () => {
             배지 없음
           </span>
         ) : (
-          <div
+          <img
             className={style.badge}
+            src={`${imageBadge[theme?.data.badgeSeq - 1]}`}
             style={{
-              backgroundColor: `${badge[theme?.data.badgeSeq - 1]}`,
               animation: "0.7s ease-in-out loadEffect3",
             }}
             onClick={() => {
