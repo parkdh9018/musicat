@@ -8,24 +8,24 @@ import json
 # OpenAI API 키 (.env를 통해 설정)
 openai.api_key = openai_api_key
 
+async def call_openai_api(messages, temperature):
+    url = "https://api.openai.com/v1/engines/gpt-3.5-turbo/completions"
+    api_key = openai_api_key  # Replace with your actual API key
 
-async def call_openai_api(messages: list, temperature: float):
-    url = "https://api.openai.com/v1/engines/davinci-codex/completions"
     headers = {
+        "Accept": "application/json",
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {openai_api_key}"
-    }
-    data = {
-        "model": "gpt-3.5-turbo",
-        "messages": messages,
-        "temperature": temperature
+        "Authorization": f"Bearer {api_key}"
     }
 
+    data = {
+        "messages": messages,
+        "temperature": temperature,
+    }
 
     async with aiohttp.ClientSession() as session:
         async with session.post(url, headers=headers, data=json.dumps(data)) as response:
             result = await response.json()
-            print(result)
             return result
 
 ##############################################
