@@ -5,6 +5,7 @@ import com.musicat.Oauth.CustomUserOAuth2Service;
 import com.musicat.handler.OAuth2AuthenticationSuccessHandler;
 import com.musicat.jwt.JwtAccessDeniedHandler;
 import com.musicat.jwt.JwtAuthenticationEntryPoint;
+import com.musicat.jwt.JwtSecurityConfig;
 import com.musicat.jwt.TokenProvider;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.filter.CorsFilter;
 
 @EnableWebSecurity
@@ -65,11 +67,11 @@ public class SecurityConfig {
          * 예외 처리를 구성하는 부분
          * exception handling 할 때 사용자가 만든 클래스를 추가
          */
-//                .exceptionHandling()
+                .exceptionHandling()
         /** 인증되지 않은 사용자가 보호된 엔드포인트에 액세스하려 할 때 적절할 응답을 반환 */
-//                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
         /** 인증된 사용자가 권한이 없는 엔드포인트에 엑세스하려 할 때 적절한 응답을 반환 */
-//                .accessDeniedHandler(jwtAccessDeniedHandler)
+                .accessDeniedHandler(jwtAccessDeniedHandler)
 
         /**
          * 세션 관리를 구성하는 부분
@@ -93,16 +95,16 @@ public class SecurityConfig {
          * HTTP 요청에 대한 접근 제한을 설정하는 부분
          * Spring Security를 사용하여 특정 URL 패턴에 대한 접근을 허용하거나 제한 할 수 있음
          */
-//                .and()
+                .and()
         /** .authorizeHttpRequests() 호출하여 HTTP 요청에 대한 접근 제한 설정 시작  */
-//                .authorizeHttpRequests()
+                .authorizeHttpRequests()
 
         /**
          * CORS에 사용되는 Preflight 요청을 모두 허용
          * Preflight 요청은 본 요청 전에 클라이언트가 서버에 보내는 요청으로,
          * 실제 요청이 서버에 의해 허용되는지 확인하는 목적
          */
-//                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
 
         /**
          * .antMatchers 패턴에 권한 설정
@@ -123,23 +125,23 @@ public class SecurityConfig {
          * hasRole 은 ROLE_ 접두사가 추가된다 -> hasRole("ADMIN") 은 ROLE_ADMIN 이 된다.
          * hasAuthority 는 접두사가 자동으로 추가되지 않는다 -> hasAuthority("ROLE_ADMIN")
          */
-//                .antMatchers("/api/login").permitAll()
-//                .antMatchers("/api/user/**").permitAll()
-//                .antMatchers("/oauth2/**").permitAll()
-//                .antMatchers("/login**").permitAll()
+                .antMatchers("/api/login").permitAll()
+                .antMatchers("/api/user/**").permitAll()
+                .antMatchers("/oauth2/**").permitAll()
+                .antMatchers("/login**").permitAll()
 
-//                 .antMatchers("/user/**").hasAuthority("ROLE_USER")
-//                 .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                 .antMatchers("/user/**").hasAuthority("ROLE_USER")
+                 .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
 
         // 모든 경로에 대한 접근 설정
-//                 .anyRequest().permitAll()
+                 .anyRequest().permitAll()
 
         // jwt filter를 적용
-//                .and()
-//                .apply(new JwtSecurityConfig(tokenProvider))
+                .and()
+                .apply(new JwtSecurityConfig(tokenProvider))
 
         // oauth2 를 이용한 소셜 로그인
-//                .and()
+                .and()
         .oauth2Login()
         .userInfoEndpoint()
         .userService(CustomUserOAuth2Service)
