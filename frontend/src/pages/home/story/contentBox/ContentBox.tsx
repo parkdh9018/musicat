@@ -16,6 +16,7 @@ import {
 } from "@/atoms/story.atoms";
 import { StoryContent } from "@/types/home";
 import { TTS_OPTION } from "./speakerConfig";
+import { useClickOutside } from "@mantine/hooks";
 
 interface ContentBoxProps extends StoryContent {
   index: number;
@@ -24,7 +25,13 @@ interface ContentBoxProps extends StoryContent {
 const TEXT_LENGTH_MAX = 200;
 
 export const ContentBox = ({ index, speaker, content }: ContentBoxProps) => {
+
+  const editRef = useClickOutside(() => {
+    useEdit(index, editText);
+    setEditState(false)}
+  );
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
   const [editstate, setEditState] = useState(false);
   const [editText, setEditText] = useState(content);
 
@@ -33,10 +40,14 @@ export const ContentBox = ({ index, speaker, content }: ContentBoxProps) => {
   const useEdit = editStoryConent();
 
   useEffect(() => {
-    if(editText.length >= TEXT_LENGTH_MAX) {
-      setEditText((prev) => prev.slice(0, TEXT_LENGTH_MAX))
+    if (editText.length >= TEXT_LENGTH_MAX) {
+      setEditText((prev) => prev.slice(0, TEXT_LENGTH_MAX));
     }
-  },[editText])
+  }, [editText]);
+
+  useEffect(() => {
+    textareaRef.current?.focus();
+  }, [editstate]);
 
   const useEditSpeakerCallback = (value: string) => {
     useEditSpeaker(index, value);
@@ -57,6 +68,15 @@ export const ContentBox = ({ index, speaker, content }: ContentBoxProps) => {
     if (e?.key === "Enter") {
       useEdit(index, editText);
     }
+  };
+
+  const onTextFocus = () => {
+    if (!textareaRef.current) return;
+
+    textareaRef.current.style.height =
+      "auto"; /* 높이를 자동으로 조정하기 위해 초기화 */
+    textareaRef.current.style.height =
+      textareaRef.current.scrollHeight + "px"; /* 높이를 스크롤 높이로 설정 */
   };
 
   const autoResize = () => {
@@ -89,15 +109,18 @@ export const ContentBox = ({ index, speaker, content }: ContentBoxProps) => {
           <FontAwesomeIcon icon={faTrash} onClick={deleteClick} />
         </div>
         {editstate ? (
-          <div className={style.edit}>
+          <div className={style.edit} ref={editRef}>
             <textarea
               ref={textareaRef}
               style={{ width: "100%" }}
               className={style.edit_textarea}
               onInput={autoResize}
+              onFocus={onTextFocus}
               value={editText}
             />
-            <div className={style.textLengthLimit}>{editText.length} / {TEXT_LENGTH_MAX}</div>
+            <div className={style.textLengthLimit}>
+              {editText.length} / {TEXT_LENGTH_MAX}
+            </div>
           </div>
         ) : (
           <div className={style.edit} onClick={editClick}>
