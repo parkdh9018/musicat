@@ -113,3 +113,8 @@ async def send_tts(request: Request, path: str, filename: str):
 async def chat_endpoint(user: str, message: str):
     assistant_response = await api_chatgpt.chat_reaction_gpt(user, message)
     return {"response": assistant_response}
+
+@app.post("/chat/flush")
+async def flush_chat():
+    await api_chatgpt.force_flush_chat()
+    return {"result" : "flush success"}
