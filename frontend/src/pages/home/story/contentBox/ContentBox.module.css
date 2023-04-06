@@ -48,4 +48,9 @@
 }
 .edit .edit_text {
   color: var(--fade-font-color);
+}
+.edit .textLengthLimit {
+  font-size: 15px;
+  color: var(--fade-font-color);
+  float: right;
 }/*# sourceMappingURL=ContentBox.module.css.map */

@@ -5,6 +5,7 @@ import style from "./ContentBox.module.css";
 import {
   KeyboardEventHandler,
   MouseEventHandler,
+  useEffect,
   useRef,
   useState,
 } from "react";
@@ -16,10 +17,12 @@ import {
 import { StoryContent } from "@/types/home";
 import { TTS_OPTION } from "./speakerConfig";
 
-// TODO : atoms에 있는 type과 하나로 통합 하면 좋을듯
 interface ContentBoxProps extends StoryContent {
   index: number;
 }
+
+const TEXT_LENGTH_MAX = 200;
+
 export const ContentBox = ({ index, speaker, content }: ContentBoxProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [editstate, setEditState] = useState(false);
@@ -28,6 +31,12 @@ export const ContentBox = ({ index, speaker, content }: ContentBoxProps) => {
   const useEditSpeaker = editStorySpeaker();
   const useDelete = deleteStoryContent();
   const useEdit = editStoryConent();
+
+  useEffect(() => {
+    if(editText.length >= TEXT_LENGTH_MAX) {
+      setEditText((prev) => prev.slice(0, TEXT_LENGTH_MAX))
+    }
+  },[editText])
 
   const useEditSpeakerCallback = (value: string) => {
     useEditSpeaker(index, value);
@@ -88,6 +97,7 @@ export const ContentBox = ({ index, speaker, content }: ContentBoxProps) => {
               onInput={autoResize}
               value={editText}
             />
+            <div className={style.textLengthLimit}>{editText.length} / {TEXT_LENGTH_MAX}</div>
           </div>
         ) : (
           <div className={style.edit} onClick={editClick}>
