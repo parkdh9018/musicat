@@ -20,12 +20,14 @@ import { useTokenData } from "@/customHooks/useTokenData";
 import { useResetRecoilState } from "recoil";
 import { getUserMoney } from "@/connect/axios/queryHooks/user";
 
+const LOGIN_REQUEST_STRING = "로그인이 필요합니다.";
+const TITLE_LENGTH_MAX = 30;
+
 export const Story = () => {
   const disable: React.CSSProperties = {
     opacity: "0.5",
     pointerEvents: "none",
   };
-  const LOGIN_REQUEST_STRING = "로그인이 필요합니다.";
 
   // const userInfo = useRecoilValue(userInfoState);
 
@@ -71,6 +73,13 @@ export const Story = () => {
       setSubmitButton(false);
     }
   }, [storyReqeustData]);
+
+  useEffect(() => {
+    if(title.length >= TITLE_LENGTH_MAX) {
+      useCustomToast("warning", `글자수 ${TITLE_LENGTH_MAX}자 초과는 제한됩니다`)
+      setTitle((prev) => prev.slice(0, TITLE_LENGTH_MAX))
+    }
+  },[title])
 
   const allStory = useRecoilValue(allStorySelector);
 

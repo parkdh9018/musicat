@@ -10,7 +10,7 @@
   display: grid;
   grid-template-rows: 50px 1fr;
   grid-template-columns: repeat(8, 1fr);
-  grid-template-areas: 
+  grid-template-areas:
     "item_number speaker speaker  speaker . . . delete_icon"
     ". edit_text edit_text edit_text edit_text edit_text edit_text edit_icon";
   // align-items: center;
@@ -51,13 +51,18 @@
     color: var(--font-color);
     border-radius: 20px;
     margin-bottom: 12px;
-    overflow-y: hidden; 
+    overflow-y: hidden;
   }
 
   .edit_text {
     color: var(--fade-font-color);
   }
-}
 
+  .textLengthLimit {
+    font-size: 15px;
+    color: var(--fade-font-color);
+    float: right;
+  }
+}
 
 
