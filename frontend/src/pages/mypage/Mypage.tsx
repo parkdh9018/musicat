@@ -2,13 +2,15 @@ import { nowMainPageState } from "@/atoms/common.atom";
 import { userInfoState } from "@/atoms/user.atom";
 import { MypageNav } from "@/components/sideNav/mypageNav/MypageNav";
 import { useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import style from "./Mypage.module.css";
+import Swal from "sweetalert2";
 
 export const Mypage = () => {
   const userInfo = useRecoilValue(userInfoState);
   const setNowMainPage = useSetRecoilState(nowMainPageState);
+  const navigate = useNavigate();
 
   const memberTitle = "마이페이지";
   const adminTitle = "관리자페이지";
@@ -24,6 +26,16 @@ export const Mypage = () => {
 
   useEffect(() => {
     setNowMainPage(false);
+    if (!userInfo.userRole) {
+      Swal.fire({
+        icon: "warning",
+        title: "",
+        text: "로그인이 필요한 서비스 입니다!",
+        confirmButtonText: "닫기",
+      }).then(() => {
+        navigate("/");
+      });
+    }
   }, []);
 
   return (

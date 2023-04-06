@@ -13,14 +13,16 @@ interface ExtendedGLTF extends GLTF {
 }
 
 interface propsType extends GroupProps {
-  themeNum : number;
+  themeNum: number;
   position: THREE.Vector3; // ...
 }
 
-export const Cat = ({themeNum, position, ...props }: propsType) => {
+export const Cat = ({ themeNum, position, ...props }: propsType) => {
   const broadcast = useRecoilValue(broadcastState);
 
-  const defaultCameraPos = new THREE.Vector3().fromArray(cameraPos[themeNum].default);
+  const defaultCameraPos = new THREE.Vector3().fromArray(
+    cameraPos[themeNum].default
+  );
   const chatCameraPos = new THREE.Vector3().fromArray(cameraPos[themeNum].chat);
 
   const speed = 0.2; // 움직임 속도를 조절하세요.
@@ -55,8 +57,6 @@ export const Cat = ({themeNum, position, ...props }: propsType) => {
   };
 
   useFrame(({ camera }) => {
-    // console.log("postion : ",camera.position)
-
     if (broadcast.operation === "CHAT") {
       camera.position.lerp(chatCameraPos, 0.01);
     } else {
@@ -86,11 +86,6 @@ export const Cat = ({themeNum, position, ...props }: propsType) => {
   }, []);
 
   useEffect(() => {
-    // console.log("operation : ", broadcast.operation);
-    // console.log("dataType : ", broadcast.dataType);
-    // console.log("datalength : ", broadcast.dataLength);
-
-
     actions[ani.Yes]?.fadeOut(0.5);
     actions[ani.Hi]?.fadeOut(0.5);
     actions[ani.Idle02]?.fadeOut(0.5);
@@ -99,22 +94,42 @@ export const Cat = ({themeNum, position, ...props }: propsType) => {
     // 말할때
     if (broadcast.dataType === "mp3") {
       // console.log("--말하는중")
-      actions[ani.Yes]?.reset().setLoop(THREE.LoopRepeat, (broadcast.dataLength / 1000) - 1).fadeIn(0.5).play();
-      actions[ani.Hi]?.reset().setLoop(THREE.LoopRepeat, (broadcast.dataLength / 1000) - 1).fadeIn(0.3).play();
-      mixer.update(new THREE.Clock().getDelta())
+      actions[ani.Yes]
+        ?.reset()
+        .setLoop(THREE.LoopRepeat, broadcast.dataLength / 1000 - 1)
+        .fadeIn(0.5)
+        .play();
+      actions[ani.Hi]
+        ?.reset()
+        .setLoop(THREE.LoopRepeat, broadcast.dataLength / 1000 - 1)
+        .fadeIn(0.3)
+        .play();
+      mixer.update(new THREE.Clock().getDelta());
       // 채팅 시간
     } else if (broadcast.operation === "CHAT") {
       // console.log("--소통시간")
-      actions[ani.Idle02]?.reset().setLoop(THREE.LoopRepeat, Infinity).fadeIn(0.5).play();
+      actions[ani.Idle02]
+        ?.reset()
+        .setLoop(THREE.LoopRepeat, Infinity)
+        .fadeIn(0.5)
+        .play();
       // 노래
     } else if (broadcast.dataType === "youtube") {
       // console.log("--노래듣는중")
-      actions[ani.Yes]?.reset().setLoop(THREE.LoopRepeat, Infinity).setEffectiveTimeScale(0.3).fadeIn(0.5).play();
+      actions[ani.Yes]
+        ?.reset()
+        .setLoop(THREE.LoopRepeat, Infinity)
+        .setEffectiveTimeScale(0.3)
+        .fadeIn(0.5)
+        .play();
     } else {
       // console.log("--평소")
-      actions[ani.Idle05]?.reset().setLoop(THREE.LoopRepeat, Infinity).fadeIn(0.5).play();
+      actions[ani.Idle05]
+        ?.reset()
+        .setLoop(THREE.LoopRepeat, Infinity)
+        .fadeIn(0.5)
+        .play();
     }
-
   }, [broadcast]);
 
   const characterClick = () => {

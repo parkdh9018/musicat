@@ -19,8 +19,6 @@ export const SongDetailModal = ({ musicSeq }: SongDetailModalProps) => {
     fetchData();
   }, []);
 
-  console.log(song);
-
   if (song != undefined)
     return (
       <div className={style.songModalContainer}>

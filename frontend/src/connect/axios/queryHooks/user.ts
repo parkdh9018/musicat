@@ -42,7 +42,6 @@ export function putModifyUser(payload: string) {
     },
     {
       onSuccess: (data) => {
-        console.log(data);
         useCustomToast("success", "닉네임 변경 성공!");
       },
     }

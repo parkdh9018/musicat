@@ -21,7 +21,6 @@ interface ContentBoxProps extends StoryContent {
   index: number;
 }
 export const ContentBox = ({ index, speaker, content }: ContentBoxProps) => {
-
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [editstate, setEditState] = useState(false);
   const [editText, setEditText] = useState(content);
@@ -52,13 +51,13 @@ export const ContentBox = ({ index, speaker, content }: ContentBoxProps) => {
   };
 
   const autoResize = () => {
-    // console.log(textareaRef.current?.value)
     if (!textareaRef.current) return;
 
-    setEditText(textareaRef.current.value );
-    textareaRef.current.style.height = "auto"; /* 높이를 자동으로 조정하기 위해 초기화 */
+    setEditText(textareaRef.current.value);
     textareaRef.current.style.height =
-    textareaRef.current.scrollHeight + "px"; /* 높이를 스크롤 높이로 설정 */
+      "auto"; /* 높이를 자동으로 조정하기 위해 초기화 */
+    textareaRef.current.style.height =
+      textareaRef.current.scrollHeight + "px"; /* 높이를 스크롤 높이로 설정 */
   };
 
   return (
@@ -70,7 +69,7 @@ export const ContentBox = ({ index, speaker, content }: ContentBoxProps) => {
         ) : (
           <div className={style.speaker}>
             <SelectBox
-              style={{marginTop: "0px", width: "100%"}}
+              style={{ marginTop: "0px", width: "100%" }}
               defaultValue={speaker}
               options={TTS_OPTION}
               setValue={useEditSpeakerCallback}
@@ -92,9 +91,11 @@ export const ContentBox = ({ index, speaker, content }: ContentBoxProps) => {
           </div>
         ) : (
           <div className={style.edit} onClick={editClick}>
-            {editText ? editText : <div  className={style.edit_text}>
-              내용을 입력해주세요
-              </div>}
+            {editText ? (
+              editText
+            ) : (
+              <div className={style.edit_text}>내용을 입력해주세요</div>
+            )}
           </div>
         )}
       </div>
