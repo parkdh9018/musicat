@@ -24,14 +24,166 @@
 - 기술4
 
 ## 프로젝트 파일 구조
+### 백엔드
 ```bash
 .
-├── 폴더1
-│   ├── 파일1
-│   └── 파일2
-├── 폴더2
-│   └── 파일3
-└── 파일4
+├── gradle
+│   └── wrapper
+└── src
+    ├── main
+    │   ├── java
+    │   │   └── com
+    │   │       └── musicat
+    │   │           ├── Oauth
+    │   │           ├── auth
+    │   │           ├── config
+    │   │           ├── controller
+    │   │           │   ├── item
+    │   │           │   ├── notice
+    │   │           │   ├── radio
+    │   │           │   └── user
+    │   │           ├── data
+    │   │           │   ├── dto
+    │   │           │   │   ├── alert
+    │   │           │   │   │   ├── request
+    │   │           │   │   │   └── response
+    │   │           │   │   ├── chat
+    │   │           │   │   ├── item
+    │   │           │   │   ├── music
+    │   │           │   │   ├── notice
+    │   │           │   │   ├── radio
+    │   │           │   │   ├── socket
+    │   │           │   │   ├── spotify
+    │   │           │   │   ├── story
+    │   │           │   │   └── user
+    │   │           │   ├── entity
+    │   │           │   │   ├── item
+    │   │           │   │   ├── notice
+    │   │           │   │   ├── radio
+    │   │           │   │   └── user
+    │   │           │   └── repository
+    │   │           │       ├── item
+    │   │           │       ├── notice
+    │   │           │       ├── radio
+    │   │           │       └── user
+    │   │           ├── handler
+    │   │           ├── interceptor
+    │   │           ├── jwt
+    │   │           ├── service
+    │   │           │   ├── chat
+    │   │           │   ├── item
+    │   │           │   ├── kafka
+    │   │           │   ├── notice
+    │   │           │   ├── radio
+    │   │           │   ├── socket
+    │   │           │   └── user
+    │   │           └── util
+    │   │               └── builder
+    │   └── resources
+    │       └── static
+    └── test
+        └── java
+            └── com
+                └── musicat
+```
+
+### 프론트엔드
+```bash
+.
+├── public
+│   ├── graphic
+│   │   ├── animation
+│   │   ├── background
+│   │   │   ├── 1
+│   │   │   └── 2
+│   │   └── cat
+│   └── img
+│       ├── background
+│       ├── badge
+│       ├── cd
+│       ├── pagebackground
+│       ├── tape
+│       └── theme
+└── src
+    ├── asset
+    │   ├── font
+    │   └── img
+    ├── atoms
+    ├── components
+    │   ├── broadcast
+    │   │   ├── graphicCanvas
+    │   │   │   └── background
+    │   │   └── radioPlayer
+    │   ├── common
+    │   │   ├── board
+    │   │   ├── button
+    │   │   ├── input
+    │   │   ├── modal
+    │   │   ├── pagenation
+    │   │   ├── selectBox
+    │   │   └── songSearch
+    │   ├── header
+    │   │   ├── onairSign
+    │   │   └── popover
+    │   └── sideNav
+    │       ├── mypageNav
+    │       └── tapeNav
+    │           ├── CDplayer
+    │           ├── Tape
+    │           ├── tapeButtons
+    │           └── volumeBar
+    ├── connect
+    │   ├── axios
+    │   │   └── queryHooks
+    │   └── socket
+    ├── customHooks
+    ├── pages
+    │   ├── common
+    │   │   ├── loadingSpinner
+    │   │   ├── loginSuccess
+    │   │   └── page404
+    │   ├── home
+    │   │   ├── about
+    │   │   ├── chat
+    │   │   ├── songRequest
+    │   │   │   └── songList
+    │   │   │       └── songDetailModal
+    │   │   └── story
+    │   │       ├── contentBox
+    │   │       └── contentPlus
+    │   └── mypage
+    │       ├── inventory
+    │       │   └── inventoryModal
+    │       ├── myinfo
+    │       │   └── myinfoModal
+    │       ├── notice
+    │       ├── noticeDetail
+    │       ├── noticeManage
+    │       ├── noticeManageModify
+    │       └── userManage
+    │           └── SelectedUsers
+    └── types
+```
+### 라디오 서버
+```bash
+.
+├── api_chatgpt.py
+├── api_naver_tts.py
+├── database.py
+├── kafka_handler.py
+├── logic_chat.py
+├── logic_empty.py
+├── logic_music.py
+├── logic_opening.py
+├── logic_story.py
+├── main.py
+├── my_logger.py
+├── my_util.py
+├── radio_progress.py
+├── shared_env.py
+├── shared_state.py
+└── tts
+    └── mymusic
 ```
 
 ## 역할 분배
