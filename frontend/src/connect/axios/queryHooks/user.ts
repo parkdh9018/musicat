@@ -88,7 +88,7 @@ export function getUserUnreadMsgNum() {
     async () => {
       return await $.get(`/user/unread-message`);
     },
-    { enabled: !!userInfo.userRole }
+    { enabled: !!userInfo.userRole, refetchInterval: 5000 }
   );
 
   return { data, isLoading };
