@@ -235,14 +235,18 @@
 
 ## 프로젝트 산출물
 
-- 기능 기획서
+### 기능 기획서
   ![기능 기획서](./image/work1.png)
   ![기능 기획서](./image/work2.png)
 
-- 시스템 아키택쳐
+  ---
+
+### 시스템 아키택쳐
   ![아키텍쳐](./image/system.png)
 
-- API 명세서
+  ---
+
+### API 명세서
   ![API 명세서](./image/api1.png)
   ![API 명세서](./image/api2.png)
   ![API 명세서](./image/api3.png)
@@ -252,13 +256,19 @@
   ![API 명세서](./image/api7.png)
   ![API 명세서](./image/api8.png)
 
-- ERD 다이어그램
+  ---
+
+### ERD 다이어그램
   ![ERD](./image/ERD.png)
 
-- MockUp & Design
+  ---
+
+### MockUp & Design
   ![mockup](./image/mockup1.png)
   ![mockup](./image/mockup2.png)
   ![mockup](./image/mockup3.png)
+
+  ---
 
 ## 서비스 동작 이미지와 설명
 ![서비스_동작_이미지](서비스_동작_이미지_GIF_링크)
@@ -269,7 +279,7 @@
 
 ## 프로젝트 참고 링크
 
-- [노션](https://ramen-buang.notion.site/SSAFY-2-MusiCat-6ce1496529df4689bdae266db3d50466) 노션
-- [결과물2](자기 githut 링크) GitHub
+- [노션](https://ramen-buang.notion.site/SSAFY-2-MusiCat-6ce1496529df4689bdae266db3d50466) 프로젝트Notino - Musicat
+- [결과물2](자기 githut 링크) GitHub - Link
 
 
