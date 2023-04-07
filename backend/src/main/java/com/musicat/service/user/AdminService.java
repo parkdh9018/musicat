@@ -2,11 +2,13 @@ package com.musicat.service.user;
 
 import com.musicat.data.dto.notice.NoticeModifyDto;
 import com.musicat.data.dto.notice.NoticeWriteDto;
+import com.musicat.data.dto.user.UserInfoJwtDto;
 import com.musicat.data.dto.user.UserPageDto;
 import com.musicat.data.entity.notice.Notice;
 import com.musicat.data.entity.user.User;
 import com.musicat.data.repository.notice.NoticeRepository;
 import com.musicat.data.repository.user.UserRepository;
+import com.musicat.jwt.TokenProvider;
 import com.musicat.util.ConstantUtil;
 import com.musicat.util.builder.NoticeBuilderUtil;
 import com.musicat.util.builder.UserBuilderUtil;
@@ -35,6 +37,9 @@ public class AdminService {
   private final UserBuilderUtil userBuilderUtil;
   private final NoticeBuilderUtil noticeBuilderUtil;
   private final ConstantUtil constantUtil;
+
+  // JWT
+  private final TokenProvider tokenProvider;
 
 
 
@@ -134,9 +139,10 @@ public class AdminService {
    *
    * @param noticeWriteDto
    */
-  public void writeNotice(NoticeWriteDto noticeWriteDto) {
-    User user = userRepository.findById(noticeWriteDto.getUserSeq())
-        .orElseThrow(() -> new RuntimeException());
+  public void writeNotice(NoticeWriteDto noticeWriteDto, String token) {
+    UserInfoJwtDto userInfo = tokenProvider.getUserInfo(token);
+    User user = userRepository.findById(userInfo.getUserSeq())
+        .orElseThrow(() -> new EntityNotFoundException("회원 정보가 존재하지 않습니다."));
     Notice notice = noticeBuilderUtil.noticeWriteDtoToNotice(noticeWriteDto, user);
     noticeRepository.save(notice);
   }
