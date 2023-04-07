@@ -4,7 +4,7 @@
 
 프로젝트 주소: [프로젝트_주소](https://musicat.kr)
 
-[UCC 영상 바로가기](UCC_영상_링크)
+[UCC 영상 바로가기](https://ramen-buang.notion.site/Musicat-UCC-c561acbeb18743fb94ad90b9eeb6be23)
 
 프로젝트 기간: 2023.02.27 ~ 2023.04.07
 
@@ -279,7 +279,7 @@
 
 ## 프로젝트 참고 링크
 
-- [노션](https://ramen-buang.notion.site/SSAFY-2-MusiCat-6ce1496529df4689bdae266db3d50466) 프로젝트Notino - Musicat
-- [결과물2](자기 githut 링크) GitHub - Link
+- [프로젝트 Notino](https://ramen-buang.notion.site/SSAFY-2-MusiCat-6ce1496529df4689bdae266db3d50466) Musicat
+- [GitHub - Link](자기 githut 링크) 포트폴리오 Github Link
 
 
