@@ -80,7 +80,7 @@ public class StoryService {
         long userSeq = userSeqNode.asLong();
 
         String alertTitle = "사연 신청 결과";
-        String alertContent = "아쉽게도 사연이 당첨되지 않았습니다.";
+        String alertContent = "사연 미당첨\\n" + "저희 라디오 프로그램에서는 이야기를 드릴 수 없는 내용이거나, 적합하지 않은 사연일 경우에는 송출하지 않고 있습니다.\n" + "이에 대해 양해 부탁드립니다.";
 
         if (valid.equals("true")) {
           User user = userRepository.findById(userSeq)
