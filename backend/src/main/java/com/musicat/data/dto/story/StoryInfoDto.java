@@ -1,50 +1,42 @@
 package com.musicat.data.dto.story;
 
-import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
+// Todo : 프론트에서 필요한 데이터 제공 예정
 public class StoryInfoDto { // 사연 정보 Dto
-    private long storySeq;
+//    private long storySeq;
+//
+//    private long userSeq;
 
-    private long userSeq;
+  private String storyCreatedAt;
 
-    private LocalDateTime storyCreatedAt;
+  private boolean storyReaded;
 
-    private LocalDateTime storyReadAt;
+  private Boolean storyValid;
 
-    private boolean storyIsRead;
+  private String storyTitle;
 
-    private boolean storyIsValid;
+//    private String storyContent;
 
-    private boolean storyIsReady;
+  private String storyMusicTitle;
 
-    private String storyTitle;
+  private String storyMusicArtist;
 
-    private String storyContent;
+  private String storyMusicCover;
 
-    private String storyWavFileDirectoryRoot;
+  private long storyMusicLength;
 
-    private String storyMusicName;
+  private String storyMusicYoutubeId;
 
-    private String storyMusicArtist;
+  private String storyReaction;
 
-    private boolean storyMusicIsPlayed;
-
-    private String storyMusicCover;
-
-    private long storyMusicPlayedMs;
-
-    private long storyMusicLength;
-
-    private String storyMusicYoutubeId;
+  private String storyOutro;
 }

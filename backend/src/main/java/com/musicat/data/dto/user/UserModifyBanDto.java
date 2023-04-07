@@ -1,9 +1,11 @@
 package com.musicat.data.dto.user;
 
 
-import lombok.*;
-
-import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -12,9 +14,9 @@ import java.time.LocalDateTime;
 @Builder
 public class UserModifyBanDto {
 
-    private long userSeq;
-    private String moneyLogType;
-    private long moneyLogChange;
-    private String moneyLogCreatedAt;
+  private long userSeq;
+  private String moneyLogType;
+  private long moneyLogChange;
+  private String moneyLogCreatedAt;
 
 }

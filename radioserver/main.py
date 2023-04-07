@@ -10,15 +10,14 @@ import logic_story
 import logic_music
 import api_naver_tts
 import api_chatgpt
-from my_logger import setup_logger
-import test_langchain
+from my_logger import setup_logger, measure_execution_time
 
 app = FastAPI()
 
 logger = setup_logger()
 
 ##############################################
-
+@measure_execution_time
 async def set_remain_gpt_reaction():
     logger.info("[Main] : *** 서버가 꺼져있을 때 추가된 데이터에 작업 ***")
     remain_story = database.find_null_intro_outro_story()
@@ -64,7 +63,8 @@ def switch_radio():
 
 ##############################################
 
-def generate_file_stream(filepath: str, start: int = 0, end: int = None):
+@measure_execution_time
+async def generate_file_stream(filepath: str, start: int = 0, end: int = None):
     with open(filepath, 'rb') as file:
         file.seek(start)
         chunk_size = 8192
@@ -75,7 +75,8 @@ def generate_file_stream(filepath: str, start: int = 0, end: int = None):
             if not data:
                 break
             yield data
-
+            
+@measure_execution_time
 @app.get("/tts/{path}/{filename}")
 async def send_tts(request: Request, path: str, filename: str):
     filepath = os.path.join(f"./tts/{path}", filename)
@@ -103,10 +104,10 @@ async def send_tts(request: Request, path: str, filename: str):
         response_headers['Content-Range'] = f'bytes {start}-{end}/{file_size}'
         content_length = end - start + 1
         response_headers['Content-Length'] = str(content_length)
-        return StreamingResponse(generate_file_stream(filepath, start, end), status_code=206, headers=response_headers)
+        return StreamingResponse(await asyncio.to_thread(generate_file_stream, filepath, start, end), status_code=206, headers=response_headers)
     else:
         response_headers['Content-Length'] = str(file_size)
-        return StreamingResponse(generate_file_stream(filepath), status_code=200, headers=response_headers)
+        return StreamingResponse(await asyncio.to_thread(generate_file_stream, filepath), status_code=200, headers=response_headers)
     
 ##############################################
 

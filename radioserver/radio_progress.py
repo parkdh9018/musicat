@@ -30,6 +30,7 @@ async def radio_progress():
         radio_state = {"state" : "chat"}
         await logic_chat.clear_user_check()
         # await api_chatgpt.reset_past_chats()
+        await api_chatgpt.force_flush_chat()
         chat_readable.set_state(True)
     elif current_state.get_state() == 'music':
         radio_state = await logic_music.process_music_state()

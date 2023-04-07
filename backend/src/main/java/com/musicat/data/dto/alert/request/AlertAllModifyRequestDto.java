@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AlertAllModifyRequestDto {
 
-    private boolean alertIsRead;
+  private boolean alertIsRead;
 
 }
