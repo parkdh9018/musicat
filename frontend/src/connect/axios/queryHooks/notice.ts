@@ -52,7 +52,6 @@ export function requestNoticeModify(
 ) {
   if (type === "post")
     $.post("/admin/notice", {
-      userSeq: 1,
       noticeTitle: title,
       noticeContent: content,
     }).then(() =>
