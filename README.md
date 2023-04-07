@@ -233,15 +233,32 @@
 | 이름5 | ![이름5_사진](이름5_사진_링크) | 역할5 | 정보5 |
 | 이름6 | ![이름6_사진](이름6_사진_링크) | 역할6 | 정보6 |
 
-## 프로젝트 산출물 링크
-- [프로젝트 노션](https://www.notion.so/ramen-buang/SSAFY-2-MusiCat-6ce1496529df4689bdae266db3d50466)
-- [기능 명세서](https://www.notion.so/ramen-buang/e5cb5942f92144f0b3929a52d993e007)
-- [목업(figma)](https://www.figma.com/file/PgLlj25F4Vg6RtcUwrPFdS/SSAFY_A702_PJT?node-id=0-1)
-- [API 명세](https://www.notion.so/ramen-buang/API-89cbd59751cd49a78579e854a3fd91fa)
+## 프로젝트 산출물
 
-## 프로젝트 결과물 링크
-- [결과물1](결과물1_링크)
-- [결과물2](결과물2_링크)
+- 기능 기획서
+  ![기능 기획서](./image/work1.png)
+  ![기능 기획서](./image/work2.png)
+
+- 시스템 아키택쳐
+  ![아키텍쳐](./image/system.png)
+
+- API 명세서
+  ![API 명세서](./image/api1.png)
+  ![API 명세서](./image/api2.png)
+  ![API 명세서](./image/api3.png)
+  ![API 명세서](./image/api4.png)
+  ![API 명세서](./image/api5.png)
+  ![API 명세서](./image/api6.png)
+  ![API 명세서](./image/api7.png)
+  ![API 명세서](./image/api8.png)
+
+- ERD 다이어그램
+  ![ERD](./image/ERD.png)
+
+- MockUp & Design
+  ![mockup](./image/mockup1.png)
+  ![mockup](./image/mockup2.png)
+  ![mockup](./image/mockup3.png)
 
 ## 서비스 동작 이미지와 설명
 ![서비스_동작_이미지](서비스_동작_이미지_GIF_링크)
@@ -249,4 +266,10 @@
 - 설명1
 - 설명2
 - 설명
+
+## 프로젝트 참고 링크
+
+- [노션](https://ramen-buang.notion.site/SSAFY-2-MusiCat-6ce1496529df4689bdae266db3d50466) 노션
+- [결과물2](자기 githut 링크) GitHub
+
 
