@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -106,8 +107,8 @@ public class AdminController {
    * @return
    */
   @PostMapping("/notice")
-  public ResponseEntity<?> writeNotice(@RequestBody NoticeWriteDto noticeWriteDto) {
-    adminService.writeNotice(noticeWriteDto);
+  public ResponseEntity<?> writeNotice(@RequestBody NoticeWriteDto noticeWriteDto, @RequestHeader("token") String token) {
+    adminService.writeNotice(noticeWriteDto, token);
     return ResponseEntity.ok().build();
   }
 
