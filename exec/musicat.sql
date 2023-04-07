@@ -126,11 +126,6 @@ CREATE TABLE IF NOT EXISTS `notice` (
   CONSTRAINT `FK8hbmbr6wjl2137llct03v7dj` FOREIGN KEY (`user_seq`) REFERENCES `user` (`user_seq`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 테이블 데이터 musicat.notice:~1 rows (대략적) 내보내기
-INSERT INTO `notice` (`notice_seq`, `notice_content`, `notice_created_at`, `notice_title`, `user_seq`) VALUES
-	(1, '공지사항 \\n모두 좋은하루 보내세요 ㅎㅎ', '2023-03-31 15:11:43.000000', '뮤지켓에 어서오세요!!', 7),
-	(2, '귀여운 뮤지켓과 함깨해 주세요!!!', '2023-04-07 09:05:24.793335', '지금부터 인공지능 AI DJ 서비스를 시작합니다!!', 3);
-
 -- 테이블 musicat.server_music 구조 내보내기
 CREATE TABLE IF NOT EXISTS `server_music` (
   `music_seq` bigint(20) NOT NULL AUTO_INCREMENT,
