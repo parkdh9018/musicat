@@ -17,11 +17,48 @@
 - 기능3
 - 기능4
 
-## 기술 소개
-- 기술1
-- 기술2
-- 기술3
-- 기술4
+## 사용 기술
+* 이슈 관리 : Jira
+* 형상 관리 : Git, Gitlab
+* 의사소통, 협업: Notion, Mattermost, Discord
+* 개발환경
+    * OS : Window10
+    * IDE : Intellij, VSCode
+    * EC2 : Ubuntu 20.04 LTS (GNU/Linux 5.4.0-1018-aws x86_64)
+    * Database : Mariadb 10.6
+    * SSH : Windows Terminal, MobaXterm
+    * CI/CD : Jenkins
+    * Reverse Proxy : Nginx
+    * SSL : CertBot, Let's Encrypt
+* 프론트엔드 (React)
+    * Typescript
+    * React
+    * Recoil
+    * React-Query
+    * Vite
+    * sockjs-Client
+    * stompjs
+    * threejs
+* 백엔드 (SpringBoot)
+    * Springboot Starter Data JPA
+    * Springboot Starter Websocket
+    * Springboot Starter Security
+    * JWT
+    * Spring kafka
+    * google api services youtube v3 (youtube data api v3)
+    * google http client gson
+    * jsoup
+    * lombok
+    * spring boot devtools
+    * mariadb java client
+* 백엔드 (RadioServer)
+    * FastAPI
+    * asyncio
+    * pydub
+    * mariadb
+    * kafka
+    * gunicorn
+    * uvicorn
 
 ## 프로젝트 파일 구조
 ### 백엔드
