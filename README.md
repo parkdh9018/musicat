@@ -2,9 +2,9 @@
 
 ![프로젝트 로고](로고_이미지_링크)
 
-프로젝트 주소: [프로젝트_주소](https://musicat.kr)
+프로젝트 URL : [AI DJ Musicat](https://musicat.kr)
 
-[UCC 영상 바로가기](https://ramen-buang.notion.site/Musicat-UCC-c561acbeb18743fb94ad90b9eeb6be23)
+프로젝트 UCC : [Musicat - UCC](https://ramen-buang.notion.site/Musicat-UCC-c561acbeb18743fb94ad90b9eeb6be23)
 
 프로젝트 기간: 2023.02.27 ~ 2023.04.07
 
