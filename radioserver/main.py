@@ -11,6 +11,7 @@ import logic_music
 import api_naver_tts
 import api_chatgpt
 from my_logger import setup_logger
+import test_langchain
 
 app = FastAPI()
 
@@ -25,7 +26,7 @@ async def set_remain_gpt_reaction():
     if remain_story is not None:
         for story in remain_story:
             data = await logic_story.process_verify_remain_story_data(story)
-            kafka_handler.send_state("storyValidateResult", data)
+            await kafka_handler.send_state("storyValidateResult", data)
     if remain_music is not None:
         for music in remain_music:
             await logic_music.process_remain_music_data(music)
@@ -111,7 +112,8 @@ async def send_tts(request: Request, path: str, filename: str):
 
 @app.post("/chat")
 async def chat_endpoint(user: str, message: str):
-    assistant_response = await api_chatgpt.chat_reaction_gpt(user, message)
+    # assistant_response = await api_chatgpt.chat_reaction_gpt(user, message)
+    assistant_response = await test_langchain.chat_reaction_gpt(user, message)
     return {"response": assistant_response}
 
 @app.post("/chat/flush")
