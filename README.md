@@ -1,6 +1,6 @@
 # MusiCat
 
-![프로젝트 로고](로고_이미지_링크)
+![프로젝트 로고](https://lab.ssafy.com/-/ide/project/s08-ai-speech-sub2/S08P22A702/tree/document-branch/-/image/Logo.png/)
 ChatGPT와인공지능 음성기술을 결함한 인공지능 라디오 DJ 
 
 프로젝트 URL : [AI DJ Musicat](https://musicat.kr)
