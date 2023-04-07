@@ -87,8 +87,8 @@ public class RadioService {
   }
 
   private void resetTimer() {
-    idleTimer = 10;
-    chatTimer = 100;
+    idleTimer = 5;
+    chatTimer = 60;
   }
 
   /**
