@@ -1,36 +1,63 @@
 # MusiCat
 
----
+![프로젝트 로고](로고_이미지_링크)
 
-인공지능 DJ이 하는 음악라디오 방송 
+프로젝트 주소: [프로젝트_주소](https://musicat.kr)
 
+[UCC 영상 바로가기](UCC_영상_링크)
 
+프로젝트 기간: 2023.02.27 ~ 2023.04.07
 
-## 문서
+## 프로젝트 소개 (배경, 개요)
+프로젝트 배경 및 개요에 대한 설명을 작성해주세요.
 
-Notion Main 페이지
+## 프로젝트 기능 소개
+- 기능1
+- 기능2
+- 기능3
+- 기능4
 
-https://www.notion.so/ramen-buang/SSAFY-2-MusiCat-6ce1496529df4689bdae266db3d50466
+## 기술 소개
+- 기술1
+- 기술2
+- 기술3
+- 기술4
 
+## 프로젝트 파일 구조
+```bash
+.
+├── 폴더1
+│   ├── 파일1
+│   └── 파일2
+├── 폴더2
+│   └── 파일3
+└── 파일4
+```
 
+## 역할 분배
+| 이름 | 사진 | 역할 | 정보 |
+| ---- | ---- | ---- | ---- |
+| 이름1 | ![이름1_사진](이름1_사진_링크) | 역할1 | 정보1 |
+| 이름2 | ![이름2_사진](이름2_사진_링크) | 역할2 | 정보2 |
+| 이름3 | ![이름3_사진](이름3_사진_링크) | 역할3 | 정보3 |
+| 이름4 | ![이름4_사진](이름4_사진_링크) | 역할4 | 정보4 |
+| 이름5 | ![이름5_사진](이름5_사진_링크) | 역할5 | 정보5 |
+| 이름6 | ![이름6_사진](이름6_사진_링크) | 역할6 | 정보6 |
 
-기능명세서 
+## 프로젝트 산출물 링크
+- [프로젝트 노션](https://www.notion.so/ramen-buang/SSAFY-2-MusiCat-6ce1496529df4689bdae266db3d50466)
+- [기능 명세서](https://www.notion.so/ramen-buang/e5cb5942f92144f0b3929a52d993e007)
+- [목업(figma)](https://www.figma.com/file/PgLlj25F4Vg6RtcUwrPFdS/SSAFY_A702_PJT?node-id=0-1)
+- [API 명세](https://www.notion.so/ramen-buang/API-89cbd59751cd49a78579e854a3fd91fa)
 
-https://www.notion.so/ramen-buang/e5cb5942f92144f0b3929a52d993e007
+## 프로젝트 결과물 링크
+- [결과물1](결과물1_링크)
+- [결과물2](결과물2_링크)
 
+## 서비스 동작 이미지와 설명
+![서비스_동작_이미지](서비스_동작_이미지_GIF_링크)
 
-
-목업(Figma)
-
-https://www.figma.com/file/PgLlj25F4Vg6RtcUwrPFdS/SSAFY_A702_PJT?node-id=0-1
-
-
-
-API 명세서
-
-https://www.notion.so/ramen-buang/API-89cbd59751cd49a78579e854a3fd91fa
-
-
-
-
+- 설명1
+- 설명2
+- 설명
 
