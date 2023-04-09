@@ -1,7 +1,7 @@
 # MusiCat
 
 ![프로젝트 로고](./image/Logo.png/)
-ChatGPT와인공지능 음성기술을 결함한 인공지능 라디오 DJ 
+ChatGPT와인공지능 음성기술을 결합한 인공지능 라디오 DJ 
 
 프로젝트 URL : [AI DJ Musicat](https://musicat.kr)
 
