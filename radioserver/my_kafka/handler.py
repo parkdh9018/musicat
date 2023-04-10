@@ -1,12 +1,12 @@
 from aiokafka import AIOKafkaConsumer, AIOKafkaProducer
 import json
 import datetime
-import logic_story
-import logic_chat
-import logic_music
+import logic.story
+import logic.chat
+import logic.music
 import radio_progress
-from shared_state import radio_health, chat_readable
-from my_logger import setup_logger
+from shared.state import radio_health, chat_readable
+from util.logger import setup_logger
 
 logger = setup_logger()
 
@@ -54,7 +54,7 @@ async def consume_verify_story(topic: str):
     await consumer.start()
     try:
         async for msg in consumer:
-            data = await logic_story.process_verify_story_data(msg.value)
+            data = await logic.story.process_verify_story_data(msg.value)
             await send_state("storyValidateResult", data)
     finally:
         await consumer.stop()
@@ -71,7 +71,7 @@ async def consume_chat(topic: str):
     try:
         async for msg in consumer:
             if radio_health.get_state() is True:
-                await logic_chat.process_chat_data(msg.value)
+                await process_chat_data(msg.value)
     finally:
         await consumer.stop()
 
@@ -86,7 +86,7 @@ async def consume_music(topic: str):
     await consumer.start()
     try:
         async for msg in consumer:
-            await logic_music.process_music_data(msg.value)
+            await logic.music.process_music_data(msg.value)
     finally:
         await consumer.stop()
 

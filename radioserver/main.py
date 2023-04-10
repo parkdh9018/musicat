@@ -1,16 +1,15 @@
 import asyncio
-import kafka_handler
+import my_kafka.handler as kafka_handler
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import FileResponse, StreamingResponse
-from shared_state import radio_health
+from fastapi.responses import StreamingResponse
+from shared.state import radio_health
 from radio_progress import reset_radio
 import os
-import database
-import logic_story
-import logic_music
-import api_naver_tts
-import api_chatgpt
-from my_logger import setup_logger, measure_execution_time
+import database.database as database
+import logic.story
+import logic.music
+import api.chatgpt
+from util.logger import setup_logger, measure_execution_time
 
 app = FastAPI()
 
@@ -24,11 +23,11 @@ async def set_remain_gpt_reaction():
     remain_music = database.find_null_intro_outro_music()
     if remain_story is not None:
         for story in remain_story:
-            data = await logic_story.process_verify_remain_story_data(story)
-            await kafka_handler.send_state("storyValidateResult", data)
+            data = await logic.story.process_verify_remain_story_data(story)
+            kafka_handler.send_state("storyValidateResult", data)
     if remain_music is not None:
         for music in remain_music:
-            await logic_music.process_remain_music_data(music)
+            await logic.music.process_remain_music_data(music)
         
 
 ##############################################
@@ -113,11 +112,10 @@ async def send_tts(request: Request, path: str, filename: str):
 
 @app.post("/chat")
 async def chat_endpoint(user: str, message: str):
-    # assistant_response = await api_chatgpt.chat_reaction_gpt(user, message)
-    assistant_response = await test_langchain.chat_reaction_gpt(user, message)
+    assistant_response = await api.chatgpt.chat_reaction_gpt(user, message)
     return {"response": assistant_response}
 
 @app.post("/chat/flush")
 async def flush_chat():
-    await api_chatgpt.force_flush_chat()
+    await api.chatgpt.force_flush_chat()
     return {"result" : "flush success"}

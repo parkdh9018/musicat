@@ -1,15 +1,15 @@
 from collections import deque
-import logic_chat
-from shared_state import current_state, chat_readable
-import kafka_handler
-import api_chatgpt
-import logic_music, logic_story
-from my_logger import setup_logger
+import logic.chat
+from shared.state import current_state, chat_readable
+import my_kafka.handler as kafka_handler
+import api.chatgpt
+import logic.music, logic.story
+from util.logger import setup_logger
 
 
 logger = setup_logger()
 
-queue = deque(['music', 'chat', 'story', 'chat', 'music', 'chat', 'music', 'chat', 'music', 'chat'])
+queue = deque(['music', 'chat', 'story'])
 
 ##############################################
 
@@ -25,15 +25,15 @@ async def radio_progress():
     radio_state = {"state" : "idle"}
 
     if current_state.get_state() == 'story':
-        radio_state = await logic_story.process_story_state()
+        radio_state = await logic.story.process_story_state()
     elif current_state.get_state() == 'chat':
         radio_state = {"state" : "chat"}
-        await logic_chat.clear_user_check()
+        await logic.chat.clear_user_check()
         # await api_chatgpt.reset_past_chats()
-        await api_chatgpt.force_flush_chat()
+        await api.chatgpt.force_flush_chat()
         chat_readable.set_state(True)
     elif current_state.get_state() == 'music':
-        radio_state = await logic_music.process_music_state()
+        radio_state = await logic.music.process_music_state()
     await kafka_handler.send_state("radioState", radio_state)
 
 ##############################################
@@ -43,7 +43,7 @@ def reset_radio():
     라디오 상태 초기화 함수
     """
     global queue
-    queue = deque(['music', 'chat', 'story', 'chat', 'music', 'chat', 'music', 'chat', 'music', 'chat'])
+    queue = deque(['music', 'chat', 'story'])
     logger.info('[Radio] : 라디오 상태 초기화 완료')
 
 ##############################################
