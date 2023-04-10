@@ -1,7 +1,7 @@
 # MusiCat
 
 ![프로젝트 로고](./image/Logo.png/)
-ChatGPT와인공지능 음성기술을 결합한 인공지능 라디오 DJ 
+ChatGPT & 인공지능 음성기술을 결합한 인공지능 라디오 DJ 
 
 프로젝트 URL : [AI DJ Musicat](https://musicat.kr)
 
@@ -14,11 +14,39 @@ ChatGPT와인공지능 음성기술을 결합한 인공지능 라디오 DJ
 
  지치지 않는 AI DJ 뮤직캣은 청취자에게 연중 무휴 24시간 중단 없는 서비스를 경험을 제공합니다. 또한 라디오 진행에 필요한 수많은 자원을 대신하여 프로그램 관리만을 통해 방송컨텐츠를 제공할 수 있습니다.
 
-## 프로젝트 기능 소개
+## 프로젝트 주요 기능
 - 채팅 : 다른 청취자들과 소통이 가능하고, 라디오 DJ가 댓글을 읽고 반응하여 청취자와 신선하고 재미있는 상호작용을 합니다.
 - 사연 : 하나의 목소리가 아닌, 다양한 목소리를 통해 사연을 읽어줘서 더욱 다채로운 사연 낭독을 합니다. 
 - 신청곡 : 원하는 노래를 신청하고, 스트리밍하여 다른 청취자들에게 자신의 최애 노래를 뽑낼 수 있습니다. 
-- 마이페이지 : 사이트 내에서 사용되는 포인트의 거래내역, 알림, 공지사항이 확인 가능하고 뱃지, 배경, 테마를 커스터마이징하여 자신만의 라디오를 만들 수 있습니다. 
+- 마이페이지 : 사이트 내에서 사용되는 포인트의 거래내역, 알림, 공지사항이 확인 가능하고 뱃지, 배경, 테마를 커스터마이징하여 자신만의 라디오를 만들 수 있습니다.   
+
+## 프로젝트 주요 기술  
+1. 인증/인가 
+    - 카카오 소셜 로그인 : OAuth 2.0 사용
+    - JWT를 사용한 인가 기능  
+    - Spring Security를 활용한 사용자/관리자 권한에 따른 인증/인가 제어 
+2. 음악 스트리밍 (YouTube API)
+    - 재생 중인 노래 제목 하이라이팅 
+    - 신청곡 재생 목록 상위 10개 표시
+    - 신청곡이 없을 경우 : 서버 DB에 저장된 노래 재생
+    - 신청곡이 있을 경우 : 신청곡 목록 DB에 저장된 노래 재생
+3. 신청곡 (Spotify API, YouTube API)
+    - 검색창에서 KeyUp Event 시에 Spotify 검색 결과 상의 20개 리턴
+    - 검색 결과 클릭시 Spotify 음악 상세정보(노래제목, 아티스트, 앨범커버이미지 등) 조회, YouTube 음악 검색 결과 리턴
+    - 검색 결과를 Spring Server 에 전송 (노래 신청) -> DB 반영 
+3. 사연 (Chat GPT API, Naver Clova API, TTS)
+    - (화자, 내용) 형식의 key-value 형태로 사연 데이터 작성 
+    - 사연 데이터가 Spring Server로 넘어온 후 적절한 사연인지 검증 로직 수행 (아파치 카프카, 파이썬 서버, Chat GPT API 사용)
+    - 적절한 사연일 경우 TTS 작업 (Naver Clova API, Google TTS 사용)  -> MP3 파일 생성 
+4. 채팅창 상호 작용 (Chat GPT API, STOMP, Perspective API, TTS)
+    - 채팅 공격성 검사 (Bad Word API 사용) -> 공격적인 채팅일 경우: 채팅 필터링("클린 채팅을 사용해 주세요"), 회원에게 경고 메시지 전송 (누적 3회시 Ban)
+    - 청취자들끼리 채팅 상호작용 
+    - AI Radio DJ와 상호작용 : 적절한 채팅일 경우 TTS 작업 (아파치 카프카, Chat GPT API, Naver Clova API 사용) -> MP3 파일 생성
+5. 마이페이지
+    - 포인트를 사용하여 배경 테마, 채팅시 사용하는 뱃지 구매 -> 사용자 기호에 맞는 커스텀 테마 가능
+    - 다크모드/라이트모드 지원
+    - 닉네임 중복검사 및 수정 기능 제공  
+
 
 ## 사용 기술
 * 이슈 관리 : Jira
@@ -47,9 +75,11 @@ ChatGPT와인공지능 음성기술을 결합한 인공지능 라디오 DJ
     * Springboot Starter Websocket
     * Springboot Starter Security
     * JWT
-    * Spring kafka
-    * google api services youtube v3 (youtube data api v3)
+    * Apache Kafka
+    * google api services youtube v3 (Youtube Data API V3)
     * google http client gson
+    * Spotify API (음원 검색)
+    * perspective API (비속어 필터링)
     * jsoup
     * lombok
     * spring boot devtools
@@ -58,10 +88,12 @@ ChatGPT와인공지능 음성기술을 결합한 인공지능 라디오 DJ
     * FastAPI
     * asyncio
     * pydub
-    * mariadb
-    * kafka
+    * MariaDB
+    * Apache Kafka
     * gunicorn
     * uvicorn
+    * Naver Clova API
+    * Chat GPT API
 
 ## 프로젝트 파일 구조
 ### 백엔드
@@ -229,9 +261,9 @@ ChatGPT와인공지능 음성기술을 결합한 인공지능 라디오 DJ
 ## 역할 분배
 | 이름 | 사진 | 역할 | 정보 |
 | ---- | ---- | ---- | ---- |
-| 김동언 | ![김동언](./image/human1.png) | 백엔드 | 카프카 / FastApi / CI/CD |
-| 이찬희 | ![이찬희](./image/human2.png) | 백엔드 | SpringBoot |
-| 최웅렬 | ![최웅렬](./image/human4.png) | 백엔드 | SpringBoot / Oath / Security |
+| 김동언 | ![김동언](./image/human1.png) | 백엔드 | SpringBoot / Oauth / Security |
+| 이찬희 | ![이찬희](./image/human2.png) | 백엔드 | SpringBoot / STOMP |
+| 최웅렬 | ![최웅렬](./image/human4.png) | 백엔드 | Apache Kafka / FastApi / CI/CD |
 | 이연학 | ![이연학](./image/human6.png) | 프론트엔드 | React |
 | 박동환 | ![박동환](./image/human3.png) | 프론트엔드 | React |
 | 최다은 | ![최다은](./image/human5.png) | 프론트엔드 | React |
