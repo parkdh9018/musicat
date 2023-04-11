@@ -110,7 +110,8 @@ async def music_intro_gpt(artist : str, title : str, release_date : str):
     노래의 소개를 생성합니다
     """
     intro_prompt = {"role": "user", "content": f'Artist : {artist}, Title : {title}, Release Date : {release_date}'}
-    messages = api.prompt.music_intro_bias + intro_prompt
+    messages = api.prompt.music_intro_bias
+    messages.append(intro_prompt)
     temperature = 0.8
     result = await call_openai_api(messages, temperature)
     return (result)
@@ -123,7 +124,8 @@ async def music_outro_gpt(artist, title, user):
     노래의 감상을 생성합니다
     """
     outro_prompt = {"role": "user", "content": f'Artist : {artist}, Title : {title}, User : {user}'}
-    messages = api.prompt.music_outro_bias + outro_prompt
+    messages = api.prompt.music_outro_bias
+    messages.append(outro_prompt)
     temperature = 0.8
     result = await call_openai_api(messages, temperature)
     return (result)
