@@ -1,6 +1,6 @@
 import mariadb
 import json
-from shared_env import mariadb_config
+from shared.env import mariadb_config
 
 def connect_db():
     config = json.loads(mariadb_config)
@@ -168,28 +168,6 @@ def verify_story(story_seq : int, is_valid, is_readed):
     finally:
         cursor.close()
         conn.close()
-
-##############################################
-
-# # 신청곡 찾아오기
-# def find_song_request():
-#     """
-#     """
-#     conn = connect_db()
-#     cursor = conn.cursor()
-#     try:
-#         cursor.execute("SELECT * FROM music WHERE music_played = FALSE ORDER BY music_created_at LIMIT 1")
-#         song_request = cursor.fetchone()
-#         if song_request:
-#             column_names = [desc[0] for desc in cursor.description]
-#             return dict(zip(column_names, song_request))
-#         else:
-#             return None
-#     except mariadb.Error as e:
-#         print(f"Error: {e}")
-#     finally:
-#         cursor.close()
-#         conn.close()
 
 ##############################################
 

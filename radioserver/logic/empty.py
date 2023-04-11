@@ -1,11 +1,9 @@
-import database
-import api_naver_tts
-import api_chatgpt
-import asyncio
+from database.database import find_random_music
+# import api.naver_clova
 import os
 from pydub import AudioSegment
-from my_util import create_mp3_url
-from my_logger import setup_logger
+from util.util import create_mp3_url
+from util.logger import setup_logger
 
 logger = setup_logger()
 
@@ -13,7 +11,7 @@ async def process_empty_state():
     """
     노래 데이터가 아무 것도 없을 때 동작할 내용입니다
     """
-    music = database.find_random_music()
+    music = find_random_music()
     
     logger.info(f'[Empty Process] 노래가 없으므로 임의 노래를 재생합니다.')
     tts_path = "./tts/mymusic/"

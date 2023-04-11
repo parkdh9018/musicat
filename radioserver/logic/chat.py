@@ -1,14 +1,14 @@
-from shared_state import current_state, chat_readable
-import api_chatgpt
-import api_naver_tts
+from shared.state import current_state, chat_readable
+from api.chatgpt import validate_chat_gpt, chat_reaction_gpt
+# from api.naver_clova import generate_tts
+from api.gtts import generate_tts
 from pydub import AudioSegment
-import my_util
-import database
-import re
-import kafka_handler
-import os
-from my_logger import setup_logger
+from util.util import create_mp3_url
+from database.database import find_user_nickname
+import my_kafka.handler
+from util.logger import setup_logger
 from collections import defaultdict
+import re
 
 logger = setup_logger()
 user_check = user_check = defaultdict(int)
@@ -34,20 +34,20 @@ async def process_chat_data(data):
             return
 
         if len(chat_cleaned) > 7 and len(chat_cleaned) < 200:
-            validate_result = await api_chatgpt.validate_chat_gpt(chat_cleaned)
+            validate_result = await validate_chat_gpt(chat_cleaned)
             logger.info(f'채팅 validate 확인 {validate_result}')
             if 'True' in validate_result or 'true' in validate_result:
-                user_nickname = database.find_user_nickname(user_seq)
-                chat_reaction = await api_chatgpt.chat_reaction_gpt(user_nickname, chat_cleaned)
+                user_nickname = find_user_nickname(user_seq)
+                chat_reaction = await chat_reaction_gpt(user_nickname, chat_cleaned)
                 logger.info(chat_reaction)
                 current_count = count
                 count = count + 1
                 if count > 100 :
                     count = 1
                 tts_path = f'./tts/chat/{current_count}.mp3'
-                await api_naver_tts.generate_tts_clova(chat_reaction, tts_path, "nminseo")
+                await generate_tts(chat_reaction, tts_path, "nminseo")
                 # await api_naver_tts.generate_tts_test(chat_reaction, tts_path)
-                mp3path = await my_util.create_mp3_url("chat", f'{current_count}.mp3')
+                mp3path = await create_mp3_url("chat", f'{current_count}.mp3')
                 user_check[user_seq] += 1
                 logger.info(user_check)
                 chat_length = len(AudioSegment.from_file(tts_path))
@@ -58,6 +58,6 @@ async def process_chat_data(data):
                     "state": "chat",  "playlist": playlist
                 }
                 if current_state.get_state() == "chat":
-                    await kafka_handler.send_state("radioState", radio_state)
+                    await my_kafka.handler.send_state("radioState", radio_state)
 
 ##############################################

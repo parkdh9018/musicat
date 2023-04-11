@@ -1,5 +1,4 @@
-from shared_env import fastapi_url
-from typing import List, Dict
+from shared.env import fastapi_url
 
 # 리스트 형태로 들어온 사연 파싱
 async def parse_story_content(contents):
